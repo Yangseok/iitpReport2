@@ -1,26 +1,26 @@
-import React from "react";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import React from 'react';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Main from 'Domain/Home/Main/Page/Main';
 import Discovery from 'Domain/Home/Discovery/Page/Main';
 import DemandBanking from 'Domain/Home/DemandBanking/Page/Main';
 import ICTTrend from 'Domain/Home/ICTTrend/Page/Main';
 import PageNotFound from 'Domain/Home/Common/ErrorPage/404';
 import Counter from 'Domain/Home/Sample/Page/Counter';
-import Modal1 from "Domain/Home/Sample/Page/Modal1";
-import Modal2 from "Domain/Home/Sample/Page/Modal2";
-import Modal3 from "Domain/Home/Sample/Page/Modal3";
-import Graph1 from "Domain/Home/Sample/Page/Graph1";
-import Graph2 from "Domain/Home/Sample/Page/Graph2";
-import Graph3 from "Domain/Home/Sample/Page/Graph3";
-import Graph32 from "Domain/Home/Sample/Page/Graph32";
-import Graph33 from "Domain/Home/Sample/Page/Graph33";
-import Graph34 from "Domain/Home/Sample/Page/Graph34";
-import Graph35 from "Domain/Home/Sample/Page/Graph35";
-import Graph4 from "Domain/Home/Sample/Page/Graph4";
-import TreeMap from "Domain/Home/Sample/Page/TreeMap";
-import TreeMap2 from "Domain/Home/Sample/Page/TreeMap2";
-import WordCloud1 from "Domain/Home/Sample/Page/WordCloud1";
-import WordCloud2 from "Domain/Home/Sample/Page/WordCloud2";
+import Modal1 from 'Domain/Home/Sample/Page/Modal1';
+import Modal2 from 'Domain/Home/Sample/Page/Modal2';
+import Modal3 from 'Domain/Home/Sample/Page/Modal3';
+import Graph1 from 'Domain/Home/Sample/Page/Graph1';
+import Graph2 from 'Domain/Home/Sample/Page/Graph2';
+import Graph3 from 'Domain/Home/Sample/Page/Graph3';
+import Graph32 from 'Domain/Home/Sample/Page/Graph32';
+import Graph33 from 'Domain/Home/Sample/Page/Graph33';
+import Graph34 from 'Domain/Home/Sample/Page/Graph34';
+import Graph35 from 'Domain/Home/Sample/Page/Graph35';
+import Graph4 from 'Domain/Home/Sample/Page/Graph4';
+import TreeMap from 'Domain/Home/Sample/Page/TreeMap';
+import TreeMap2 from 'Domain/Home/Sample/Page/TreeMap2';
+import WordCloud1 from 'Domain/Home/Sample/Page/WordCloud1';
+import WordCloud2 from 'Domain/Home/Sample/Page/WordCloud2';
 
 export default function Router() {
   return (

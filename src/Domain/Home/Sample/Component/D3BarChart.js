@@ -2,15 +2,15 @@ import { useEffect, useRef } from "react";
 import {
   axisBottom,
   axisLeft,
-  ScaleBand,
+  // ScaleBand,
   scaleBand,
-  ScaleLinear,
+  // ScaleLinear,
   scaleLinear,
   select
 } from "d3";
 
 function AxisBottom({ scale, transform }) {
-  const ref = useRef<SVGGElement>(null);
+  const ref = useRef(null);
 
   useEffect(() => {
     if (ref.current) {
@@ -22,7 +22,7 @@ function AxisBottom({ scale, transform }) {
 }
 
 function AxisLeft({ scale }) {
-  const ref = useRef<SVGGElement>(null);
+  const ref = useRef(null);
 
   useEffect(() => {
     if (ref.current) {
