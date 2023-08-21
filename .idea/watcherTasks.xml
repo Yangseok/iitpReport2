@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ProjectTasksOptions">
-    <TaskOptions isEnabled="false">
-      <option name="arguments" value="--write $FilePathRelativeToProjectRoot$" />
+    <TaskOptions isEnabled="true">
+      <option name="arguments" value="-write $FilePathRelativeToProjectRoot$" />
       <option name="checkSyntaxErrors" value="true" />
       <option name="description" />
       <option name="exitCodeBehavior" value="ERROR" />
       <option name="fileExtension" value="js" />
       <option name="immediateSync" value="true" />
-      <option name="name" value="Prettier js" />
+      <option name="name" value="PrettierJs" />
       <option name="output" value="$FilePathRelativeToProjectRoot$" />
       <option name="outputFilters">
         <array />
@@ -18,17 +18,17 @@
       <option name="runOnExternalChanges" value="false" />
       <option name="scopeName" value="Project Files" />
       <option name="trackOnlyRoot" value="false" />
-      <option name="workingDir" value="~/work/dmonster/iitp" />
+      <option name="workingDir" value="$PROJECT_DIR$" />
       <envs />
     </TaskOptions>
     <TaskOptions isEnabled="true">
-      <option name="arguments" value="--write $FilePathRelativeToProjectRoot$" />
+      <option name="arguments" value="-write $FilePathRelativeToProjectRoot$" />
       <option name="checkSyntaxErrors" value="true" />
       <option name="description" />
       <option name="exitCodeBehavior" value="ERROR" />
       <option name="fileExtension" value="jsx" />
       <option name="immediateSync" value="true" />
-      <option name="name" value="Prettier jsx" />
+      <option name="name" value="PrettierJSX" />
       <option name="output" value="$FilePathRelativeToProjectRoot$" />
       <option name="outputFilters">
         <array />
@@ -38,7 +38,7 @@
       <option name="runOnExternalChanges" value="false" />
       <option name="scopeName" value="Project Files" />
       <option name="trackOnlyRoot" value="false" />
-      <option name="workingDir" value="~/work/dmonster/iitp" />
+      <option name="workingDir" value="$PROJECT_DIR$" />
       <envs />
     </TaskOptions>
   </component>

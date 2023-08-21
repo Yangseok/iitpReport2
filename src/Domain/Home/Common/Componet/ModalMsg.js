@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import {
   TERipple,
   TEModal,
@@ -7,22 +7,27 @@ import {
   TEModalHeader,
   TEModalBody,
   TEModalFooter,
-} from "tw-elements-react";
+} from 'tw-elements-react';
 
 export default function ModalMsg(props) {
   const {title, msg, btnTxt, btnCss, btnEvent, show, setShow} = props;
   const btnClick = (f) => {
-    // console.log(f)
+    // console.log(f);
     // console.log(typeof f)
-    if (f === undefined) setShow(false);
-    else if (typeof f === 'function') f();
-    else if (typeof f === 'string') {
+    if (f === undefined) {
+      setShow(false);
+    } else if (typeof f === 'function') {
+      f();
+    } else if (typeof f === 'string') {
       switch (f) {
-        case "sample": console.log("리덕스 샘플이벤트입니다."); setShow(false); break;
-        default: break;
+      case 'sample':
+        console.log('리덕스 샘플이벤트입니다.');
+        setShow(false);
+        break;
+      default: break;
       }
-    };
-  }
+    }
+  };
   return (
     <TEModal show={show} setShow={setShow}>
       <TEModalDialog>
@@ -30,7 +35,7 @@ export default function ModalMsg(props) {
           <TEModalHeader>
             {/* <!--Modal title--> */}
             <h5 className="text-xl font-medium leading-normal text-neutral-800 dark:text-neutral-200">
-              {title ?? "알림"}
+              {title ?? '알림'}
             </h5>
             {/* <!--Close button--> */}
             <button
@@ -56,7 +61,7 @@ export default function ModalMsg(props) {
             </button>
           </TEModalHeader>
           {/* <!--Modal body--> */}
-          <TEModalBody>{msg ?? ""}</TEModalBody>
+          <TEModalBody>{msg ?? ''}</TEModalBody>
           <TEModalFooter>
             {btnTxt?.map((e,i) => {
               return <TERipple key={i} rippleColor="light">
@@ -67,7 +72,7 @@ export default function ModalMsg(props) {
                 >
                   {e}
                 </button>
-              </TERipple>
+              </TERipple>;
             })}
           </TEModalFooter>
         </TEModalContent>
