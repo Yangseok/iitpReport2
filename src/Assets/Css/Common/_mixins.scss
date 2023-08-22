@@ -1,0 +1,14 @@
+// MIXINS
+@mixin flexLayout($align: center, $justify: center, $gap: 0) {
+  display: flex;
+  align-items: $align;
+  justify-content: $justify;
+  gap: $gap;
+}
+
+@mixin hiddenText {
+  font-size: 0;
+  line-height: 0;
+	text-indent: -9999px;
+  overflow: hidden;
+}

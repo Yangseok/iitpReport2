@@ -1,0 +1,160 @@
+/* FONTS */
+@font-face {
+  font-family: "Pretendard";
+  font-weight: 900;
+  font-display: swap;
+  src: url("https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Black.woff") format("woff");
+}
+@font-face {
+  font-family: "Pretendard";
+  font-weight: 800;
+  font-display: swap;
+  src: url("https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-ExtraBold.woff") format("woff");
+}
+@font-face {
+  font-family: "Pretendard";
+  font-weight: 700;
+  font-display: swap;
+  src: url("https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Bold.woff") format("woff");
+}
+@font-face {
+  font-family: "Pretendard";
+  font-weight: 600;
+  font-display: swap;
+  src: url("https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-SemiBold.woff") format("woff");
+}
+@font-face {
+  font-family: "Pretendard";
+  font-weight: 500;
+  font-display: swap;
+  src: url("https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Medium.woff") format("woff");
+}
+@font-face {
+  font-family: "Pretendard";
+  font-weight: 400;
+  font-display: swap;
+  src: url("https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff") format("woff");
+}
+@font-face {
+  font-family: "Pretendard";
+  font-weight: 300;
+  font-display: swap;
+  src: url("https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Light.woff") format("woff");
+}
+@font-face {
+  font-family: "Pretendard";
+  font-weight: 200;
+  font-display: swap;
+  src: url("https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-ExtraLight.woff") format("woff");
+}
+@font-face {
+  font-family: "Pretendard";
+  font-weight: 100;
+  font-display: swap;
+  src: url("https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Thin.woff") format("woff");
+}
+/* ==================================================
+  COMMON LAYOUT
+================================================== */
+body {
+  font-size: 16px;
+  font-family: "Pretendard";
+}
+
+.container {
+  width: 1320px !important;
+  max-width: 1320px !important;
+  padding: 0 20px;
+  margin: 0 auto;
+}
+
+/* HEADER */
+#header .container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0;
+  height: 80px;
+}
+#header .container > div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 100px;
+}
+#header .logo a {
+  font-size: 0;
+  line-height: 0;
+  text-indent: -9999px;
+  overflow: hidden;
+  display: block;
+  width: 80px;
+  height: 36px;
+  background: url("Assets/Images/logo.svg") center/contain;
+}
+#header nav ul {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 60px;
+}
+#header ul.right_menu {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+#header ul.right_menu li a {
+  font-size: 0;
+  line-height: 0;
+  text-indent: -9999px;
+  overflow: hidden;
+  display: block;
+  width: 24px;
+  height: 24px;
+  background-position: center;
+  background-size: contain;
+}
+#header ul.right_menu li:nth-of-type(1) a {
+  background-image: url("Assets/Images/ic_guest.png");
+}
+#header ul.right_menu li:nth-of-type(2) a {
+  background-image: url("Assets/Images/ic_menu.png");
+}
+
+/* FOOTER */
+#footer .container {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0;
+}
+#footer .text_box .top_text_box {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 40px;
+}
+#footer .text_box .top_text_box a:not(.logo) {
+  font-size: 16px;
+  color: #64748B;
+  font-weight: 700;
+}
+#footer .text_box .top_text_box .logo {
+  font-size: 0;
+  line-height: 0;
+  text-indent: -9999px;
+  overflow: hidden;
+  display: block;
+  width: 202px;
+  height: 36px;
+  background: url("Assets/Images/logo02.svg") no-repeat center center/contain;
+}
+
+/* ==================================================
+  COMMON STYLES
+================================================== */
+button.btn_style01, a.btn_style01 {
+  border: 1px solid #E2E8F0;
+  background-color: #FFFFFF;
+}

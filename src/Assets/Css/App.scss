@@ -1,1 +1,92 @@
+@import "./Common/_fonts";
+@import "./Common/_colors";
+@import "./Common/_mixins";
 
+/* ==================================================
+  COMMON LAYOUT
+================================================== */
+body {
+  font-size: 16px;
+  font-family: 'Pretendard';
+}
+.container {
+  width: 1320px !important;
+  max-width: 1320px !important;
+  padding: 0 20px;
+  margin: 0 auto;
+}
+
+/* HEADER */
+#header {
+  .container {
+    @include flexLayout(center, space-between);
+    height: 80px;
+    & > div {
+      @include flexLayout(center, center, 100px);
+    }
+  }
+  .logo a {
+    @include hiddenText;
+    display: block;
+    width: 80px;
+    height: 36px;
+    background: url('Assets/Images/logo.svg') center / contain;
+  }
+  nav ul {
+    @include flexLayout(center, center, 60px);
+  }
+  ul.right_menu {
+    @include flexLayout(center, center, 8px);
+    li {
+      a {
+        @include hiddenText;
+        display: block;
+        width: 24px;
+        height: 24px;
+        background-position: center;
+        background-size: contain;
+      }
+      &:nth-of-type(1) a {
+        background-image: url('Assets/Images/ic_guest.png');
+      }
+      &:nth-of-type(2) a {
+        background-image: url('Assets/Images/ic_menu.png');
+      }
+    }
+  }
+}
+
+/* FOOTER */
+#footer {
+  .container {
+    @include flexLayout(flex-start, space-between);
+  }
+  .text_box {
+    .top_text_box {
+      @include flexLayout(center, flex-start, 40px);
+
+      a:not(.logo) {
+        font-size: 16px;
+        color: $color_footer;
+        font-weight: 700;
+      }
+      .logo {
+        @include hiddenText;
+        display: block;
+        width: 202px;
+        height: 36px;
+        background: url('Assets/Images/logo02.svg') no-repeat center center / contain;
+      }
+    }
+  }
+}
+
+/* ==================================================
+  COMMON STYLES
+================================================== */
+button, a {
+  &.btn_style01 {
+    border: 1px solid $color_line;
+    background-color: $color_white;
+  }
+}

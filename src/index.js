@@ -5,9 +5,9 @@ import reportWebVitals from 'reportWebVitals';
 import {PersistGate} from 'redux-persist/integration/react';
 import store, {pst} from 'Config/Store';
 import Router from 'Config/Router';
-import "tw-elements-react/dist/css/tw-elements-react.min.css";
+import 'tw-elements-react/dist/css/tw-elements-react.min.css';
 import 'Assets/Css/Tailwind.css';
-import 'Assets/Css/App.scss';
+import 'Assets/Css/App.css';
 
 const container = document.getElementById('root');
 const root = createRoot(container);
