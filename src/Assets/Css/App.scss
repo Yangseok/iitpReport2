@@ -1,6 +1,26 @@
 @import "./Common/_fonts";
-@import "./Common/_colors";
-@import "./Common/_mixins";
+@import "./Common/_colors", "./Common/_mixins";
+
+// Font Color
+.text-color-point1 { color: $color_point1; }
+.text-color-point2 { color: $color_point2; }
+.text-color-main { color: $color_main; }
+.text-color-light1 { color: $color_light1; }
+.text-color-light2 { color: $color_light2; }
+.text-color-dark { color: $color_dark; }
+.text-color-regular { color: $color_regular; }
+.text-color-footer { color: $color_footer; }
+.text-color-placeholder { color: $color_placeholder; }
+.text-color-line { color: $color_line; }
+.text-color-f_bg { color: $color_f_bg; }
+.text-color-m_bg { color: $color_m_bg; }
+.text-color-white { color: $color_white; }
+.text-color-explain { color: $color_explain; }
+.text-color-keyword1 { color: $color_keyword1; }
+.text-color-keyword2 { color: $color_keyword2; }
+.text-color-keyword3 { color: $color_keyword3; }
+.text-color-keyword4 { color: $color_keyword4; }
+.text-color-keyword5 { color: $color_keyword5; }
 
 /* ==================================================
   COMMON LAYOUT
@@ -21,47 +41,48 @@ body {
   .container {
     @include flexLayout(center, space-between);
     height: 80px;
-    & > div {
-      @include flexLayout(center, center, 100px);
-    }
+
+    & > div { @include flexLayout(center, center, 100px); }
   }
   .logo a {
-    @include hiddenText;
+    @include hiddenAltText;
     display: block;
     width: 80px;
     height: 36px;
-    background: url('Assets/Images/logo.svg') center / contain;
+    background: url('Assets/Images/logo.svg') no-repeat center / contain;
   }
-  nav ul {
-    @include flexLayout(center, center, 60px);
-  }
+  nav ul { @include flexLayout(center, center, 60px); }
   ul.right_menu {
     @include flexLayout(center, center, 8px);
+
     li {
       a {
-        @include hiddenText;
+        @include hiddenAltText;
         display: block;
         width: 24px;
         height: 24px;
+        background-repeat: no-repeat;
         background-position: center;
         background-size: contain;
       }
-      &:nth-of-type(1) a {
-        background-image: url('Assets/Images/ic_guest.png');
-      }
-      &:nth-of-type(2) a {
-        background-image: url('Assets/Images/ic_menu.png');
-      }
+      &:nth-of-type(1) a { background-image: url('Assets/Images/ic_guest.png'); }
+      &:nth-of-type(2) a { background-image: url('Assets/Images/ic_menu.png'); }
     }
   }
 }
 
 /* FOOTER */
 #footer {
-  .container {
-    @include flexLayout(flex-start, space-between);
-  }
+  padding: 40px 0 100px;
+  background-color: $color_f_bg;
+
+  .container { @include flexLayout(flex-start, space-between); }
   .text_box {
+    p {
+      font-size: 16px;
+      color: $color_footer;
+      font-weight: 500;
+    }
     .top_text_box {
       @include flexLayout(center, flex-start, 40px);
 
@@ -71,11 +92,31 @@ body {
         font-weight: 700;
       }
       .logo {
-        @include hiddenText;
+        @include hiddenAltText;
         display: block;
         width: 202px;
         height: 36px;
-        background: url('Assets/Images/logo02.svg') no-repeat center center / contain;
+        background: url('Assets/Images/logo02.svg') no-repeat center / contain;
+      }
+    }
+  }
+  .link_box {
+    .top_link_box { @include flexLayout(center, flex-end, 16px); }
+    ul {
+      @include flexLayout(center, flex-end, 16px);
+
+      li a {
+        @include hiddenAltText;
+        display: block;
+        width: 40px;
+        height: 40px;
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: contain;
+
+        img { width:100%; }
+        &.icon01{ background-image: url('Assets/Images/ic_twitter.png'); }
+        &.icon02{ background-image: url('Assets/Images/ic_facebook.png'); }
       }
     }
   }
@@ -84,9 +125,128 @@ body {
 /* ==================================================
   COMMON STYLES
 ================================================== */
+/* Button */
 button, a {
+  @include flexLayout(center, center, 8px);
+
   &.btn_style01 {
+    color: $color_regular;
     border: 1px solid $color_line;
     background-color: $color_white;
+  }
+  &.btn_style02 {
+    color: $color_white;
+    background-color: $color_light1;
+  }
+  &.btn_style03 {
+    color: $color_white;
+    background: $color_gradient2;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.09);
+  }
+
+  @for $i from 1 through 5 {
+    &.btn_keyword0#{$i} {
+      color: if($i == 1, $color_keyword1, 
+        if($i == 2, $color_keyword2, 
+          if($i == 3, $color_keyword3,
+            if($i == 4, $color_keyword4, $color_keyword5)
+          )
+        )
+      );
+      border: 1px solid $color_placeholder;
+      background-color: $color_white;
+
+      &.on {
+        color: $color_white;
+        border-color: if($i == 1, $color_keyword1, 
+          if($i == 2, $color_keyword2, 
+            if($i == 3, $color_keyword3,
+              if($i == 4, $color_keyword4, $color_keyword5)
+            )
+          )
+        );
+        background-color: if($i == 1, $color_keyword1, 
+          if($i == 2, $color_keyword2, 
+            if($i == 3, $color_keyword3,
+              if($i == 4, $color_keyword4, $color_keyword5)
+            )
+          )
+        );
+      }
+    }
+  }
+}
+
+/* Tab Buttons */
+.tab_btns {
+  ul { @include flexLayout(center, flex-start); }
+  
+  &.tab_style01 {
+    ul {
+      border-radius: 24px;
+      background-color: $color_f_bg;
+
+      li button, li a {
+        border-radius: 24px;
+        font-size: 16px;
+        color: $color_regular;
+        font-weight: 700;
+      }
+    }
+  }
+}
+
+/* Input */
+input {
+  height: 48px;
+  padding: 0 48px 0 20px;
+  border-bottom: 1px solid $color_line;
+  background-color: $color_white;
+  font-size: 16px;
+  color: $color_dark;
+  font-weight: 500;
+
+  &::placeholder { color: $color_placeholder; }
+  &::-ms-clear { display: none; }
+}
+select {
+  height: 48px;
+  padding: 0 48px 0 16px;
+  border: 1px solid $color_line;
+  border-radius: 4px;
+  background: $color_white url('Assets/Images/arr_select.svg') no-repeat right 10px center;
+  font-size: 14px;
+  color: $color_regular;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  -ms-appearance: none;
+  -o-appearance: none;
+
+  &::-ms-expand { display: none; }
+}
+
+/* Loading */
+.loading_wrap {
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.5);
+  z-index: 5000;
+
+  i {
+    display: block;
+    width: 150px;
+    height: 150px;
+    background: url('Assets/Images/loading.svg') no-repeat center / contain;
+  }
+
+  &.show {
+    display: flex;
   }
 }

@@ -53,6 +53,82 @@
   font-display: swap;
   src: url("https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Thin.woff") format("woff");
 }
+.text-color-point1 {
+  color: #FC6C0F;
+}
+
+.text-color-point2 {
+  color: #FD8B41;
+}
+
+.text-color-main {
+  color: #0056B8;
+}
+
+.text-color-light1 {
+  color: #52A3FF;
+}
+
+.text-color-light2 {
+  color: #B8D9FF;
+}
+
+.text-color-dark {
+  color: #0F172A;
+}
+
+.text-color-regular {
+  color: #334155;
+}
+
+.text-color-footer {
+  color: #64748B;
+}
+
+.text-color-placeholder {
+  color: #94A3B8;
+}
+
+.text-color-line {
+  color: #E2E8F0;
+}
+
+.text-color-f_bg {
+  color: #F1F5F9;
+}
+
+.text-color-m_bg {
+  color: #F9FBFF;
+}
+
+.text-color-white {
+  color: #FFFFFF;
+}
+
+.text-color-explain {
+  color: #F4636A;
+}
+
+.text-color-keyword1 {
+  color: #7D3C84;
+}
+
+.text-color-keyword2 {
+  color: #BF3662;
+}
+
+.text-color-keyword3 {
+  color: #F4636A;
+}
+
+.text-color-keyword4 {
+  color: #F3894F;
+}
+
+.text-color-keyword5 {
+  color: #F5B76E;
+}
+
 /* ==================================================
   COMMON LAYOUT
 ================================================== */
@@ -90,7 +166,7 @@ body {
   display: block;
   width: 80px;
   height: 36px;
-  background: url("Assets/Images/logo.svg") center/contain;
+  background: url("Assets/Images/logo.svg") no-repeat center/contain;
 }
 #header nav ul {
   display: flex;
@@ -112,6 +188,7 @@ body {
   display: block;
   width: 24px;
   height: 24px;
+  background-repeat: no-repeat;
   background-position: center;
   background-size: contain;
 }
@@ -123,11 +200,20 @@ body {
 }
 
 /* FOOTER */
+#footer {
+  padding: 40px 0 100px;
+  background-color: #F1F5F9;
+}
 #footer .container {
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
   gap: 0;
+}
+#footer .text_box p {
+  font-size: 16px;
+  color: #64748B;
+  font-weight: 500;
 }
 #footer .text_box .top_text_box {
   display: flex;
@@ -148,13 +234,189 @@ body {
   display: block;
   width: 202px;
   height: 36px;
-  background: url("Assets/Images/logo02.svg") no-repeat center center/contain;
+  background: url("Assets/Images/logo02.svg") no-repeat center/contain;
+}
+#footer .link_box .top_link_box {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 16px;
+}
+#footer .link_box ul {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 16px;
+}
+#footer .link_box ul li a {
+  font-size: 0;
+  line-height: 0;
+  text-indent: -9999px;
+  overflow: hidden;
+  display: block;
+  width: 40px;
+  height: 40px;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+}
+#footer .link_box ul li a img {
+  width: 100%;
+}
+#footer .link_box ul li a.icon01 {
+  background-image: url("Assets/Images/ic_twitter.png");
+}
+#footer .link_box ul li a.icon02 {
+  background-image: url("Assets/Images/ic_facebook.png");
 }
 
 /* ==================================================
   COMMON STYLES
 ================================================== */
+/* Button */
+button, a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
 button.btn_style01, a.btn_style01 {
+  color: #334155;
   border: 1px solid #E2E8F0;
   background-color: #FFFFFF;
+}
+button.btn_style02, a.btn_style02 {
+  color: #FFFFFF;
+  background-color: #52A3FF;
+}
+button.btn_style03, a.btn_style03 {
+  color: #FFFFFF;
+  background: linear-gradient(135deg, #FC6C0F, #FD8B41);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.09);
+}
+button.btn_keyword01, a.btn_keyword01 {
+  color: #7D3C84;
+  border: 1px solid #94A3B8;
+  background-color: #FFFFFF;
+}
+button.btn_keyword01.on, a.btn_keyword01.on {
+  color: #FFFFFF;
+  border-color: #7D3C84;
+  background-color: #7D3C84;
+}
+button.btn_keyword02, a.btn_keyword02 {
+  color: #BF3662;
+  border: 1px solid #94A3B8;
+  background-color: #FFFFFF;
+}
+button.btn_keyword02.on, a.btn_keyword02.on {
+  color: #FFFFFF;
+  border-color: #BF3662;
+  background-color: #BF3662;
+}
+button.btn_keyword03, a.btn_keyword03 {
+  color: #F4636A;
+  border: 1px solid #94A3B8;
+  background-color: #FFFFFF;
+}
+button.btn_keyword03.on, a.btn_keyword03.on {
+  color: #FFFFFF;
+  border-color: #F4636A;
+  background-color: #F4636A;
+}
+button.btn_keyword04, a.btn_keyword04 {
+  color: #F3894F;
+  border: 1px solid #94A3B8;
+  background-color: #FFFFFF;
+}
+button.btn_keyword04.on, a.btn_keyword04.on {
+  color: #FFFFFF;
+  border-color: #F3894F;
+  background-color: #F3894F;
+}
+button.btn_keyword05, a.btn_keyword05 {
+  color: #F5B76E;
+  border: 1px solid #94A3B8;
+  background-color: #FFFFFF;
+}
+button.btn_keyword05.on, a.btn_keyword05.on {
+  color: #FFFFFF;
+  border-color: #F5B76E;
+  background-color: #F5B76E;
+}
+
+/* Tab Buttons */
+.tab_btns ul {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0;
+}
+.tab_btns.tab_style01 ul {
+  border-radius: 24px;
+  background-color: #F1F5F9;
+}
+.tab_btns.tab_style01 ul li button, .tab_btns.tab_style01 ul li a {
+  border-radius: 24px;
+  font-size: 16px;
+  color: #334155;
+  font-weight: 700;
+}
+
+/* Input */
+input {
+  height: 48px;
+  padding: 0 48px 0 20px;
+  border-bottom: 1px solid #E2E8F0;
+  background-color: #FFFFFF;
+  font-size: 16px;
+  color: #0F172A;
+  font-weight: 500;
+}
+input::placeholder {
+  color: #94A3B8;
+}
+input::-ms-clear {
+  display: none;
+}
+
+select {
+  height: 48px;
+  padding: 0 48px 0 16px;
+  border: 1px solid #E2E8F0;
+  border-radius: 4px;
+  background: #FFFFFF url("Assets/Images/arr_select.svg") no-repeat right 10px center;
+  font-size: 14px;
+  color: #334155;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  -ms-appearance: none;
+  -o-appearance: none;
+}
+select::-ms-expand {
+  display: none;
+}
+
+/* Loading */
+.loading_wrap {
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 5000;
+}
+.loading_wrap i {
+  display: block;
+  width: 150px;
+  height: 150px;
+  background: url("Assets/Images/loading.svg") no-repeat center/contain;
+}
+.loading_wrap.show {
+  display: flex;
 }

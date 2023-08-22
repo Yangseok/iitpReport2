@@ -6,7 +6,7 @@
   gap: $gap;
 }
 
-@mixin hiddenText {
+@mixin hiddenAltText {
   font-size: 0;
   line-height: 0;
 	text-indent: -9999px;
