@@ -21,6 +21,7 @@ import TreeMap from 'Domain/Home/Sample/Page/TreeMap';
 import TreeMap2 from 'Domain/Home/Sample/Page/TreeMap2';
 import WordCloud1 from 'Domain/Home/Sample/Page/WordCloud1';
 import WordCloud2 from 'Domain/Home/Sample/Page/WordCloud2';
+import APITest from 'Domain/Home/Sample/Page/APITest';
 
 export default function Router() {
   return (
@@ -46,6 +47,7 @@ export default function Router() {
         <Route path='/sample/treemap2' element={<TreeMap2 />} />
         <Route path='/sample/wordcloud1' element={<WordCloud1 />} />
         <Route path='/sample/wordcloud2' element={<WordCloud2 />} />
+        <Route path='/sample/apitest' element={<APITest />} />
         <Route path='*' element={<PageNotFound />} />
       </Routes>
     </BrowserRouter>

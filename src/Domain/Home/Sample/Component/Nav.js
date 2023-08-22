@@ -20,6 +20,7 @@ export default function Nav() {
     {to:'/sample/treemap2', name:'plotly 트리맵'},
     {to:'/sample/wordcloud1', name:'react-d3-cloud 워드클라우드'},
     {to:'/sample/wordcloud2', name:'react-d3-cloud 워드클라우드2'},
+    {to:'/sample/apitest', name:'api 테스트'},
   ];
   return (
     <nav className="w-full rounded-md mb-3 flex justify-center">

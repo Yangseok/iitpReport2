@@ -6,6 +6,7 @@ import {configureStore, combineReducers} from '@reduxjs/toolkit';
 // import logger from 'redux-logger';
 import CounterReducer from 'Domain/Home/Sample/Status/CounterSlice';
 import MsgReducer from 'Domain/Home/Common/Status/MsgSlice';
+import CommonReducer from 'Domain/Home/Common/Status/CommonSlice';
 import {
   persistStore,
   persistReducer,
@@ -24,12 +25,13 @@ const persistConfig = {
   storage,
   // whitelist: [],
   // todo: api 관련 상태값은 로컬스토리지에 저장하지 않도록 하겠다.
-  blacklist: ['msg'],
+  blacklist: ['msg','common'],
 };
 
 const rootReducer = combineReducers({
   counter: CounterReducer,
   msg: MsgReducer,
+  common: CommonReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

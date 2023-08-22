@@ -1,14 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
+import { useSelector } from 'react-redux';
+import { getLoading } from 'Domain/Home/Common/Status/CommonSlice';
 
 export default function LoadingGlobal() {
-  const [show, setShow] = useState(true);
-
-  useEffect(() => {
-    setShow(false);
-  }, []);
+  const loading = useSelector(getLoading);
   
   return (
-    <div className={['loading_wrap', (show) ? 'show' : ''].join(' ')}>
+    <div className={['loading_wrap', (loading) ? 'show' : ''].join(' ')}>
       <i></i>
     </div>
   );
