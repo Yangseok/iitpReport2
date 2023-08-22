@@ -1,5 +1,5 @@
 import { color } from 'chart.js/helpers';
-import common from "Utill";
+import common from 'Utill';
 
 let statsByState = [
   {
@@ -467,20 +467,20 @@ export const data = {
   datasets: [
     {
       tree: statsByState,
-      key: "population",
-      groups: ["region", "division", "code"],
-      fontFamily: "Verdana",
+      key: 'population',
+      groups: ['region', 'division', 'code'],
+      fontFamily: 'Verdana',
       fontColor: function(ctx) {
         let item = ctx.dataset.data[ctx.dataIndex];
         switch(item.l) {
-          case 0: return "#DDD";
-          case 1: return "#000";
-          case 2: return "#DD4";
-          default: return "#FFF";
+        case 0: return '#DDD';
+        case 1: return '#000';
+        case 2: return '#DD4';
+        default: return '#FFF';
         }
       },
       fontSize: 20,
-      fontWeight: "bold",
+      fontWeight: 'bold',
       backgroundColor: function(ctx) {
         let item = ctx.dataset.data[ctx.dataIndex];
         if (!item) {
@@ -488,23 +488,23 @@ export const data = {
         }
         let a = item.v / (item.gs || item.s) / 2 + 0.5;
         switch (item.l) {
-          case 0:
-            switch (item.g) {
-              case "Midwest": return "#4363d8";
-              case "Northeast": return "#469990";
-              case "South": return "#9A6324";
-              case "West": return "#f58231";
-              default: return "#e6beff";
-            }
-          case 1:
-            return color("white").alpha(0.3).rgbString();
-          default:
-            return color("green").alpha(a).rgbString();
+        case 0:
+          switch (item.g) {
+          case 'Midwest': return '#4363d8';
+          case 'Northeast': return '#469990';
+          case 'South': return '#9A6324';
+          case 'West': return '#f58231';
+          default: return '#e6beff';
+          }
+        case 1:
+          return color('white').alpha(0.3).rgbString();
+        default:
+          return color('green').alpha(a).rgbString();
         }
       },
       spacing: 2,
       borderWidth: 0.5,
-      borderColor: "rgba(160,160,160,0.5)",
+      borderColor: 'rgba(160,160,160,0.5)',
       labels: {
         align: 'left',
         display: true,
@@ -527,14 +527,14 @@ export const data = {
       },
     }
   ]
-}
+};
 
 const depthTitle = (data, idx) => {
-  if (data[idx] === undefined) return "";
+  if (data[idx] === undefined) return '';
   let dataIdx = data[idx]?.dataIndex;
-  if (dataIdx === undefined) return "";
-  return data[idx]?.dataset?.data[dataIdx]?.g ?? "";
-}
+  if (dataIdx === undefined) return '';
+  return data[idx]?.dataset?.data[dataIdx]?.g ?? '';
+};
 
 export const options = {
   responsive: true,
@@ -546,18 +546,18 @@ export const options = {
       callbacks: {
         title: function (item) {
           if (item[0] === undefined) return;
-          let title = "";
-          for (let i=0; true; i++) {
+          let title = '';
+          for (let i=0; item.length; i++) {
             let addTitle = depthTitle(item, i);
             if (addTitle === '') break;
-            if (i > 0) title += " > ";
+            if (i > 0) title += ' > ';
             title += addTitle;
           }
           return title;
         },
         label: function(ctx) {
           if (ctx.raw === undefined) return;
-          return ctx.raw.g + ": " + common.setPriceInput(ctx.raw.v);
+          return ctx.raw.g + ': ' + common.setPriceInput(ctx.raw.v);
         }
       }
     },

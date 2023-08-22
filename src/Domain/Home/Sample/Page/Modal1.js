@@ -4,14 +4,14 @@ import ModalMsg from 'Domain/Home/Common/Componet/ModalMsg';
 
 export default function Modal1() {
   const [show, setShow]  = useState(false);
-  const title = "타이틀";
-  const msg = "메시지내용";
-  const btnCss = ["inline-block rounded bg-primary-100 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-primary-700 transition duration-150 ease-in-out hover:bg-primary-accent-100 focus:bg-primary-accent-100 focus:outline-none focus:ring-0 active:bg-primary-accent-200"];
-  const btnTxt = ["확인"];
+  const title = '타이틀';
+  const msg = '메시지내용';
+  const btnCss = ['inline-block rounded bg-primary-100 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-primary-700 transition duration-150 ease-in-out hover:bg-primary-accent-100 focus:bg-primary-accent-100 focus:outline-none focus:ring-0 active:bg-primary-accent-200'];
+  const btnTxt = ['확인'];
   const event = () => {
-    console.log("닫힘");
+    console.log('닫힘');
     setShow(false);
-  }
+  };
   const btnEvent = [event];
   return (
     <SampleLayout>

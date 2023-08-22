@@ -1,11 +1,11 @@
 import { faker } from '@faker-js/faker';
-import moment from "moment";
+import moment from 'moment';
 import common from 'Utill';
 
 let labels = [];
 const date = new Date();
 const year = Number(moment(date).format('YYYY'));
-const yearTo = Number(moment(date).subtract(22, "years").format('YYYY'));
+const yearTo = Number(moment(date).subtract(22, 'years').format('YYYY'));
 for (let i=year; i>yearTo; i--) {
   labels.push(i);
 }
@@ -31,7 +31,7 @@ export const options = {
         label: function(context) {
           let label = '';
           if (context.parsed.y !== null) {
-            label += common.setPriceInput(context.parsed.y) + "건";
+            label += common.setPriceInput(context.parsed.y) + '건';
           }
           return label;
         }
@@ -43,7 +43,7 @@ export const options = {
     },
     datalabels: {
       formatter: function (value) {
-        return common.setPriceInput(value) + "건";
+        return common.setPriceInput(value) + '건';
       },
       display: false,
       color: '#000',

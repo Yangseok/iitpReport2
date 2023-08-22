@@ -1,7 +1,7 @@
 import React from 'react';
 import SampleLayout from 'Domain/Home/Sample/Layout/SampleLayout';
 import Plot from 'react-plotly.js';
-import {data,layout,treeConfig} from "Domain/Home/Sample/Data/Graph34Data";
+import {data,layout,treeConfig} from 'Domain/Home/Sample/Data/Graph34Data';
 
 export default function Graph34() {
   return (

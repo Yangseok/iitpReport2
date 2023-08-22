@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef } from 'react';
 import {
   axisBottom,
   axisLeft,
@@ -7,7 +7,7 @@ import {
   // ScaleLinear,
   scaleLinear,
   select
-} from "d3";
+} from 'd3';
 
 function AxisBottom({ scale, transform }) {
   const ref = useRef(null);

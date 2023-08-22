@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import {
   getMsg,
@@ -13,7 +13,7 @@ export default function ModalGlobalMsg() {
   const msg = useSelector(getMsg);
   const propSetShow = (bool) => {
     dispatch(setShow(bool));
-  }
+  };
 
   return (
     <ModalMsg show={show} setShow={propSetShow} btnCss={msg.btnCss} btnTxt={msg.btnTxt} btnEvent={msg.btnEvent} msg={msg.msg} title={msg.title} />

@@ -13,7 +13,7 @@ export const options = {
             label += ': ';
           }
           if (context.parsed.y !== null) {
-            label += common.setPriceInput(context.parsed.y) + "건";
+            label += common.setPriceInput(context.parsed.y) + '건';
           }
           return label;
         }
@@ -25,7 +25,7 @@ export const options = {
     },
     datalabels: {
       formatter: function (value) {
-        return common.setPriceInput(value) + "건";
+        return common.setPriceInput(value) + '건';
       },
       display: false,
       color: '#000',

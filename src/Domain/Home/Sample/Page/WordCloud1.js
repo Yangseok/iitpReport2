@@ -1,9 +1,11 @@
-import React, { useMemo, useCallback } from 'react';
+import React, { 
+  // useMemo, 
+  useCallback } from 'react';
 import styled from 'styled-components';
 import SampleLayout from 'Domain/Home/Sample/Layout/SampleLayout';
 import WordCloud from 'react-d3-cloud';
-import { scaleOrdinal } from 'd3-scale';
-import { schemeCategory10 } from 'd3-scale-chromatic';
+// import { scaleOrdinal } from 'd3-scale';
+// import { schemeCategory10 } from 'd3-scale-chromatic';
 
 import data from '../Data/WordCloud.json';
 
@@ -25,9 +27,9 @@ export default function WordCloud1() {
   //   ];
   // }, []);
 
-  const fontSize = useCallback((word) => Math.log2(word.value) * 5, []);
-  const rotate = useCallback((word) => word.value % 360, []);
-  const fill = useCallback((d, i) => scaleOrdinal(schemeCategory10)(i), []);
+  // const fontSize = useCallback((word) => Math.log2(word.value) * 5, []);
+  // const rotate = useCallback((word) => word.value % 360, []);
+  // const fill = useCallback((d, i) => scaleOrdinal(schemeCategory10)(i), []);
   const onWordClick = useCallback((word) => {
     console.log(`onWordClick: ${word}`);
   }, []);

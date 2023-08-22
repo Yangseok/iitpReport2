@@ -1,7 +1,7 @@
 import React from 'react';
 import SampleLayout from 'Domain/Home/Sample/Layout/SampleLayout';
 import Chart from 'Domain/Home/Common/Componet/Chart';
-import {data,options} from "Domain/Home/Sample/Data/Graph32Data";
+import {data,options} from 'Domain/Home/Sample/Data/Graph32Data';
 
 export default function Graph32() {
   return (

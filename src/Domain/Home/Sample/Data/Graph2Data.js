@@ -25,7 +25,7 @@ export const options = {
         label: function(context) {
           let label = '';
           if (context.parsed.x !== null) {
-            label += common.setPriceInput(context.parsed.x) + "건";
+            label += common.setPriceInput(context.parsed.x) + '건';
           }
           return label;
         }
@@ -41,7 +41,7 @@ export const options = {
     },
     datalabels: {
       formatter: function (value) {
-        return common.setPriceInput(value) + "건";
+        return common.setPriceInput(value) + '건';
       },
       display: true,
       color: '#000',

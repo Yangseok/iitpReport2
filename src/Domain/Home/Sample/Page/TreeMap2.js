@@ -2,7 +2,7 @@ import React from 'react';
 import SampleLayout from 'Domain/Home/Sample/Layout/SampleLayout';
 import Plot from 'react-plotly.js';
 import data from 'Domain/Home/Sample/Data/Treemap.json';
-import {layout,treeConfig} from "Domain/Home/Sample/Data/TreeMap2Data";
+import {layout,treeConfig} from 'Domain/Home/Sample/Data/TreeMap2Data';
 
 // 레퍼런스
 // https://plotly.com/javascript/treemaps/

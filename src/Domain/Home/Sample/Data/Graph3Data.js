@@ -1,6 +1,6 @@
 import {faker} from '@faker-js/faker';
 import common from 'Utill';
-import moment from "moment";
+import moment from 'moment';
 
 export const options = {
   responsive: true,
@@ -19,7 +19,7 @@ export const options = {
         label: function(context) {
           let label = '';
           if (context.parsed.y !== null) {
-            label += common.setPriceInput(context.parsed.y) + "건";
+            label += common.setPriceInput(context.parsed.y) + '건';
           }
           return label;
         }
@@ -27,7 +27,7 @@ export const options = {
     },
     datalabels: {
       formatter: function (value) {
-        return common.setPriceInput(value) + "건";
+        return common.setPriceInput(value) + '건';
       },
       display: false,
       color: '#000',
@@ -41,7 +41,7 @@ export const options = {
 let labels = [];
 const date = new Date();
 const yearTo = Number(moment(date).format('YYYY'));
-const year = Number(moment(date).subtract(16, "years").format('YYYY'));
+const year = Number(moment(date).subtract(16, 'years').format('YYYY'));
 for (let i=year; i<=yearTo; i++) {
   labels.push(i);
 }
@@ -52,7 +52,7 @@ export const data = {
     {
       label: 'Dataset 1',
       data: labels.map(() => faker.number.int({ min: 0, max: 10000 })),
-      borderColor: "#3BB1D4",
+      borderColor: '#3BB1D4',
       backgroundColor: '#fff',
       pointStyle: 'circle',
       pointRadius: 4,

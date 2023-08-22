@@ -1,12 +1,12 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useCallback } from 'react';
 import SampleLayout from 'Domain/Home/Sample/Layout/SampleLayout';
-import WordCloud from "react-d3-cloud";
-import { select } from "d3-selection";
+import WordCloud from 'react-d3-cloud';
+import { select } from 'd3-selection';
 
 import data from '../Data/WordCloud.json';
 
 export default function WordCloud2() {
-  const [newData, setNewData] = useState(data);
+  const [newData] = useState(data);
 
   // useEffect(() => {
   //   const timer = setInterval(() => {
@@ -21,24 +21,24 @@ export default function WordCloud2() {
   // }, []);
 
   const fontSizeMapper = useCallback((word) => word.value / 20, []);
-  const rotate =  useCallback((word) => 0, []);
+  const rotate =  useCallback(() => 0, []);
   const onWordMouseOver =  useCallback((word) => {
     console.log(word);
     console.log();
 
     // Specify where to put label of text
-    select("svg")
-      .append("text")
+    select('svg')
+      .append('text')
       .text(function () {
         return [word.x, word.y]; // Value of the text
       })
-      .attr("x", () => 300)
-      .attr("y", () => 400)
-      .attr("id", "t" + word.x + "-" + word.y);
+      .attr('x', () => 300)
+      .attr('y', () => 400)
+      .attr('id', 't' + word.x + '-' + word.y);
   }, []);
   const onWordMouseOut =  useCallback((word) => {
     // Select text by id and then remove
-    select("#t" + word.x + "-" + word.y).remove(); // Remove text location
+    select('#t' + word.x + '-' + word.y).remove(); // Remove text location
   }, []);
 
   return (

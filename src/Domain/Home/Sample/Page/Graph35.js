@@ -1,21 +1,21 @@
 import React, { useEffect, useRef, useState } from 'react';
 import SampleLayout from 'Domain/Home/Sample/Layout/SampleLayout';
-import * as d3 from "d3";
-import D3BarChart from 'Domain/Home/Sample/Component/D3BarChart';
+import * as d3 from 'd3';
+// import D3BarChart from 'Domain/Home/Sample/Component/D3BarChart';
 import data from '../Data/D3ChartData.json';
 
 // 레퍼런스
 // https://codesandbox.io/s/react-d3-examples-kozpi?from-embed=&file=/src/GroupedBarChart.tsx:2064-3995
 
 function Bar({
-    x,
-    y,
-    width,
-    height,
-    color,
-    onMouseEnter,
-    onMouseLeave
-  }) {
+  x,
+  y,
+  width,
+  height,
+  color,
+  onMouseEnter,
+  onMouseLeave
+}) {
   const radius = height === 0 ? 0 : width * 0.15;
 
   return (
@@ -114,18 +114,18 @@ export default function Graph35() {
             <span className="tooltip__title">{labels[tooltip.index]}</span>
             <table className="tooltip__table">
               <thead>
-              <tr>
-                <td>Value 1</td>
-                <td>Value 2</td>
-                <td>Value 3</td>
-              </tr>
+                <tr>
+                  <td>Value 1</td>
+                  <td>Value 2</td>
+                  <td>Value 3</td>
+                </tr>
               </thead>
               <tbody>
-              <tr>
-                <td>{data[tooltip.index].values[0]}</td>
-                <td>{data[tooltip.index].values[1]}</td>
-                <td>{data[tooltip.index].values[2]}</td>
-              </tr>
+                <tr>
+                  <td>{data[tooltip.index].values[0]}</td>
+                  <td>{data[tooltip.index].values[1]}</td>
+                  <td>{data[tooltip.index].values[2]}</td>
+                </tr>
               </tbody>
             </table>
           </div>

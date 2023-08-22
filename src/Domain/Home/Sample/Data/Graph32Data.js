@@ -1,6 +1,6 @@
 import {faker} from '@faker-js/faker';
 import common from 'Utill';
-import moment from "moment";
+import moment from 'moment';
 
 export const options = {
   responsive: true,
@@ -19,7 +19,7 @@ export const options = {
         label: function(context) {
           let label = '';
           if (context.parsed.y !== null) {
-            label += common.setPriceInput(context.parsed.y) + "건";
+            label += common.setPriceInput(context.parsed.y) + '건';
           }
           return label;
         }
@@ -27,7 +27,7 @@ export const options = {
     },
     datalabels: {
       formatter: function (value) {
-        return common.setPriceInput(value) + "건";
+        return common.setPriceInput(value) + '건';
       },
       display: false,
       color: '#000',
@@ -46,12 +46,12 @@ export const options = {
 let labels = [];
 const date = new Date();
 const yearTo = Number(moment(date).format('YYYY'));
-const year = Number(moment(date).subtract(2, "years").format('YYYY'));
-labels.push("");
+const year = Number(moment(date).subtract(2, 'years').format('YYYY'));
+labels.push('');
 for (let i=year; i<=yearTo; i++) {
   labels.push(i);
 }
-labels.push("");
+labels.push('');
 
 export const data = {
   labels,
@@ -59,8 +59,8 @@ export const data = {
     {
       type:'line',
       data: labels.map(() => 200),
-      borderColor: "#ff0000",
-      backgroundColor: "rgba(255,0,0,0.3)",
+      borderColor: '#ff0000',
+      backgroundColor: 'rgba(255,0,0,0.3)',
       fill: 'start', //false, origin, start, end,
       lineTension: 0,
       pointStyle: false,
@@ -68,8 +68,8 @@ export const data = {
     {
       label: 'Dataset 1',
       data: labels.map((e) => {
-        if (e === "") return 0;
-        return faker.number.int({ min: 300, max: 500 })
+        if (e === '') return 0;
+        return faker.number.int({ min: 300, max: 500 });
       }),
       backgroundColor: '#5081BD',
     },
