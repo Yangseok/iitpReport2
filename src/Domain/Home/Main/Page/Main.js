@@ -2,6 +2,7 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import 'Assets/Css/Main.css';
 import ic_search from 'Assets/Images/ic_search.png';
+import ic_scroll from 'Assets/Images/main_scroll01.png';
 import img_service01 from 'Assets/Images/service_img01.png';
 import img_service02 from 'Assets/Images/service_img02.png';
 import img_service03 from 'Assets/Images/service_img03.png';
@@ -22,9 +23,9 @@ export default function Main() {
     <Layout>
       <section className='main_sec01'>
         <div className='container'>
-          <h2 className='mb-4'>궁금한 <strong>ICT 키워드</strong>가 있나요?</h2>
           <div className='search_wrap'>
-            <input type='text' name='' id='' value='' placeholder='찾고 싶은 검색어를 입력해보세요.' />
+            <label htmlFor='search' className=''>검색어로 검색</label>
+            <input type='text' name='search' id='search' value='' placeholder='찾고 싶은 검색어를 입력해보세요.' />
             <Button name='ICT 키워드 검색' icon={ic_search} />
           </div>
           <div className='keywords_box mt-3'>
@@ -37,18 +38,24 @@ export default function Main() {
             <button type='button'>#디지털트윈</button>
             <button type='button'>#마이크로바이옴</button>
           </div>
-          <button type='button' className='scroll_btn'>스크롤 버튼</button>
+          <div className='scroll_deco'>
+            <img src={ic_scroll} alt='스크롤해서 보세요.' />
+            <div></div>
+          </div>
+        </div>
+        <div className='visual_bg_deco' aria-hidden='true'>
+          <div></div><div></div><div></div>
         </div>
       </section>
       <section className='main_sec02'>
         <div className='container'>
-          <div className='main_title text-center mb-10'>
+          <div className='main_title text-center mb-20'>
             <h3>제공 서비스 소개</h3>
           </div>
           <ul>
             <li>
               <NavLink to='/discovery'>
-                <img src={img_service01} alt='통합검색 & 디스커버리 페이지 이동' />
+                <img src={img_service01} alt='통합검색 & 디스커버리로 이동' />
                 <h4>통합검색 & 디스커버리</h4>
                 <p>
                   <b>Technical Feature 확장</b> 기능을 통해 <br/>
@@ -59,7 +66,7 @@ export default function Main() {
             </li>
             <li>
               <NavLink to='/demandbanking'>
-                <img src={img_service02} alt='수요 뱅킹 서비스 페이지 이동' />
+                <img src={img_service02} alt='수요 뱅킹 서비스로 이동' />
                 <h4>수요 뱅킹 서비스</h4>
                 <p>
                   <b>ICT 기술 분류 체계</b>별 기술 수요 조사서 정보와 <br />
@@ -70,7 +77,7 @@ export default function Main() {
             </li>
             <li>
               <NavLink to='/icttrend'>
-                <img src={img_service03} alt='ICT 트렌드 페이지 이동' />
+                <img src={img_service03} alt='ICT 트렌드로 이동' />
                 <h4>ICT 트렌드</h4>
                 <p>
                   키워드와 관련된 특허, 보고서, 논문 등의 정보를 <br />
@@ -84,7 +91,7 @@ export default function Main() {
       </section>
       <section className='main_sec03'>
         <div className='container'>
-          <div className='main_title text-center mb-10'>
+          <div className='main_title text-center mb-20'>
             <h3>제공 데이터 현황</h3>
           </div>
           <div className='conts_box'>

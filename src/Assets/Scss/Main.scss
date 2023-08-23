@@ -14,22 +14,15 @@
 @for $i from 1 through 3 {
   .main_sec0#{$i} {
     @include flexLayout(center, center);
+    width: 100%;
+    min-width: 1320px;
     height: 100vh;
   }
 }
+
 .main_sec01 {
-  h2 {
-    width: 100%;
-    max-width: 800px;
-    margin-left: auto;
-    margin-right: auto;
-    font-size: 24px;
-    color: $color_dark;
-    font-weight: 700;
-
-    strong { color: $color_main; }
-  }
-
+  position: relative;
+  
   .keywords_box {
     @include flexLayout(center, center, 24px);
 
@@ -55,11 +48,39 @@
       font-weight: 700;
     }
   }
+  .scroll_deco {
+    position: absolute;
+    left: calc(50% - 15px);
+    bottom: 12px;
+    width: 30px;
+    padding-bottom: 28px;
+
+    div {
+      position: absolute;
+      left: calc(50% - 8.5px);
+      bottom: 10px;
+      display: block;
+      width: 17px;
+      height: 32px;
+      overflow: hidden;
+      animation: scrollUpDown 2.5s forwards cubic-bezier(0, 0, 0, 1.2) infinite;
+
+      &::before {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        display: block;
+        width: 100%;
+        height: 44px;
+        background: url('Assets/Images/main_scroll02.png') no-repeat center / contain;
+      }
+    }
+  }
 }
 
 .main_sec02 {
   ul {
-    @include flexLayout(center, space-between);
+    @include flexLayout(center, space-between, 20px);
 
     li a {
       display: block;
@@ -88,9 +109,7 @@
         margin: 16px 0 20px;
         font-size: 16px;
         color: $color_regular;
-        b {
-          color: $color_main;
-        }
+        b { color: $color_main; }
       }
       span {
         display: inline-block;
@@ -105,7 +124,8 @@
       &:hover {
         padding: 48px 18px 28px;
         border: 4px solid $color_main;
-
+        
+        img { animation: imgUpDown 4s forwards cubic-bezier(0, 0, 0, 1.2) infinite; }
         span {
           background-color: $color_point1;
           color: $color_white;
@@ -120,24 +140,47 @@
 
   .conts_box {
     @include flexLayout(center, center);
-    padding: 60px 0;
+    padding: 65px 0;
     border-radius: 8px;
     background-color: $color_white;
     box-shadow: 0 4px 24px rgba(0,0,0,0.256);
     text-align: center;
 
     .all_conts {
+      position: relative;
       width: 40%;
 
+      &::before {
+        content: '';
+        position: absolute;
+        top: calc(50% - 106px);
+        right: 0;
+        width: 1px;
+        height: 212px;
+        background-color: $color_line;
+      }
       img { margin: 0 auto; }
+      p {
+        font-size: 24px;
+        color: $color_dark;
+        font-weight: 700;
+      }
+      span {
+        font-size: 40px;
+        color: $color_main;
+        font-weight: 700;
+      }
     }
     ul {
       @include flexLayout(center, center);
       flex-wrap: wrap;
       width: 60%;
+      padding: 0 30px;
 
       li {
         width: 25%;
+
+        &:nth-of-type(n+5) { margin-top: 48px; }
         
         img {
           width: 56px;
@@ -155,5 +198,41 @@
         }
       }
     }
+  }
+}
+
+/* Animations (Keyframes) */
+@keyframes scrollUpDown {
+  0% {
+    height: 32px;
+    transform: translateY(0);
+    -webkit-transform: translateY(0);
+    -moz-transform: translateY(0);
+    -ms-transform: translateY(0);
+    -o-transform: translateY(0);
+  }
+  50% {
+    height: 44px;
+    transform: translateY(12px);
+    -webkit-transform: translateY(12px);
+    -moz-transform: translateY(12px);
+    -ms-transform: translateY(12px);
+    -o-transform: translateY(12px);
+  }
+}
+@keyframes imgUpDown {
+  0% {
+    transform: translateY(0);
+    -webkit-transform: translateY(0);
+    -moz-transform: translateY(0);
+    -ms-transform: translateY(0);
+    -o-transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-16px);
+    -webkit-transform: translateY(-16px);
+    -moz-transform: translateY(-16px);
+    -ms-transform: translateY(-16px);
+    -o-transform: translateY(-16px);
   }
 }

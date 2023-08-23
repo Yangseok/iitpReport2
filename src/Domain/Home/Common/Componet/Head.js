@@ -1,7 +1,8 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 
-export default function Head() {
+export default function Head(props) {
+  const { className } = props;
   const nav = [
     {to:'/discovery', name:'통합검색&디스커버리'},
     {to:'/demandbanking', name:'수요 뱅킹 서비스'},
@@ -9,7 +10,7 @@ export default function Head() {
   ];
 
   return (
-    <header id='header'>
+    <header id='header' className={className}>
       <div className='container'>
         <h1 className='logo'><NavLink>IITP</NavLink></h1>
         <div>

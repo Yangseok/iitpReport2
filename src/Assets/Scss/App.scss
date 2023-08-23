@@ -49,7 +49,7 @@ body {
   width: 100%;
   z-index: 1000;
 
-  &.type02 {
+  &.hd_style02 {
     border-bottom : 1px solid $color_line;
     background-color: $color_white;
   }
@@ -139,6 +139,48 @@ body {
         &.icon01{ background-image: url('Assets/Images/ic_twitter.png'); }
         &.icon02{ background-image: url('Assets/Images/ic_facebook.png'); }
       }
+    }
+  }
+}
+
+/* VISUAL */
+.visual_bg_deco {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  z-index: -1;
+  
+  div {
+    position: absolute;
+    top: 0;
+    height: 100%;
+    background-repeat: no-repeat;
+    background-position: top center;
+    background-size: 100%;
+
+    &:nth-of-type(1) {
+      left: 0;
+      width: 108%;
+      background-image: url('Assets/Images/main_visual01.png');
+      z-index: 3;
+      animation: bgMoving01 30s forwards ease-out infinite;
+    }
+    &:nth-of-type(2) {
+      right: 0;
+      width: 113.5%;
+      background-image: url('Assets/Images/main_visual02.png');
+      z-index: 2;
+      animation: bgMoving02 30s forwards ease-out infinite;
+    }
+    &:nth-of-type(3) {
+      left: -3%;
+      width: 127.4%;
+      background-image: url('Assets/Images/main_visual03.png');
+      z-index: 1;
+      animation: bgMoving03 30s forwards ease-out infinite;
     }
   }
 }
@@ -320,6 +362,7 @@ select {
   border-radius: 34px;
   box-shadow: 0 2px 8px rgba(0,0,0,0.225);
 
+  label { @include hiddenAltText; }
   input {
     width: 100%;
     height: 68px;
@@ -364,4 +407,34 @@ select {
   &.show {
     display: flex;
   }
+}
+
+/* Animations (Keyframes) */
+$bg_percents: (1: -7%,  2: 7%, 3: -7%);
+@each $k, $v in $bg_percents {
+  @keyframes bgMoving0#{$k} {
+    0% {
+      transform: translateX(0);
+      -webkit-transform: translateX(0);
+      -moz-transform: translateX(0);
+      -ms-transform: translateX(0);
+      -o-transform: translateX(0);
+    }
+    50% {
+      transform: translateX(#{$v});
+      -webkit-transform: translateX(#{$v});
+      -moz-transform: translateX(#{$v});
+      -ms-transform: translateX(#{$v});
+      -o-transform: translateX(#{$v});
+    }
+  }
+}
+
+
+
+/* ==================================================
+  MEDIA QUERY
+================================================== */
+@media all and (max-width: 1600px) {
+  .visual_bg_deco div { background-size: 120%; }
 }
