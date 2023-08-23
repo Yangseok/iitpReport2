@@ -2,10 +2,10 @@ import axios from 'axios';
 
 const API = axios.create({
   baseURL: process.env.REACT_APP_API_URL,
-  timeout: 50000,
+  timeout: 0,
   data: {},
   headers: {
-    'Content-Type': 'application/json; charset=UTF-8; multipart/form-data',
+    'Content-Type': 'application/json',
     'Access-Control-Allow-Origin': '*',
   },
 });
@@ -13,6 +13,8 @@ const API = axios.create({
 API.interceptors.request.use(
   config => {
     console.log('API call url ::', config.baseURL + config.url);
+    console.log('param', JSON.stringify(config.data));
+    // console.log('config', config);
     // 요청이 전달되기 전에 작업 수행
     return config;
   },
@@ -22,4 +24,5 @@ API.interceptors.request.use(
   },
 );
 
+export const multipartHeader = {headers: {'Content-Type': 'multipart/form-data'}};
 export default API;
