@@ -1,6 +1,7 @@
 import React from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Main from 'Domain/Home/Main/Page/Main';
+import Login from 'Domain/Home/Login/Page/Main';
 import Discovery from 'Domain/Home/Discovery/Page/Main';
 import DemandBanking from 'Domain/Home/DemandBanking/Page/Main';
 import ICTTrend from 'Domain/Home/ICTTrend/Page/Main';
@@ -22,12 +23,14 @@ import TreeMap2 from 'Domain/Home/Sample/Page/TreeMap2';
 import WordCloud1 from 'Domain/Home/Sample/Page/WordCloud1';
 import WordCloud2 from 'Domain/Home/Sample/Page/WordCloud2';
 import APITest from 'Domain/Home/Sample/Page/APITest';
+import Styles from 'Domain/Home/Sample/Page/Styles';
 
 export default function Router() {
   return (
     <BrowserRouter>
       <Routes>
         <Route path='/' element={<Main />} />
+        <Route path='/login' element={<Login />} />
         <Route path='/discovery' element={<Discovery />} />
         <Route path='/demandbanking' element={<DemandBanking />} />
         <Route path='/icttrend' element={<ICTTrend />} />
@@ -48,6 +51,7 @@ export default function Router() {
         <Route path='/sample/wordcloud1' element={<WordCloud1 />} />
         <Route path='/sample/wordcloud2' element={<WordCloud2 />} />
         <Route path='/sample/apitest' element={<APITest />} />
+        <Route path='/sample/styles' element={<Styles />} />
         <Route path='*' element={<PageNotFound />} />
       </Routes>
     </BrowserRouter>

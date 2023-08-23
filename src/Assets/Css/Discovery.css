@@ -1,0 +1,93 @@
+/* ==================================================
+  DISCOVERY
+================================================== */
+/* Keyword Result */
+.keywords_wrap {
+  padding: 24px;
+  border-radius: 16px;
+  background-color: #F1F5F9;
+}
+.keywords_wrap .title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0;
+}
+.keywords_wrap .title h4 {
+  font-size: 20px;
+  color: #0056B8;
+  font-weight: 700;
+}
+.keywords_wrap .title button {
+  font-size: 0;
+  line-height: 0;
+  text-indent: -9999px;
+  overflow: hidden;
+  width: 30px;
+  height: 30px;
+  background: url("Assets/Images/arr_drop.svg") no-repeat center/24px;
+}
+.keywords_wrap ul {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-top: 16px;
+}
+
+.keywords_btn button {
+  gap: 4px;
+  width: 120px;
+  height: 32px;
+  margin: 0 auto;
+  border-radius: 0 0 4px 4px;
+  background-color: #52A3FF;
+  font-size: 14px;
+  color: #FFFFFF;
+  font-weight: 700;
+}
+.keywords_btn button img {
+  width: 20px;
+}
+.keywords_btn button:disabled {
+  background-color: #B8D9FF;
+}
+
+/* Category */
+.category_wrap ul {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  gap: 0;
+  padding: 20px 0;
+  border-radius: 8px;
+  background-color: #FFFFFF;
+  box-shadow: 0 0 16px rgba(0, 0, 0, 0.256);
+}
+.category_wrap ul li button {
+  flex-direction: column;
+  gap: 0;
+  font-weight: 700;
+  opacity: 0.5;
+}
+.category_wrap ul li button img {
+  width: 40px;
+}
+.category_wrap ul li button p {
+  font-size: 14px;
+  color: #334155;
+}
+.category_wrap ul li button span {
+  font-size: 16px;
+  color: #334155;
+}
+.category_wrap ul li.on button {
+  opacity: 1;
+}
+.category_wrap ul li.on button p {
+  color: #0F172A;
+}
+.category_wrap ul li.on button span {
+  color: #0056B8;
+}

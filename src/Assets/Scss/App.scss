@@ -16,11 +16,32 @@
 .text-color-m_bg { color: $color_m_bg; }
 .text-color-white { color: $color_white; }
 .text-color-explain { color: $color_explain; }
-.text-color-keyword1 { color: $color_keyword1; }
-.text-color-keyword2 { color: $color_keyword2; }
-.text-color-keyword3 { color: $color_keyword3; }
-.text-color-keyword4 { color: $color_keyword4; }
-.text-color-keyword5 { color: $color_keyword5; }
+// .text-color-keyword1 { color: $color_keyword1; }
+// .text-color-keyword2 { color: $color_keyword2; }
+// .text-color-keyword3 { color: $color_keyword3; }
+// .text-color-keyword4 { color: $color_keyword4; }
+// .text-color-keyword5 { color: $color_keyword5; }
+
+// Background Color
+.bg-color-point1 { background-color: $color_point1; }
+.bg-color-point2 { background-color: $color_point2; }
+.bg-color-main { background-color: $color_main; }
+.bg-color-light1 { background-color: $color_light1; }
+.bg-color-light2 { background-color: $color_light2; }
+.bg-color-dark { background-color: $color_dark; }
+.bg-color-regular { background-color: $color_regular; }
+.bg-color-footer { background-color: $color_footer; }
+.bg-color-placeholder { background-color: $color_placeholder; }
+.bg-color-line { background-color: $color_line; }
+.bg-color-f_bg { background-color: $color_f_bg; }
+.bg-color-m_bg { background-color: $color_m_bg; }
+.bg-color-white { background-color: $color_white; }
+.bg-color-explain { background-color: $color_explain; }
+// .bg-color-keyword1 { background-color: $color_keyword1; }
+// .bg-color-keyword2 { background-color: $color_keyword2; }
+// .bg-color-keyword3 { background-color: $color_keyword3; }
+// .bg-color-keyword4 { background-color: $color_keyword4; }
+// .bg-color-keyword5 { background-color: $color_keyword5; }
 
 /* ==================================================
   COMMON LAYOUT
@@ -39,6 +60,10 @@ body {
   width: 800px;
   padding: 0 20px;
   margin: 0 auto;
+}
+.sec_wrap {
+  min-height: 680px;
+  padding: 140px 0 100px;
 }
 
 /* HEADER */
@@ -188,9 +213,11 @@ body {
 /* ==================================================
   COMMON STYLES
 ================================================== */
+.hidden_text { @include hiddenAltText; }
+
 /* Button */
 button, a {
-  @include flexLayout(center, center, 8px);
+  @include flexLayout(center, center);
 
   &.btn_style01 {
     color: $color_regular;
@@ -205,6 +232,11 @@ button, a {
     color: $color_white;
     background: $color_gradient2;
     box-shadow: 0 2px 8px rgba(0,0,0,0.09);
+  }
+  &.btn_style04 {
+    color: $color_regular;
+    border: 1px solid $color_line;
+    background-color: $color_f_bg;
   }
 
   @for $i from 1 through 5 {
@@ -325,9 +357,10 @@ button, a {
 
 /* Input */
 input {
-  height: 48px;
-  padding: 0 48px 0 20px;
-  border-bottom: 1px solid $color_line;
+  height: 56px;
+  padding: 0 16px;
+  border: 1px solid $color_line;
+  border-radius: 4px;
   background-color: $color_white;
   font-size: 16px;
   color: $color_dark;
@@ -358,7 +391,8 @@ select {
   position: relative;
   width: 100%;
   max-width: 800px;
-  margin: 0 auto;
+  margin-left: auto;
+  margin-right: auto;
   border-radius: 34px;
   box-shadow: 0 2px 8px rgba(0,0,0,0.225);
 
@@ -366,21 +400,54 @@ select {
   input {
     width: 100%;
     height: 68px;
-    padding: 0 68px 0 24px;
+    padding: 0 24px;
     border: 2px solid $color_main;
     border-radius: 34px;
     font-size: 20px;
   }
   button {
-    @include hiddenAltText;
-    @include flexLayout(center, center);
     position: absolute;
     top: 10px;
     right: 10px;
-    width: 48px;
-    height: 48px;
-    border-radius: 50%;
-    background: $color_gradient2;
+  }
+
+  &.type01 {
+    input { padding: 0 68px 0 24px; }
+    button {
+      @include hiddenAltText;
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: $color_gradient2;
+    }
+  }
+  &.type02 {
+    input { padding: 0 152px 0 24px; }
+    button {
+      gap: 8px;
+      height: 48px;
+      padding: 0 16px;
+      border-radius: 24px;
+      background-color: $color_light1;
+      font-size: 16px;
+      color: $color_white;
+      font-weight: 700;
+    }
+  }
+}
+
+/* Tags */
+@for $i from 1 through 2 {
+  .tag_style0#{$i} {
+    @include flexLayout(center, center);
+    height: 20px;
+    padding: 0 6px;
+    border-radius: 2px;
+    font-size: 12px;
+    font-weight: 700;
+
+    color: if($i == 1, $color_white, $color_white);
+    background-color: if($i == 1, $color_point1, $color_point1);
   }
 }
 
@@ -406,6 +473,35 @@ select {
 
   &.show {
     display: flex;
+  }
+}
+
+/* List Styles */
+.list_style01 ul {
+  @include flexLayout(normal, center, 16px);
+  flex-direction: column;
+  
+  li {
+    padding: 16px 20px;
+    border: 1px solid $color_placeholder;
+    border-radius: 8px;
+    background-color: $color_white;
+
+    .text_box p {
+      position: relative;
+      display: inline-block;
+
+      &:not(:first-of-type) {
+        &::before {
+          content: '';
+          position: absolute;
+          display: block;
+          width: 1px;
+          height: 12px;
+          background-color: $color_line;
+        }
+      }
+    }
   }
 }
 

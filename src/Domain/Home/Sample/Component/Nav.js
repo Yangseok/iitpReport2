@@ -21,10 +21,11 @@ export default function Nav() {
     {to:'/sample/wordcloud1', name:'react-d3-cloud 워드클라우드'},
     {to:'/sample/wordcloud2', name:'react-d3-cloud 워드클라우드2'},
     {to:'/sample/apitest', name:'api 테스트'},
+    {to:'/sample/styles', name:'styles'},
   ];
   return (
     <nav className="w-full rounded-md mb-3 flex justify-center">
-      <ol className="list-reset flex">
+      <ol className="list-reset flex justify-center flex-wrap">
         {nav.map((e,i) => {
           return <React.Fragment key={i}>
             {(i > 0) ? <li key={i}>

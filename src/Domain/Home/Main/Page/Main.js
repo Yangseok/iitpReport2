@@ -23,8 +23,8 @@ export default function Main() {
     <Layout>
       <section className='main_sec01'>
         <div className='container'>
-          <div className='search_wrap'>
-            <label htmlFor='search' className=''>검색어로 검색</label>
+          <div className='search_wrap type01'>
+            <label htmlFor='search'>검색어로 검색</label>
             <input type='text' name='search' id='search' value='' placeholder='찾고 싶은 검색어를 입력해보세요.' />
             <Button name='ICT 키워드 검색' icon={ic_search} />
           </div>
