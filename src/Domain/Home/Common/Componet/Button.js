@@ -1,10 +1,11 @@
 import React from 'react';
 
 export default function Button(props) {
-  const { className, text, icon, onClick } = props;
+  const { name, icon, className, onClick } = props;
+
   return (
     <button className={className} onClick={onClick}>
-      {text} {(icon) ? <img src={icon} alt={text}/> : ''}
+      {name} {(icon) ? <img src={icon} alt={name} className='w-5'/> : ''}
     </button>
   );
 }

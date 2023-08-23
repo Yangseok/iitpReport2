@@ -25,7 +25,12 @@ export default function Head() {
             </ul>
           </nav>
           <ul className='right_menu'>
-            <li><NavLink to='/login'>Guest Login</NavLink></li>
+            <li>
+              {/* 로그인시,
+              <p>1234님</p>
+               */}
+              <NavLink to='/login'>Guest Login</NavLink>
+            </li>
             <li><a href="#">Menu</a></li>
           </ul>
         </div>

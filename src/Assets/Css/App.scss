@@ -35,9 +35,25 @@ body {
   padding: 0 20px;
   margin: 0 auto;
 }
+.container-800 {
+  width: 800px;
+  padding: 0 20px;
+  margin: 0 auto;
+}
 
 /* HEADER */
 #header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+
+  &.type02 {
+    border-bottom : 1px solid $color_line;
+    background-color: $color_white;
+  }
+
   .container {
     @include flexLayout(center, space-between);
     height: 80px;
@@ -56,6 +72,11 @@ body {
     @include flexLayout(center, center, 8px);
 
     li {
+      p {
+        font-size: 16px;
+        color: $color_regular;
+        font-weight: 700;
+      }
       a {
         @include hiddenAltText;
         display: block;
@@ -179,18 +200,82 @@ button, a {
 
 /* Tab Buttons */
 .tab_btns {
-  ul { @include flexLayout(center, flex-start); }
-  
-  &.tab_style01 {
-    ul {
-      border-radius: 24px;
-      background-color: $color_f_bg;
+  ul {
+    @include flexLayout(center, flex-start);
 
-      li button, li a {
+    li button, li a {
+      height: 48px;
+      font-size: 16px;
+      font-weight: 700;
+    }
+  }
+  
+  &.tab_style01 ul {
+    border-radius: 24px;
+    background-color: $color_f_bg;
+
+    li {
+      width: 160px;
+
+      button, a {
+        @include flexLayout(center, center);
+        width: 100%;
         border-radius: 24px;
-        font-size: 16px;
         color: $color_regular;
-        font-weight: 700;
+      }
+
+      &.on {
+        button, a {
+          color: $color_white;
+          background-color: $color_main;
+        }
+      }
+    }
+  }
+  &.tab_style02 {
+    ul {
+      border-radius: 4px;
+      background-color: $color_f_bg;
+  
+      li {
+        width: 160px;
+  
+        button, a {
+          @include flexLayout(center, center);
+          width: 100%;
+          border-radius: 4px;
+          color: $color_regular;
+        }
+  
+        &.on {
+          button, a {
+            color: $color_white;
+            background-color: $color_main;
+          }
+        }
+      }
+    }
+    @for $i from 2 through 8 {
+      &.grid0#{$i} ul li { width: calc(100% / $i); }
+    }
+  }
+  &.tab_style03 ul {
+    gap: 80px;
+    
+    li {
+      button, a {
+        position: relative;
+        height: 48px;
+        padding: 0 8px;
+        color: $color_regular;
+        border-bottom: 2px solid transparent;
+      }
+
+      &.on {
+        button, a {
+          color: $color_main;
+          border-bottom-color: $color_main;
+        }
       }
     }
   }
@@ -224,6 +309,36 @@ select {
   -o-appearance: none;
 
   &::-ms-expand { display: none; }
+}
+
+/* Search */
+.search_wrap {
+  position: relative;
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+  border-radius: 34px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.225);
+
+  input {
+    width: 100%;
+    height: 68px;
+    padding: 0 68px 0 24px;
+    border: 2px solid $color_main;
+    border-radius: 34px;
+    font-size: 20px;
+  }
+  button {
+    @include hiddenAltText;
+    @include flexLayout(center, center);
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: $color_gradient2;
+  }
 }
 
 /* Loading */
