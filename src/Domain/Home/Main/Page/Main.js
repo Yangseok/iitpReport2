@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
 import 'Assets/Css/Main.css';
 import ic_search from 'Assets/Images/ic_search.png';
@@ -17,18 +17,35 @@ import img_category07 from 'Assets/Images/cate_img07.png';
 import img_category08 from 'Assets/Images/cate_img08.png';
 import Layout from 'Domain/Home/Common/Layout/Main';
 import Button from 'Domain/Home/Common/Componet/Button';
+import * as mainAPI from 'Domain/Home/Main/API/Call';
 import RecommandKeyword from 'Domain/Home/Main/Component/RecommandKeyword';
 import { useSelector, useDispatch } from 'react-redux';
 import { getSearchKeyword, setSearchKeyword } from 'Domain/Home/Common/Status/CommonSlice';
+import common from 'Utill';
 
 export default function Main() {
 
   const dispatch = useDispatch();
   const keyword = useSelector(getSearchKeyword);
 
+  const [dataCount, setDataCount] = useState({});
+
   const searchHandle = event => {
     dispatch(setSearchKeyword(event.target.value));
   };
+
+  useEffect(() => {
+    const dataCount = async () => {
+      const apiFn = async () => {
+        const data = await mainAPI.dataCount();
+        // console.log(data?.data?.result);
+        setDataCount(data?.data?.result);
+      };
+      await apiFn();
+    };
+
+    return () => dataCount();
+  }, []);
   
   return (
     <Layout>
@@ -103,48 +120,48 @@ export default function Main() {
             <div className='all_conts'>
               <img src={img_category00} alt='전체 데이터 현황' />
               <p>전체</p>
-              <span>2,340,000</span>
+              <span>{common.setPriceInput(dataCount.all ?? 0)}</span>
             </div>
             <ul>
               <li>
                 <img src={img_category01} alt='과제 데이터 현황' />
                 <p>과제</p>
-                <span>100,300</span>
+                <span>{common.setPriceInput(dataCount.project ?? 0)}</span>
               </li>
               <li>
                 <img src={img_category02} alt='논문 데이터 현황' />
                 <p>논문</p>
-                <span>100,300</span>
+                <span>{common.setPriceInput(dataCount.paper ?? 0)}</span>
               </li>
               <li>
                 <img src={img_category03} alt='특허 데이터 현황' />
                 <p>특허</p>
-                <span>100,300</span>
+                <span>{common.setPriceInput(dataCount.patent ?? 0)}</span>
               </li>
               <li>
                 <img src={img_category04} alt='ICT 자료 데이터 현황' />
                 <p>ICT 자료</p>
-                <span>100,300</span>
+                <span>{common.setPriceInput(dataCount.ict_report ?? 0)}</span>
               </li>
               <li>
                 <img src={img_category05} alt='정부정책 데이터 현황' />
                 <p>정부정책</p>
-                <span>100,300</span>
+                <span>{common.setPriceInput(dataCount.policy ?? 0)}</span>
               </li>
               <li>
                 <img src={img_category06} alt='연구자 데이터 현황' />
                 <p>연구자</p>
-                <span>100,300</span>
+                <span>{common.setPriceInput(dataCount.indv ?? 0)}</span>
               </li>
               <li>
                 <img src={img_category07} alt='기업 데이터 현황' />
                 <p>기업</p>
-                <span>100,300</span>
+                <span>{common.setPriceInput(dataCount.orgn ?? 0)}</span>
               </li>
               <li>
                 <img src={img_category08} alt='뉴스 데이터 현황' />
                 <p>뉴스</p>
-                <span>100,300</span>
+                <span>{common.setPriceInput(dataCount.news ?? 0)}</span>
               </li>
             </ul>
           </div>

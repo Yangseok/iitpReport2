@@ -17,6 +17,7 @@ import Graph32 from 'Domain/Home/Sample/Page/Graph32';
 import Graph33 from 'Domain/Home/Sample/Page/Graph33';
 import Graph34 from 'Domain/Home/Sample/Page/Graph34';
 import Graph35 from 'Domain/Home/Sample/Page/Graph35';
+import Graph36 from 'Domain/Home/Sample/Page/Graph36';
 import Graph4 from 'Domain/Home/Sample/Page/Graph4';
 import TreeMap from 'Domain/Home/Sample/Page/TreeMap';
 import TreeMap2 from 'Domain/Home/Sample/Page/TreeMap2';
@@ -45,6 +46,7 @@ export default function Router() {
         <Route path='/sample/graph33' element={<Graph33 />} />
         <Route path='/sample/graph34' element={<Graph34 />} />
         <Route path='/sample/graph35' element={<Graph35 />} />
+        <Route path='/sample/graph36' element={<Graph36 />} />
         <Route path='/sample/graph4' element={<Graph4 />} />
         <Route path='/sample/treemap' element={<TreeMap />} />
         <Route path='/sample/treemap2' element={<TreeMap2 />} />

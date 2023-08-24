@@ -13,6 +13,7 @@ export default function Nav() {
     {to:'/sample/graph3', name:'chartjs 꺾은선그래프'},
     {to:'/sample/graph32', name:'chartjs 엑셀요청한그래프(32)'},
     {to:'/sample/graph33', name:'chartjs 엑셀요청한그래프2(33)'},
+    {to:'/sample/graph36', name:'chartjs 엑셀요청한그래프3(36)'},
     {to:'/sample/graph34', name:'plotly 그래프'},
     {to:'/sample/graph35', name:'D3 그래프'},
     {to:'/sample/graph4', name:'chartjs 분포형그래프'},
