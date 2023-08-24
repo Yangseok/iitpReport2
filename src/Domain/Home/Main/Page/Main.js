@@ -17,26 +17,31 @@ import img_category07 from 'Assets/Images/cate_img07.png';
 import img_category08 from 'Assets/Images/cate_img08.png';
 import Layout from 'Domain/Home/Common/Layout/Main';
 import Button from 'Domain/Home/Common/Componet/Button';
+import RecommandKeyword from 'Domain/Home/Main/Component/RecommandKeyword';
+import { useSelector, useDispatch } from 'react-redux';
+import { getSearchKeyword, setSearchKeyword } from 'Domain/Home/Common/Status/CommonSlice';
 
 export default function Main() {
+
+  const dispatch = useDispatch();
+  const keyword = useSelector(getSearchKeyword);
+
+  const searchHandle = event => {
+    dispatch(setSearchKeyword(event.target.value));
+  };
+  
   return (
     <Layout>
       <section className='main_sec01'>
         <div className='container'>
           <div className='search_wrap type01'>
             <label htmlFor='search'>검색어로 검색</label>
-            <input type='text' name='search' id='search' value='' placeholder='찾고 싶은 검색어를 입력해보세요.' />
+            <input type='text' name='search' id='search' onChange={searchHandle} value={keyword}  placeholder='찾고 싶은 검색어를 입력해보세요.' />
             <Button name='ICT 키워드 검색' icon={ic_search} />
           </div>
           <div className='keywords_box mt-3'>
             <p>추천 키워드</p>
-            <button type='button'>#인공지능</button>
-            <button type='button'>#메타버스</button>
-            <button type='button'>#이차전지</button>
-            <button type='button'>#신소재</button>
-            <button type='button'>#자율주행</button>
-            <button type='button'>#디지털트윈</button>
-            <button type='button'>#마이크로바이옴</button>
+            <RecommandKeyword />
           </div>
           <div className='scroll_deco'>
             <img src={ic_scroll} alt='스크롤해서 보세요.' />

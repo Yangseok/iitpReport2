@@ -73,6 +73,9 @@ export const projectIn = async (
   // console.log('params', JSON.stringify(params));
   return await API.post('/search/projectIn', params);
 };
+export const patent = async (keyword='') => {
+  return await API.get('/search/patent', {params: {keyword: keyword}});
+};
 export const discovery = async (keyword='') => {
   return await API.get('/search/discovery', {params: {keyword: keyword}});
 };

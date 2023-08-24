@@ -12,7 +12,7 @@ export default function Head(props) {
   return (
     <header id='header' className={className}>
       <div className='container'>
-        <h1 className='logo'><NavLink>IITP</NavLink></h1>
+        <h1 className='logo'><NavLink to='/'>IITP</NavLink></h1>
         <div>
           <nav>
             <ul>

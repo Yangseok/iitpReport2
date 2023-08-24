@@ -1,5 +1,64 @@
 import axios from 'axios';
+export const wrapPromise = (promise) => {
+  let status = 'pending';
+  let response;
 
+  const suspender = promise.then(
+    res => {
+      status = 'success';
+      response = res;
+    },
+    err => {
+      status = 'error';
+      response = err;
+    },
+  );
+
+  const handler = {
+    pending: () => {
+      throw suspender;
+    },
+    error: () => {
+      throw response;
+    },
+    default: () => response,
+  };
+
+  const read = () => {
+    const result = handler[status] ? handler[status]() : handler.default();
+    return result;
+  };
+
+  return { read };
+};
+export const promiseWrapper = (promise) => {
+  let status = 'pending';
+  let result;
+
+  const s = promise.then(
+    (value) => {
+      status = 'success';
+      result = value;
+    },
+    (error) => {
+      status = 'error';
+      result = error;
+    }
+  );
+
+  return () => {
+    switch (status) {
+    case 'pending':
+      throw s;
+    case 'success':
+      return result;
+    case 'error':
+      throw result;
+    default:
+      throw new Error('Unknown status');
+    }
+  };
+};
 const API = axios.create({
   baseURL: process.env.REACT_APP_API_URL,
   timeout: 0,
@@ -23,6 +82,5 @@ API.interceptors.request.use(
     return Promise.reject(error);
   },
 );
-
 export const multipartHeader = {headers: {'Content-Type': 'multipart/form-data'}};
 export default API;
