@@ -6,17 +6,14 @@ export default function TabButtons(props) {
   const [tabClass, setTabClass] = useState('');
 
   useEffect(() => {
-    const getTabClass = () => {
-      if(style === '1') {
-        setTabClass('tab_style01');
-      } else if(style === '2') {
-        const tab_length = tabs.length;
-        setTabClass('tab_style02 grid0' + tab_length);
-      } else if(style === '3') {
-        setTabClass('tab_style03');
-      }
-    };
-    return () => getTabClass();
+    if(style === '1') {
+      setTabClass('tab_style01');
+    } else if(style === '2') {
+      const tab_length = tabs.length;
+      setTabClass('tab_style02 grid0' + tab_length);
+    } else if(style === '3') {
+      setTabClass('tab_style03');
+    }
   }, [props]);
 
   return (

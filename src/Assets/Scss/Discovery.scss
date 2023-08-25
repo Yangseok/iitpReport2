@@ -65,7 +65,7 @@
       opacity: 0.5;
 
       img { width: 40px; }
-      p {
+      b {
         font-size: 14px;
         color: $color_regular;
       }
@@ -78,7 +78,7 @@
     &.on button {
       opacity: 1;
 
-      p { color: $color_dark; }
+      b { color: $color_dark; }
       span { color: $color_main; }
     }
   }

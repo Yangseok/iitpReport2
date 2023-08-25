@@ -13,32 +13,29 @@ export default function CategoryButton(props) {
   const [img, setImg] = useState('');
 
   useEffect(() => {
-    const getImageSrc = () => {
-      if(type === '1') {
-        setImg(img_category01);
-      } else if(type === '2') {
-        setImg(img_category02);
-      } else if(type === '3') {
-        setImg(img_category03);
-      } else if(type === '4') {
-        setImg(img_category04);
-      } else if(type === '5') {
-        setImg(img_category05);
-      } else if(type === '6') {
-        setImg(img_category06);
-      } else if(type === '7') {
-        setImg(img_category07);
-      } else if(type === '8') {
-        setImg(img_category08);
-      }
-    };
-    return () => getImageSrc();
+    if(type === '1') {
+      setImg(img_category01);
+    } else if(type === '2') {
+      setImg(img_category02);
+    } else if(type === '3') {
+      setImg(img_category03);
+    } else if(type === '4') {
+      setImg(img_category04);
+    } else if(type === '5') {
+      setImg(img_category05);
+    } else if(type === '6') {
+      setImg(img_category06);
+    } else if(type === '7') {
+      setImg(img_category07);
+    } else if(type === '8') {
+      setImg(img_category08);
+    }
   }, [props]);
   
   return (
     <button onClick={onClick}>
       <img src={img} alt={name}/>
-      <p>{name}</p>
+      <b>{name}</b>
       <span>{num}</span>
     </button>
   );

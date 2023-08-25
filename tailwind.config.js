@@ -7,6 +7,9 @@ module.exports = {
   ],
   theme: {
     extend: {
+      width: {
+        120: '30rem'
+      },
       padding: {
         1.75: '0.4375rem',
         2.5: '0.625rem',

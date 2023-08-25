@@ -4,6 +4,7 @@ import ic_analysis from 'Assets/Images/ic_analysis.png';
 import SampleLayout from 'Domain/Home/Sample/Layout/SampleLayout';
 import Button from 'Domain/Home/Common/Componet/Button';
 import TabButtons from 'Domain/Home/Common/Componet/TabButtons';
+import Pagination from 'Domain/Home/Common/Componet/Pagination';
 import CategoryWrap from 'Domain/Home/Discovery/Component/CategoryWrap';
 
 export default function Styles() {
@@ -58,6 +59,7 @@ export default function Styles() {
         <br />
         <CategoryWrap />
         <br />
+        <Pagination total={50} page={1} onClick={(i) => console.log(i)} />
         <br />
       </div>
     </SampleLayout>

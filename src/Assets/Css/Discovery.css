@@ -74,7 +74,7 @@
 .category_wrap ul li button img {
   width: 40px;
 }
-.category_wrap ul li button p {
+.category_wrap ul li button b {
   font-size: 14px;
   color: #334155;
 }
@@ -85,7 +85,7 @@
 .category_wrap ul li.on button {
   opacity: 1;
 }
-.category_wrap ul li.on button p {
+.category_wrap ul li.on button b {
   color: #0F172A;
 }
 .category_wrap ul li.on button span {
