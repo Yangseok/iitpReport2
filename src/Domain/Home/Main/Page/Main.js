@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
 import 'Assets/Css/Main.css';
-import ic_search from 'Assets/Images/ic_search.png';
 import ic_scroll from 'Assets/Images/main_scroll01.png';
 import img_service01 from 'Assets/Images/service_img01.png';
 import img_service02 from 'Assets/Images/service_img02.png';
@@ -16,24 +15,14 @@ import img_category06 from 'Assets/Images/cate_img06.png';
 import img_category07 from 'Assets/Images/cate_img07.png';
 import img_category08 from 'Assets/Images/cate_img08.png';
 import Layout from 'Domain/Home/Common/Layout/Main';
-import Button from 'Domain/Home/Common/Componet/Button';
 import * as mainAPI from 'Domain/Home/Main/API/Call';
 import RecommandKeyword from 'Domain/Home/Main/Component/RecommandKeyword';
-import { useSelector, useDispatch } from 'react-redux';
-import { getSearchKeyword, setSearchKeyword } from 'Domain/Home/Common/Status/CommonSlice';
 import common from 'Utill';
 import AutoComplete from '../Component/AutoComplete';
 
 export default function Main() {
 
-  const dispatch = useDispatch();
-  const keyword = useSelector(getSearchKeyword);
-
   const [dataCount, setDataCount] = useState({});
-
-  const searchHandle = event => {
-    dispatch(setSearchKeyword(event.target.value));
-  };
 
   useEffect(() => {
     const dataCount = async () => {
@@ -53,11 +42,6 @@ export default function Main() {
       <section className='main_sec01'>
         <div className='container'>
           <AutoComplete />
-          <div className='search_wrap type01 hidden'>
-            <label htmlFor='search'>검색어로 검색</label>
-            <input type='text' name='search' id='search' onChange={searchHandle} value={keyword}  placeholder='찾고 싶은 검색어를 입력해보세요.' />
-            <Button name='ICT 키워드 검색' icon={ic_search} />
-          </div>
           <div className='keywords_box mt-3'>
             <p>추천 키워드</p>
             <RecommandKeyword />
