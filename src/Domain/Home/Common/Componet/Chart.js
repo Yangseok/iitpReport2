@@ -10,6 +10,8 @@ import {
   Tooltip,
   Legend,
   Filler,
+  LineController,
+  BarController,
 } from 'chart.js';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import {TreemapController, TreemapElement} from 'chartjs-chart-treemap';
@@ -26,6 +28,8 @@ ChartJS.register(
   Tooltip,
   Legend,
   Filler,
+  LineController,
+  BarController,
   TreemapController,
   TreemapElement,
 );
@@ -33,5 +37,5 @@ ChartJS.register(
 export default function Chart(props) {
   const {data, options, type} = props;
   const barType = (type === undefined) ? 'bar' : (type === 'bar') ? 'bar' : type;
-  return ((barType === 'line') ? <Line options={options} data={data} /> : (barType === 'scatter') ? <Scatter options={options} data={data} /> : (barType === 'treemap') ? <Chart2 options={options} data={data} type="treemap" /> : (barType === 'multitype1') ? <Chart2 data={data} type="bar" /> : (barType === 'reg') ? <></> : <Bar options={options} data={data}/>);
+  return ((barType === 'line') ? <Line options={options} data={data} /> : (barType === 'scatter') ? <Scatter options={options} data={data} /> : (barType === 'treemap') ? <Chart2 options={options} data={data} type="treemap" /> : (barType === 'multitype1') ? <Chart2 data={data} options={options} type="bar" /> : (barType === 'reg') ? <></> : <Bar options={options} data={data}/>);
 }
