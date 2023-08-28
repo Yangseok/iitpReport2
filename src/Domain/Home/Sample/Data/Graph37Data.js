@@ -39,10 +39,9 @@ export const options = {
   scales: {
     y: {
       display: true,
-      position: 'left',
       title: {
         display: true,
-        text: '금액(천억원) ',
+        text: '이익률(%)',
         color: '#333',
         font: {
           size: 20,
@@ -51,20 +50,6 @@ export const options = {
         padding: {top: 30, left: 0, right: 0, bottom: 0}
       }
     },
-    y1: {
-      display: true,
-      position: 'right',
-      title: {
-        display: true,
-        text: '이자보상비율(%)',
-        color: '#333',
-        font: {
-          size: 20,
-          lineHeight: 1.2
-        },
-        padding: {top: 30, left: 0, right: 0, bottom: 0}
-      }
-    }
   }
 };
 
@@ -81,32 +66,27 @@ export const data = {
   datasets: [
     {
       type: 'line',
-      label: '이자보상비율',
-      borderColor: 'rgb(0, 0, 0)',
-      borderWidth: 2,
+      label: '영업이익률',
+      borderColor: 'rgb(251, 109, 33)',
+      borderWidth: 3,
       fill: false,
-      data: labels.map(() => faker.number.float({ min: 80, max: 100 })),
+      data: labels.map(() => faker.number.float({ min: 0, max: 20 })),
+      pointStyle: 'circle',
+      pointBackgroundColor: 'rgba(251,109,33,1)',
+      pointRadius: 3,
+      pointHoverRadius: 4,
+    },
+    {
+      type: 'line',
+      label: '단기순이익률',
+      borderColor: 'rgb(0, 0, 0)',
+      borderWidth: 3,
+      fill: false,
+      data: labels.map(() => faker.number.float({ min: 0, max: 20 })),
       pointStyle: 'circle',
       pointBackgroundColor: 'rgba(0,0,0,1)',
       pointRadius: 3,
       pointHoverRadius: 4,
-      yAxisID: 'y1',
-    },
-    {
-      type: 'bar',
-      label: '영업이익',
-      backgroundColor: 'rgb(53, 162, 235)',
-      data: labels.map(() => faker.number.float({ min: 0, max: 1.1 })),
-      borderColor: 'white',
-      borderWidth: 2,
-      yAxisID: 'y',
-    },
-    {
-      type: 'bar',
-      label: '지급이자',
-      backgroundColor: 'rgb(251, 109, 33)',
-      data: labels.map(() => faker.number.float({ min: 0, max: 1 })),
-      yAxisID: 'y',
     },
   ],
 };
