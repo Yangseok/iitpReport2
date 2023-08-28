@@ -8,7 +8,7 @@ export default function Main({children}) {
     <DefaultLayout>
       <Skip />
       <Head />
-      <div id='contents'>{children}</div>
+      <div id='mainContents'>{children}</div>
     </DefaultLayout>
   );
 }

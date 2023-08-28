@@ -1,6 +1,6 @@
 import React from 'react';
 import 'Assets/Css/Login.css';
-import Layout from 'Domain/Home/Common/Layout/Main';
+import Layout from 'Domain/Home/Common/Layout/Sub';
 import Button from 'Domain/Home/Common/Componet/Button';
 
 export default function Main() {

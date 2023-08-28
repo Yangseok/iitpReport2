@@ -6,22 +6,32 @@ import Skip from '../Componet/Skip';
 import { useLocation } from 'react-router-dom';
 
 export default function Sub({children}) {
-  const [className, setClassName] = useState('sec_wrap');
+  const [headerClass, setHeaderClass] = useState('');
+  const [contentClass, setContentClass] = useState('sec_wrap');
   const pathName = useLocation().pathname;
 
   useEffect(() => {
     if(pathName === '/login') {
-      setClassName('login_wrap');
+      window.addEventListener('scroll', () => {
+        if(window.scrollY > 10) {
+          setHeaderClass('hd_style02');
+        } else {
+          setHeaderClass('');
+        }
+      });
+
+      setContentClass('login_wrap');
     } else {
-      setClassName('sec_wrap');
+      setHeaderClass('hd_style02');
+      setContentClass('sec_wrap');
     }
   }, []);
 
   return (
     <DefaultLayout>
       <Skip />
-      <Head className='hd_style02' />
-      <div className={className}>{children}</div>
+      <Head className={headerClass} />
+      <div id='mainContents' className={contentClass}>{children}</div>
       <Tail />
     </DefaultLayout>
   );
