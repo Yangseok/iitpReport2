@@ -1,15 +1,14 @@
 import React from 'react';
 import DefaultLayout from 'Domain/Home/Common/Layout/Default';
 import Head from 'Domain/Home/Common/Componet/Head';
-import Tail from 'Domain/Home/Common/Componet/Tail';
-// import Nav from 'Domain/Home/Common/Componet/Nav';
+import Skip from '../Componet/Skip';
 
 export default function Main({children}) {
   return (
     <DefaultLayout>
+      <Skip />
       <Head />
-      {children}
-      <Tail />
+      <div id='contents'>{children}</div>
     </DefaultLayout>
   );
 }

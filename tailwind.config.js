@@ -8,6 +8,7 @@ module.exports = {
   theme: {
     extend: {
       width: {
+        15: '3.75rem',
         120: '30rem'
       },
       padding: {

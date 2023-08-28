@@ -187,7 +187,7 @@ body {
 }
 
 .sec_wrap {
-  min-height: 870px;
+  min-height: 730px;
   padding: 140px 0 100px;
 }
 
@@ -198,10 +198,6 @@ body {
   left: 0;
   width: 100%;
   z-index: 1000;
-}
-#header.hd_style02 {
-  border-bottom: 1px solid #E2E8F0;
-  background-color: #FFFFFF;
 }
 #header .container {
   display: flex;
@@ -260,6 +256,10 @@ body {
 }
 #header ul.right_menu li:nth-of-type(2) a {
   background-image: url("Assets/Images/ic_menu.png");
+}
+#header.hd_style02 {
+  border-bottom: 1px solid #E2E8F0;
+  background-color: #FFFFFF;
 }
 
 /* FOOTER */
@@ -331,6 +331,33 @@ body {
 }
 #footer .link_box ul li a.icon02 {
   background-image: url("Assets/Images/ic_facebook.png");
+}
+
+/* SKIP MENU */
+#skip {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  margin: 0 auto;
+  z-index: 1100;
+}
+#skip a {
+  position: absolute;
+  left: 0;
+  display: block;
+  height: 32px;
+  padding: 0 20px;
+  font-size: 16px;
+  color: #fff;
+  line-height: 32px;
+  background-color: #0F172A;
+}
+#skip a:link, #skip a:visited, #skip a:active {
+  top: -10000px;
+}
+#skip a:hover, #skip a:focus {
+  top: 0;
 }
 
 /* VISUAL */
@@ -554,7 +581,7 @@ button.btn_keyword05.on, a.btn_keyword05.on {
 
 /* Input, Select, Textarea */
 input {
-  height: 56px;
+  height: 48px;
   padding: 0 16px;
   border: 1px solid #E2E8F0;
   border-radius: 4px;
@@ -588,7 +615,7 @@ select::-ms-expand {
   display: none;
 }
 
-/* Search */
+/* Search & Auto Complete Search */
 .search_wrap {
   position: relative;
   width: 100%;
@@ -710,6 +737,31 @@ select::-ms-expand {
   height: 2.8rem;
 }
 
+/* Image */
+.img_wrap {
+  position: relative;
+  overflow: hidden;
+}
+.img_wrap::before {
+  content: "";
+  display: block;
+  padding-bottom: 100%;
+}
+.img_wrap img {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: cover;
+  object-position: center;
+  transform: translate(-50%, -50%);
+  -webkit-transform: translate(-50%, -50%);
+  -moz-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  -o-transform: translate(-50%, -50%);
+}
+
 /* Tags */
 .tag_style01 {
   display: flex;
@@ -825,6 +877,18 @@ select::-ms-expand {
   justify-content: center;
   gap: 16px;
   flex-direction: column;
+}
+.list_style02 ul li {
+  padding: 20px 16px;
+  border: 1px solid #94A3B8;
+  border-radius: 8px;
+  background-color: #F9FBFF;
+  cursor: pointer;
+}
+.list_style02 ul li.on {
+  padding: 19px 15px;
+  border: 2px solid #0056B8;
+  background-color: #FFFFFF;
 }
 
 /* Text Styles */

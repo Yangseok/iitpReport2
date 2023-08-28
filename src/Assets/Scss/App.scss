@@ -62,7 +62,7 @@ body {
   margin: 0 auto;
 }
 .sec_wrap {
-  min-height: 870px;
+  min-height: 730px;
   padding: 140px 0 100px;
 }
 
@@ -73,11 +73,6 @@ body {
   left: 0;
   width: 100%;
   z-index: 1000;
-
-  &.hd_style02 {
-    border-bottom : 1px solid $color_line;
-    background-color: $color_white;
-  }
 
   .container {
     @include flexLayout(center, space-between);
@@ -114,6 +109,11 @@ body {
       &:nth-of-type(1) a { background-image: url('Assets/Images/ic_guest.png'); }
       &:nth-of-type(2) a { background-image: url('Assets/Images/ic_menu.png'); }
     }
+  }
+
+  &.hd_style02 {
+    border-bottom : 1px solid $color_line;
+    background-color: $color_white;
   }
 }
 
@@ -165,6 +165,31 @@ body {
         &.icon02{ background-image: url('Assets/Images/ic_facebook.png'); }
       }
     }
+  }
+}
+
+/* SKIP MENU */
+#skip {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  margin: 0 auto;
+  z-index: 1100;
+
+  a {
+    position: absolute;
+    left: 0;
+    display: block;
+    height: 32px;
+    padding: 0 20px;
+    font-size: 16px;
+    color: #fff;
+    line-height: 32px;
+    background-color: $color_dark;
+
+    &:link, &:visited, &:active { top: -10000px; }
+    &:hover, &:focus { top: 0; }
   }
 }
 
@@ -358,7 +383,7 @@ button, a {
 
 /* Input, Select, Textarea */
 input {
-  height: 56px;
+  height: 48px;
   padding: 0 16px;
   border: 1px solid $color_line;
   border-radius: 4px;
@@ -387,7 +412,7 @@ select {
   &::-ms-expand { display: none; }
 }
 
-/* Search */
+/* Search & Auto Complete Search */
 .search_wrap {
   position: relative;
   width: 100%;
@@ -505,6 +530,32 @@ select {
   height: 2.8rem;
 }
 
+/* Image */
+.img_wrap {
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    display: block;
+    padding-bottom: 100%;
+  }
+  img {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: cover;
+    object-position: center;
+    transform: translate(-50%, -50%);
+    -webkit-transform: translate(-50%, -50%);
+    -moz-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    -o-transform: translate(-50%, -50%);
+  }
+}
+
 /* Tags */
 @for $i from 1 through 2 {
   .tag_style0#{$i} {
@@ -594,6 +645,20 @@ select {
 .list_style02 ul {
   @include flexLayout(normal, center, 16px);
   flex-direction: column;
+
+  li {
+    padding: 20px 16px;
+    border: 1px solid $color_placeholder;
+    border-radius: 8px;
+    background-color: $color_m_bg;
+    cursor: pointer;
+
+    &.on {
+      padding: 19px 15px;
+      border: 2px solid $color_main;
+      background-color: $color_white;
+    }
+  }
 }
 
 /* Text Styles */

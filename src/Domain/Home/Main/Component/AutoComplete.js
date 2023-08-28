@@ -5,6 +5,7 @@ import Button from 'Domain/Home/Common/Componet/Button';
 import { useSelector, useDispatch } from 'react-redux';
 import { getSearchKeyword, setSearchKeyword } from 'Domain/Home/Common/Status/CommonSlice';
 import * as mainAPI from 'Domain/Home/Main/API/Call';
+import $ from 'jquery';
 
 export default function AutoComplete() {
   const [listData, setListData] = useState([]);
@@ -20,6 +21,8 @@ export default function AutoComplete() {
     if (value === '') {
       return setListData([]);
     }
+
+    setSearchFocus(true);
 
     const apiData = await mainAPI.autocomplete(value);
     // console.log(apiData);
@@ -66,12 +69,16 @@ export default function AutoComplete() {
     };
     const pageInit = () => {
       // 검색영역 외의 영역 클릭 시, 검색창 꺼짐
-      document.addEventListener('click', (e) => {
+      $(document).on('click', (e) => {
         const isParentClass = findParentWithClass(e.target, 'auto_search_wrap');
         
         if (!isParentClass) {
           setSearchFocus(false);
         }
+      });
+      // 검색영역 바깥의 버튼 focus 시, 검색창 꺼짐
+      $(document).on('focus', '.main_sec01 .keywords_box button:first-of-type', () => {
+        setSearchFocus(false);
       });
     };
 
@@ -79,7 +86,7 @@ export default function AutoComplete() {
   }, []);
 
   return (
-    <div className={(searchFocus) ? 'auto_search_wrap focus' : 'auto_search_wrap'}>
+    <div className={`auto_search_wrap${(searchFocus) ? ' focus' : ''}`}>
       <div className='search_wrap type01'>
         <label htmlFor='search_text'>검색어로 검색</label>
         <input 
