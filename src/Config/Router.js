@@ -35,7 +35,12 @@ export default function Router() {
       <Routes>
         <Route path='/' element={<Main />} />
         <Route path='/login' element={<Login />} />
+
         <Route path='/discovery' element={<Discovery />} />
+        <Route path='/discovery/:se2' element={<Discovery />} />
+        <Route path='/discovery/:se2/result' element={<Discovery />} />
+        <Route path='/discovery/:se2/result/:se4' element={<Discovery />} />
+
         <Route path='/demandbanking' element={<DemandBanking />} />
         <Route path='/icttrend' element={<ICTTrend />} />
         <Route path='/sample/redux' element={<Counter />} />

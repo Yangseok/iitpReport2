@@ -54,81 +54,173 @@ export default function APITest() {
     await apiCallWrap(apiFn);
   };
 
-  const projectOutTest1 = async () => {
+  const projectOutTest = async (filter=false,search=false) => {
     const apiFn = async () => {
-      const data = await discoveryAPI.projectOut('search',10,1,'아이',[],'date');
+      let filterObj = {};
+      if (filter) {
+        filterObj = {
+          year: 2023,
+          fund: 100000000,
+          researchAgency: '주식회사 오름',
+          ministry: '중소벤처기업부',
+          technicalClassification: '정보통신, 정보이론, 인공지능',
+        };
+      }
+      let searchParam = {};
+      if (search) {
+        searchParam = {
+          yearStart: '2023',
+          yearEnd: '2023',
+          title: '나노리소그라피 기반 LED 기초 연구실',
+          researchAgencyName: '주식회사 오톰',
+          researchManagerName: '오준호',
+          detailProjectNumber: '1425174675',
+          projectNumber: '1425174675',
+          ministryName: '중소벤처기업부',
+          researchGoal: '생체신호 측정이 가능한 포터블 엑스레이',
+          researchDescription: '영상판독을 위한 원격 진단 기술개발생체신호',
+          expectationEffectiveness: '기초 영상진단 관련 장비·인력이 부재',
+          keywordKorean: '엑스레이,포터블,응급,인공지능,원격진단',
+          keywordEnglish: 'X-ray,Portable,Emergency,AI,Remote diagnosis'
+        };
+      }
+      let similarity = [];
+      if (filter || search) {
+        similarity = [{
+          term: '인공지능',
+          weight: 0.94
+        }];
+      }
+      const data = await discoveryAPI.projectOut('search',10,1,'아이',similarity,'date',filterObj,searchParam);
       console.log(data?.data?.result);
     };
     await apiCallWrap(apiFn);
   };
 
-  const projectOutTest2 = async () => {
+  const projectOutDiscoveryTest = async (filter=false,search=false) => {
     const apiFn = async () => {
-      const filterObj = {
-        year: 2023
-      };
-      const data = await discoveryAPI.projectOut('search',10,1,'아이',[],'date', filterObj);
+      let filterObj = {};
+      if (filter) {
+        filterObj = {
+          year: 2023,
+          fund: 100000000,
+          researchAgency: '주식회사 오름',
+          ministry: '중소벤처기업부',
+          technicalClassification: '정보통신, 정보이론, 인공지능',
+        };
+      }
+      let searchParam = {};
+      if (search) {
+        searchParam = {
+          yearStart: '2023',
+          yearEnd: '2023',
+          title: '나노리소그라피 기반 LED 기초 연구실',
+          researchAgencyName: '주식회사 오톰',
+          researchManagerName: '오준호',
+          detailProjectNumber: '1425174675',
+          projectNumber: '1425174675',
+          ministryName: '중소벤처기업부',
+          researchGoal: '생체신호 측정이 가능한 포터블 엑스레이',
+          researchDescription: '영상판독을 위한 원격 진단 기술개발생체신호',
+          expectationEffectiveness: '기초 영상진단 관련 장비·인력이 부재',
+          keywordKorean: '엑스레이,포터블,응급,인공지능,원격진단',
+          keywordEnglish: 'X-ray,Portable,Emergency,AI,Remote diagnosis'
+        };
+      }
+      let similarity = [];
+      if (filter || search) {
+        similarity = [{
+          term: '인공지능',
+          weight: 0.94
+        }];
+      }
+      const data = await discoveryAPI.projectOut('discovery',10,1,'',similarity,'date',filterObj,searchParam);
       console.log(data?.data?.result);
     };
     await apiCallWrap(apiFn);
   };
 
-  const projectOutTest3 = async () => {
+  const projectInTest = async (filter=false,search=false) => {
     const apiFn = async () => {
-      const filterObj = {
-        fund: 10000000
-      };
-      const data = await discoveryAPI.projectOut('search',10,1,'아이',[],'date', filterObj);
+      let filterObj = {};
+      if (filter) {
+        filterObj = {
+          year: 2023,
+          fund: 100000000,
+          researchAgency: '주식회사 오름',
+          ministry: '중소벤처기업부',
+          technicalClassification: '정보통신, 정보이론, 인공지능',
+        };
+      }
+      let searchParam = {};
+      if (search) {
+        searchParam = {
+          yearStart: '2023',
+          yearEnd: '2023',
+          title: '나노리소그라피 기반 LED 기초 연구실',
+          researchAgencyName: '주식회사 오톰',
+          researchManagerName: '오준호',
+          detailProjectNumber: '1425174675',
+          projectNumber: '1425174675',
+          ministryName: '중소벤처기업부',
+          researchGoal: '생체신호 측정이 가능한 포터블 엑스레이',
+          researchDescription: '영상판독을 위한 원격 진단 기술개발생체신호',
+          expectationEffectiveness: '기초 영상진단 관련 장비·인력이 부재',
+          keywordKorean: '엑스레이,포터블,응급,인공지능,원격진단',
+          keywordEnglish: 'X-ray,Portable,Emergency,AI,Remote diagnosis'
+        };
+      }
+      let similarity = [];
+      if (filter || search) {
+        similarity = [{
+          term: '인공지능',
+          weight: 0.94
+        }];
+      }
+      const data = await discoveryAPI.projectIn('search',10,1,'아이',similarity,'date',filterObj,searchParam);
       console.log(data?.data?.result);
     };
     await apiCallWrap(apiFn);
   };
 
-  const projectOutTest4 = async () => {
+  const projectInDiscoveryTest = async (filter=false,search=false) => {
     const apiFn = async () => {
-      const filterObj = {
-        proejctOrganization: '주식회사 오톰'
-      };
-      const data = await discoveryAPI.projectOut('search',10,1,'아이',[],'date', filterObj);
-      console.log(data?.data?.result);
-    };
-    await apiCallWrap(apiFn);
-  };
-
-  const projectOutTest5 = async () => {
-    const apiFn = async () => {
-      const filterObj = {
-        orderAgency: '교육부'
-      };
-      const data = await discoveryAPI.projectOut('search',10,1,'아이',[],'date', filterObj);
-      console.log(data?.data?.result);
-    };
-    await apiCallWrap(apiFn);
-  };
-
-  const projectOutTest6 = async () => {
-    const apiFn = async () => {
-      const filterObj = {
-        technicalClassification: '보건의료'
-      };
-      const data = await discoveryAPI.projectOut('search',10,1,'아이',[],'date', filterObj);
-      console.log(data?.data?.result);
-    };
-    await apiCallWrap(apiFn);
-  };
-
-  const projectOutTest8 = async () => {
-    const apiFn = async () => {
-      const similarity = [{term: '인공지능', weight: 0.94}, {term: '자율주행', weight: 0.87}, {term: '빅데이터', weight: 0.77}];
-      const data = await discoveryAPI.projectOut('discovery',10,1,'',similarity,'date');
-      console.log(data?.data?.result);
-    };
-    await apiCallWrap(apiFn);
-  };
-
-  const projectInTest = async () => {
-    const apiFn = async () => {
-      const data = await discoveryAPI.projectIn('search',10,1,'아이',[],'date');
+      let filterObj = {};
+      if (filter) {
+        filterObj = {
+          year: 2023,
+          fund: 100000000,
+          researchAgency: '주식회사 오름',
+          ministry: '중소벤처기업부',
+          technicalClassification: '정보통신, 정보이론, 인공지능',
+        };
+      }
+      let searchParam = {};
+      if (search) {
+        searchParam = {
+          yearStart: '2023',
+          yearEnd: '2023',
+          title: '나노리소그라피 기반 LED 기초 연구실',
+          researchAgencyName: '주식회사 오톰',
+          researchManagerName: '오준호',
+          detailProjectNumber: '1425174675',
+          projectNumber: '1425174675',
+          ministryName: '중소벤처기업부',
+          researchGoal: '생체신호 측정이 가능한 포터블 엑스레이',
+          researchDescription: '영상판독을 위한 원격 진단 기술개발생체신호',
+          expectationEffectiveness: '기초 영상진단 관련 장비·인력이 부재',
+          keywordKorean: '엑스레이,포터블,응급,인공지능,원격진단',
+          keywordEnglish: 'X-ray,Portable,Emergency,AI,Remote diagnosis'
+        };
+      }
+      let similarity = [];
+      if (filter || search) {
+        similarity = [{
+          term: '인공지능',
+          weight: 0.94
+        }];
+      }
+      const data = await discoveryAPI.projectIn('discovery',10,1,'',similarity,'date',filterObj,searchParam);
       console.log(data?.data?.result);
     };
     await apiCallWrap(apiFn);
@@ -151,14 +243,18 @@ export default function APITest() {
         <li className='mb-1'><Button text="자동완성" onClick={autocompleteTest} /></li>
         <li className='mb-1'><Button text="통합검색" onClick={searchAllTest} /></li>
         <hr />
-        <li className='mb-1'><Button text="과제 검색(외부) - 통합검색" onClick={projectOutTest1} /></li>
-        <li className='mb-1'><Button text="과제 검색(외부) - 통합검색 - 필터 - 추가 년도검색" onClick={projectOutTest2} /></li>
-        <li className='mb-1'><Button text="과제 검색(외부) - 통합검색 - 필터 - 추가 연구 개발비 규모" onClick={projectOutTest3} /></li>
-        <li className='mb-1'><Button text="과제 검색(외부) - 통합검색 - 필터 - 과제 수행기관" onClick={projectOutTest4} /></li>
-        <li className='mb-1'><Button text="과제 검색(외부) - 통합검색 - 필터 - 부처명" onClick={projectOutTest5} /></li>
-        <li className='mb-1'><Button text="과제 검색(외부) - 통합검색 - 필터 - 국가과학기술표준분류 / ICT 기술분류" onClick={projectOutTest6} /></li>
-        <li className='mb-1'><Button text="과제 검색(외부) - 디스커버리" onClick={projectOutTest8} /></li>
-        <li className='mb-1'><Button text="과제 검색(내부)" onClick={projectInTest} /></li>
+        <li className='mb-1'><Button text="과제 검색(외부) - 통합검색" onClick={() => projectOutTest(false, false)} /></li>
+        <li className='mb-1'><Button text="과제 검색(외부) - 통합검색 - 필터" onClick={() => projectOutTest(true, false)} /></li>
+        <li className='mb-1'><Button text="과제 검색(외부) - 통합검색 - 상세검색" onClick={() => projectOutTest(false, true)} /></li>
+        <li className='mb-1'><Button text="과제 검색(외부) - 디스커버리" onClick={() => projectOutDiscoveryTest(false, false)} /></li>
+        <li className='mb-1'><Button text="과제 검색(외부) - 디스커버리 - 필터" onClick={() => projectOutDiscoveryTest(true, false)} /></li>
+        <li className='mb-1'><Button text="과제 검색(외부) - 디스커버리 - 상세검색" onClick={() => projectOutDiscoveryTest(false, true)} /></li>
+        <li className='mb-1'><Button text="과제 검색(내부) - 통합검색" onClick={() => projectInTest(false, false)} /></li>
+        <li className='mb-1'><Button text="과제 검색(내부) - 통합검색 - 필터" onClick={() => projectInTest(true, false)} /></li>
+        <li className='mb-1'><Button text="과제 검색(내부) - 통합검색 - 상세검색" onClick={() => projectInTest(false, true)} /></li>
+        <li className='mb-1'><Button text="과제 검색(내부) - 디스커버리" onClick={() => projectInDiscoveryTest(false, false)} /></li>
+        <li className='mb-1'><Button text="과제 검색(내부) - 디스커버리 - 필터" onClick={() => projectInDiscoveryTest(true, false)} /></li>
+        <li className='mb-1'><Button text="과제 검색(내부) - 디스커버리 - 상세검색" onClick={() => projectInDiscoveryTest(false, true)} /></li>
         <hr />
         <li className='mb-1'><Button text="특허 검색" onClick={autocompleteTest} /></li>
         <li className='mb-1'><Button text="논문 검색" onClick={autocompleteTest} /></li>

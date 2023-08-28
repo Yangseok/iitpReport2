@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useLocation, useParams } from 'react-router';
 import 'Assets/Css/Discovery.css';
 import ic_guide from 'Assets/Images/ic_guide.png';
 import ic_analysis from 'Assets/Images/ic_analysis.png';
@@ -14,6 +15,15 @@ import Pagination from 'Domain/Home/Common/Componet/Pagination';
 import CategoryWrap from '../Component/CategoryWrap';
 
 export default function Main() {
+  const params = useParams();
+  const location = useLocation();
+
+  console.log(location);
+
+  const se2 = params?.se2;
+  console.log(se2);
+
+  console.log(params);
   const tabButtons1 = [
     { id: 0, name: '디스커버리 검색', onClick: () => setTabActive1(0) },
     { id: 1, name: '통합 검색', onClick: () => setTabActive1(1) },
@@ -139,7 +149,7 @@ export default function Main() {
           </div>
           <div className='search_wrap type02'>
             <label htmlFor='search' className=''>키워드 검색</label>
-            <input type='text' name='search' id='search' value='' placeholder='찾고 싶은 검색어를 입력해보세요.' />
+            <input type='text' name='search' id='search' defaultValue='' placeholder='찾고 싶은 검색어를 입력해보세요.' />
             <Button name='키워드 찾기' icon={ic_analysis} />
           </div>
         </div>

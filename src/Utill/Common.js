@@ -31,3 +31,9 @@ export const stockBgColor = (graphRangeData) => {
     return (d > 0) ? '#5081BD' : '#ff0000';
   });
 };
+export const getSegment = (idx) => {
+  const pathname = document.location.pathname;
+  const se = pathname.split('/');
+  if (idx === undefined) return se;
+  else return se[idx];
+};
