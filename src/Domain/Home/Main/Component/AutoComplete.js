@@ -82,7 +82,7 @@ export default function AutoComplete() {
       });
     };
 
-    return () => pageInit();
+    pageInit();
   }, []);
 
   return (
