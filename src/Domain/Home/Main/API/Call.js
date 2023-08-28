@@ -7,8 +7,8 @@ export const recommend = async (keyword='main') => {
 export const dataCount = async () => {
   return await API.get('/main/dataCount');
 };
-export const autocomplete = async (keyword='') => {
-  return await API.get('/search/autocomplete', {params: {keyword: keyword}});
+export const autocomplete = async (keyword='', size=7) => {
+  return await API.get('/search/autocomplete', {params: {keyword: keyword, size: size}});
 };
 
 export const useGetData = (keyword='main') => {

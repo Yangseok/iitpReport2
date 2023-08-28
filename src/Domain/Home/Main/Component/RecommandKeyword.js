@@ -11,17 +11,11 @@ export default function RecommandKeyword() {
   const [keyword, setKeyword] = useState([]);
 
   useEffect(() => {
-    const recommend = async () => {
-      const apiFn = async () => {
-        const data = await mainAPI.recommend();
-        // console.log(data?.data?.result);
-        setKeyword(data?.data?.result);
-      };
-      await apiFn();
+    (async () => {
+      const data = await mainAPI.recommend();
+      setKeyword(data?.data?.result);
       setFetching(false);
-    };
-
-    return () => recommend();
+    })();
   }, []);
 
   const handleClick = keyword => {

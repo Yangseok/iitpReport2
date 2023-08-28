@@ -28,14 +28,10 @@ export default function Main() {
   const fullpageRef = useRef(null);
 
   useEffect(() => {
-    const dataCount = async () => {
-      const apiFn = async () => {
-        const data = await mainAPI.dataCount();
-        // console.log(data?.data?.result);
-        setDataCount(data?.data?.result);
-      };
-      await apiFn();
-    };
+    (async () => {
+      const data = await mainAPI.dataCount();
+      setDataCount(data?.data?.result);
+    })();
 
     // Fullpage.js
     const getFullPage = () => {
@@ -117,7 +113,6 @@ export default function Main() {
     };
 
     return () => {
-      dataCount();
       getFullPage();
     };
   }, []);
