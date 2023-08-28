@@ -1,7 +1,10 @@
 import React, { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import common from 'Utill';
 
 export default function Observer() {
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const se = common.getSegment();
@@ -22,7 +25,7 @@ export default function Observer() {
         moveLocation = true;
       }
       if (moveLocation) {
-        location.href = '/error/404';
+        navigate('/error/404');
       }
     }
   }, []);
