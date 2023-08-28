@@ -472,11 +472,13 @@ select {
     left: 0;
     display: none;
     width: 100%;
+    max-height: 400px;
     border: 1px solid $color_line;
     border-top: 0;
     border-radius: 0 0 10px 10px;
     background-color: $color_white;
     box-shadow: 0 6px 8px rgba(0,0,0,0.225);
+    overflow-y: auto;
     
     ul {
       padding: 8px 0;
@@ -504,9 +506,11 @@ select {
     .search_wrap {
       border: 1px solid $color_line;
       border-top: 0;
+      padding-top: 1px;
       border-radius: 10px 10px 0 0;
 
       input {
+        height: 66px;
         border-radius: 10px 10px 0 0;
       }
     }

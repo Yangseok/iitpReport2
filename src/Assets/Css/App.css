@@ -682,11 +682,13 @@ select::-ms-expand {
   left: 0;
   display: none;
   width: 100%;
+  max-height: 400px;
   border: 1px solid #E2E8F0;
   border-top: 0;
   border-radius: 0 0 10px 10px;
   background-color: #FFFFFF;
   box-shadow: 0 6px 8px rgba(0, 0, 0, 0.225);
+  overflow-y: auto;
 }
 .auto_search_wrap .search_list ul {
   padding: 8px 0;
@@ -711,9 +713,11 @@ select::-ms-expand {
 .auto_search_wrap.focus .search_wrap {
   border: 1px solid #E2E8F0;
   border-top: 0;
+  padding-top: 1px;
   border-radius: 10px 10px 0 0;
 }
 .auto_search_wrap.focus .search_wrap input {
+  height: 66px;
   border-radius: 10px 10px 0 0;
 }
 .auto_search_wrap.focus .search_list {

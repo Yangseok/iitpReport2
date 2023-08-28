@@ -4,7 +4,7 @@ import { NavLink } from 'react-router-dom';
 export default function Head(props) {
   const { className } = props;
   const nav = [
-    {to:'/discovery', name:'통합검색&디스커버리'},
+    {to:'/discovery/keyword', name:'통합검색&디스커버리'},
     {to:'/demandbanking', name:'수요 뱅킹 서비스'},
     {to:'/icttrend', name:'ICT 트렌드'},
   ];

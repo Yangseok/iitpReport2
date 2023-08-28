@@ -3,6 +3,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Main from 'Domain/Home/Main/Page/Main';
 import Login from 'Domain/Home/Login/Page/Main';
 import Discovery from 'Domain/Home/Discovery/Page/Main';
+import DiscoveryKeyword from 'Domain/Home/Discovery/Page/DiscoveryKeyword';
 import DemandBanking from 'Domain/Home/DemandBanking/Page/Main';
 import ICTTrend from 'Domain/Home/ICTTrend/Page/Main';
 import PageNotFound from 'Domain/Home/Common/ErrorPage/404';
@@ -35,12 +36,11 @@ export default function Router() {
       <Routes>
         <Route path='/' element={<Main />} />
         <Route path='/login' element={<Login />} />
-
         <Route path='/discovery' element={<Discovery />} />
         <Route path='/discovery/:se2' element={<Discovery />} />
         <Route path='/discovery/:se2/result' element={<Discovery />} />
         <Route path='/discovery/:se2/result/:se4' element={<Discovery />} />
-
+        <Route path='/discovery/keyword' element={<DiscoveryKeyword />} />
         <Route path='/demandbanking' element={<DemandBanking />} />
         <Route path='/icttrend' element={<ICTTrend />} />
         <Route path='/sample/redux' element={<Counter />} />
