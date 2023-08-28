@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { NavLink } from 'react-router-dom';
 import 'Assets/Css/Main.css';
 import ic_scroll from 'Assets/Images/main_scroll01.png';
@@ -20,13 +20,12 @@ import * as mainAPI from 'Domain/Home/Main/API/Call';
 import RecommandKeyword from 'Domain/Home/Main/Component/RecommandKeyword';
 import common from 'Utill';
 import AutoComplete from '../Component/AutoComplete';
-// import $ from 'jquery';
-// import 'fullpage.js';
-// import 'fullpage.js/dist/jquery.fullpage.min.css';
+import $ from 'jquery';
 import { FullPage, Slide } from 'react-full-page';
 
 export default function Main() {
   const [dataCount, setDataCount] = useState({});
+  const fullpageRef = useRef(null);
 
   useEffect(() => {
     const dataCount = async () => {
@@ -39,119 +38,93 @@ export default function Main() {
     };
 
     // Fullpage.js
-    // const getFullPage = () => {
-    //   // Shift 눌렀는지 확인
-    //   let _shift = false;
-    //   $(document).on('keydown',function(event){
-    //     if(event.keyCode === 16) _shift = true;
-    //   });
-    //   $(document).on('keyup',function(event){
-    //     if(event.keyCode === 16) _shift = false;
-    //   });
+    const getFullPage = () => {
+      $('.fp-nav-custom button:first-of-type, .fp-nav-custom button:last-of-type').attr('aria-hidden', true);
 
-    //   $('#fullpage').fullpage({
-    //     verticalCentered: true,
-    //     responsiveWidth: 1320,
+      // Shift 눌렀는지 확인
+      let _shift = false;
+      $(document).on('keydown',function(event){
+        if(event.keyCode === 16) _shift = true;
+      });
+      $(document).on('keyup',function(event){
+        if(event.keyCode === 16) _shift = false;
+      });
 
-    //     onLeave: (_, idx) => {
-    //       $('#fp-nav-custom li').removeClass('on');
-    //       $(`#fp-nav-custom li[data-section='${idx}']`).addClass('on');
-    //     },
-    //   });
+      // Tab, Shift + Tab 키 관련 스크립트
+      $('[class*=\'section\']').attr('tabindex', '0');
 
-    //   // $('[class*=\'section\']').attr('tabindex', '0');
-    //   $(document).on('keydown', '#section1 .keywords_box button:last-of-type', function(event){
-    //     if(event.keyCode === 9 && !_shift){
-    //       $('#fp-nav-custom > ul > li:eq(1) button').focus();
-    //       return false;
-    //     }
-    //   });
-    //   $('#section2 a').first().on('keydown', function(event){
-    //     if(event.keyCode === 9 && _shift){
-    //       $('#fp-nav-custom > ul > li:eq(1) button').focus();
-    //       return false;
-    //     }
-    //   });
-    //   $('#section2 a').last().on('keydown', function(event){
-    //     if(event.keyCode === 9 && !_shift){
-    //       $('#fp-nav-custom > ul > li:eq(2) button').focus();
-    //       return false;
-    //     }
-    //   });
-    //   $('#section4 a').first().on('keydown', function(event){
-    //     if(event.keyCode === 9 && _shift){
-    //       $('#fp-nav-custom > ul > li:eq(3) button').focus();
-    //       return false;
-    //     }
-    //   });
-      
-    //   $('#fp-nav-custom > ul > li:eq(1) button').on('keydown', function(event){
-    //     if(event.keyCode === 9 && _shift){
-    //       $('#fp-nav-custom > ul > li:eq(0) button').focus();
-    //       $.fn.fullpage.moveTo(1,0);
-    //       return false;
-    //     }
-    //   });
-    //   $('#fp-nav-custom > ul > li:eq(2) button').on('keydown', function(event){
-    //     if(event.keyCode === 9 && !_shift){
-    //       $('#fp-nav-custom > ul > li:eq(3) button').focus();
-    //       $.fn.fullpage.moveTo(4,0);
-    //       return false;
-    //     } else  if(event.keyCode == 9 && _shift) {
-    //       $('#fp-nav-custom > ul > li:eq(1) button').focus();
-    //       $.fn.fullpage.moveTo(2,0);
-    //       return false;
-    //     }
-    //   });
-    //   $('#fp-nav-custom > ul > li:eq(3) button').on('keydown', function(event){
-    //     if(event.keyCode === 9 && _shift){
-    //       $('#fp-nav-custom > ul > li:eq(2) button').focus();
-    //       $.fn.fullpage.moveTo(3,0);
-    //       return false;
-    //     }
-    //   });
+      $('#header .right_menu a').last().on('keydown', (event) => {
+        if(event.keyCode === 9 && !_shift) {
+          $('#section1').focus();
+          return false;
+        }
+      });
+      $(document).on('keydown', '#section1 .keywords_box button:last-of-type', (event) => {
+        if(event.keyCode === 9 && !_shift){
+          $('.fp-nav-custom button:eq(2)').focus();
+          return false;
+        }
+      });
+      $('#section2 a').last().on('keydown', (event) => {
+        if(event.keyCode === 9 && !_shift){
+          $('.fp-nav-custom button:eq(3)').focus();
+          return false;
+        }
+      });
+      $('#section2 a').first().on('keydown', (event) => {
+        if(event.keyCode == 9 && _shift) {
+          // $('#section2').focus();
+          fullpageRef.current.scrollToSlide(0);
+          $('#section1').focus();
+          return false;
+        }
+      });
+      $('#section3').on('keydown', (event) => {
+        if(event.keyCode == 9 && !_shift) {
+          fullpageRef.current.scrollToSlide(3);
+          $('#section4').focus();
+          return false;
+        } else if(event.keyCode == 9 && _shift) {
+          fullpageRef.current.scrollToSlide(1);
+          $('#section2').focus();
+          return false;
+        }
+      });
+      $('#section4 a').first().on('keydown', (event) => {
+        if(event.keyCode == 9 && _shift) {
+          // $('#section4').focus();
+          fullpageRef.current.scrollToSlide(2);
+          $('#section3').focus();
+          return false;
+        }
+      });
 
-    //   $('#fp-nav-custom ul li button').on('focus', function(){
-    //     var idx = $(this).parent().index();
+      $('.fp-nav-custom button').on('focus', function () {
+        const idx = $(this).index();
 
-    //     if(idx === 0){
-    //       $.fn.fullpage.moveTo(1,0);
-    //     } else if(idx === 1){
-    //       $.fn.fullpage.moveTo(2,0);
-    //     } else if(idx === 2){
-    //       $.fn.fullpage.moveTo(3,0);
-    //     } else if(idx === 3){
-    //       $.fn.fullpage.moveTo(4,0);
-    //     }
-    //     return false;
-    //   });
-      
-    //   // 네비게이션
-    //   $('#fp-nav-custom ul li button').on('click', function(e) {
-    //     e.preventDefault();
-    //     const targetSection = $(this).parent().attr('data-section');
-    //     $.fn.fullpage.moveTo(targetSection);
-    //   });
-    // };
+        if(idx === 2){
+          fullpageRef.current.scrollToSlide(1);
+          $('#section2').focus();
+        } else if(idx === 3){
+          fullpageRef.current.scrollToSlide(2);
+          $('#section3').focus();
+        } else if(idx === 4){
+          fullpageRef.current.scrollToSlide(3);
+          $('#section4').focus();
+        }
+        return false;
+      });
+    };
 
     return () => {
       dataCount();
-      // getFullPage();
+      getFullPage();
     };
   }, []);
   
   return (
     <Layout>
-      <div id='fp-nav-custom'>
-        <ul>
-          <li data-section='1' className='on'><button type='button'>검색</button></li>
-          <li data-section='2'><button type='button'>제공 서비스</button></li>
-          <li data-section='3'><button type='button'>데이터 현황</button></li>
-          <li data-section='4'><button type='button'>홈페이지 하단 정보</button></li>
-        </ul>
-      </div>
-      {/* <div id='fullpage'> */}
-      <FullPage>
+      <FullPage controls controlsProps={{className: 'fp-nav-custom'}} ref={fullpageRef}>
         <Slide>
           <section className='section main_sec01' id='section1'>
             <div className='container'>
@@ -272,17 +245,12 @@ export default function Main() {
             </div>
           </section>
         </Slide>
-        <Slide>
-          <section className='section fp-auto-height' id='section4'>
+        <Slide className='fp-auto-height'>
+          <section className='section' id='section4'>
             <Tail />
           </section>
         </Slide>
-        
-        {/* </div> */}
       </FullPage>
-      {/* </ReactFullpage.Wrapper>
-        )}
-      /> */}
     </Layout>
   );
 }

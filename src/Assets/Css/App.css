@@ -197,7 +197,7 @@ body {
   top: 0;
   left: 0;
   width: 100%;
-  z-index: 1000;
+  z-index: 900;
 }
 #header .container {
   display: flex;
@@ -340,7 +340,7 @@ body {
   left: 0;
   width: 100%;
   margin: 0 auto;
-  z-index: 1100;
+  z-index: 999;
 }
 #skip a {
   position: absolute;

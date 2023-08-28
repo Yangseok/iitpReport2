@@ -1,6 +1,7 @@
 import React from 'react';
 import 'Assets/Css/Login.css';
-import Layout from 'Domain/Home/Common/Layout/Sub';
+import Layout from 'Domain/Home/Common/Layout/Main';
+import Tail from 'Domain/Home/Common/Componet/Tail';
 import Button from 'Domain/Home/Common/Componet/Button';
 
 export default function Main() {
@@ -25,6 +26,7 @@ export default function Main() {
           <div></div><div></div><div></div>
         </div>
       </section>
+      <Tail />
     </Layout>
   );
 }

@@ -254,7 +254,7 @@
   background-color: #FFFFFF;
 }
 
-#fp-nav-custom {
+.fp-nav-custom {
   position: fixed;
   top: 50%;
   left: 80px;
@@ -265,10 +265,7 @@
   -o-transform: translateY(-50%);
   z-index: 50;
 }
-#fp-nav-custom ul {
-  position: relative;
-}
-#fp-nav-custom ul::before {
+.fp-nav-custom::before {
   content: "";
   position: absolute;
   top: 0;
@@ -279,10 +276,7 @@
   background-color: #52A3FF;
   z-index: -1;
 }
-#fp-nav-custom ul li + li {
-  margin-top: 48px;
-}
-#fp-nav-custom ul li button {
+.fp-nav-custom button {
   font-size: 0;
   line-height: 0;
   text-indent: -9999px;
@@ -293,11 +287,21 @@
   border-radius: 50%;
   background-color: #52A3FF;
 }
-#fp-nav-custom ul li.on button {
+.fp-nav-custom button:nth-of-type(n + 3) {
+  margin-top: 48px;
+}
+.fp-nav-custom button:disabled {
   width: 16px;
   height: 16px;
   border: 4px solid #52A3FF;
   background-color: #FFFFFF;
+}
+.fp-nav-custom button:first-of-type, .fp-nav-custom button:last-of-type {
+  display: none;
+}
+
+.fp-auto-height {
+  height: auto !important;
 }
 
 /* Animations (Keyframes) */
