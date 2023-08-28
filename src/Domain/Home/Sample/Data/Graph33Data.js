@@ -2,6 +2,40 @@ import {faker} from '@faker-js/faker';
 import common from 'Utill';
 import moment from 'moment';
 
+let labels = [];
+const date = new Date();
+const yearTo = Number(moment(date).format('YYYY'));
+const year = Number(moment(date).subtract(2, 'years').format('YYYY'));
+labels.push('');
+for (let i=year; i<=yearTo; i++) {
+  labels.push(i);
+}
+labels.push('');
+const graphRangeData = labels.map((e) => {
+  if (e === '') return 0;
+  return faker.number.int({ min: -300, max: 500 });
+});
+
+export const data = {
+  labels,
+  datasets: [
+    {
+      type:'line',
+      data: labels.map(() => 200),
+      borderColor: '#ff0000',
+      backgroundColor: 'rgba(255,0,0,0.3)',
+      fill: 'end', //false, origin, start, end,
+      lineTension: 0,
+      pointStyle: false,
+    },
+    {
+      label: 'Dataset 1',
+      data: graphRangeData,
+      backgroundColor: common.stockBgColor(graphRangeData),
+    },
+  ],
+};
+
 export const options = {
   responsive: true,
   plugins: {
@@ -26,58 +60,24 @@ export const options = {
       }
     },
     datalabels: {
-      formatter: function (value) {
+      formatter: function (value, context) {
+        if (context.datasetIndex == 0) return '';
+        if (value == 0) return '';
         return common.setPriceInput(value) + '건';
       },
-      display: false,
+      display: true,
       color: '#000',
-      anchor: 'start', //start, end
-      align: 'end', //top, bottom, middle, start, end
-      clamp: false
+      anchor: common.datalabelPoision(graphRangeData), //start, end
+      align: common.datalabelPoision(graphRangeData), //top, bottom, middle, start, end
+      clamp: true
     }
   },
   scales: {
     x: {
       offset: false
+    },
+    y: {
+      offset: true
     }
   }
-};
-
-let labels = [];
-const date = new Date();
-const yearTo = Number(moment(date).format('YYYY'));
-const year = Number(moment(date).subtract(2, 'years').format('YYYY'));
-labels.push('');
-for (let i=year; i<=yearTo; i++) {
-  labels.push(i);
-}
-labels.push('');
-const graphRangeData = labels.map((e) => {
-  if (e === '') return 0;
-  return faker.number.int({ min: -300, max: 500 });
-});
-const bgColor = (graphRangeData) => {
-  return graphRangeData.map((d) => {
-    return (d > 0) ? '#5081BD' : '#ff0000';
-  });
-};
-
-export const data = {
-  labels,
-  datasets: [
-    {
-      type:'line',
-      data: labels.map(() => 200),
-      borderColor: '#ff0000',
-      backgroundColor: 'rgba(255,0,0,0.3)',
-      fill: 'end', //false, origin, start, end,
-      lineTension: 0,
-      pointStyle: false,
-    },
-    {
-      label: 'Dataset 1',
-      data: graphRangeData,
-      backgroundColor: bgColor(graphRangeData),
-    },
-  ],
 };

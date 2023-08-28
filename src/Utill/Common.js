@@ -21,3 +21,13 @@ export const setPriceInput = (str) => {
   if (negativeNumber) retValue = '-' + retValue;
   return retValue;
 };
+export const datalabelPoision = (graphRangeData) => {
+  return graphRangeData.map((d) => {
+    return (d > 0) ? 'end' : 'start';
+  });
+};
+export const stockBgColor = (graphRangeData) => {
+  return graphRangeData.map((d) => {
+    return (d > 0) ? '#5081BD' : '#ff0000';
+  });
+};

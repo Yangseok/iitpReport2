@@ -7,7 +7,7 @@ export const options = {
   plugins: {
     legend: {
       display: true,
-      position: 'top',
+      position: 'right',
     },
     title: {
       display: false,
@@ -41,7 +41,7 @@ export const options = {
       display: true,
       title: {
         display: true,
-        text: '이익률(%)',
+        text: '과제수행건수',
         color: '#333',
         font: {
           size: 20,
@@ -66,9 +66,22 @@ export const data = {
   datasets: [
     {
       type: 'line',
-      label: '영업이익률',
-      borderColor: 'rgb(251, 109, 33)',
-      backgroundColor: 'rgb(251, 109, 33)',
+      label: '서울대',
+      borderColor: 'rgb(0, 165, 68)',
+      backgroundColor: 'rgb(0, 165, 68)',
+      borderWidth: 3,
+      fill: false,
+      data: labels.map(() => faker.number.float({ min: 0, max: 20 })),
+      pointStyle: 'circle',
+      pointBackgroundColor: 'rgba(0,0,0,1)',
+      pointRadius: 3,
+      pointHoverRadius: 4,
+    },
+    {
+      type: 'line',
+      label: '연세대',
+      borderColor: 'rgb(252, 108, 15)',
+      backgroundColor: 'rgb(252, 108, 15)',
       borderWidth: 3,
       fill: false,
       data: labels.map(() => faker.number.float({ min: 0, max: 20 })),
@@ -79,9 +92,22 @@ export const data = {
     },
     {
       type: 'line',
-      label: '단기순이익률',
-      borderColor: 'rgb(0, 0, 0)',
-      backgroundColor: 'rgb(0, 0, 0)',
+      label: '고려대',
+      borderColor: 'rgb(125, 60, 132)',
+      backgroundColor: 'rgb(125, 60, 132)',
+      borderWidth: 3,
+      fill: false,
+      data: labels.map(() => faker.number.float({ min: 0, max: 20 })),
+      pointStyle: 'circle',
+      pointBackgroundColor: 'rgba(0,0,0,1)',
+      pointRadius: 3,
+      pointHoverRadius: 4,
+    },
+    {
+      type: 'line',
+      label: '전남대',
+      borderColor: 'rgb(82, 163, 255)',
+      backgroundColor: 'rgb(82, 163, 255)',
       borderWidth: 3,
       fill: false,
       data: labels.map(() => faker.number.float({ min: 0, max: 20 })),

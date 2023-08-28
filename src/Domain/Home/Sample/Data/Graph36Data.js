@@ -83,6 +83,7 @@ export const data = {
       type: 'line',
       label: '이자보상비율',
       borderColor: 'rgb(0, 0, 0)',
+      backgroundColor: 'rgb(0, 0, 0)',
       borderWidth: 2,
       fill: false,
       data: labels.map(() => faker.number.float({ min: 80, max: 100 })),

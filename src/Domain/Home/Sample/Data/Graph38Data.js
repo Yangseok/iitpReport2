@@ -9,14 +9,14 @@ const yearTo = Number(moment(date).subtract(22, 'years').format('YYYY'));
 for (let i=year; i>yearTo; i--) {
   labels.push(i);
 }
-
+const graphRangeData = labels.map(() => faker.number.int({ min: 0, max: 10000 }));
 export const data = {
   labels,
   datasets: [
     {
       label: '과제건수',
-      data: labels.map(() => faker.number.int({ min: 0, max: 10000 })),
-      backgroundColor: 'rgb(82, 163, 255)',
+      data: graphRangeData,
+      backgroundColor: 'rgba(76, 207, 252, 1)',
     },
   ],
 };
@@ -45,10 +45,10 @@ export const options = {
       formatter: function (value) {
         return common.setPriceInput(value) + '건';
       },
-      display: false,
+      display: true,
       color: '#000',
-      anchor: 'start', //start, end
-      align: 'end', //top, bottom, middle, start, end
+      anchor: common.datalabelPoision(graphRangeData), //start, end
+      align: common.datalabelPoision(graphRangeData), //top, bottom, middle, start, end
       clamp: false
     }
   },
@@ -56,7 +56,7 @@ export const options = {
     x: {
       display: true,
       title: {
-        display: false,
+        display: true,
         text: '연도',
         color: '#333',
         font: {
@@ -68,9 +68,10 @@ export const options = {
     },
     y: {
       display: true,
+      offset: true,
       title: {
         display: true,
-        text: '매출액(천억원)',
+        text: '과제건수',
         color: '#333',
         font: {
           size: 20,
