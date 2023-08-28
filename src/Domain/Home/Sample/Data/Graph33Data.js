@@ -52,6 +52,15 @@ for (let i=year; i<=yearTo; i++) {
   labels.push(i);
 }
 labels.push('');
+const graphRangeData = labels.map((e) => {
+  if (e === '') return 0;
+  return faker.number.int({ min: -300, max: 500 });
+});
+const bgColor = (graphRangeData) => {
+  return graphRangeData.map((d) => {
+    return (d > 0) ? '#5081BD' : '#ff0000';
+  });
+};
 
 export const data = {
   labels,
@@ -67,11 +76,8 @@ export const data = {
     },
     {
       label: 'Dataset 1',
-      data: labels.map((e) => {
-        if (e === '') return 0;
-        return faker.number.int({ min: 300, max: 500 });
-      }),
-      backgroundColor: '#5081BD',
+      data: graphRangeData,
+      backgroundColor: bgColor(graphRangeData),
     },
   ],
 };
