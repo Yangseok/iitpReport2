@@ -13,18 +13,12 @@ export default function Observer() {
       const se2 = se[2] ?? '';
       const se3 = se[3] ?? '';
       const se4 = se[4] ?? '';
-      let moveLocation = false;
       if (
         ['keyword','file','project'].indexOf(se2) === -1
         || ['','result'].indexOf(se3) === -1
         || ['','projectin','projectout','patent','paper','ict','policy','researcher','orgn','news'].indexOf(se4) === -1
+        || se2 !== 'keyword' && se4 === ''
       ) {
-        moveLocation = true;
-      }
-      if (!moveLocation && se2 !== 'keyword' && se4 === '') {
-        moveLocation = true;
-      }
-      if (moveLocation) {
         navigate('/error/404');
       }
     }
