@@ -22,13 +22,23 @@
       width: 30px;
       height: 30px;
       background: url('Assets/Images/arr_drop.svg') no-repeat center / 24px;
+      transition: all 0.3s;
     }
   }
-
   ul {
     @include flexLayout(center, flex-start, 16px);
     flex-wrap: wrap;
     margin-top: 16px;
+  }
+
+  &.fold {
+    .title button {
+      transform: rotate(-180deg);
+      -webkit-transform: rotate(-180deg);
+      -moz-transform: rotate(-180deg);
+      -ms-transform: rotate(-180deg);
+      -o-transform: rotate(-180deg);
+    }
   }
 }
 .keywords_btn button {
@@ -46,6 +56,32 @@
 
   &:disabled {
     background-color: $color_light2;
+  }
+}
+.keywords_reset_btn {
+  font-size: 14px;
+  color: $color_main;
+  font-weight: 500;
+
+  &:disabled {
+    color: $color_placeholder;
+  }
+}
+.keywords_fold_btn {
+  font-size: 14px;
+  color: $color_regular;
+  font-weight: 500;
+
+  img { transition: all 0.3s; }
+
+  &.fold {
+    img {
+      transform: rotate(-180deg);
+      -webkit-transform: rotate(-180deg);
+      -moz-transform: rotate(-180deg);
+      -ms-transform: rotate(-180deg);
+      -o-transform: rotate(-180deg);
+    }
   }
 }
 

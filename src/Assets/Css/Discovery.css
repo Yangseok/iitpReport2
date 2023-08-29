@@ -26,6 +26,7 @@
   width: 30px;
   height: 30px;
   background: url("Assets/Images/arr_drop.svg") no-repeat center/24px;
+  transition: all 0.3s;
 }
 .keywords_wrap ul {
   display: flex;
@@ -34,6 +35,13 @@
   gap: 16px;
   flex-wrap: wrap;
   margin-top: 16px;
+}
+.keywords_wrap.fold .title button {
+  transform: rotate(-180deg);
+  -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
+  -ms-transform: rotate(-180deg);
+  -o-transform: rotate(-180deg);
 }
 
 .keywords_btn button {
@@ -52,6 +60,31 @@
 }
 .keywords_btn button:disabled {
   background-color: #B8D9FF;
+}
+
+.keywords_reset_btn {
+  font-size: 14px;
+  color: #0056B8;
+  font-weight: 500;
+}
+.keywords_reset_btn:disabled {
+  color: #94A3B8;
+}
+
+.keywords_fold_btn {
+  font-size: 14px;
+  color: #334155;
+  font-weight: 500;
+}
+.keywords_fold_btn img {
+  transition: all 0.3s;
+}
+.keywords_fold_btn.fold img {
+  transform: rotate(-180deg);
+  -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
+  -ms-transform: rotate(-180deg);
+  -o-transform: rotate(-180deg);
 }
 
 /* Category */

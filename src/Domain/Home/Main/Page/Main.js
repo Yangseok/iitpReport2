@@ -146,7 +146,7 @@ export default function Main() {
               </div>
               <ul>
                 <li>
-                  <NavLink to='/discovery'>
+                  <NavLink to='/discovery/keyword'>
                     <img src={img_service01} alt='통합검색 & 디스커버리로 이동' />
                     <h4>통합검색 & 디스커버리</h4>
                     <p>
