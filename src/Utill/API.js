@@ -72,7 +72,8 @@ const API = axios.create({
 API.interceptors.request.use(
   config => {
     console.log('API call url ::', config.baseURL + config.url);
-    console.log('param', JSON.stringify(config.data));
+    console.log('data', JSON.stringify(config.data));
+    console.log('params', JSON.stringify(config.params));
     // console.log('config', config);
     // 요청이 전달되기 전에 작업 수행
     return config;
@@ -82,5 +83,5 @@ API.interceptors.request.use(
     return Promise.reject(error);
   },
 );
-export const multipartHeader = {headers: {'Content-Type': 'multipart/form-data'}};
+export const multipartHeader = {headers: {'Content-Type': 'multipart/form-data', 'Access-Control-Allow-Origin': '*'}};
 export default API;
