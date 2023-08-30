@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import * as Hangul from 'hangul-js';
-import ic_search from 'Assets/Images/ic_search.png';
 import Button from 'Domain/Home/Common/Componet/Button';
 import { useSelector, useDispatch } from 'react-redux';
 import { getSearchKeyword, setSearchKeyword } from 'Domain/Home/Common/Status/CommonSlice';
-import * as mainAPI from 'Domain/Home/Main/API/Call';
 import $ from 'jquery';
 
-export default function AutoComplete() {
+export default function AutoCompleteSearch(props) {
+  const { data, style } = props;
   const [listData, setListData] = useState([]);
   const [searchFocus, setSearchFocus] = useState(false);
   const dispatch = useDispatch();
@@ -17,19 +16,16 @@ export default function AutoComplete() {
     const value = e.target.value;
     const hangulValue = Hangul.disassemble(value).join(''); // ㄺ=>ㄹㄱ
     const tempArr = [];
+    setSearchFocus(true);
     
     if (value === '') {
       return setListData([]);
     }
 
-    setSearchFocus(true);
-
-    const apiData = await mainAPI.autocomplete(value);
-    // console.log(apiData);
-    let data = apiData?.data?.result ?? [];
+    let resData = data;
 
     // object 에 초성필드 추가 {text:"홍길동", diassembled:"ㅎㄱㄷ"}
-    data.map((item) => {
+    resData.map((item) => {
       const dis = Hangul.disassemble(item.originData, true);
       const cho = dis.reduce(function (prev, el) {
         el = el[0] ? el[0] : el;
@@ -39,7 +35,7 @@ export default function AutoComplete() {
     });
     
     // 문자열 검색 || 초성검색
-    data.filter((item) => {
+    resData.filter((item) => {
       return item.originData.includes(value) || item.diassembled.includes(hangulValue);
     }).map((item) => {
       const obj = {};
@@ -87,7 +83,7 @@ export default function AutoComplete() {
 
   return (
     <div className={`auto_search_wrap${(searchFocus) ? ' focus' : ''}`}>
-      <div className='search_wrap type01'>
+      <div className={`search_wrap${(style?.type === 1) ? ' type01' : (style?.type === 2) ? ' type02' : ''}`}>
         <label htmlFor='search_text'>검색어로 검색</label>
         <input 
           type='text'
@@ -100,7 +96,7 @@ export default function AutoComplete() {
           placeholder='찾고 싶은 검색어를 입력해보세요.'
           autoComplete='off'
         />
-        <Button name='ICT 키워드 검색' icon={ic_search} />
+        <Button name={style?.name} icon={style?.icon} />
       </div>
       <div className='search_list'>
         <ul>

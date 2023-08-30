@@ -14,17 +14,22 @@ import img_category05 from 'Assets/Images/cate_img05.png';
 import img_category06 from 'Assets/Images/cate_img06.png';
 import img_category07 from 'Assets/Images/cate_img07.png';
 import img_category08 from 'Assets/Images/cate_img08.png';
+import ic_search from 'Assets/Images/ic_search.png';
 import Layout from 'Domain/Home/Common/Layout/Main';
 import Tail from 'Domain/Home/Common/Componet/Tail';
 import * as mainAPI from 'Domain/Home/Main/API/Call';
 import RecommandKeyword from 'Domain/Home/Main/Component/RecommandKeyword';
 import common from 'Utill';
-import AutoComplete from '../Component/AutoComplete';
+import AutoCompleteSearch from 'Domain/Home/Common/Componet/AutoCompleteSearch';
 import $ from 'jquery';
 import { FullPage, Slide } from 'react-full-page';
+import { useSelector } from 'react-redux';
+import { getSearchKeyword } from 'Domain/Home/Common/Status/CommonSlice';
 
 export default function Main() {
+  const keyword = useSelector(getSearchKeyword);
   const [dataCount, setDataCount] = useState({});
+  const [dataSearch, setDataSearch] = useState([]);
   const fullpageRef = useRef(null);
 
   useEffect(() => {
@@ -116,14 +121,26 @@ export default function Main() {
       getFullPage();
     };
   }, []);
-  
+
+  useEffect(() => {
+    (async () => {
+      if(keyword !== '') {
+        const data = await mainAPI.autocomplete(keyword);
+        setDataSearch(data?.data?.result);
+      }
+    })();
+  }, [keyword]);
+
   return (
     <Layout>
       <FullPage controls controlsProps={{className: 'fp-nav-custom'}} ref={fullpageRef}>
         <Slide>
           <section className='section main_sec01' id='section1'>
             <div className='container'>
-              <AutoComplete />
+              <AutoCompleteSearch
+                data={dataSearch}
+                style={{ type: 1, name: 'ICT 키워드 검색', icon: ic_search }}
+              />
               <div className='keywords_box mt-3'>
                 <p>추천 키워드</p>
                 <RecommandKeyword />
