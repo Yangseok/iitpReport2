@@ -49,6 +49,7 @@ export default function PageSearchArea(props) {
     (async () => {
       if(keyword !== '') {
         const data = await mainAPI.autocomplete(keyword);
+        console.log(data?.data?.result);
         setDataSearch(data?.data?.result);
       }
     })();

@@ -13,31 +13,6 @@ import { setSelectKeyword } from 'Domain/Home/Common/Status/CommonSlice';
 export default function KeywordWrap(props) {
   const dispatch = useDispatch();
 
-  // const tempKeywordData = [
-  //   {id: 0, term: '혼합현실', weight: 1},
-  //   {id: 1, term: '증강현실', weight: 1},
-  //   {id: 2, term: '텔레포트', weight: 1},
-  //   {id: 3, term: '혼합현실', weight: 2},
-  //   {id: 4, term: '혼합현실', weight: 2},
-  //   {id: 5, term: '실감미디어', weight: 2},
-  //   {id: 6, term: '현실', weight: 3},
-  //   {id: 7, term: '인터렉션', weight: 3},
-  //   {id: 8, term: '큐레이션', weight: 3},
-  //   {id: 9, term: '큐레이션', weight: 3},
-  //   {id: 10, term: '텔레포트', weight: 3},
-  //   {id: 11, term: '텔레포트', weight: 3},
-  //   {id: 12, term: '실감디바이스', weight: 3},
-  //   {id: 13, term: '텔레포트', weight: 4},
-  //   {id: 14, term: '실감미디어', weight: 4},
-  //   {id: 15, term: '위치기반', weight: 4},
-  //   {id: 16, term: '혼합현실', weight: 4},
-  //   {id: 17, term: '혼합현실', weight: 4},
-  //   {id: 18, term: '큐레이션', weight: 4},
-  //   {id: 19, term: '큐레이션', weight: 5},
-  //   {id: 20, term: '혼합현실', weight: 5},
-  //   {id: 21, term: '실감미디어', weight: 5},
-  // ];
-
   const { folded } = props;
   const [totalData, setTotalData] = useState({});
   const [selectedData, setSelectedData] = useState({});

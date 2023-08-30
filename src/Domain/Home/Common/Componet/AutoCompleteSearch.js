@@ -5,6 +5,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { getSearchKeyword, setSearchKeyword } from 'Domain/Home/Common/Status/CommonSlice';
 import $ from 'jquery';
 import { useSearchParams } from 'react-router-dom';
+import parse from 'html-react-parser';
 
 export default function AutoCompleteSearch(props) {
   const { data, style } = props;
@@ -47,7 +48,7 @@ export default function AutoCompleteSearch(props) {
       return item.originData.includes(value) || item.diassembled.includes(hangulValue);
     }).map((item) => {
       const obj = {};
-      obj.text = item.originData;
+      obj.text = parse(item.data);
       obj.onClick = () => onListClick(item.originData);
       obj.agency = (item.type === 'company');
       tempArr.push(obj);
