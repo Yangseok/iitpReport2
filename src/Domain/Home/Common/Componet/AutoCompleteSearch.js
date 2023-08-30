@@ -4,6 +4,7 @@ import Button from 'Domain/Home/Common/Componet/Button';
 import { useSelector, useDispatch } from 'react-redux';
 import { getSearchKeyword, setSearchKeyword } from 'Domain/Home/Common/Status/CommonSlice';
 import $ from 'jquery';
+import { useSearchParams } from 'react-router-dom';
 
 export default function AutoCompleteSearch(props) {
   const { data, style } = props;
@@ -11,8 +12,15 @@ export default function AutoCompleteSearch(props) {
   const [searchFocus, setSearchFocus] = useState(false);
   const dispatch = useDispatch();
   const keyword = useSelector(getSearchKeyword);
+  const [searchParams] = useSearchParams();
+  const searchParamKeyword = searchParams.get('keyword')??'';
 
   const onSearchKeyUp = async (e) => {
+    if (e.keyCode == 13) {
+      const handleSearch = props?.handleSearch;
+      if (handleSearch !== undefined) handleSearch();
+      return null;
+    }
     const value = e.target.value;
     const hangulValue = Hangul.disassemble(value).join(''); // ㄺ=>ㄹㄱ
     const tempArr = [];
@@ -81,6 +89,10 @@ export default function AutoCompleteSearch(props) {
     pageInit();
   }, []);
 
+  useEffect(() => {
+    dispatch(setSearchKeyword(searchParamKeyword));
+  }, [searchParamKeyword]);
+
   return (
     <div className={`auto_search_wrap${(searchFocus) ? ' focus' : ''}`}>
       <div className={`search_wrap${(style?.type === 1) ? ' type01' : (style?.type === 2) ? ' type02' : ''}`}>
@@ -96,7 +108,7 @@ export default function AutoCompleteSearch(props) {
           placeholder='찾고 싶은 검색어를 입력해보세요.'
           autoComplete='off'
         />
-        <Button name={style?.name} icon={style?.icon} />
+        <Button name={style?.name} onClick={props?.handleSearch} icon={style?.icon} />
       </div>
       <div className='search_list'>
         <ul>

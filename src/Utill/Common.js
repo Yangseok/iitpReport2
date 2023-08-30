@@ -37,3 +37,61 @@ export const getSegment = (idx) => {
   if (idx === undefined) return se;
   else return se[idx];
 };
+
+export const colorSet = (weight) => {
+  const percent = Math.floor(weight * 100);
+  let w = 5;
+  if (0 <= percent && percent <= 29) {
+    w = 5;
+  } else if (30 <= percent && percent <= 49) {
+    w = 4;
+  } else if (50 <= percent && percent <= 69) {
+    w = 3;
+  } else if (70 <= percent && percent <= 89) {
+    w = 2;
+  } else if (90 <= percent && percent <= 100) {
+    w = 1;
+  }
+  return w;
+};
+export const procKeywordData = (data) => {
+  let keywordData = [];
+  try {
+    for (const k in data) {
+      keywordData.push({
+        id: Number(k), 
+        term: data[k].keyword, 
+        weight: colorSet(data[k].weight)
+      });
+    }
+  } catch (e) {
+    console.warn(e);
+  }
+  return keywordData;
+};
+export const procSelectedData = (selectedData, dep, searchKeyword) => {
+  let keyword = [];
+  let selectKeyword = [];
+  try {
+    for (const k in selectedData) {
+      const list = selectedData[k].list;
+      for (const kk in list) {
+        if (k == dep -1) {
+          keyword.push(list[kk].term);
+        } else {
+          selectKeyword.push(list[kk].term);
+        }
+      }
+    }
+  } catch (e) {
+    console.warn(e);
+  }
+  selectKeyword.push(searchKeyword);
+  return {
+    keyword: procSeparator(keyword),
+    selectKeyword: procSeparator(selectKeyword),
+  };
+};
+export const procSeparator = (arr) => {
+  return arr.join('|');
+};

@@ -5,32 +5,38 @@ import ic_search from 'Assets/Images/ic_search.png';
 import arr_drop from 'Assets/Images/arr_drop.svg';
 import Button from 'Domain/Home/Common/Componet/Button';
 import KeywordDepth from './KeywordDepth';
+import * as discoveryAPI from 'Domain/Home/Discovery/API/Call';
+import common from 'Utill';
+import { useDispatch } from 'react-redux';
+import { setSelectKeyword } from 'Domain/Home/Common/Status/CommonSlice';
 
 export default function KeywordWrap(props) {
-  const tempKeywordData = [
-    {id: 0, term: '혼합현실', weight: 1},
-    {id: 1, term: '증강현실', weight: 1},
-    {id: 2, term: '텔레포트', weight: 1},
-    {id: 3, term: '혼합현실', weight: 2},
-    {id: 4, term: '혼합현실', weight: 2},
-    {id: 5, term: '실감미디어', weight: 2},
-    {id: 6, term: '현실', weight: 3},
-    {id: 7, term: '인터렉션', weight: 3},
-    {id: 8, term: '큐레이션', weight: 3},
-    {id: 9, term: '큐레이션', weight: 3},
-    {id: 10, term: '텔레포트', weight: 3},
-    {id: 11, term: '텔레포트', weight: 3},
-    {id: 12, term: '실감디바이스', weight: 3},
-    {id: 13, term: '텔레포트', weight: 4},
-    {id: 14, term: '실감미디어', weight: 4},
-    {id: 15, term: '위치기반', weight: 4},
-    {id: 16, term: '혼합현실', weight: 4},
-    {id: 17, term: '혼합현실', weight: 4},
-    {id: 18, term: '큐레이션', weight: 4},
-    {id: 19, term: '큐레이션', weight: 5},
-    {id: 20, term: '혼합현실', weight: 5},
-    {id: 21, term: '실감미디어', weight: 5},
-  ];
+  const dispatch = useDispatch();
+
+  // const tempKeywordData = [
+  //   {id: 0, term: '혼합현실', weight: 1},
+  //   {id: 1, term: '증강현실', weight: 1},
+  //   {id: 2, term: '텔레포트', weight: 1},
+  //   {id: 3, term: '혼합현실', weight: 2},
+  //   {id: 4, term: '혼합현실', weight: 2},
+  //   {id: 5, term: '실감미디어', weight: 2},
+  //   {id: 6, term: '현실', weight: 3},
+  //   {id: 7, term: '인터렉션', weight: 3},
+  //   {id: 8, term: '큐레이션', weight: 3},
+  //   {id: 9, term: '큐레이션', weight: 3},
+  //   {id: 10, term: '텔레포트', weight: 3},
+  //   {id: 11, term: '텔레포트', weight: 3},
+  //   {id: 12, term: '실감디바이스', weight: 3},
+  //   {id: 13, term: '텔레포트', weight: 4},
+  //   {id: 14, term: '실감미디어', weight: 4},
+  //   {id: 15, term: '위치기반', weight: 4},
+  //   {id: 16, term: '혼합현실', weight: 4},
+  //   {id: 17, term: '혼합현실', weight: 4},
+  //   {id: 18, term: '큐레이션', weight: 4},
+  //   {id: 19, term: '큐레이션', weight: 5},
+  //   {id: 20, term: '혼합현실', weight: 5},
+  //   {id: 21, term: '실감미디어', weight: 5},
+  // ];
 
   const { folded } = props;
   const [totalData, setTotalData] = useState({});
@@ -64,7 +70,11 @@ export default function KeywordWrap(props) {
   };
 
   // 키워드 확장 버튼 클릭 이벤트
-  const handleExpendClick = (dep) => {
+  const handleExpendClick = async (dep) => {
+    let procKeyword = common.procSelectedData(selectedData, dep, props.keyword);
+    const data = await discoveryAPI.discoveryKeyword(procKeyword.keyword, procKeyword.selectKeyword);
+    const keywordData = common.procKeywordData(data?.data?.result ?? []);
+
     // 2depth ~ 키워드 데이터 노출
     setTotalData((state) => {
       let newPrevState = {};
@@ -73,14 +83,17 @@ export default function KeywordWrap(props) {
         newPrevState[key] = { ...state[key], fold: true };
       }
       
-      return { ...newPrevState, [dep]: { fold: false, list: tempKeywordData } };
+      return { ...newPrevState, [dep]: { fold: false, list: keywordData } };
     });
   };
 
   // 키워드 선택 초기화
-  const onKeywordReset = () => {
+  const onKeywordReset = async () => {
+    const data = await discoveryAPI.discoveryKeyword(props.keyword);
+    const keywordData = common.procKeywordData(data?.data?.result ?? []);
+    // console.log(keywordData);
     // 1depth 키워드 데이터 노출
-    setTotalData({ 1: { fold: false, list: tempKeywordData } });
+    setTotalData({ 1: { fold: false, list: keywordData } });
     setSelectedData({});
   };
 
@@ -106,6 +119,7 @@ export default function KeywordWrap(props) {
       setResetDisabled(true);
     }
     // console.log('SELECT DATA : ', selectedData);
+    dispatch(setSelectKeyword(selectedData));
   }, [selectedData]);
 
   return (

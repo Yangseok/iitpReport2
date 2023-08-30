@@ -8,6 +8,7 @@ import * as mainAPI from 'Domain/Home/Main/API/Call';
 import { useSelector } from 'react-redux';
 import { getSearchKeyword } from 'Domain/Home/Common/Status/CommonSlice';
 import common from 'Utill';
+import { useNavigate } from 'react-router-dom';
 
 export default function PageSearchArea(props) {
   const { page } = props;
@@ -19,8 +20,15 @@ export default function PageSearchArea(props) {
   const keyword = useSelector(getSearchKeyword);
   const [dataSearch, setDataSearch] = useState([]);
 
+  const navigate = useNavigate();
+  const se = common.getSegment();
+
+  const handleSearch = () => {
+    navigate('/discovery/keyword/result?keyword=' + keyword);
+  };
+
   useEffect(() => {
-    const se = common.getSegment();
+    setKeywordResult(false);
     const paramSe3 = se[3] ?? '';
 
     if(paramSe2) {
@@ -35,7 +43,7 @@ export default function PageSearchArea(props) {
         setMenu(2);
       }
     }
-  }, []);
+  }, [se, paramSe2]);
 
   useEffect(() => {
     (async () => {
@@ -52,11 +60,12 @@ export default function PageSearchArea(props) {
         ? <>
           {/* 키워드 분석 */}
           <AutoCompleteSearch 
+            handleSearch={handleSearch}
             data={dataSearch}
             style={{ type: 2, name: '키워드 찾기', icon: ic_analysis }}
           />
           {(keywordResult) 
-            && <KeywordWrap folded={(page === 'resultPage') ? true : ''} />}
+            && <KeywordWrap keyword={keyword} folded={(page === 'resultPage') ? true : ''} />}
         </>
         : (menu === 1)
           ? <>
