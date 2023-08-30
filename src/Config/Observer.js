@@ -27,7 +27,7 @@ export default function Observer() {
       if (
         ['','keyword','file','project'].indexOf(se2) === -1
         || ['','result'].indexOf(se3) === -1
-        || ['','projectin','projectout','patent','paper','ict','policy','researcher','orgn','news'].indexOf(se4) === -1
+        || ['','all','projectin','projectout','patent','paper','ict','policy','researcher','orgn','news'].indexOf(se4) === -1
       ) {
         navigate('/error/404');
       }

@@ -16,6 +16,7 @@ import TabButtons from 'Domain/Home/Common/Componet/TabButtons';
 import Button from 'Domain/Home/Common/Componet/Button';
 import Pagination from 'Domain/Home/Common/Componet/Pagination';
 import CategoryWrap from '../Component/CategoryWrap';
+import ListItem from 'Domain/Home/Common/Layout/ListItem';
 
 export default function DiscoveryStyles() {
   const tabButtons1 = [
@@ -26,10 +27,6 @@ export default function DiscoveryStyles() {
     { id: 0, name: '키워드 분석', onClick: () => setTabActive2(0) },
     { id: 1, name: '파일 분석', onClick: () => setTabActive2(1) },
     { id: 2, name: '과제 정보 분석', onClick: () => setTabActive2(2) },
-  ];
-  const tabButtons3 = [
-    { id: 0, name: '국가 R&D 과제', onClick: () => setTabActive3(0) },
-    { id: 1, name: 'IITP 내부 과제', onClick: () => setTabActive3(1) },
   ];
   // 데이터는 10개씩 뿌려줌
   const tempData1 = [
@@ -186,7 +183,6 @@ export default function DiscoveryStyles() {
 
   const [tabActive1, setTabActive1] = useState(0);
   const [tabActive2, setTabActive2] = useState(0);
-  const [tabActive3, setTabActive3] = useState(0);
   const [researcherActive, setResearcherActive] = useState({});
 
   const onResearcherSelect = (e, id, name) => {
@@ -274,11 +270,9 @@ export default function DiscoveryStyles() {
         </div>
       </section>
       {/* 분석 결과 (과제) */}
-      <section className='mt-10'>
+      <section className='mt-6'>
         <div className='container'>
-          <TabButtons style='2' tabs={tabButtons3} active={tabActive3} />
-
-          <div className='flex items-center justify-between mt-6'>
+          <div className='flex items-center justify-between'>
             <h4 className='text-base font-bold text-color-dark'>
               국가 R&D 과제 {/* IITP 내부 과제 */} <span className='text-color-main'>50,150건</span>
             </h4>
@@ -310,32 +304,56 @@ export default function DiscoveryStyles() {
             <ul>
               {(tempData1?.length > 0) 
                 ? tempData1?.map((e) => {
-                  return <li key={e.id}>
-                    <div className='flex justify-between gap-4'>
-                      <div className='flex-1'>
-                        <div className='flex gap-2'>
-                          {/* 진행중: tag_style01 | 종료: tag_style02 */}
-                          <span className='tag_style01 mt-0.5'>{e.progress}</span>
-                          <p className='text-base font-bold text-color-dark flex-1'>{e.title}</p>
+                  return (<>
+                    <ListItem 
+                      key={e.id}
+                      tag={1}
+                      title={e.title}
+                      contents={<>
+                        <div>
+                          <p className='text-sm text-color-regular'>연구 개발비: <span className='font-medium text-color-main'>{e.price}</span></p>
+                          <p className='text-sm text-color-regular'>연구 개발기간: <span className='font-medium text-color-main'>{e.period}</span></p>
+                          <p className='text-sm text-color-regular'>연구 개발기관: <span className='font-medium text-color-main'>{e.agency}</span></p>
+                          <p className='text-sm text-color-regular'>연구 책임자: <span className='font-medium text-color-main'>{e.name}</span></p>
+                          <p className='text-sm text-color-regular'>부처명: <span className='font-medium text-color-main'>{e.department}</span></p>
                         </div>
-                        <div className='text_style01 mt-2'>
-                          <div>
-                            <p className='text-sm text-color-regular'>연구 개발비: <span className='font-medium text-color-main'>{e.price}</span></p>
-                            <p className='text-sm text-color-regular'>연구 개발기간: <span className='font-medium text-color-main'>{e.period}</span></p>
-                            <p className='text-sm text-color-regular'>연구 개발기관: <span className='font-medium text-color-main'>{e.agency}</span></p>
-                            <p className='text-sm text-color-regular'>연구 책임자: <span className='font-medium text-color-main'>{e.name}</span></p>
-                            <p className='text-sm text-color-regular'>부처명: <span className='font-medium text-color-main'>{e.department}</span></p>
+                        <div>
+                          <p className='text-sm text-color-regular'>연구 개발성과: <span className='font-medium text-color-main'>{e.performance}</span></p>
+                          <p className='text-sm text-color-regular'>국가과학기술표준분류: <span className='font-medium text-color-main'>{e.division}</span></p>
+                          <p className='text-sm text-color-regular'>한글 키워드: <span className='font-medium text-color-main'>{e.keyword}</span></p>
+                        </div>
+                      </>}
+                      btns={<>
+                        <a href={`${e.id}`} className='h-5 px-1.5 rounded-sm text-xs font-medium text-color-white bg-color-light1'>자세히 보기↗</a>
+                      </>}
+                    />
+                    <li key={e.id}>
+                      <div className='flex justify-between gap-4'>
+                        <div className='flex-1'>
+                          <div className='flex gap-2'>
+                            {/* 진행중: tag_style01 | 종료: tag_style02 */}
+                            <span className='tag_style01 mt-0.5'>{e.progress}</span>
+                            <p className='text-base font-bold text-color-dark flex-1'>{e.title}</p>
                           </div>
-                          <div>
-                            <p className='text-sm text-color-regular'>연구 개발성과: <span className='font-medium text-color-main'>{e.performance}</span></p>
-                            <p className='text-sm text-color-regular'>국가과학기술표준분류: <span className='font-medium text-color-main'>{e.division}</span></p>
-                            <p className='text-sm text-color-regular'>한글 키워드: <span className='font-medium text-color-main'>{e.keyword}</span></p>
+                          <div className='text_style01 mt-2'>
+                            <div>
+                              <p className='text-sm text-color-regular'>연구 개발비: <span className='font-medium text-color-main'>{e.price}</span></p>
+                              <p className='text-sm text-color-regular'>연구 개발기간: <span className='font-medium text-color-main'>{e.period}</span></p>
+                              <p className='text-sm text-color-regular'>연구 개발기관: <span className='font-medium text-color-main'>{e.agency}</span></p>
+                              <p className='text-sm text-color-regular'>연구 책임자: <span className='font-medium text-color-main'>{e.name}</span></p>
+                              <p className='text-sm text-color-regular'>부처명: <span className='font-medium text-color-main'>{e.department}</span></p>
+                            </div>
+                            <div>
+                              <p className='text-sm text-color-regular'>연구 개발성과: <span className='font-medium text-color-main'>{e.performance}</span></p>
+                              <p className='text-sm text-color-regular'>국가과학기술표준분류: <span className='font-medium text-color-main'>{e.division}</span></p>
+                              <p className='text-sm text-color-regular'>한글 키워드: <span className='font-medium text-color-main'>{e.keyword}</span></p>
+                            </div>
                           </div>
                         </div>
+                        <a href={`${e.id}`} className='h-5 px-1.5 rounded-sm text-xs font-medium text-color-white bg-color-light1'>자세히 보기↗</a>
                       </div>
-                      <a href={`${e.id}`} className='h-5 px-1.5 rounded-sm text-xs font-medium text-color-white bg-color-light1'>자세히 보기↗</a>
-                    </div>
-                  </li>;
+                    </li>
+                  </>);
                 })
                 : <li>
                   <p className='text-base text-color-placeholder'>데이터가 없습니다.</p>
@@ -349,9 +367,9 @@ export default function DiscoveryStyles() {
         </div>
       </section>
       {/* 분석 결과 (특허) */}
-      <section className='mt-10'>
+      <section className='mt-6'>
         <div className='container'>
-          <div className='flex items-center justify-between mt-6'>
+          <div className='flex items-center justify-between'>
             <h4 className='text-base font-bold text-color-dark'>
               특허 <span className='text-color-main'>100,300건</span>
             </h4>
@@ -383,29 +401,51 @@ export default function DiscoveryStyles() {
             <ul>
               {(tempData2?.length > 0) 
                 ? tempData2?.map((e) => {
-                  return <li key={e.id}>
-                    <div className='flex justify-between gap-4'>
-                      <div className='flex-1'>
-                        <p className='text-base font-bold text-color-dark'>{e.title}</p>
-                        <div className='text_style01 mt-2'>
-                          <div>
-                            <p className='text-sm text-color-regular'>유발 과제: <span className='font-medium text-color-main'>{e.project}</span></p>
-                            <p className='text-sm text-color-regular'>출원등록구분: <span className='font-medium text-color-main'>{e.division}</span></p>
-                            <p className='text-sm text-color-regular'>출원(등록)번호: <span className='font-medium text-color-main'>{e.num}</span></p>
-                          </div>
-                          <div>
-                            <p className='text-sm text-color-regular'>출원(등록)일: <span className='font-medium text-color-main'>{e.date}</span></p>
-                            <p className='text-sm text-color-regular'>출원(등록)인: <span className='font-medium text-color-main'>{e.agency}</span></p>
-                            <p className='text-sm text-color-regular'>발명자: <span className='font-medium text-color-main'>{e.name}</span></p>
-                          </div>
+                  return (<>
+                    <ListItem 
+                      key={e.id}
+                      title={e.title}
+                      contents={<>
+                        <div>
+                          <p className='text-sm text-color-regular'>유발 과제: <span className='font-medium text-color-main'>{e.project}</span></p>
+                          <p className='text-sm text-color-regular'>출원등록구분: <span className='font-medium text-color-main'>{e.division}</span></p>
+                          <p className='text-sm text-color-regular'>출원(등록)번호: <span className='font-medium text-color-main'>{e.num}</span></p>
                         </div>
-                      </div>
-                      <div className='flex flex-col gap-2.5'>
+                        <div>
+                          <p className='text-sm text-color-regular'>출원(등록)일: <span className='font-medium text-color-main'>{e.date}</span></p>
+                          <p className='text-sm text-color-regular'>출원(등록)인: <span className='font-medium text-color-main'>{e.agency}</span></p>
+                          <p className='text-sm text-color-regular'>발명자: <span className='font-medium text-color-main'>{e.name}</span></p>
+                        </div>
+                      </>}
+                      btns={<>
                         <a href={`${e.id}`} className='h-5 px-1.5 rounded-sm text-xs font-medium text-color-white bg-color-light1'>자세히 보기↗</a>
                         <a href={e.link} className='h-5 px-1.5 rounded-sm text-xs font-medium text-color-white bg-color-footer' target='_blank' rel='noreferrer' title={`새창이동, ${e.title} 원문 페이지`}>원문 보기↗</a>
+                      </>}
+                    />
+                    <li key={e.id}>
+                      <div className='flex justify-between gap-4'>
+                        <div className='flex-1'>
+                          <p className='text-base font-bold text-color-dark'>{e.title}</p>
+                          <div className='text_style01 mt-2'>
+                            <div>
+                              <p className='text-sm text-color-regular'>유발 과제: <span className='font-medium text-color-main'>{e.project}</span></p>
+                              <p className='text-sm text-color-regular'>출원등록구분: <span className='font-medium text-color-main'>{e.division}</span></p>
+                              <p className='text-sm text-color-regular'>출원(등록)번호: <span className='font-medium text-color-main'>{e.num}</span></p>
+                            </div>
+                            <div>
+                              <p className='text-sm text-color-regular'>출원(등록)일: <span className='font-medium text-color-main'>{e.date}</span></p>
+                              <p className='text-sm text-color-regular'>출원(등록)인: <span className='font-medium text-color-main'>{e.agency}</span></p>
+                              <p className='text-sm text-color-regular'>발명자: <span className='font-medium text-color-main'>{e.name}</span></p>
+                            </div>
+                          </div>
+                        </div>
+                        <div className='flex flex-col gap-2.5'>
+                          <a href={`${e.id}`} className='h-5 px-1.5 rounded-sm text-xs font-medium text-color-white bg-color-light1'>자세히 보기↗</a>
+                          <a href={e.link} className='h-5 px-1.5 rounded-sm text-xs font-medium text-color-white bg-color-footer' target='_blank' rel='noreferrer' title={`새창이동, ${e.title} 원문 페이지`}>원문 보기↗</a>
+                        </div>
                       </div>
-                    </div>
-                  </li>;
+                    </li>
+                  </>);
                 })
                 : <li>
                   <p className='text-base text-color-placeholder'>데이터가 없습니다.</p>
@@ -419,9 +459,9 @@ export default function DiscoveryStyles() {
         </div>
       </section>
       {/* 분석 결과 (논문) */}
-      <section className='mt-10'>
+      <section className='mt-6'>
         <div className='container'>
-          <div className='flex items-center justify-between mt-6'>
+          <div className='flex items-center justify-between'>
             <h4 className='text-base font-bold text-color-dark'>
               논문 <span className='text-color-main'>100,300건</span>
             </h4>
@@ -453,24 +493,41 @@ export default function DiscoveryStyles() {
             <ul>
               {(tempData3?.length > 0) 
                 ? tempData3?.map((e) => {
-                  return <li key={e.id}>
-                    <div className='flex justify-between gap-4'>
-                      <div className='flex-1'>
-                        <p className='text-base font-bold text-color-dark'>{e.title}</p>
-                        <div className='text_style01 mt-2'>
-                          <p className='text-sm text-color-regular'>발행년도: <span className='font-medium text-color-main'>{e.year}</span></p>
-                          <p className='text-sm text-color-regular'>논문 구분: <span className='font-medium text-color-main'>{e.division}</span></p>
-                          <p className='text-sm text-color-regular'>소속기관: <span className='font-medium text-color-main'>{e.agency}</span></p>
-                          <p className='text-sm text-color-regular'>주 저자: <span className='font-medium text-color-main'>{e.name}</span></p>
-                          <p className='text-sm text-color-regular'>학술지/학술대회명: <span className='font-medium text-color-main'>{e.journal}</span></p>
-                        </div>
-                      </div>
-                      <div className='flex flex-col gap-2.5'>
+                  return (<>
+                    <ListItem 
+                      key={e.id}
+                      title={e.title}
+                      contents={<>
+                        <p className='text-sm text-color-regular'>발행년도: <span className='font-medium text-color-main'>{e.year}</span></p>
+                        <p className='text-sm text-color-regular'>논문 구분: <span className='font-medium text-color-main'>{e.division}</span></p>
+                        <p className='text-sm text-color-regular'>소속기관: <span className='font-medium text-color-main'>{e.agency}</span></p>
+                        <p className='text-sm text-color-regular'>주 저자: <span className='font-medium text-color-main'>{e.name}</span></p>
+                        <p className='text-sm text-color-regular'>학술지/학술대회명: <span className='font-medium text-color-main'>{e.journal}</span></p>
+                      </>}
+                      btns={<>
                         <a href={`${e.id}`} className='h-5 px-1.5 rounded-sm text-xs font-medium text-color-white bg-color-light1'>자세히 보기↗</a>
                         <a href={e.link} className='h-5 px-1.5 rounded-sm text-xs font-medium text-color-white bg-color-footer' target='_blank' rel='noreferrer' title={`새창이동, ${e.title} 원문 페이지`}>원문 보기↗</a>
+                      </>}
+                    />
+                    <li key={e.id}>
+                      <div className='flex justify-between gap-4'>
+                        <div className='flex-1'>
+                          <p className='text-base font-bold text-color-dark'>{e.title}</p>
+                          <div className='text_style01 mt-2'>
+                            <p className='text-sm text-color-regular'>발행년도: <span className='font-medium text-color-main'>{e.year}</span></p>
+                            <p className='text-sm text-color-regular'>논문 구분: <span className='font-medium text-color-main'>{e.division}</span></p>
+                            <p className='text-sm text-color-regular'>소속기관: <span className='font-medium text-color-main'>{e.agency}</span></p>
+                            <p className='text-sm text-color-regular'>주 저자: <span className='font-medium text-color-main'>{e.name}</span></p>
+                            <p className='text-sm text-color-regular'>학술지/학술대회명: <span className='font-medium text-color-main'>{e.journal}</span></p>
+                          </div>
+                        </div>
+                        <div className='flex flex-col gap-2.5'>
+                          <a href={`${e.id}`} className='h-5 px-1.5 rounded-sm text-xs font-medium text-color-white bg-color-light1'>자세히 보기↗</a>
+                          <a href={e.link} className='h-5 px-1.5 rounded-sm text-xs font-medium text-color-white bg-color-footer' target='_blank' rel='noreferrer' title={`새창이동, ${e.title} 원문 페이지`}>원문 보기↗</a>
+                        </div>
                       </div>
-                    </div>
-                  </li>;
+                    </li>
+                  </>);
                 })
                 : <li>
                   <p className='text-base text-color-placeholder'>데이터가 없습니다.</p>
@@ -484,9 +541,9 @@ export default function DiscoveryStyles() {
         </div>
       </section>
       {/* 분석 결과 (ICT 자료) */}
-      <section className='mt-10'>
+      <section className='mt-6'>
         <div className='container'>
-          <div className='flex items-center justify-between mt-6'>
+          <div className='flex items-center justify-between'>
             <h4 className='text-base font-bold text-color-dark'>
               ICT 자료 <span className='text-color-main'>100,300건</span>
             </h4>
@@ -518,21 +575,39 @@ export default function DiscoveryStyles() {
             <ul>
               {(tempData4?.length > 0) 
                 ? tempData4?.map((e) => {
-                  return <li key={e.id}>
-                    <div className='flex items-start justify-between gap-4'>
-                      <p className='text-base font-bold text-color-dark flex-1'>{e.title}</p>
-                      <div className='text_style01 flex items-center gap-4'>
-                        {(e.link) ? <a href={e.link} className='h-5 px-1.5 rounded-sm text-xs font-medium text-color-white bg-color-light1' target='_blank' rel='noreferrer' title={`새창이동, ${e.title} 뷰어 페이지`}>view 보기↗</a> : ''}
-                        <div>
-                          <p className='text-sm text-color-regular'>발행기관: <span className='font-medium text-color-main'>{e.agency}</span></p>
-                          <p className='text-sm text-color-regular'>발행일: <span className='font-medium text-color-main'>{e.date}</span></p>
+                  return (<>
+                    <ListItem 
+                      key={e.id}
+                      title={e.title}
+                      contents={<>
+                        <p className='text-sm text-color-regular line2_text'>{e.content}</p>
+                      </>}
+                      desc={<>
+                        <div className='text_style01 flex items-center gap-4'>
+                          {(e.link) ? <a href={e.link} className='h-5 px-1.5 rounded-sm text-xs font-medium text-color-white bg-color-light1' target='_blank' rel='noreferrer' title={`새창이동, ${e.title} 뷰어 페이지`}>view 보기↗</a> : ''}
+                          <div>
+                            <p className='text-sm text-color-regular'>발행기관: <span className='font-medium text-color-main'>{e.agency}</span></p>
+                            <p className='text-sm text-color-regular'>발행일: <span className='font-medium text-color-main'>{e.date}</span></p>
+                          </div>
+                        </div>
+                      </>}
+                    />
+                    <li key={e.id}>
+                      <div className='flex items-start justify-between gap-4'>
+                        <p className='text-base font-bold text-color-dark flex-1'>{e.title}</p>
+                        <div className='text_style01 flex items-center gap-4'>
+                          {(e.link) ? <a href={e.link} className='h-5 px-1.5 rounded-sm text-xs font-medium text-color-white bg-color-light1' target='_blank' rel='noreferrer' title={`새창이동, ${e.title} 뷰어 페이지`}>view 보기↗</a> : ''}
+                          <div>
+                            <p className='text-sm text-color-regular'>발행기관: <span className='font-medium text-color-main'>{e.agency}</span></p>
+                            <p className='text-sm text-color-regular'>발행일: <span className='font-medium text-color-main'>{e.date}</span></p>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                    <div className='mt-2'>
-                      <p className='text-sm text-color-regular line2_text'>{e.content}</p>
-                    </div>
-                  </li>;
+                      <div className='mt-2'>
+                        <p className='text-sm text-color-regular line2_text'>{e.content}</p>
+                      </div>
+                    </li>
+                  </>);
                 })
                 : <li>
                   <p className='text-base text-color-placeholder'>데이터가 없습니다.</p>
@@ -546,9 +621,9 @@ export default function DiscoveryStyles() {
         </div>
       </section>
       {/* 분석 결과 (정부정책) */}
-      <section className='mt-10'>
+      <section className='mt-6'>
         <div className='container'>
-          <div className='flex items-center justify-between mt-6'>
+          <div className='flex items-center justify-between'>
             <h4 className='text-base font-bold text-color-dark'>
               정부정책 <span className='text-color-main'>100,300건</span>
             </h4>
@@ -580,18 +655,33 @@ export default function DiscoveryStyles() {
             <ul>
               {(tempData5?.length > 0) 
                 ? tempData5?.map((e) => {
-                  return <li key={e.id}>
-                    <div className='flex items-start justify-between gap-4'>
-                      <p className='text-base font-bold text-color-dark flex-1'>{e.title}</p>
-                      <div className='text_style01'>
-                        <p className='text-sm text-color-regular'>출처: <span className='font-medium text-color-main'>{e.source}</span></p>
-                        <p className='text-sm text-color-regular'>작성일: <span className='font-medium text-color-main'>{e.date}</span></p>
+                  return (<>
+                    <ListItem 
+                      key={e.id}
+                      title={e.title}
+                      contents={<>
+                        <p className='text-sm text-color-regular line2_text'>{e.content}</p>
+                      </>}
+                      desc={<>
+                        <div className='text_style01'>
+                          <p className='text-sm text-color-regular'>출처: <span className='font-medium text-color-main'>{e.source}</span></p>
+                          <p className='text-sm text-color-regular'>작성일: <span className='font-medium text-color-main'>{e.date}</span></p>
+                        </div>
+                      </>}
+                    />
+                    <li key={e.id}>
+                      <div className='flex items-start justify-between gap-4'>
+                        <p className='text-base font-bold text-color-dark flex-1'>{e.title}</p>
+                        <div className='text_style01'>
+                          <p className='text-sm text-color-regular'>출처: <span className='font-medium text-color-main'>{e.source}</span></p>
+                          <p className='text-sm text-color-regular'>작성일: <span className='font-medium text-color-main'>{e.date}</span></p>
+                        </div>
                       </div>
-                    </div>
-                    <div className='mt-2'>
-                      <p className='text-sm text-color-regular line2_text'>{e.content}</p>
-                    </div>
-                  </li>;
+                      <div className='mt-2'>
+                        <p className='text-sm text-color-regular line2_text'>{e.content}</p>
+                      </div>
+                    </li>
+                  </>);
                 })
                 : <li>
                   <p className='text-base text-color-placeholder'>데이터가 없습니다.</p>
@@ -605,9 +695,9 @@ export default function DiscoveryStyles() {
         </div>
       </section>
       {/* 분석 결과 (연구자) */}
-      <section className='mt-10'>
+      <section className='mt-6'>
         <div className='container'>
-          <div className='flex items-center justify-between mt-6'>
+          <div className='flex items-center justify-between'>
             <h4 className='text-base font-bold text-color-dark'>
               연구자 <span className='text-color-main'>100,300건</span>
             </h4>
@@ -744,7 +834,7 @@ export default function DiscoveryStyles() {
         </div>
       </section>
       {/* 분석 결과 (기관) 미진행 */}
-      <section className='mt-10'>
+      <section className='mt-6'>
         <div className='container'>
           <div className='flex items-center justify-between mt-6'>
             <h4 className='text-base font-bold text-color-dark'>

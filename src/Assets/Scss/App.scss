@@ -494,6 +494,11 @@ select {
           padding: 8px 20px;
           font-size: 16px;
           color: $color_regular;
+
+          .text em {
+            font-style: normal;
+            color: $color_light1;
+          }
         }
         &.no_data { color: $color_placeholder; }
       }

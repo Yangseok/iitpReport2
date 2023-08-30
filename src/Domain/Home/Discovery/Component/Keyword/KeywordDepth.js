@@ -35,7 +35,7 @@ export default function KeywordDepth(props) {
       <div className={`keywords_wrap mt-4${(fold) ? ' fold' : ''}`}>
         <div className='title'>
           <h4>{idx}depth 키워드</h4>
-          <button type='button' onClick={() => setFold(state => !state)}>{idx}depth 키워드 접기</button>
+          <button type='button' onClick={() => setFold(state => !state)}>{`${idx}depth 키워드 ${(fold) ? '펼치기' : '접기'}`}</button>
         </div>
         <ul>
           {(showData?.length > 0) 

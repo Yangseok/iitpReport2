@@ -10,13 +10,13 @@ export default function DiscoveryLayout({children}) {
   const [tabActive2, setTabActive2] = useState(0);
 
   const tabButtons1 = [
-    { id: 0, name: '디스커버리 검색', to:'/discovery/keyword', onClick: () => location.href='/discovery/keyword' },
-    { id: 1, name: '통합 검색', to:'/search', onClick: () => location.href='/search' },
+    { id: 0, name: '디스커버리 검색', to:'/discovery/keyword'},
+    { id: 1, name: '통합 검색', to:'/search'},
   ];
   const tabButtons2 = [
-    { id: 0, name: '키워드 분석', to:'/discovery/keyword', onClick: () => location.href='/discovery/keyword' },
-    { id: 1, name: '파일 분석', to:'/discovery/file', onClick: () => location.href='/discovery/file' },
-    { id: 2, name: '과제 정보 분석', to:'/discovery/project', onClick: () => location.href='/discovery/project' },
+    { id: 0, name: '키워드 분석', to:'/discovery/keyword'},
+    { id: 1, name: '파일 분석', to:'/discovery/file'},
+    { id: 2, name: '과제 정보 분석', to:'/discovery/project'},
   ];
 
   useEffect(() => {

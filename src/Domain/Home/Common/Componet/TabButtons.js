@@ -21,7 +21,7 @@ export default function TabButtons(props) {
       <ul>
         {tabs.map((e) => (
           <React.Fragment key={e.id}>
-            <li className={(e.id == active) ? 'on' : ''}><Button name={e.name} onClick={e.onClick} /></li>
+            <li className={(e.id == active) ? 'on' : ''}><Button name={e.name} onClick={(e?.to) ? () => location.href = e.to : e.onClick} /></li>
           </React.Fragment>
         ))}
       </ul>

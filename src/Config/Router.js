@@ -3,7 +3,16 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Main from 'Domain/Home/Main/Page/Main';
 import Login from 'Domain/Home/Login/Page/Main';
 import Discovery from 'Domain/Home/Discovery/Page/Main';
-import DiscoveryResult from 'Domain/Home/Discovery/Page/Result';
+import DiscoveryResultProjectOut from 'Domain/Home/Discovery/Page/Result/ProjectOut';
+import DiscoveryResultProjectIn from 'Domain/Home/Discovery/Page/Result/ProjectIn';
+import DiscoveryResultPatent from 'Domain/Home/Discovery/Page/Result/Patent';
+import DiscoveryResultPaper from 'Domain/Home/Discovery/Page/Result/Paper';
+import DiscoveryResultIct from 'Domain/Home/Discovery/Page/Result/Ict';
+import DiscoveryResultPolicy from 'Domain/Home/Discovery/Page/Result/Policy';
+import DiscoveryResultResearcher from 'Domain/Home/Discovery/Page/Result/Researcher';
+import DiscoveryResultOrgn from 'Domain/Home/Discovery/Page/Result/Orgn';
+import DiscoveryResultNews from 'Domain/Home/Discovery/Page/Result/News';
+import Search from 'Domain/Home/Discovery/Page/Search';
 import DiscoveryStyles from 'Domain/Home/Discovery/Page/Styles';
 import DemandBanking from 'Domain/Home/DemandBanking/Page/Main';
 import ICTTrend from 'Domain/Home/ICTTrend/Page/Main';
@@ -40,7 +49,16 @@ export default function Router() {
         <Route path='/discovery' element={<Discovery />} />
         <Route path='/discovery/:se2' element={<Discovery />} />
         <Route path='/discovery/:se2/result' element={<Discovery />} />
-        <Route path='/discovery/:se2/result/:se4' element={<DiscoveryResult />} />
+        <Route path='/discovery/:se2/result/projectout' element={<DiscoveryResultProjectOut />} />
+        <Route path='/discovery/:se2/result/projectin' element={<DiscoveryResultProjectIn />} />
+        <Route path='/discovery/:se2/result/patent' element={<DiscoveryResultPatent />} />
+        <Route path='/discovery/:se2/result/paper' element={<DiscoveryResultPaper />} />
+        <Route path='/discovery/:se2/result/ict' element={<DiscoveryResultIct />} />
+        <Route path='/discovery/:se2/result/policy' element={<DiscoveryResultPolicy />} />
+        <Route path='/discovery/:se2/result/researcher' element={<DiscoveryResultResearcher />} />
+        <Route path='/discovery/:se2/result/orgn' element={<DiscoveryResultOrgn />} />
+        <Route path='/discovery/:se2/result/news' element={<DiscoveryResultNews />} />
+        <Route path='/search' element={<Search />} />
         <Route path='/discoverystyles' element={<DiscoveryStyles />} />
         <Route path='/demandbanking' element={<DemandBanking />} />
         <Route path='/icttrend' element={<ICTTrend />} />

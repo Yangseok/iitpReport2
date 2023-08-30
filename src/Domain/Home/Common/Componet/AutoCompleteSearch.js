@@ -50,7 +50,7 @@ export default function AutoCompleteSearch(props) {
       const obj = {};
       obj.text = parse(item.data);
       obj.onClick = () => onListClick(item.originData);
-      obj.agency = (item.type === 'company');
+      obj.agency = (item.type !== 'default');
       tempArr.push(obj);
     });
     setListData(tempArr);
@@ -118,7 +118,7 @@ export default function AutoCompleteSearch(props) {
               <li key={i}>
                 <button type='button' onClick={e.onClick}>
                   {(e.agency) ? <span className="tag_style01 mt-0.5">기업</span> : ''}
-                  {e.text}
+                  <span className='text'>{e.text}</span>
                 </button>
               </li>
             ))

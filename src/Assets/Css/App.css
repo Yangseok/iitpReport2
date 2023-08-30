@@ -602,7 +602,7 @@ select {
   padding: 0 48px 0 16px;
   border: 1px solid #E2E8F0;
   border-radius: 4px;
-  background: #FFFFFF url("Assets/Images/arr_select.png") no-repeat right 10px center / 24px;
+  background: #FFFFFF url("Assets/Images/arr_select.png") no-repeat right 10px center/24px;
   font-size: 14px;
   color: #334155;
   appearance: none;
@@ -703,6 +703,10 @@ select::-ms-expand {
   padding: 8px 20px;
   font-size: 16px;
   color: #334155;
+}
+.auto_search_wrap .search_list ul li button .text em, .auto_search_wrap .search_list ul li a .text em, .auto_search_wrap .search_list ul li.no_data .text em {
+  font-style: normal;
+  color: #52A3FF;
 }
 .auto_search_wrap .search_list ul li.no_data {
   color: #94A3B8;
