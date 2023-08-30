@@ -25,7 +25,7 @@ const persistConfig = {
   storage,
   // whitelist: [],
   // todo: api 관련 상태값은 로컬스토리지에 저장하지 않도록 하겠다.
-  blacklist: ['msg','common'],
+  blacklist: ['msg'],
 };
 
 const rootReducer = combineReducers({
