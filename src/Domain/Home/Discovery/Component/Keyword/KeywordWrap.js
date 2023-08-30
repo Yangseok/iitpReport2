@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import ic_reset from 'Assets/Images/ic_reset.png';
 import ic_reset02 from 'Assets/Images/ic_reset02.png';
 import ic_search from 'Assets/Images/ic_search.png';
-import arr_drop from 'Assets/Images/arr_drop.svg';
+import arr_drop from 'Assets/Images/arr_drop.png';
 import Button from 'Domain/Home/Common/Componet/Button';
 import KeywordDepth from './KeywordDepth';
 
@@ -119,7 +119,7 @@ export default function KeywordWrap(props) {
           </button>
           <button type='button' className={`keywords_fold_btn${(fullFold) ? ' fold' : ''}`} onClick={() => setFullFold(state => !state)}>
             {(fullFold) ? '펼치기' : '접기'} 
-            <img src={arr_drop} alt='화살표' />
+            <img src={arr_drop} alt='화살표' className='w-6' />
           </button>
         </div>
       </div>

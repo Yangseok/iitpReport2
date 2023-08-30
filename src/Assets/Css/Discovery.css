@@ -25,7 +25,7 @@
   overflow: hidden;
   width: 30px;
   height: 30px;
-  background: url("Assets/Images/arr_drop.svg") no-repeat center/24px;
+  background: url("Assets/Images/arr_drop.png") no-repeat center/24px;
   transition: all 0.3s;
 }
 .keywords_wrap ul {

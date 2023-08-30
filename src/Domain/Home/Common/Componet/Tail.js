@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import ic_arrow from 'Assets/Images/ic_arrow01.svg';
+import ic_arrow from 'Assets/Images/ic_arrow01.png';
 import Button from 'Domain/Home/Common/Componet/Button';
 
 export default function Tail() {

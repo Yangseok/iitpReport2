@@ -220,7 +220,7 @@ body {
   display: block;
   width: 80px;
   height: 36px;
-  background: url("Assets/Images/logo.svg") no-repeat center/contain;
+  background: url("Assets/Images/logo.png") no-repeat center/contain;
 }
 #header nav ul {
   display: flex;
@@ -297,7 +297,7 @@ body {
   display: block;
   width: 202px;
   height: 36px;
-  background: url("Assets/Images/logo02.svg") no-repeat center/contain;
+  background: url("Assets/Images/logo02.png") no-repeat center/contain;
 }
 #footer .link_box .top_link_box {
   display: flex;
@@ -602,7 +602,7 @@ select {
   padding: 0 48px 0 16px;
   border: 1px solid #E2E8F0;
   border-radius: 4px;
-  background: #FFFFFF url("Assets/Images/arr_select.svg") no-repeat right 10px center;
+  background: #FFFFFF url("Assets/Images/arr_select.png") no-repeat right 10px center / 24px;
   font-size: 14px;
   color: #334155;
   appearance: none;

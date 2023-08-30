@@ -4,13 +4,13 @@ import ic_guide from 'Assets/Images/ic_guide.png';
 import ic_analysis from 'Assets/Images/ic_analysis.png';
 import ic_reset from 'Assets/Images/ic_reset.png';
 import ic_filter from 'Assets/Images/ic_filter.png';
-import ic_arrow from 'Assets/Images/ic_arrow02.svg';
+import ic_arrow from 'Assets/Images/ic_arrow02.png';
 import img_researcher01 from 'Assets/Images/researcher_img01.png';
 import img_researcher02 from 'Assets/Images/researcher_img02.png';
 import img_researcher03 from 'Assets/Images/researcher_img03.png';
 import img_researcher04 from 'Assets/Images/researcher_img04.png';
 import img_researcher05 from 'Assets/Images/researcher_img05.png';
-import arr_drop from 'Assets/Images/arr_drop.svg';
+import arr_drop from 'Assets/Images/arr_drop.png';
 import Layout from 'Domain/Home/Common/Layout/Sub';
 import TabButtons from 'Domain/Home/Common/Componet/TabButtons';
 import Button from 'Domain/Home/Common/Componet/Button';
@@ -225,7 +225,7 @@ export default function DiscoveryStyles() {
             <h3 className='text-xl font-bold text-color-dark'>키워드 결과</h3>
             <div className='flex items-center gap-6'>
               <button type='button' className='text-sm font-medium text-color-placeholder'>선택 초기화 <img src={ic_reset} alt='선택 초기화' className='w-6' /></button>
-              <button type='button' className='text-sm font-medium text-color-regular'>접기 <img src={arr_drop} alt='화살표' /></button>
+              <button type='button' className='text-sm font-medium text-color-regular'>접기 <img src={arr_drop} alt='화살표' className='w-6' /></button>
             </div>
           </div>
           <div className='keywords_wrap mt-4'>

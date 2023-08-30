@@ -85,7 +85,7 @@ body {
     display: block;
     width: 80px;
     height: 36px;
-    background: url('Assets/Images/logo.svg') no-repeat center / contain;
+    background: url('Assets/Images/logo.png') no-repeat center / contain;
   }
   nav ul { @include flexLayout(center, center, 60px); }
   ul.right_menu {
@@ -142,7 +142,7 @@ body {
         display: block;
         width: 202px;
         height: 36px;
-        background: url('Assets/Images/logo02.svg') no-repeat center / contain;
+        background: url('Assets/Images/logo02.png') no-repeat center / contain;
       }
     }
   }
@@ -400,7 +400,7 @@ select {
   padding: 0 48px 0 16px;
   border: 1px solid $color_line;
   border-radius: 4px;
-  background: $color_white url('Assets/Images/arr_select.svg') no-repeat right 10px center;
+  background: $color_white url('Assets/Images/arr_select.png') no-repeat right 10px center / 24px;
   font-size: 14px;
   color: $color_regular;
   appearance: none;
