@@ -9,19 +9,19 @@ export default function PaperAPIButton(props) {
       if (filter) {
         filterObj = {
           year: '2020',
-          applType: '신규',
-          applicant: '대한민국(행정안전부 국립재난안전연구원장)',
+          paperType: 'JAKO',
         };
       }
       let searchParam = {};
       if (search) {
         searchParam = {
-          yearStart: '2010',
-          yearEnd: '2023',
-          title: '드론을 이용한 인공지능 기반 재난 피해정보 탐지 방법 및 시스템',
-          applNumber: '1020200077142',
-          applicantName: '대한민국(행정안전부 국립재난안전연구원장)',
-          inventorName: '신동윤'
+          yearStart: '1999',
+          yearEnd: '2010',
+          title: '고무차륜형 AGT 주행장치의 구조 및 피로해석',
+          journalTitle: '한국철도학회',
+          issn: '1738-6225|2288-2235',
+          author: '유형선|권혁수|윤성호',
+          abstract: 'Automated Guideway Transit'
         };
       }
       let similarity = [];
@@ -47,8 +47,8 @@ export default function PaperAPIButton(props) {
   return (
     <>
       <li className='mb-1'><Button text="논문 검색" onClick={() => paperTest(false,false)} /></li>
-      <li className='mb-1'><Button text="논문 검색 - 필터" onClick={paperTest(false,false)} /></li>
-      <li className='mb-1'><Button text="논문 검색 - 상세검색" onClick={paperTest(false,false)} /></li>
+      <li className='mb-1'><Button text="논문 검색 - 필터" onClick={() => paperTest(false,false)} /></li>
+      <li className='mb-1'><Button text="논문 검색 - 상세검색" onClick={() => paperTest(false,false)} /></li>
       <li className='mb-1'><Button text="상세 페이지(논문)" onClick={paperViewTest} /></li>
     </>
   );
