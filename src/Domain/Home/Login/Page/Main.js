@@ -1,7 +1,7 @@
 import React from 'react';
 import 'Assets/Css/Login.css';
 import Layout from 'Domain/Home/Common/Layout/Main';
-import Tail from 'Domain/Home/Common/Componet/Tail';
+import Tail from 'Domain/Home/Common/Componet/Base/Tail';
 import Button from 'Domain/Home/Common/Componet/Button';
 
 export default function Main() {

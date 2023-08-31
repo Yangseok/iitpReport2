@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import DefaultLayout from 'Domain/Home/Common/Layout/Default';
-import Head from 'Domain/Home/Common/Componet/Head';
-import Skip from '../Componet/Skip';
+import Head from 'Domain/Home/Common/Componet/Base/Head';
+import Skip from '../Componet/Base/Skip';
 
 export default function Main({children}) {
   const [headerClass, setHeaderClass] = useState('');

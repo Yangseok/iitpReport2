@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
+import 'Assets/Css/Discovery.css';
 import ic_guide from 'Assets/Images/ic_guide.png';
 import Layout from 'Domain/Home/Common/Layout/Sub';
 import TabButtons from 'Domain/Home/Common/Componet/TabButtons';

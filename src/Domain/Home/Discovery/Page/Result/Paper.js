@@ -1,5 +1,4 @@
 import React from 'react';
-import 'Assets/Css/Discovery.css';
 import ic_arrow from 'Assets/Images/ic_arrow02.png';
 import ic_filter from 'Assets/Images/ic_filter.png';
 import DiscoveryResultLayout from 'Domain/Home/Discovery/Layout/DiscoveryResultLayout';

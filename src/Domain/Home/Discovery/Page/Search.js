@@ -1,5 +1,4 @@
 import React from 'react';
-import 'Assets/Css/Discovery.css';
 import DiscoveryLayout from 'Domain/Home/Discovery/Layout/DiscoveryLayout';
 
 export default function Main() {

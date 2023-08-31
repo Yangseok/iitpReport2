@@ -16,7 +16,7 @@ import img_category07 from 'Assets/Images/cate_img07.png';
 import img_category08 from 'Assets/Images/cate_img08.png';
 import ic_search from 'Assets/Images/ic_search.png';
 import Layout from 'Domain/Home/Common/Layout/Main';
-import Tail from 'Domain/Home/Common/Componet/Tail';
+import Tail from 'Domain/Home/Common/Componet/Base/Tail';
 import * as mainAPI from 'Domain/Home/Main/API/Call';
 import RecommandKeyword from 'Domain/Home/Main/Component/RecommandKeyword';
 import common from 'Utill';

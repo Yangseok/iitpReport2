@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import 'Assets/Css/Discovery.css';
 import ic_analysis from 'Assets/Images/ic_analysis.png';
 import AutoCompleteSearch from 'Domain/Home/Common/Componet/AutoCompleteSearch';
 import KeywordWrap from 'Domain/Home/Discovery/Component/Keyword/KeywordWrap';
