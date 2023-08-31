@@ -16,11 +16,16 @@ export default function AutoCompleteSearch(props) {
   const [searchParams] = useSearchParams();
   const searchParamKeyword = searchParams.get('keyword')??'';
 
+  const searchEvent = async () => {
+    setSearchFocus(false);
+    const handleSearch = props?.handleSearch;
+    if (handleSearch !== undefined) handleSearch();
+    return null;
+  };
+
   const onSearchKeyUp = async (e) => {
     if (e.keyCode == 13) {
-      const handleSearch = props?.handleSearch;
-      if (handleSearch !== undefined) handleSearch();
-      return null;
+      searchEvent();
     }
     const value = e.target.value;
     const hangulValue = Hangul.disassemble(value).join(''); // ㄺ=>ㄹㄱ
@@ -109,7 +114,7 @@ export default function AutoCompleteSearch(props) {
           placeholder='찾고 싶은 검색어를 입력해보세요.'
           autoComplete='off'
         />
-        <Button name={style?.name} onClick={props?.handleSearch} icon={style?.icon} />
+        <Button name={style?.name} onClick={searchEvent} icon={style?.icon} />
       </div>
       <div className='search_list'>
         <ul>

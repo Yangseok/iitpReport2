@@ -61,7 +61,11 @@ export const procKeywordData = (data) => {
       keywordData.push({
         id: Number(k), 
         term: data[k].keyword, 
-        weight: colorSet(data[k].weight)
+        weight: colorSet(data[k].weight),
+        similarity: {
+          keyword:  data[k].keyword,
+          weight: data[k].weight,
+        }
       });
     }
   } catch (e) {
@@ -94,4 +98,18 @@ export const procSelectedData = (selectedData, dep, searchKeyword) => {
 };
 export const procSeparator = (arr) => {
   return arr.join('|');
+};
+export const procSimilarity = (selectedData) => {
+  let selectKeyword = [];
+  try {
+    for (const k in selectedData) {
+      const list = selectedData[k].list;
+      for (const kk in list) {
+        selectKeyword.push(list[kk].similarity);
+      }
+    }
+  } catch (e) {
+    console.warn(e);
+  }
+  return selectKeyword;
 };

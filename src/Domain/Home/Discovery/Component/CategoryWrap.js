@@ -4,7 +4,8 @@ import TabButtons from 'Domain/Home/Common/Componet/TabButtons';
 import CategoryButton from './CategoryButton';
 import common from 'Utill';
 
-export default function CategoryWrap() {
+export default function CategoryWrap(props) {
+  const { tabCount } = props;
   const locations = useLocation();
   const pathName = locations.pathname;
   const lctSearch = decodeURI(locations.search);
@@ -82,7 +83,7 @@ export default function CategoryWrap() {
             </li>}
           {tabButtons1?.map((e) => (
             <li key={e.id} className={(e.id === tabActive1) ? 'on' : ''}>
-              <CategoryButton type={e.id} name={e.name} num='100,300' onClick={() => location.href = e.to} />
+              <CategoryButton type={e.id} name={e.name} num={common.setPriceInput(tabCount?.[e.id] ?? 0)} onClick={() => location.href = e.to} />
             </li>
           ))}
         </ul>
