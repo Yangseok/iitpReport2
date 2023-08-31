@@ -267,6 +267,8 @@ button, a {
 
   @for $i from 1 through 5 {
     &.btn_keyword0#{$i} {
+      border: 1px solid $color_placeholder;
+      background-color: $color_white;
       color: if($i == 1, $color_keyword1, 
         if($i == 2, $color_keyword2, 
           if($i == 3, $color_keyword3,
@@ -274,25 +276,26 @@ button, a {
           )
         )
       );
-      border: 1px solid $color_placeholder;
-      background-color: $color_white;
 
       &.on {
         color: $color_white;
-        border-color: if($i == 1, $color_keyword1, 
-          if($i == 2, $color_keyword2, 
-            if($i == 3, $color_keyword3,
-              if($i == 4, $color_keyword4, $color_keyword5)
-            )
-          )
-        );
-        background-color: if($i == 1, $color_keyword1, 
-          if($i == 2, $color_keyword2, 
-            if($i == 3, $color_keyword3,
-              if($i == 4, $color_keyword4, $color_keyword5)
-            )
-          )
-        );
+
+        @if ($i == 1) {
+          border-color: $color_keyword1;
+          background-color: $color_keyword1;
+        } @else if ($i == 2) {
+          border-color: $color_keyword2;
+          background-color: $color_keyword2;
+        } @else if ($i == 3) {
+          border-color: $color_keyword3;
+          background-color: $color_keyword3;
+        } @else if ($i == 4) {
+          border-color: $color_keyword4;
+          background-color: $color_keyword4;
+        } @else {
+          border-color: $color_keyword5;
+          background-color: $color_keyword5;
+        }
       }
     }
   }
@@ -324,11 +327,9 @@ button, a {
         color: $color_regular;
       }
 
-      &.on {
-        button, a {
-          color: $color_white;
-          background-color: $color_main;
-        }
+      &.on button, &.on a {
+        color: $color_white;
+        background-color: $color_main;
       }
     }
   }
@@ -347,11 +348,9 @@ button, a {
           color: $color_regular;
         }
   
-        &.on {
-          button, a {
-            color: $color_white;
-            background-color: $color_main;
-          }
+        &.on button, &.on a {
+          color: $color_white;
+          background-color: $color_main;
         }
       }
     }
@@ -371,11 +370,39 @@ button, a {
         border-bottom: 2px solid transparent;
       }
 
-      &.on {
-        button, a {
-          color: $color_main;
-          border-bottom-color: $color_main;
+      &.on button, &.on a {
+        color: $color_main;
+        border-bottom-color: $color_main;
+      }
+    }
+  }
+  &.tab_style04 ul {
+    li {
+      position: relative;
+      
+      &:not(:first-of-type) {
+        padding-left: 40px;
+
+        &::before {
+          content: '';
+          position: absolute;
+          top: calc(50% - 7px);
+          left: 20px;
+          display: block;
+          width: 1px;
+          height: 14px;
+          background-color: $color_placeholder;
         }
+      }
+      button, a {
+        height: auto;
+        color: $color_regular;
+        font-weight: 500;
+      }
+
+      &.on button, &.on a {
+        color: $color_main;
+        font-weight: 700;
       }
     }
   }
@@ -566,7 +593,7 @@ select {
 }
 
 /* Tags */
-@for $i from 1 through 2 {
+@for $i from 1 through 4 {
   .tag_style0#{$i} {
     @include flexLayout(center, center);
     height: 20px;
@@ -575,8 +602,85 @@ select {
     font-size: 12px;
     font-weight: 500;
 
-    color: if($i == 1, $color_white, $color_white);
-    background-color: if($i == 1, $color_point1, $color_placeholder);
+    @if($i == 1) {
+      color: $color_white;
+      background-color: $color_point1;
+    } @else if($i == 2) {
+      color: $color_white;
+      background-color: $color_placeholder;
+    } @else if($i == 3) {
+      color: $color_dark;
+      background-color: $color_light2;
+    } @else {
+      color: $color_dark;
+      background-color: $color_keyword5;
+    }
+  }
+}
+
+/* Tooltip */
+.tooltip_wrap {
+  position: relative;
+
+  &:hover [class*='tooltip_style'],
+  &:focus [class*='tooltip_style'] {
+    visibility: visible;
+    opacity: 1;
+  }
+}
+@for $i from 1 through 4 {
+  .tooltip_style0#{$i} {
+    position: absolute;
+    padding: 0 6px;
+    border-width: 1px;
+    border-style: solid;
+    border-radius: 2px;
+    background-color: $color_white;
+    font-size: 12px;
+    color: $color_dark;
+    font-weight: 500;
+    letter-spacing: -0.02rem;
+    text-align: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s;
+
+    @if ($i == 1) {
+      bottom: calc(100% + 16px);
+      left: 0;
+      border-color: $color_footer;
+    } @else {
+      bottom: calc(100% + 6px);
+      left: calc(100% - 20px);
+
+      @if ($i == 2) {
+        border-color: $color_safety3;
+      } @else if ($i == 3) {
+        border-color: $color_safety2;
+      } @else {
+        border-color: $color_safety1;
+      }
+    }
+
+    &::before {
+      content: '';
+      position: absolute;
+      top: 100%;
+      left: 16px;
+      display: block;
+      width: 16px;
+      height: 12px;
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: contain;
+      background-image: if($i == 1, url('Assets/Images/tooltip_arr01.png'),
+        if($i == 2, url('Assets/Images/tooltip_arr02.png'),
+          if($i == 3, url('Assets/Images/tooltip_arr03.png'), 
+            url('Assets/Images/tooltip_arr04.png')
+          )
+        )
+      );
+    }
   }
 }
 
@@ -667,6 +771,59 @@ select {
       border: 2px solid $color_main;
       background-color: $color_white;
     }
+  }
+}
+.list_style03 ul {
+  @include flexLayout(normal, center, 16px);
+  flex-direction: column;
+
+  li {
+    border: 1px solid $color_placeholder;
+    border-radius: 8px;
+    overflow: hidden;
+
+    .tit_box {
+      padding: 17px 16px;
+    }
+    .conts_box {
+      height: 0;
+      padding: 0 16px;
+      overflow: hidden;
+      transition: all 0.3s;
+    }
+    .more_btn {
+      @include hiddenAltText;
+      width: 30px;
+      height: 30px;
+      background: url('Assets/Images/arr_drop02.png') no-repeat center / 24px;
+      transition: all 0.3s;
+    }
+
+    &.on {
+      border-color: $color_main;
+
+      .conts_box {
+        height: 100%;
+        padding: 0 16px 20px;
+      }
+      .more_btn {
+        transform: rotate(-180deg);
+        -webkit-transform: rotate(-180deg);
+        -moz-transform: rotate(-180deg);
+        -ms-transform: rotate(-180deg);
+        -o-transform: rotate(-180deg);
+      }
+    }
+
+  &.fold {
+    .title button {
+      transform: rotate(-180deg);
+      -webkit-transform: rotate(-180deg);
+      -moz-transform: rotate(-180deg);
+      -ms-transform: rotate(-180deg);
+      -o-transform: rotate(-180deg);
+    }
+  }
   }
 }
 

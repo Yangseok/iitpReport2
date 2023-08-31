@@ -1,12 +1,45 @@
 import React from 'react';
-import 'Assets/Css/Discovery.css';
 import ic_arrow from 'Assets/Images/ic_arrow02.png';
 import ic_filter from 'Assets/Images/ic_filter.png';
 import DiscoveryResultLayout from 'Domain/Home/Discovery/Layout/DiscoveryResultLayout';
 import Button from 'Domain/Home/Common/Componet/Button';
 import Pagination from 'Domain/Home/Common/Componet/Pagination';
+import WordClouds from 'Domain/Home/Common/Componet/Features/WordClouds';
 
 export default function DiscoveryResult() {
+  const tempData = [
+    {
+      id: 0,
+      title: 'AGI 예고한 ‘챗GPT 아버지’… “내가 인간인지 증명해야 할 시대 올 것”',
+      link: '#',
+      source: '서울신문',
+      date: '2023.06.08',
+    },
+    {
+      id: 1,
+      title: 'AGI 예고한 ‘챗GPT 아버지’… “내가 인간인지 증명해야 할 시대 올 것”',
+      link: '#',
+      source: '서울신문',
+      date: '2023.06.08',
+    },
+  ];
+
+  const onItemSlide = (e) => {
+    const pd = 20;
+    const liEl = e.target.parentNode.parentNode.parentNode;
+    const contsEl = e.target.parentNode.parentNode.nextSibling;
+
+    if(!liEl.classList.contains('on')) {
+      liEl.classList.add('on');
+      contsEl.style.height = `${contsEl.scrollHeight + pd}px`;
+      contsEl.style.paddingBottom = `${pd}px`;
+    } else {
+      liEl.classList.remove('on');
+      contsEl.style.height = 0;
+      contsEl.style.paddingBottom = 0;
+    }
+  };
+
   return (
     <DiscoveryResultLayout>
       <section className='mt-6'>
@@ -39,8 +72,34 @@ export default function DiscoveryResult() {
             </div>
           </div>
 
-          <div className='list_style01 mt-2'>
-
+          <div className='list_style03 mt-2' id='newsList'>
+            <ul>
+              {(tempData?.length > 0)
+                ? tempData?.map((e) => {
+                  return (
+                    <li key={e.id}>
+                      <div className='tit_box flex items-center justify-between gap-4'>
+                        <p className='flex-1 text-base font-bold text-color-dark'>{e.title}</p>
+                        <div className='text_style01 flex items-center gap-4'>
+                          <a href={e.link} className='h-5 px-1.5 rounded-sm text-xs font-medium text-color-white bg-color-light1' target='_blank' rel='noreferrer' title={`새창이동, ${e.title} 원문 페이지`}>원문 보러가기↗</a>
+                          <div>
+                            <p className='text-sm text-color-regular'>출처: <span className='font-medium text-color-main'>{e.source}</span></p>
+                            <p className='text-sm text-color-regular'>출처일: <span className='font-medium text-color-main'>{e.date}</span></p>
+                          </div>
+                          <button type="button" className='more_btn' onClick={onItemSlide}>자세히 보기</button>
+                        </div>
+                      </div>
+                      <div className='conts_box'>
+                        <WordClouds />
+                      </div>
+                    </li>
+                  );
+                })
+                : <li>
+                  <p className='text-base text-color-placeholder'>데이터가 없습니다.</p>
+                </li>
+              }
+            </ul>
           </div>
           <div className='mt-10'>
             <Pagination total={50} page={1} onClick={(i) => console.log(i)} />

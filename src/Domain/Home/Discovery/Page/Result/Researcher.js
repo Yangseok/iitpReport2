@@ -1,5 +1,4 @@
-import React, { useState } from 'react';
-import 'Assets/Css/Discovery.css';
+import React, { useEffect, useState } from 'react';
 import ic_arrow from 'Assets/Images/ic_arrow02.png';
 import ic_filter from 'Assets/Images/ic_filter.png';
 import img_researcher01 from 'Assets/Images/researcher_img01.png';
@@ -7,12 +6,14 @@ import img_researcher02 from 'Assets/Images/researcher_img02.png';
 import img_researcher03 from 'Assets/Images/researcher_img03.png';
 import img_researcher04 from 'Assets/Images/researcher_img04.png';
 import img_researcher05 from 'Assets/Images/researcher_img05.png';
+import img_researcher06 from 'Assets/Images/researcher_img06.png';
 import DiscoveryResultLayout from 'Domain/Home/Discovery/Layout/DiscoveryResultLayout';
 import Button from 'Domain/Home/Common/Componet/Button';
 import Pagination from 'Domain/Home/Common/Componet/Pagination';
+import ListItem from 'Domain/Home/Common/Componet/ListItem';
 
 export default function DiscoveryResult() {
-  const tempData6_1 = [
+  const tempData1 = [
     {
       id: 0,
       name: '장*탁',
@@ -28,7 +29,7 @@ export default function DiscoveryResult() {
       link: '#',
     },
   ];
-  const tempData6_2 = [
+  const tempData2 = [
     {
       id: 0,
       name: '장*탁',
@@ -54,11 +55,16 @@ export default function DiscoveryResult() {
       name: '이*호',
       relation: 4,
     },
+    {
+      id: 5,
+      name: '장*탁',
+      relation: 5,
+    },
   ];
-  const tempData6_3 = [
+  const tempData3 = [
     {
       id: 0,
-      progress: '종료',
+      progress: true,
       title: '인공지능 학습 및 디지털 트윈을 위한 3차원 데이터 수집·전처리 및 가공 플랫폼 개발',
       price: '10억',
       period: '2023.04.01 ~ 2024.04.30',
@@ -71,7 +77,7 @@ export default function DiscoveryResult() {
     },
     {
       id: 1,
-      progress: '종료',
+      progress: false,
       title: '인공지능 학습 및 디지털 트윈을 위한 3차원 데이터 수집·전처리 및 가공 플랫폼 개발',
       price: '10억',
       period: '2023.04.01 ~ 2024.04.30',
@@ -86,12 +92,17 @@ export default function DiscoveryResult() {
 
   const [researcherActive, setResearcherActive] = useState({});
 
+  // 연구자 선택 시
   const onResearcherSelect = (e, id, name) => {
     if(e.target.nodeName !== 'BUTTON') {
       setResearcherActive({ id, name });
-      console.log(id, '연구원 선택!');
     }
   };
+
+  useEffect(() => {
+    // 처음 데이터 노출
+    setResearcherActive({ id: 0, name: '장*탁' });
+  }, []);
 
   return (
     <DiscoveryResultLayout>
@@ -99,7 +110,7 @@ export default function DiscoveryResult() {
         <div className='container'>
           <div className='flex items-center justify-between'>
             <h4 className='text-base font-bold text-color-dark'>
-              연구자 <span className='text-color-main'>50,150건</span>
+              연구자 <span className='text-color-main'>100,300건</span>
             </h4>
             <div className='flex gap-4'>
               <Button className='gap-2 h-12 px-4 rounded text-sm font-bold btn_style04 mr-2' name='목록 다운로드' icon={ic_arrow} />
@@ -129,13 +140,14 @@ export default function DiscoveryResult() {
             <div className='w-120'>
               <div className='list_style02'>
                 <ul>
-                  {(tempData6_1?.length > 0)
-                    ? tempData6_1?.map((e) => (
+                  {(tempData1?.length > 0)
+                    ? tempData1?.map((e) => (
                       <li 
                         key={e.id} 
                         className={`flex items-center gap-4${(e.id === researcherActive.id) ? ' on' : ''}`}
                         onClick={(event) => onResearcherSelect(event, e.id, e.name)} 
                         onKeyUp={(event) => (event.key === 'Enter') && onResearcherSelect(event, e.id)} 
+                        role={'button'}
                         tabIndex={0}
                       >
                         <img src={img_researcher01} alt='연구자 프로필 이미지' className='w-11' />
@@ -164,8 +176,8 @@ export default function DiscoveryResult() {
             <div className='flex-1 p-4 pb-10 bg-color-f_bg'>
               <div>
                 <h5 className='text-base font-bold text-color-dark'>{researcherActive.name} 님 관련 연구자</h5>
-                <ul className='flex gap-16 px-8 mt-4'>
-                  {tempData6_2?.map((e, i) => {
+                <ul className='flex mt-4'>
+                  {tempData2?.map((e, i) => {
                     let imgSrc = '';
                     if(e.relation === 0) {
                       imgSrc = img_researcher01;
@@ -177,10 +189,12 @@ export default function DiscoveryResult() {
                       imgSrc = img_researcher04;
                     } else if(e.relation === 4) {
                       imgSrc = img_researcher05;
+                    } else if(e.relation === 5) {
+                      imgSrc = img_researcher06;
                     }
 
-                    return <li key={e.id}>
-                      <div className={`img_wrap rounded-full w-15 h-15 ${(i === 0) ? 'bg-color-light2' : 'bg-color-white'}`}>
+                    return <li key={e.id} className='w-1/6 px-1'>
+                      <div className={`img_wrap rounded-full w-15 h-15 mx-auto ${(i === 0) ? 'bg-color-light2' : 'bg-color-white'}`}>
                         <img src={imgSrc} alt='연구자 프로필 이미지' className='w-11' />
                       </div>
                       <p className={`mt-1 text-sm text-center ${(i === 0) ? 'text-color-main' : 'text-color-dark'}`}>{e.name}</p>
@@ -192,18 +206,15 @@ export default function DiscoveryResult() {
                 <h5 className='text-base font-bold text-color-dark'>{researcherActive.name} 님 과제</h5>
                 <div className='list_style01 mt-4'>
                   <ul>
-                    {(tempData6_3?.length > 0) 
-                      ? tempData6_3?.map((e) => {
-                        return <li key={e.id}>
-                          <div className='flex justify-between gap-2'>
-                            <div className='flex gap-2 flex-1'>
-                              {/* 진행중: tag_style01 | 종료: tag_style02 */}
-                              <span className='tag_style02 mt-0.5'>{e.progress}</span>
-                              <p className='text-base font-bold text-color-dark flex-1'>{e.title}</p>
-                            </div>
-                            <a href={`${e.id}`} className='h-5 text-base font-bold text-color-footer'>더보기 ＋</a>
-                          </div>
-                          <div className='text_style01 mt-2'>
+                    {(tempData3?.length > 0) 
+                      ? tempData3?.map((e) => {
+                        return  <ListItem 
+                          key={e.id}
+                          tag={(e?.progress !== null) 
+                            ? (e.progress) ? 1 : 2 
+                            : ''}
+                          title={e.title}
+                          contents={<>
                             <div>
                               <p className='text-sm text-color-regular'>연구 개발비: <span className='font-medium text-color-main'>{e.price}</span></p>
                               <p className='text-sm text-color-regular'>연구 개발기간: <span className='font-medium text-color-main'>{e.period}</span></p>
@@ -216,8 +227,11 @@ export default function DiscoveryResult() {
                               <p className='text-sm text-color-regular'>국가과학기술표준분류: <span className='font-medium text-color-main'>{e.division}</span></p>
                             </div>
                             <p className='text-sm text-color-regular'>한글 키워드: <span className='font-medium text-color-main'>{e.keyword}</span></p>
-                          </div>
-                        </li>;
+                          </>}
+                          desc={<>
+                            <a href={`${e.id}`} className='h-5 text-base font-bold text-color-footer'>더보기 ＋</a>
+                          </>}
+                        />;
                       })
                       : <li>
                         <p className='text-base text-color-placeholder'>데이터가 없습니다.</p>

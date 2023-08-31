@@ -10,6 +10,16 @@ import img_researcher02 from 'Assets/Images/researcher_img02.png';
 import img_researcher03 from 'Assets/Images/researcher_img03.png';
 import img_researcher04 from 'Assets/Images/researcher_img04.png';
 import img_researcher05 from 'Assets/Images/researcher_img05.png';
+import img_researcher06 from 'Assets/Images/researcher_img06.png';
+import img_building01 from 'Assets/Images/building_img01.png';
+import img_building02 from 'Assets/Images/building_img02.png';
+import img_building03 from 'Assets/Images/building_img03.png';
+import img_building04 from 'Assets/Images/building_img04.png';
+import img_building05 from 'Assets/Images/building_img05.png';
+import img_building06 from 'Assets/Images/building_img06.png';
+import img_building07 from 'Assets/Images/building_img07.png';
+import img_building08 from 'Assets/Images/building_img08.png';
+import img_building09 from 'Assets/Images/building_img09.png';
 import arr_drop from 'Assets/Images/arr_drop.png';
 import Layout from 'Domain/Home/Common/Layout/Sub';
 import TabButtons from 'Domain/Home/Common/Componet/TabButtons';
@@ -151,11 +161,16 @@ export default function DiscoveryStyles() {
       name: '이*호',
       relation: 4,
     },
+    {
+      id: 5,
+      name: '장*탁',
+      relation: 5,
+    },
   ];
   const tempData6_3 = [
     {
       id: 0,
-      progress: '종료',
+      progress: true,
       title: '인공지능 학습 및 디지털 트윈을 위한 3차원 데이터 수집·전처리 및 가공 플랫폼 개발',
       price: '10억',
       period: '2023.04.01 ~ 2024.04.30',
@@ -168,7 +183,99 @@ export default function DiscoveryStyles() {
     },
     {
       id: 1,
-      progress: '종료',
+      progress: false,
+      title: '인공지능 학습 및 디지털 트윈을 위한 3차원 데이터 수집·전처리 및 가공 플랫폼 개발',
+      price: '10억',
+      period: '2023.04.01 ~ 2024.04.30',
+      agency: '주식회사 오름',
+      name: '홍길동',
+      department: '중소벤처기업부',
+      performance: '논문(1), 특허(3)',
+      division: '정보 / 통신 / 소프트웨어 / S/W솔루션 ',
+      keyword: '3D 데이터, 디지털 트윈, 지능형 데이터 가공 플랫폼, 깊이 추정',
+    },
+  ];
+  const tempData7_1 = [
+    {
+      id: 0,
+      name: '주식회사 마인즈랩(MINDS LAB., INC.)',
+      assign: '10',
+      patent: '10',
+      institue: null,
+      safety: 2,
+      sales: 10,
+      followup: true,
+    },
+    {
+      id: 1,
+      name: '주식회사 마인즈랩(MINDS LAB., INC.)',
+      assign: '43',
+      patent: '10',
+      institue: 'OOO연구소',
+      safety: 0,
+      sales: 5,
+      followup: false,
+    },
+    {
+      id: 2,
+      name: '주식회사 마인즈랩(MINDS LAB., INC.)',
+      assign: '10',
+      patent: '10',
+      institue: 'OOO연구소',
+      safety: 1,
+      sales: 25,
+      followup: true,
+    },
+  ];
+  const tempData7_2 = [
+    {
+      id: 0,
+      name: '주식회사 마인즈랩',
+      relation: 0,
+    },
+    {
+      id: 1,
+      name: '솔트룩스',
+      relation: 1,
+    },
+    {
+      id: 2,
+      name: '아이브릭스',
+      relation: 2,
+    },
+    {
+      id: 3,
+      name: '주식회사 빅스터',
+      relation: 3,
+    },
+    {
+      id: 4,
+      name: '주식회사 빅스터',
+      relation: 4,
+    },
+    {
+      id: 5,
+      name: '주식회사 빅스터',
+      relation: 5,
+    },
+  ];
+  const tempData7_3 = [
+    {
+      id: 0,
+      progress: true,
+      title: '인공지능 학습 및 디지털 트윈을 위한 3차원 데이터 수집·전처리 및 가공 플랫폼 개발',
+      price: '10억',
+      period: '2023.04.01 ~ 2024.04.30',
+      agency: '주식회사 오름',
+      name: '홍길동',
+      department: '중소벤처기업부',
+      performance: '논문(1), 특허(3)',
+      division: '정보 / 통신 / 소프트웨어 / S/W솔루션 ',
+      keyword: '3D 데이터, 디지털 트윈, 지능형 데이터 가공 플랫폼, 깊이 추정',
+    },
+    {
+      id: 1,
+      progress: false,
       title: '인공지능 학습 및 디지털 트윈을 위한 3차원 데이터 수집·전처리 및 가공 플랫폼 개발',
       price: '10억',
       period: '2023.04.01 ~ 2024.04.30',
@@ -184,11 +291,18 @@ export default function DiscoveryStyles() {
   const [tabActive1, setTabActive1] = useState(0);
   const [tabActive2, setTabActive2] = useState(0);
   const [researcherActive, setResearcherActive] = useState({});
+  const [orgnActive, setOrgnActive] = useState({});
 
   const onResearcherSelect = (e, id, name) => {
     if(e.target.nodeName !== 'BUTTON') {
       setResearcherActive({ id, name });
       console.log(id, '연구원 선택!');
+    }
+  };
+  const onOrgnSelect = (e, id, name) => {
+    if(e.target.nodeName !== 'BUTTON') {
+      setOrgnActive({ id, name });
+      console.log(id, '기관 선택!');
     }
   };
 
@@ -764,7 +878,7 @@ export default function DiscoveryStyles() {
             <div className='flex-1 p-4 pb-10 bg-color-f_bg'>
               <div>
                 <h5 className='text-base font-bold text-color-dark'>{researcherActive.name} 님 관련 연구자</h5>
-                <ul className='flex gap-16 px-8 mt-4'>
+                <ul className='flex mt-4'>
                   {tempData6_2?.map((e, i) => {
                     let imgSrc = '';
                     if(e.relation === 0) {
@@ -777,10 +891,12 @@ export default function DiscoveryStyles() {
                       imgSrc = img_researcher04;
                     } else if(e.relation === 4) {
                       imgSrc = img_researcher05;
+                    } else if(e.relation === 5) {
+                      imgSrc = img_researcher06;
                     }
 
-                    return <li key={e.id}>
-                      <div className={`img_wrap rounded-full w-15 h-15 ${(i === 0) ? 'bg-color-light2' : 'bg-color-white'}`}>
+                    return <li key={e.id} className='w-1/6 px-1'>
+                      <div className={`img_wrap rounded-full w-15 h-15 mx-auto ${(i === 0) ? 'bg-color-light2' : 'bg-color-white'}`}>
                         <img src={imgSrc} alt='연구자 프로필 이미지' className='w-11' />
                       </div>
                       <p className={`mt-1 text-sm text-center ${(i === 0) ? 'text-color-main' : 'text-color-dark'}`}>{e.name}</p>
@@ -794,30 +910,60 @@ export default function DiscoveryStyles() {
                   <ul>
                     {(tempData6_3?.length > 0) 
                       ? tempData6_3?.map((e) => {
-                        return <li key={e.id}>
-                          <div className='flex justify-between gap-2'>
-                            <div className='flex gap-2 flex-1'>
-                              {/* 진행중: tag_style01 | 종료: tag_style02 */}
-                              <span className='tag_style02 mt-0.5'>{e.progress}</span>
-                              <p className='text-base font-bold text-color-dark flex-1'>{e.title}</p>
+                        return (<>
+                          <ListItem 
+                            key={e.id}
+                            tag={(e?.progress !== null) 
+                              ? (e.progress) ? 1 : 2 
+                              : ''}
+                            title={e.title}
+                            contents={<>
+                              <div>
+                                <p className='text-sm text-color-regular'>연구 개발비: <span className='font-medium text-color-main'>{e.price}</span></p>
+                                <p className='text-sm text-color-regular'>연구 개발기간: <span className='font-medium text-color-main'>{e.period}</span></p>
+                                <p className='text-sm text-color-regular'>연구 개발기관: <span className='font-medium text-color-main'>{e.agency}</span></p>
+                                <p className='text-sm text-color-regular'>연구 책임자: <span className='font-medium text-color-main'>{e.name}</span></p>
+                              </div>
+                              <div>
+                                <p className='text-sm text-color-regular'>부처명: <span className='font-medium text-color-main'>{e.department}</span></p>
+                                <p className='text-sm text-color-regular'>연구 개발성과: <span className='font-medium text-color-main'>{e.performance}</span></p>
+                                <p className='text-sm text-color-regular'>국가과학기술표준분류: <span className='font-medium text-color-main'>{e.division}</span></p>
+                              </div>
+                              <p className='text-sm text-color-regular'>한글 키워드: <span className='font-medium text-color-main'>{e.keyword}</span></p>
+                            </>}
+                            desc={<>
+                              <a href={`${e.id}`} className='h-5 text-base font-bold text-color-footer'>더보기 ＋</a>
+                            </>}
+                          />
+                          <li key={e.id}>
+                            <div className='flex justify-between gap-2'>
+                              <div className='flex gap-2 flex-1'>
+                                {/* 진행중: tag_style01 | 종료: tag_style02 */}
+                                {(e?.progress !== null) 
+                                  ? (e.progress) 
+                                    ? <span className='tag_style01 mt-0.5'>진행중</span>
+                                    : <span className='tag_style02 mt-0.5'>종료</span>
+                                  : ''}
+                                <p className='text-base font-bold text-color-dark flex-1'>{e.title}</p>
+                              </div>
+                              <a href={`${e.id}`} className='h-5 text-base font-bold text-color-footer'>더보기 ＋</a>
                             </div>
-                            <a href={`${e.id}`} className='h-5 text-base font-bold text-color-footer'>더보기 ＋</a>
-                          </div>
-                          <div className='text_style01 mt-2'>
-                            <div>
-                              <p className='text-sm text-color-regular'>연구 개발비: <span className='font-medium text-color-main'>{e.price}</span></p>
-                              <p className='text-sm text-color-regular'>연구 개발기간: <span className='font-medium text-color-main'>{e.period}</span></p>
-                              <p className='text-sm text-color-regular'>연구 개발기관: <span className='font-medium text-color-main'>{e.agency}</span></p>
-                              <p className='text-sm text-color-regular'>연구 책임자: <span className='font-medium text-color-main'>{e.name}</span></p>
+                            <div className='text_style01 mt-2'>
+                              <div>
+                                <p className='text-sm text-color-regular'>연구 개발비: <span className='font-medium text-color-main'>{e.price}</span></p>
+                                <p className='text-sm text-color-regular'>연구 개발기간: <span className='font-medium text-color-main'>{e.period}</span></p>
+                                <p className='text-sm text-color-regular'>연구 개발기관: <span className='font-medium text-color-main'>{e.agency}</span></p>
+                                <p className='text-sm text-color-regular'>연구 책임자: <span className='font-medium text-color-main'>{e.name}</span></p>
+                              </div>
+                              <div>
+                                <p className='text-sm text-color-regular'>부처명: <span className='font-medium text-color-main'>{e.department}</span></p>
+                                <p className='text-sm text-color-regular'>연구 개발성과: <span className='font-medium text-color-main'>{e.performance}</span></p>
+                                <p className='text-sm text-color-regular'>국가과학기술표준분류: <span className='font-medium text-color-main'>{e.division}</span></p>
+                              </div>
+                              <p className='text-sm text-color-regular'>한글 키워드: <span className='font-medium text-color-main'>{e.keyword}</span></p>
                             </div>
-                            <div>
-                              <p className='text-sm text-color-regular'>부처명: <span className='font-medium text-color-main'>{e.department}</span></p>
-                              <p className='text-sm text-color-regular'>연구 개발성과: <span className='font-medium text-color-main'>{e.performance}</span></p>
-                              <p className='text-sm text-color-regular'>국가과학기술표준분류: <span className='font-medium text-color-main'>{e.division}</span></p>
-                            </div>
-                            <p className='text-sm text-color-regular'>한글 키워드: <span className='font-medium text-color-main'>{e.keyword}</span></p>
-                          </div>
-                        </li>;
+                          </li>
+                        </>);
                       })
                       : <li>
                         <p className='text-base text-color-placeholder'>데이터가 없습니다.</p>
@@ -833,12 +979,12 @@ export default function DiscoveryStyles() {
           </div>
         </div>
       </section>
-      {/* 분석 결과 (기관) 미진행 */}
+      {/* 분석 결과 (기관) */}
       <section className='mt-6'>
         <div className='container'>
-          <div className='flex items-center justify-between mt-6'>
+          <div className='flex items-center justify-between'>
             <h4 className='text-base font-bold text-color-dark'>
-              연구자 <span className='text-color-main'>100,300건</span>
+              기관 <span className='text-color-main'>100,300건</span>
             </h4>
             <div className='flex gap-4'>
               <Button className='gap-2 h-12 px-4 rounded text-sm font-bold btn_style04 mr-2' name='목록 다운로드' icon={ic_arrow} />
@@ -868,24 +1014,52 @@ export default function DiscoveryStyles() {
             <div className='w-120'>
               <div className='list_style02'>
                 <ul>
-                  {(tempData6_1?.length > 0)
-                    ? tempData6_1?.map((e) => (
+                  {(tempData7_1?.length > 0)
+                    ? tempData7_1?.map((e) => (
                       <li 
                         key={e.id} 
-                        className={`flex items-center gap-4${(e.id === researcherActive.id) ? ' on' : ''}`}
-                        onClick={(event) => onResearcherSelect(event, e.id, e.name)} 
-                        onKeyUp={(event) => (event.key === 'Enter') && onResearcherSelect(event, e.id)} 
+                        className={`flex items-center gap-4${(e.id === orgnActive.id) ? ' on' : ''}`}
+                        onClick={(event) => onOrgnSelect(event, e.id, e.name)} 
+                        onKeyUp={(event) => (event.key === 'Enter') && onOrgnSelect(event, e.id)} 
+                        role={'button'}
                         tabIndex={0}
                       >
-                        <img src={img_researcher01} alt='연구자 프로필 이미지' className='w-11' />
+                        <div className='tooltip_wrap' tabIndex={0}>
+                          {(e.safety === 0) 
+                            ? <>
+                              <img src={img_building01} alt='기관 재무안전성: 위험 이미지' className='w-11' />
+                              <span className='tooltip_style02 min-w-23'>재무안전성: 위험</span>
+                            </>
+                            : (e.safety === 1) 
+                              ? <>
+                                <img src={img_building02} alt='기관 재무안전성: 보통 이미지' className='w-11' />
+                                <div className='tooltip_style03 min-w-23'>재무안전성: 보통</div>
+                              </>
+                              : <>
+                                <img src={img_building03} alt='기관 재무안전성: 안정 이미지' className='w-11' />
+                                <div className='tooltip_style04 min-w-23'>재무안전성: 안정</div>
+                              </>}
+                        </div>
                         <div className='flex-1'>
                           <div className='flex items-center gap-2'>
                             <p className='text-base font-bold text-color-main'>{e.name}</p>
-                            <a href={e.link} className='h-5 px-1.5 rounded-sm text-xs font-medium text-color-white bg-color-light1' target='_blank' rel='noreferrer' title={`새창이동, ${e.name} 연구자 페이지`}>연구자 보기↗</a>
+                            <div className='tooltip_wrap' tabIndex={0}>
+                              <span className="tag_style03">{e.sales}</span>
+                              <div className='tooltip_style01 min-w-30'>해당 산업 매출상위(%)</div>
+                            </div>
+                            {(e.followup)
+                              && (
+                                <div className='tooltip_wrap' tabIndex={0}>
+                                  <span className="tag_style04">사후</span>
+                                  <div className='tooltip_style01 min-w-25'>사후관리 대상 기업</div>
+                                </div>
+                              )
+                            }
                           </div>
                           <div className='text_style01'>
-                            <p className='text-sm text-color-regular'>소속기관: <span className='font-medium text-color-main'>{e.agency}</span></p>
                             <p className='text-sm text-color-regular'>과제: <span className='font-medium text-color-main'>{e.assign}건</span></p>
+                            <p className='text-sm text-color-regular'>특허: <span className='font-medium text-color-main'>{e.patent}건</span></p>
+                            {(e?.institue) && <p className='text-sm text-color-regular'>부설연구소: <span className='font-medium text-color-main'>{e.institue}</span></p>}
                           </div>
                         </div>
                       </li>
@@ -902,25 +1076,27 @@ export default function DiscoveryStyles() {
             </div>
             <div className='flex-1 p-4 pb-10 bg-color-f_bg'>
               <div>
-                <h5 className='text-base font-bold text-color-dark'>{researcherActive.name} 님 관련 연구자</h5>
-                <ul className='flex gap-16 px-8 mt-4'>
-                  {tempData6_2?.map((e, i) => {
+                <h5 className='text-base font-bold text-color-dark'>{orgnActive.name} 유사 기관</h5>
+                <ul className='flex mt-4'>
+                  {tempData7_2?.map((e, i) => {
                     let imgSrc = '';
                     if(e.relation === 0) {
-                      imgSrc = img_researcher01;
+                      imgSrc = img_building04;
                     } else if(e.relation === 1) {
-                      imgSrc = img_researcher02;
+                      imgSrc = img_building05;
                     } else if(e.relation === 2) {
-                      imgSrc = img_researcher03;
+                      imgSrc = img_building06;
                     } else if(e.relation === 3) {
-                      imgSrc = img_researcher04;
+                      imgSrc = img_building07;
                     } else if(e.relation === 4) {
-                      imgSrc = img_researcher05;
+                      imgSrc = img_building08;
+                    } else if(e.relation === 5) {
+                      imgSrc = img_building09;
                     }
 
-                    return <li key={e.id}>
-                      <div className={`img_wrap rounded-full w-15 h-15 ${(i === 0) ? 'bg-color-light2' : 'bg-color-white'}`}>
-                        <img src={imgSrc} alt='연구자 프로필 이미지' className='w-11' />
+                    return <li key={e.id} className='w-1/6 px-1'>
+                      <div className={`img_wrap rounded-full w-15 h-15 mx-auto ${(i === 0) ? 'bg-color-light2' : 'bg-color-white'}`}>
+                        <img src={imgSrc} alt='기관 이미지' className='w-11' />
                       </div>
                       <p className={`mt-1 text-sm text-center ${(i === 0) ? 'text-color-main' : 'text-color-dark'}`}>{e.name}</p>
                     </li>;
@@ -928,35 +1104,77 @@ export default function DiscoveryStyles() {
                 </ul>
               </div>
               <div className='mt-10'>
-                <h5 className='text-base font-bold text-color-dark'>{researcherActive.name} 님 과제</h5>
+                <div className='flex items-center gap-5'>
+                  <h5 className='text-base font-bold text-color-dark'>{orgnActive.name}</h5>
+                  <div className='tab_btns tab_style04'>
+                    <ul>
+                      <li className='on'>
+                        <button type='button' onClick={() => {}}>과제(83)</button>
+                      </li>
+                      <li>
+                        <button type='button' onClick={() => {}}>특허(10)</button>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
                 <div className='list_style01 mt-4'>
                   <ul>
-                    {(tempData6_3?.length > 0) 
-                      ? tempData6_3?.map((e) => {
-                        return <li key={e.id}>
-                          <div className='flex justify-between gap-2'>
-                            <div className='flex gap-2 flex-1'>
-                              {/* 진행중: tag_style01 | 종료: tag_style02 */}
-                              <span className='tag_style02 mt-0.5'>{e.progress}</span>
-                              <p className='text-base font-bold text-color-dark flex-1'>{e.title}</p>
+                    {(tempData7_3?.length > 0) 
+                      ? tempData7_3?.map((e) => {
+                        return (<>
+                          <ListItem 
+                            key={e.id}
+                            tag={(e?.progress !== null) 
+                              ? (e.progress) ? 1 : 2 
+                              : ''}
+                            title={e.title}
+                            contents={<>
+                              <div>
+                                <p className='text-sm text-color-regular'>연구 개발비: <span className='font-medium text-color-main'>{e.price}</span></p>
+                                <p className='text-sm text-color-regular'>연구 개발기간: <span className='font-medium text-color-main'>{e.period}</span></p>
+                                <p className='text-sm text-color-regular'>연구 개발기관: <span className='font-medium text-color-main'>{e.agency}</span></p>
+                                <p className='text-sm text-color-regular'>연구 책임자: <span className='font-medium text-color-main'>{e.name}</span></p>
+                              </div>
+                              <div>
+                                <p className='text-sm text-color-regular'>부처명: <span className='font-medium text-color-main'>{e.department}</span></p>
+                                <p className='text-sm text-color-regular'>연구 개발성과: <span className='font-medium text-color-main'>{e.performance}</span></p>
+                                <p className='text-sm text-color-regular'>국가과학기술표준분류: <span className='font-medium text-color-main'>{e.division}</span></p>
+                              </div>
+                              <p className='text-sm text-color-regular'>한글 키워드: <span className='font-medium text-color-main'>{e.keyword}</span></p>
+                            </>}
+                            desc={<>
+                              <a href={`${e.id}`} className='h-5 text-base font-bold text-color-footer'>더보기 ＋</a>
+                            </>}
+                          />
+                          <li key={e.id}>
+                            <div className='flex justify-between gap-2'>
+                              <div className='flex gap-2 flex-1'>
+                                {/* 진행중: tag_style01 | 종료: tag_style02 */}
+                                {(e?.progress !== null) 
+                                  ? (e.progress) 
+                                    ? <span className='tag_style01 mt-0.5'>진행중</span>
+                                    : <span className='tag_style02 mt-0.5'>종료</span>
+                                  : ''}
+                                <p className='text-base font-bold text-color-dark flex-1'>{e.title}</p>
+                              </div>
+                              <a href={`${e.id}`} className='h-5 text-base font-bold text-color-footer'>더보기 ＋</a>
                             </div>
-                            <a href={`${e.id}`} className='h-5 text-base font-bold text-color-footer'>더보기 ＋</a>
-                          </div>
-                          <div className='text_style01 mt-2'>
-                            <div>
-                              <p className='text-sm text-color-regular'>연구 개발비: <span className='font-medium text-color-main'>{e.price}</span></p>
-                              <p className='text-sm text-color-regular'>연구 개발기간: <span className='font-medium text-color-main'>{e.period}</span></p>
-                              <p className='text-sm text-color-regular'>연구 개발기관: <span className='font-medium text-color-main'>{e.agency}</span></p>
-                              <p className='text-sm text-color-regular'>연구 책임자: <span className='font-medium text-color-main'>{e.name}</span></p>
+                            <div className='text_style01 mt-2'>
+                              <div>
+                                <p className='text-sm text-color-regular'>연구 개발비: <span className='font-medium text-color-main'>{e.price}</span></p>
+                                <p className='text-sm text-color-regular'>연구 개발기간: <span className='font-medium text-color-main'>{e.period}</span></p>
+                                <p className='text-sm text-color-regular'>연구 개발기관: <span className='font-medium text-color-main'>{e.agency}</span></p>
+                                <p className='text-sm text-color-regular'>연구 책임자: <span className='font-medium text-color-main'>{e.name}</span></p>
+                              </div>
+                              <div>
+                                <p className='text-sm text-color-regular'>부처명: <span className='font-medium text-color-main'>{e.department}</span></p>
+                                <p className='text-sm text-color-regular'>연구 개발성과: <span className='font-medium text-color-main'>{e.performance}</span></p>
+                                <p className='text-sm text-color-regular'>국가과학기술표준분류: <span className='font-medium text-color-main'>{e.division}</span></p>
+                              </div>
+                              <p className='text-sm text-color-regular'>한글 키워드: <span className='font-medium text-color-main'>{e.keyword}</span></p>
                             </div>
-                            <div>
-                              <p className='text-sm text-color-regular'>부처명: <span className='font-medium text-color-main'>{e.department}</span></p>
-                              <p className='text-sm text-color-regular'>연구 개발성과: <span className='font-medium text-color-main'>{e.performance}</span></p>
-                              <p className='text-sm text-color-regular'>국가과학기술표준분류: <span className='font-medium text-color-main'>{e.division}</span></p>
-                            </div>
-                            <p className='text-sm text-color-regular'>한글 키워드: <span className='font-medium text-color-main'>{e.keyword}</span></p>
-                          </div>
-                        </li>;
+                          </li>
+                        </>);
                       })
                       : <li>
                         <p className='text-base text-color-placeholder'>데이터가 없습니다.</p>
