@@ -50,7 +50,7 @@ export default function AutoCompleteSearch(props) {
       const obj = {};
       obj.text = parse(item.data);
       obj.onClick = () => onListClick(item.originData);
-      obj.agency = (item.type !== 'default');
+      obj.agency = (item.type !== 'keyword');
       tempArr.push(obj);
     });
     setListData(tempArr);
