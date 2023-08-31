@@ -48,11 +48,11 @@ export default function Result() {
         let searchParam = {};
         // todo: 'discovery'로 호출해야 하나 색인이 안된 관계로 search로 호출 하라고 함.
         const data = await projectAPI.projectOut('search',10,1,keyword,similarity,'date',filterObj,searchParam);
-        console.log(data?.data?.result);
+        // console.log(data?.data?.result);
         setTotalCount(data?.data?.result?.totalCount ?? 0);
         let procData = [];
         for (let i in data?.data?.result?.dataList ?? []) {
-          console.log(i, data?.data?.result?.dataList?.[i]);
+          // console.log(i, data?.data?.result?.dataList?.[i]);
           const period = data?.data?.result?.dataList?.[i]?.period ?? '';
           const periodArr = period.split('~');
           const division = data?.data?.result?.dataList?.[i]?.technicalClassification ?? [];
