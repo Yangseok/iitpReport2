@@ -8,9 +8,15 @@ import {
   TEModalBody,
   TEModalFooter,
 } from 'tw-elements-react';
+import { useParams, useNavigate } from 'react-router-dom';
 
 export default function ModalMsg(props) {
   const {title, msg, btnTxt, btnCss, btnEvent, show, setShow} = props;
+
+  const params = useParams();
+  const paramSe2 = params?.se2;
+  const navigate = useNavigate();
+
   const btnClick = (f) => {
     // console.log(f);
     // console.log(typeof f)
@@ -22,6 +28,10 @@ export default function ModalMsg(props) {
       switch (f) {
       case 'sample':
         console.log('리덕스 샘플이벤트입니다.');
+        setShow(false);
+        break;
+      case 'goKeyword':
+        navigate('/discovery/' + paramSe2);
         setShow(false);
         break;
       default: break;

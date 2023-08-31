@@ -2,14 +2,15 @@ import React, { useEffect, useState } from 'react';
 import ic_analysis from 'Assets/Images/ic_analysis.png';
 import AutoCompleteSearch from 'Domain/Home/Common/Componet/AutoCompleteSearch';
 import KeywordWrap from 'Domain/Home/Discovery/Component/Keyword/KeywordWrap';
-import { useParams } from 'react-router-dom';
 import * as mainAPI from 'Domain/Home/Main/API/Call';
-import { useSelector } from 'react-redux';
-import { getSearchKeyword } from 'Domain/Home/Common/Status/CommonSlice';
+import { useSelector, useDispatch } from 'react-redux';
+import { getSearchKeyword, setSearchKeywordReset } from 'Domain/Home/Common/Status/CommonSlice';
 import common from 'Utill';
-import { useNavigate } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 
 export default function PageSearchArea(props) {
+  const dispatch = useDispatch();
+
   const { page } = props;
   const params = useParams();
   const paramSe2 = params?.se2;
@@ -23,7 +24,12 @@ export default function PageSearchArea(props) {
   const se = common.getSegment();
 
   const handleSearch = () => {
-    navigate('/discovery/keyword/result?keyword=' + keyword);
+    dispatch(setSearchKeywordReset(true));
+    navigate('/discovery/' + paramSe2 + '/result?keyword=' + keyword);
+  };
+
+  const discoverySearchBttonClick = () => {
+    navigate('/discovery/' + paramSe2 + '/result/projectout?keyword=' + keyword);
   };
 
   useEffect(() => {
@@ -64,7 +70,7 @@ export default function PageSearchArea(props) {
             style={{ type: 2, name: '키워드 찾기', icon: ic_analysis }}
           />
           {(keywordResult) 
-            && <KeywordWrap keyword={keyword} folded={(page === 'resultPage') ? true : ''} />}
+            && <KeywordWrap discoverySearchBttonClick={discoverySearchBttonClick} keyword={keyword} folded={(page === 'resultPage') ? true : ''} />}
         </>
         : (menu === 1)
           ? <>
