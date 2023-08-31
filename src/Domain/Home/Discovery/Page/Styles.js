@@ -16,7 +16,7 @@ import TabButtons from 'Domain/Home/Common/Componet/TabButtons';
 import Button from 'Domain/Home/Common/Componet/Button';
 import Pagination from 'Domain/Home/Common/Componet/Pagination';
 import CategoryWrap from '../Component/CategoryWrap';
-import ListItem from 'Domain/Home/Common/Layout/ListItem';
+import ListItem from 'Domain/Home/Common/Componet/ListItem';
 
 export default function DiscoveryStyles() {
   const tabButtons1 = [

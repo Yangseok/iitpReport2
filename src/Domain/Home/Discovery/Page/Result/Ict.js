@@ -5,7 +5,7 @@ import ic_filter from 'Assets/Images/ic_filter.png';
 import DiscoveryResultLayout from 'Domain/Home/Discovery/Layout/DiscoveryResultLayout';
 import Button from 'Domain/Home/Common/Componet/Button';
 import Pagination from 'Domain/Home/Common/Componet/Pagination';
-import ListItem from 'Domain/Home/Common/Layout/ListItem';
+import ListItem from 'Domain/Home/Common/Componet/ListItem';
 
 export default function Result() {
   const tempData = [
