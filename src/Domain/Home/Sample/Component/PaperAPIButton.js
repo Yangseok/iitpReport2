@@ -38,7 +38,7 @@ export default function PaperAPIButton(props) {
   };
   const paperViewTest = async () => {
     const apiFn = async () => {
-      const data = await paperAPI.paperView();
+      const data = await paperAPI.paperView('JAKO202307545468397');
       console.log(data?.data?.result);
     };
     await props.apiCallWrap(apiFn);
@@ -47,8 +47,8 @@ export default function PaperAPIButton(props) {
   return (
     <>
       <li className='mb-1'><Button text="논문 검색" onClick={() => paperTest(false,false)} /></li>
-      <li className='mb-1'><Button text="논문 검색 - 필터" onClick={() => paperTest(false,false)} /></li>
-      <li className='mb-1'><Button text="논문 검색 - 상세검색" onClick={() => paperTest(false,false)} /></li>
+      <li className='mb-1'><Button text="논문 검색 - 필터" onClick={() => paperTest(true,false)} /></li>
+      <li className='mb-1'><Button text="논문 검색 - 상세검색" onClick={() => paperTest(false,true)} /></li>
       <li className='mb-1'><Button text="상세 페이지(논문)" onClick={paperViewTest} /></li>
     </>
   );

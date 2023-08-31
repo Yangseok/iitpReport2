@@ -36,7 +36,7 @@ export default function OrgnAPIButton(props) {
 
   const orgnViewTest = async () => {
     const apiFn = async () => {
-      const data = await orgnAPI.orgnView();
+      const data = await orgnAPI.orgnView('0008634982');
       console.log(data?.data?.result);
     };
     await props.apiCallWrap(apiFn);

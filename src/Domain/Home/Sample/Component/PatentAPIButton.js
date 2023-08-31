@@ -9,6 +9,7 @@ export default function PatentAPIButton(props) {
       if (filter) {
         filterObj = {
           year: '2020',
+          regType: '등록',
           applType: '신규',
           applicant: '대한민국(행정안전부 국립재난안전연구원장)',
         };

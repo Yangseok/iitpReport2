@@ -17,6 +17,7 @@ export default function Nav() {
     {to:'/sample/graph36', name:'chartjs 엑셀요청한그래프3(36)'},
     {to:'/sample/graph37', name:'chartjs 엑셀요청한그래프4(37)'},
     {to:'/sample/graph39', name:'chartjs 엑셀요청한그래프5(39)'},
+    {to:'/sample/graph40', name:'chartjs 간트챠트 추가(40)'},
     {to:'/sample/graph34', name:'plotly 그래프'},
     {to:'/sample/graph35', name:'D3 그래프'},
     {to:'/sample/graph4', name:'chartjs 분포형그래프'},
