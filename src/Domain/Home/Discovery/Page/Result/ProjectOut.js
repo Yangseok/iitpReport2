@@ -64,7 +64,7 @@ export default function Result() {
             period: period.replaceAll('-','.'), 
             agency: data?.data?.result?.dataList?.[i]?.researchAgencyName ?? '',
             name: data?.data?.result?.dataList?.[i]?.researchManagerName ?? '',
-            department: data?.data?.result?.dataList?.[i]?.ministryName ?? '',
+            department: data?.data?.result?.dataList?.[i]?.orderAgencyName ?? '',
             performance: data?.data?.result?.dataList?.[i]?.performance ?? '',
             division: division.join(' / '),
             keyword: keywordt.join(', '),
