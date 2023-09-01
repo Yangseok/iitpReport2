@@ -1,40 +1,61 @@
 @import "./Common/_colors", "./Common/_mixins";
 
 /* ==================================================
-  DISCOVERY
+  DISCOVERY & SEARCH
 ================================================== */
 /* Category */
-.category_wrap ul {
-  @include flexLayout(center, space-evenly);
-  padding: 20px 0;
-  border-radius: 8px;
-  background-color: $color_white;
-  box-shadow: 0 0 16px rgba(0,0,0, 0.256);
-
-  li {
-    button {
-      flex-direction: column;
-      gap: 0;
-      font-weight: 700;
-      opacity: 0.5;
-
-      img { width: 40px; }
-      b {
-        font-size: 14px;
-        color: $color_regular;
+.category_wrap {
+  ul {
+    @include flexLayout(center, center);
+    padding: 20px 40px;
+    border-radius: 8px;
+    background-color: $color_white;
+    box-shadow: 0 0 16px rgba(0,0,0, 0.256);
+  
+    li {
+      button {
+        flex-direction: column;
+        gap: 0;
+        margin: 0 auto;
+        font-weight: 700;
+        opacity: 0.5;
+  
+        img { width: 40px; }
+        b {
+          font-size: 14px;
+          color: $color_regular;
+        }
+        span {
+          font-size: 16px;
+          color: $color_regular;
+        }
       }
-      span {
-        font-size: 16px;
-        color: $color_regular;
+      
+      &.on button {
+        opacity: 1;
+  
+        b { color: $color_dark; }
+        span { color: $color_main; }
+      }
+  
+      &.all {
+        position: relative;
+  
+        &::before {
+          content: '';
+          position: absolute;
+          top: calc(50% - 24px);
+          right: 0;
+          display: block;
+          width: 1px;
+          height: 48px;
+          background-color: $color_line;
+        }
       }
     }
-    
-    &.on button {
-      opacity: 1;
-
-      b { color: $color_dark; }
-      span { color: $color_main; }
-    }
+  }
+  @for $i from 2 through 9 {
+    &.grid0#{$i} li { width: calc(100% / $i); }
   }
 }
 

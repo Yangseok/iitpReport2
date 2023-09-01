@@ -4,6 +4,7 @@ import 'Assets/Css/Discovery.css';
 import ic_guide from 'Assets/Images/ic_guide.png';
 import Layout from 'Domain/Home/Common/Layout/Sub';
 import TabButtons from 'Domain/Home/Common/Componet/TabButtons';
+import common from 'Utill';
 
 export default function DiscoveryLayout({children}) {
   const pathName = useLocation().pathname;
@@ -21,13 +22,24 @@ export default function DiscoveryLayout({children}) {
   ];
 
   useEffect(() => {
+    let url = '';
+    const se = common.getSegment();
+    const paramSe1 = se[1] ?? '';
+    const paramSe2 = se[2] ?? '';
+
+    if(paramSe1 === 'discovery') {
+      url = `/${paramSe1}/${paramSe2}`;
+    } else if(paramSe1 === 'search') {
+      url = `/${paramSe1}`;
+    }
+
     tabButtons1?.forEach((e) => {
-      if(e.to === pathName) {
+      if(e.to === pathName || e.to === url) {
         setTabActive1(e.id);
       }
     });
     tabButtons2?.forEach((e) => {
-      if(e.to === pathName) {
+      if(e.to === pathName || e.to === url) {
         setTabActive1(0);
         setTabActive2(e.id);
       }

@@ -3,6 +3,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Main from 'Domain/Home/Main/Page/Main';
 import Login from 'Domain/Home/Login/Page/Main';
 import Discovery from 'Domain/Home/Discovery/Page/Main';
+import DiscoveryResultAll from 'Domain/Home/Discovery/Page/Result/All';
 import DiscoveryResultProjectOut from 'Domain/Home/Discovery/Page/Result/ProjectOut';
 import DiscoveryResultProjectIn from 'Domain/Home/Discovery/Page/Result/ProjectIn';
 import DiscoveryResultPatent from 'Domain/Home/Discovery/Page/Result/Patent';
@@ -13,7 +14,6 @@ import DiscoveryResultResearcher from 'Domain/Home/Discovery/Page/Result/Researc
 import DiscoveryResultOrgn from 'Domain/Home/Discovery/Page/Result/Orgn';
 import DiscoveryResultNews from 'Domain/Home/Discovery/Page/Result/News';
 import Search from 'Domain/Home/Discovery/Page/Search';
-import DiscoveryStyles from 'Domain/Home/Discovery/Page/Styles';
 import DemandBanking from 'Domain/Home/DemandBanking/Page/Main';
 import ICTTrend from 'Domain/Home/ICTTrend/Page/Main';
 import PageNotFound from 'Domain/Home/Common/ErrorPage/404';
@@ -60,7 +60,16 @@ export default function Router() {
         <Route path='/discovery/:se2/result/orgn' element={<DiscoveryResultOrgn />} />
         <Route path='/discovery/:se2/result/news' element={<DiscoveryResultNews />} />
         <Route path='/search' element={<Search />} />
-        <Route path='/discoverystyles' element={<DiscoveryStyles />} />
+        <Route path='/search/result/all' element={<DiscoveryResultAll />} />
+        <Route path='/search/result/projectout' element={<DiscoveryResultProjectOut />} />
+        <Route path='/search/result/projectin' element={<DiscoveryResultProjectIn />} />
+        <Route path='/search/result/patent' element={<DiscoveryResultPatent />} />
+        <Route path='/search/result/paper' element={<DiscoveryResultPaper />} />
+        <Route path='/search/result/ict' element={<DiscoveryResultIct />} />
+        <Route path='/search/result/policy' element={<DiscoveryResultPolicy />} />
+        <Route path='/search/result/researcher' element={<DiscoveryResultResearcher />} />
+        <Route path='/search/result/orgn' element={<DiscoveryResultOrgn />} />
+        <Route path='/search/result/news' element={<DiscoveryResultNews />} />
         <Route path='/demandbanking' element={<DemandBanking />} />
         <Route path='/icttrend' element={<ICTTrend />} />
         <Route path='/sample/redux' element={<Counter />} />

@@ -13,7 +13,7 @@ export default function CategoryWrap(props) {
   const [tabButtons2, setTabButtons2] = useState([]);
   const [tabActive1, setTabActive1] = useState(0);
   const [tabActive2, setTabActive2] = useState(0);
-  const [searchPage, setSearchPage] = useState(false);
+  const [page, setPage] = useState('');
 
   useEffect(() => {
     let tab1 = [], tab2 = [];
@@ -21,23 +21,7 @@ export default function CategoryWrap(props) {
     const paramSe1 = se[1] ?? '';
     const paramSe2 = se[2] ?? '';
 
-    if(paramSe1 === 'search') {
-      tab1 = [
-        { id: 1, name: '과제', to:`/search/result/projectout${lctSearch}` },
-        { id: 2, name: '특허', to:`/search/result/patent${lctSearch}` },
-        { id: 3, name: '논문', to:`/search/result/paper${lctSearch}` },
-        { id: 4, name: 'ICT 자료', to:`/search/result/ict${lctSearch}` },
-        { id: 5, name: '정부정책', to:`/search/result/policy${lctSearch}` },
-        { id: 6, name: '연구자', to:`/search/result/researcher${lctSearch}` },
-        { id: 7, name: '기관', to:`/search/result/orgn${lctSearch}` },
-        { id: 8, name: '뉴스', to:`/search/result/news${lctSearch}` },
-      ];
-      tab2 = [
-        { id: 0, name: '국가 R&D 과제', to:`/search/result/projectout${lctSearch}` },
-        { id: 1, name: 'IITP 내부 과제', to:`/search/result/projectin${lctSearch}` },
-      ];
-      setSearchPage(true);
-    } else {
+    if(paramSe1 === 'discovery') {
       tab1 = [
         { id: 1, name: '과제', to:`/discovery/${paramSe2}/result/projectout${lctSearch}` },
         { id: 2, name: '특허', to:`/discovery/${paramSe2}/result/patent${lctSearch}` },
@@ -52,9 +36,24 @@ export default function CategoryWrap(props) {
         { id: 0, name: '국가 R&D 과제', to:`/discovery/${paramSe2}/result/projectout${lctSearch}` },
         { id: 1, name: 'IITP 내부 과제', to:`/discovery/${paramSe2}/result/projectin${lctSearch}` },
       ];
-      setSearchPage(false);
+    } else if(paramSe1 === 'search') {
+      tab1 = [
+        { id: 1, name: '과제', to:`/search/result/projectout${lctSearch}` },
+        { id: 2, name: '특허', to:`/search/result/patent${lctSearch}` },
+        { id: 3, name: '논문', to:`/search/result/paper${lctSearch}` },
+        { id: 4, name: 'ICT 자료', to:`/search/result/ict${lctSearch}` },
+        { id: 5, name: '정부정책', to:`/search/result/policy${lctSearch}` },
+        { id: 6, name: '연구자', to:`/search/result/researcher${lctSearch}` },
+        { id: 7, name: '기관', to:`/search/result/orgn${lctSearch}` },
+        { id: 8, name: '뉴스', to:`/search/result/news${lctSearch}` },
+      ];
+      tab2 = [
+        { id: 0, name: '국가 R&D 과제', to:`/search/result/projectout${lctSearch}` },
+        { id: 1, name: 'IITP 내부 과제', to:`/search/result/projectin${lctSearch}` },
+      ];
     }
 
+    setPage(paramSe1);
     setTabButtons1(tab1);
     setTabButtons2(tab2);
   }, [locations]);
@@ -75,9 +74,9 @@ export default function CategoryWrap(props) {
 
   return (
     <>
-      <div className='category_wrap mb-10'>
+      <div className={`category_wrap mb-10 ${(page === 'search') ? `grid0${tabButtons1.length + 1}` : `grid0${tabButtons1.length}`}`}>
         <ul>
-          {(searchPage)
+          {(page === 'search')
             && <li className={`all${(tabActive1 === 0) ? ' on' : ''}`}>
               <CategoryButton type={0} name={'전체'} num='100,300' onClick={() => location.href = '/search/result/all'} />
             </li>}

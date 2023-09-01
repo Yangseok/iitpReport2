@@ -432,8 +432,9 @@ button.btn_style01, a.btn_style01 {
   background-color: #FFFFFF;
 }
 button.btn_style02, a.btn_style02 {
-  color: #FFFFFF;
-  background-color: #52A3FF;
+  color: #64748B;
+  border: 1px solid #64748B;
+  background-color: #FFFFFF;
 }
 button.btn_style03, a.btn_style03 {
   color: #FFFFFF;
@@ -459,6 +460,9 @@ button.btn_fold.fold img, a.btn_fold.fold img {
   -moz-transform: rotate(-180deg);
   -ms-transform: rotate(-180deg);
   -o-transform: rotate(-180deg);
+}
+button.btn_fold.on, a.btn_fold.on {
+  color: #0056B8;
 }
 button.btn_keyword01, a.btn_keyword01 {
   border: 1px solid #94A3B8;
@@ -1297,6 +1301,33 @@ textarea::placeholder {
   -moz-transform: rotate(-180deg);
   -ms-transform: rotate(-180deg);
   -o-transform: rotate(-180deg);
+}
+
+.list_style04 ul li {
+  border-bottom: 1px solid #E2E8F0;
+}
+.list_style04 ul li a {
+  padding: 14px 24px;
+}
+
+.list_wrap_style01 {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: 40px 16px;
+  flex-wrap: wrap;
+}
+.list_wrap_style01 > * {
+  width: calc(50% - 8px);
+}
+.list_wrap_style01 .tit_box {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 12px 24px;
+  border-radius: 8px;
+  background-color: #F9FBFF;
 }
 
 /* Text Styles */

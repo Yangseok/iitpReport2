@@ -1,13 +1,13 @@
 /* ==================================================
-  DISCOVERY
+  DISCOVERY & SEARCH
 ================================================== */
 /* Category */
 .category_wrap ul {
   display: flex;
   align-items: center;
-  justify-content: space-evenly;
+  justify-content: center;
   gap: 0;
-  padding: 20px 0;
+  padding: 20px 40px;
   border-radius: 8px;
   background-color: #FFFFFF;
   box-shadow: 0 0 16px rgba(0, 0, 0, 0.256);
@@ -15,6 +15,7 @@
 .category_wrap ul li button {
   flex-direction: column;
   gap: 0;
+  margin: 0 auto;
   font-weight: 700;
   opacity: 0.5;
 }
@@ -37,6 +38,43 @@
 }
 .category_wrap ul li.on button span {
   color: #0056B8;
+}
+.category_wrap ul li.all {
+  position: relative;
+}
+.category_wrap ul li.all::before {
+  content: "";
+  position: absolute;
+  top: calc(50% - 24px);
+  right: 0;
+  display: block;
+  width: 1px;
+  height: 48px;
+  background-color: #E2E8F0;
+}
+.category_wrap.grid02 li {
+  width: 50%;
+}
+.category_wrap.grid03 li {
+  width: 33.3333333333%;
+}
+.category_wrap.grid04 li {
+  width: 25%;
+}
+.category_wrap.grid05 li {
+  width: 20%;
+}
+.category_wrap.grid06 li {
+  width: 16.6666666667%;
+}
+.category_wrap.grid07 li {
+  width: 14.2857142857%;
+}
+.category_wrap.grid08 li {
+  width: 12.5%;
+}
+.category_wrap.grid09 li {
+  width: 11.1111111111%;
 }
 
 /* Infomation */

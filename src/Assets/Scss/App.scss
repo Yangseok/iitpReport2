@@ -253,8 +253,9 @@ button, a {
     background-color: $color_white;
   }
   &.btn_style02 {
-    color: $color_white;
-    background-color: $color_light1;
+    color: $color_footer;
+    border: 1px solid $color_footer;
+    background-color: $color_white;
   }
   &.btn_style03 {
     color: $color_white;
@@ -283,6 +284,7 @@ button, a {
         -o-transform: rotate(-180deg);
       }
     }
+    &.on { color: $color_main; }
   }
 
   @for $i from 1 through 5 {
@@ -931,6 +933,23 @@ textarea {
       -o-transform: rotate(-180deg);
     }
   }
+  }
+}
+.list_style04 ul li {
+  border-bottom: 1px solid $color_line;
+
+  a { padding: 14px 24px; }
+}
+.list_wrap_style01 {
+  @include flexLayout(flex-start, flex-start, 40px 16px);
+  flex-wrap: wrap;
+  
+  & > * { width: calc(50% - 8px); }
+  .tit_box {
+    @include flexLayout(center, space-between, 16px);
+    padding: 12px 24px;
+    border-radius: 8px;
+    background-color: $color_m_bg;
   }
 }
 
