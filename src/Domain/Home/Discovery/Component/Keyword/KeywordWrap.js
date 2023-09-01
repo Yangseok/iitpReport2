@@ -24,7 +24,7 @@ export default function KeywordWrap(props) {
   
   const se = common.getSegment();
 
-  const { folded } = props;
+  const { folded, chfold, setChFold } = props;
   const [selectedData, setSelectedData] = useState({});
   const [resetDisabled, setResetDisabled] = useState(true);
   const [fullFold, setFullFold] = useState(folded ?? false);
@@ -125,6 +125,13 @@ export default function KeywordWrap(props) {
       dispatch(setShow(true));
     }
   }, [tmpSearchKeyword, searchParamKeyword, se]);
+
+  useEffect(() => {
+    if (chfold) {
+      setFullFold(true);
+      setChFold(false);
+    }
+  }, [chfold]);
 
   return (
     <>

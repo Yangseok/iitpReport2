@@ -1,61 +1,179 @@
-import React from 'react';
-import ic_arrow from 'Assets/Images/ic_arrow02.png';
-import ic_filter from 'Assets/Images/ic_filter.png';
+import React, { useEffect, useState, useCallback } from 'react';
+import icArrow from 'Assets/Images/ic_arrow02.png';
+import icFilter from 'Assets/Images/ic_filter.png';
 import DiscoveryResultLayout from 'Domain/Home/Discovery/Layout/DiscoveryResultLayout';
 import Button from 'Domain/Home/Common/Componet/Button';
 import Pagination from 'Domain/Home/Common/Componet/Pagination';
 import ListItem from 'Domain/Home/Common/Componet/ListItem';
+import common from 'Utill';
+import { useParams } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { getSearchKeyword, getSelectKeyword } from 'Domain/Home/Common/Status/CommonSlice';
+import * as discoveryAPI from 'Domain/Home/Discovery/API/Call';
+import * as paperAPI from 'Domain/Home/Discovery/API/PaperCall';
 
 export default function Result() {
-  const tempData = [
-    {
-      id: 0,
-      title: '인터랙티브한 애니메이션 캐릭터 제작을 위한 인공지능 미들웨어 설계',
-      year: '2021',
-      division: '학술지',
-      agency: '주경인교육대학교/ 금촌초등학교/ 장명초등학교',
-      name: '홍길동',
-      journal: '한국게임학회논문지',
-      link: '#',
-    },
-  ];
+
+  const params = useParams();
+  const paramSe2 = params?.se2;
+  const selectKeyword = useSelector(getSelectKeyword);
+  const keyword = useSelector(getSearchKeyword);
+  const [tabCount, setTabCount] = useState({});
+  const [totalCount, setTotalCount] = useState(0);
+  const [projectData, setProjectData] = useState([]);
+
+  const [searchButtonClick, setSearchButtonClick] = useState(false);
+  const [page, setPage] = useState(1);
+  const [size, setSize] = useState(10);
+  const [sort, setSort] = useState('score');
+
+  const getKeywordList = useCallback(async () => {
+    switch (paramSe2) {
+    case 'keyword':
+      (async () => {
+        const similarity = common.procSimilarity(selectKeyword);
+        let filterObj = {};
+        let searchParam = {};
+        const data = await paperAPI.paper('search',size,page,keyword,similarity,sort,filterObj,searchParam);
+        console.log(data?.data?.result);
+        setTotalCount(data?.data?.result?.totalCount ?? 0);
+        let procData = [];
+        for (let i in data?.data?.result?.dataList ?? []) {
+          // console.log(i, data?.data?.result?.dataList?.[i]);
+          const agency = data?.data?.result?.dataList?.[i]?.affiliation ?? [];
+          const name = data?.data?.result?.dataList?.[i]?.author ?? [];
+          procData.push({
+            id: data?.data?.result?.dataList?.[i]?.applNumber ?? i,
+            title: data?.data?.result?.dataList?.[i]?.title ?? '',
+            year: data?.data?.result?.dataList?.[i]?.year ?? '',
+            division: data?.data?.result?.dataList?.[i]?.type ?? '',
+            agency: agency.join(', '),
+            name: name.join(', '),
+            journal: data?.data?.result?.dataList?.[i]?.journalTitle ?? '',
+            link: data?.data?.result?.dataList?.[i]?.link ?? '',
+          });
+        }
+    
+        setProjectData(procData);
+        setSearchButtonClick(false);
+      })();
+      break;
+      
+    default:
+      break;
+    }
+  }, [searchButtonClick, page, size, sort]);
+
+  const downExcel = useCallback(async () => {
+    const excelSize = 1000;
+    switch (paramSe2) {
+    case 'keyword':
+      (async () => {
+        const similarity = common.procSimilarity(selectKeyword);
+        let filterObj = {};
+        let searchParam = {};
+        const data = await paperAPI.paper('search',excelSize,1,keyword,similarity,sort,filterObj,searchParam);
+        console.log(data?.data?.result);
+        setTotalCount(data?.data?.result?.totalCount ?? 0);
+        let procData = [];
+        for (let i in data?.data?.result?.dataList ?? []) {
+          // console.log(i, data?.data?.result?.dataList?.[i]);
+          const agency = data?.data?.result?.dataList?.[i]?.affiliation ?? [];
+          const name = data?.data?.result?.dataList?.[i]?.author ?? [];
+          procData.push([
+            data?.data?.result?.dataList?.[i]?.title ?? '',
+            data?.data?.result?.dataList?.[i]?.year ?? '',
+            data?.data?.result?.dataList?.[i]?.type ?? '',
+            agency.join(', '),
+            name.join(', '),
+            data?.data?.result?.dataList?.[i]?.journalTitle ?? '',
+          ]);
+        }
+        common.excelExport('down', ['논문명', '발행년도', '논문 구분', '소속기관', '주 저자', '학술지/학술대회명'], procData);
+      })();
+      break;
+        
+    default:
+      break;
+    }
+  }, [sort]);
+
+  useEffect(() => {
+    getKeywordList();
+  }, [page, size, sort]);
+
+  useEffect(() => {
+    if (searchButtonClick) {
+      setPage(1); 
+      getKeywordList();
+    }
+  }, [searchButtonClick]);
+
+  useEffect(() => {
+    (async () => {
+      const data = await discoveryAPI.searchAll(keyword,1);
+      setTabCount({
+        'all': data?.data?.result?.countInfo?.all ?? 0,
+        1: data?.data?.result?.countInfo?.project ?? 0,
+        2: data?.data?.result?.countInfo?.patent ?? 0,
+        3: data?.data?.result?.countInfo?.paper ?? 0,
+        4: data?.data?.result?.countInfo?.ict ?? 0,
+        5: data?.data?.result?.countInfo?.policy ?? 0,
+        6: data?.data?.result?.countInfo?.researcher ?? 0,
+        7: data?.data?.result?.countInfo?.orgn ?? 0,
+        8: data?.data?.result?.countInfo?.news ?? 0,
+      });
+    })();
+  }, [keyword]);
+
+  // const tempData = [
+  //   {
+  //     id: 0,
+  //     title: '인터랙티브한 애니메이션 캐릭터 제작을 위한 인공지능 미들웨어 설계',
+  //     year: '2021',
+  //     division: '학술지',
+  //     agency: '주경인교육대학교/ 금촌초등학교/ 장명초등학교',
+  //     name: '홍길동',
+  //     journal: '한국게임학회논문지',
+  //     link: '#',
+  //   },
+  // ];
 
   return (
-    <DiscoveryResultLayout>
+    <DiscoveryResultLayout totalCount={tabCount?.all} tabCount={tabCount} keyword={keyword} setSearchButtonClick={setSearchButtonClick} >
       <section className='mt-6'>
         <div className='container'>
           <div className='flex items-center justify-between'>
             <h4 className='text-base font-bold text-color-dark'>
-              논문 <span className='text-color-main'>100,300건</span>
+              논문 <span className='text-color-main'>{common.setPriceInput(totalCount)}건</span>
             </h4>
             <div className='flex gap-4'>
-              <Button className='gap-2 h-12 px-4 rounded text-sm font-bold btn_style04 mr-2' name='목록 다운로드' icon={ic_arrow} />
+              <Button className='gap-2 h-12 px-4 rounded text-sm font-bold btn_style04 mr-2' name='목록 다운로드' icon={icArrow} onClick={downExcel} />
               <div>
                 <label htmlFor='sort_order' className='hidden_text'>정렬 순서</label>
-                <select name='sort_order' id='sort_order'>
-                  <option value=''>최신순</option>
-                  <option value=''>정확도순</option>
-                  <option value=''>유사도순</option>
+                <select name='sort_order' id='sort_order' onChange={(e) => {setPage(1); setSort(e.target.value);}}>
+                  <option value='score'>관련도순</option>
+                  <option value='date'>최신순</option>
                 </select>
               </div>
               <div>
                 <label htmlFor='list_num' className='hidden_text'>노출되는 목록수</label>
-                <select name='list_num' id='list_num'>
-                  <option value=''>10</option>
-                  <option value=''>20</option>
-                  <option value=''>30</option>
-                  <option value=''>50</option>
-                  <option value=''>100</option>
+                <select name='list_num' id='list_num' onChange={(e) => {setPage(1); setSize(e.target.value);}}>
+                  <option value='10'>10</option>
+                  <option value='20'>20</option>
+                  <option value='30'>30</option>
+                  <option value='50'>50</option>
+                  <option value='100'>100</option>
                 </select>
               </div>
-              <Button className='gap-2 h-12 px-4 rounded text-sm font-bold btn_style01' name='필터' icon={ic_filter} />
+              <Button className='gap-2 h-12 px-4 rounded text-sm font-bold btn_style01' name='필터' icon={icFilter} />
             </div>
           </div>
 
           <div className='list_style01 mt-2'>
             <ul>
-              {(tempData?.length > 0) 
-                ? tempData?.map((e) => {
+              {(projectData?.length > 0) 
+                ? projectData?.map((e) => {
                   return (<ListItem 
                     key={e.id}
                     title={e.title}
@@ -79,7 +197,7 @@ export default function Result() {
             </ul>
           </div>
           <div className='mt-10'>
-            <Pagination total={50} page={1} onClick={(i) => console.log(i)} />
+            <Pagination total={totalCount} page={page} onClick={(page) => setPage(page)} />
           </div>
         </div>
       </section>

@@ -9,6 +9,7 @@ import IctAPIButton from 'Domain/Home/Sample/Component/IctAPIButton';
 import PolicyAPIButton from 'Domain/Home/Sample/Component/PolicyAPIButton';
 import ResearcherAPIButton from 'Domain/Home/Sample/Component/ResearcherAPIButton';
 import OrgnAPIButton from 'Domain/Home/Sample/Component/OrgnAPIButton';
+import NewsAPIButton from 'Domain/Home/Sample/Component/NewsAPIButton';
 import ViewAPIButton from 'Domain/Home/Sample/Component/ViewAPIButton';
 import * as discoveryAPI from 'Domain/Home/Discovery/API/Call';
 import { useDispatch } from 'react-redux';
@@ -65,6 +66,9 @@ export default function APITest() {
         <hr />
         <h2>기관</h2>
         <OrgnAPIButton apiCallWrap={apiCallWrap} />
+        <hr />
+        <h2>뉴스</h2>
+        <NewsAPIButton apiCallWrap={apiCallWrap} />
         <hr />
         <h2>기타 상세</h2>
         <ViewAPIButton apiCallWrap={apiCallWrap} />

@@ -33,5 +33,5 @@ export const researcher = async (
       params[key] = searchParam[key];
     }
   }
-  return await API.post('/search/researcher', params);
+  return await API.post('/search/indv', params);
 };

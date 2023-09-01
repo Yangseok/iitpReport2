@@ -16,6 +16,7 @@ export default function PageSearchArea(props) {
   const paramSe2 = params?.se2;
   const [menu, setMenu] = useState(0);
   const [keywordResult, setKeywordResult] = useState(false);
+  const [chfold, setChFold] = useState(false);
   
   const keyword = useSelector(getSearchKeyword);
   const [dataSearch, setDataSearch] = useState([]);
@@ -29,7 +30,16 @@ export default function PageSearchArea(props) {
   };
 
   const discoverySearchBttonClick = () => {
-    navigate('/discovery/' + paramSe2 + '/result/projectout?keyword=' + keyword);
+    setChFold(true);
+    const setSearchButtonClick = props?.setSearchButtonClick;
+    if (setSearchButtonClick !== undefined) {
+      setSearchButtonClick(true);
+    }
+    let defaultSe4 = 'projectout';
+    if (se[4] !== undefined) {
+      defaultSe4 = se[4];
+    }
+    navigate('/discovery/' + paramSe2 + '/result/' + defaultSe4 + '?keyword=' + keyword);
   };
 
   useEffect(() => {
@@ -70,7 +80,7 @@ export default function PageSearchArea(props) {
             style={{ type: 2, name: '키워드 찾기', icon: ic_analysis }}
           />
           {(keywordResult) 
-            && <KeywordWrap discoverySearchBttonClick={discoverySearchBttonClick} keyword={keyword} folded={(page === 'resultPage') ? true : ''} />}
+            && <KeywordWrap discoverySearchBttonClick={discoverySearchBttonClick} keyword={keyword} chfold={chfold} setChFold={setChFold} folded={(page === 'resultPage') ? true : ''} />}
         </>
         : (menu === 1)
           ? <>

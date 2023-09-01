@@ -4,12 +4,12 @@ import DiscoveryArea from 'Domain/Home/Discovery/Component/DiscoveryArea';
 import CategoryWrap from 'Domain/Home/Discovery/Component/CategoryWrap';
 import common from 'Utill';
 
-export default function DiscoveryResultLayout({children, totalCount, tabCount, keyword}) {
+export default function DiscoveryResultLayout({children, totalCount, tabCount, keyword, setSearchButtonClick}) {
   return (
     <DiscoveryLayout>
       <section>
         <div className='container'>
-          <DiscoveryArea page={'resultPage'} />
+          <DiscoveryArea page={'resultPage'} setSearchButtonClick={setSearchButtonClick} />
         </div>
       </section>
       <section className='mt-10'>

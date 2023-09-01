@@ -1,3 +1,5 @@
+import { utils, write } from 'xlsx';
+import { saveAs } from 'file-saver';
 export const setTenRound = (n) => {
   n = Math.round(Number(n)/10) * 10;
   return n;
@@ -112,4 +114,26 @@ export const procSimilarity = (selectedData) => {
     console.warn(e);
   }
   return selectKeyword;
+};
+export const excelExport = async (excelFileName, titleArr, data) => {
+  const excelFileType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
+  const excelFileExtension = '.xlsx';
+  const ws = utils.aoa_to_sheet([
+    titleArr,
+  ]);
+  data.map((e) => {
+    utils.sheet_add_aoa(ws, [e.map(v => v)], {
+      origin: -1,
+    });
+    ws['!cols'] = [{ wpx: 100 }, { wpx: 100 }, { wpx: 100 }, { wpx: 100 }];
+    return false;
+  });
+  const wb = {
+    Sheets: { data: ws },
+    SheetNames: ['data'],
+  };
+  const excelButter = write(wb, { bookType: 'xlsx', type: 'array' });
+  const excelFile = new Blob([excelButter], { type: excelFileType });
+  await new Promise((resolve) => setTimeout(resolve, 1000));
+  saveAs(excelFile, excelFileName + excelFileExtension);
 };

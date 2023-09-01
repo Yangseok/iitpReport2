@@ -117,9 +117,8 @@ export default function DiscoveryResult() {
               <div>
                 <label htmlFor='sort_order' className='hidden_text'>정렬 순서</label>
                 <select name='sort_order' id='sort_order'>
-                  <option value=''>최신순</option>
-                  <option value=''>정확도순</option>
-                  <option value=''>유사도순</option>
+                  <option value=''>관련도순</option>
+                  <option value=''>이름순</option>
                 </select>
               </div>
               <div>
