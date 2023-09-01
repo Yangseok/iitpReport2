@@ -49,10 +49,11 @@
 body {
   font-size: 16px;
   font-family: 'Pretendard';
+  min-width: 1320px;
+  overflow-x: auto;
 }
 .container {
-  width: 1320px !important;
-  max-width: 1320px !important;
+  max-width: 1320px;
   padding: 0 20px;
   margin: 0 auto;
 }
@@ -240,6 +241,7 @@ body {
 ================================================== */
 *:focus-visible { outline-color: $color_main; }
 .hidden_text { @include hiddenAltText; }
+.max-w-calc-20 { max-width: calc(100% - 80px); }
 
 /* Button */
 button, a {
@@ -263,6 +265,24 @@ button, a {
     color: $color_regular;
     border: 1px solid $color_line;
     background-color: $color_f_bg;
+  }
+
+  &.btn_fold {
+    font-size: 14px;
+    color: $color_regular;
+    font-weight: 500;
+  
+    img { transition: all 0.3s; }
+  
+    &.fold {
+      img {
+        transform: rotate(-180deg);
+        -webkit-transform: rotate(-180deg);
+        -moz-transform: rotate(-180deg);
+        -ms-transform: rotate(-180deg);
+        -o-transform: rotate(-180deg);
+      }
+    }
   }
 
   @for $i from 1 through 5 {
@@ -339,7 +359,7 @@ button, a {
       background-color: $color_f_bg;
   
       li {
-        width: 160px;
+        width: 100%;
   
         button, a {
           @include flexLayout(center, center);
@@ -376,7 +396,56 @@ button, a {
       }
     }
   }
-  &.tab_style04 ul {
+  &.tab_style04 {
+    ul li {
+      width: 100%;
+
+      button, a {
+        @include flexLayout(center, center);
+        width: 100%;
+        padding-bottom: 1px;
+        border-bottom: 1px solid $color_placeholder;
+        color: $color_regular;
+        font-weight: 500;
+      }
+
+      &.on button, &.on a {
+        padding-bottom: 0;
+        border-bottom: 2px solid $color_main;
+        color: $color_main;
+        font-weight: 700;
+      }
+    }
+
+    @for $i from 2 through 8 {
+      &.grid0#{$i} ul li { width: calc(100% / $i); }
+    }
+
+    &.grid_auto ul {
+      position: relative;
+
+      &::before {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        display: block;
+        width: 100%;
+        height: 1px;
+        background-color: $color_placeholder;
+        z-index: -1;
+      }
+      li {
+        width: auto;
+  
+        button, a {
+          padding-left: 16px;
+          padding-right: 16px;
+        }
+      }
+    }
+  }
+  &.tab_style05 ul {
     li {
       position: relative;
       
@@ -415,9 +484,8 @@ input {
   border: 1px solid $color_line;
   border-radius: 4px;
   background-color: $color_white;
-  font-size: 16px;
-  color: $color_dark;
-  font-weight: 500;
+  font-size: 14px;
+  color: $color_regular;
 
   &::placeholder { color: $color_placeholder; }
   &::-ms-clear { display: none; }
@@ -438,6 +506,38 @@ select {
 
   &::-ms-expand { display: none; }
 }
+textarea {
+  padding: 12px 16px;
+  resize: none;
+  font-size: 14px;
+  color: $color_regular;
+
+  &::placeholder { color: $color_placeholder; }
+}
+
+.input_x_wrap {
+  position: relative;
+
+  label { position: absolute; }
+  input, textarea {
+    display: block;
+    width: 100%;
+    border: 0;
+    border-bottom: 1px solid $color_line;
+    resize: none;
+  }
+  input { padding: 0 40px 0 16px; }
+  textarea { padding: 12px 40px 12px 16px; }
+  button {
+    @include hiddenAltText;
+    position: absolute;
+    top: calc(50% - 12px);
+    right: 0;
+    width: 24px;
+    height: 24px;
+    background: url('Assets/Images/ic_x.png') no-repeat center / contain;
+  }
+}
 
 /* Search & Auto Complete Search */
 .search_wrap {
@@ -457,21 +557,30 @@ select {
     border-radius: 34px;
     border: 0;
     font-size: 20px;
+    font-weight: 500;
   }
-  button {
+  .search_btn {
     position: absolute;
     top: calc(50% - 24px);
     right: 10px;
     height: 48px;
+
+    button {
+      width: 100%;
+      height: 100%;
+    }
   }
 
   &.type01 {
     input { padding: 0 68px 0 24px; }
-    button {
-      @include hiddenAltText;
+
+    .search_btn {
       width: 48px;
-      border-radius: 50%;
-      background: $color_gradient2;
+      button {
+        @include hiddenAltText;
+        border-radius: 50%;
+        background: $color_gradient2;
+      }
     }
   }
   &.type02 {
@@ -627,8 +736,13 @@ select {
     visibility: visible;
     opacity: 1;
   }
+  & > button:hover + [class*='tooltip_style'],
+  & > button:focus + [class*='tooltip_style'] {
+    visibility: visible;
+    opacity: 1;
+  }
 }
-@for $i from 1 through 4 {
+@for $i from 1 through 5 {
   .tooltip_style0#{$i} {
     position: absolute;
     padding: 0 6px;
@@ -645,20 +759,25 @@ select {
     visibility: hidden;
     transition: all 0.3s;
 
-    @if ($i == 1) {
-      bottom: calc(100% + 16px);
-      left: 0;
-      border-color: $color_footer;
-    } @else {
+    @if ($i == 1 or $i == 2 or $i == 3) {
       bottom: calc(100% + 6px);
       left: calc(100% - 20px);
 
-      @if ($i == 2) {
+      @if ($i == 1) {
         border-color: $color_safety3;
-      } @else if ($i == 3) {
+      } @else if ($i == 2) {
         border-color: $color_safety2;
-      } @else {
+      } @else if ($i == 3) {
         border-color: $color_safety1;
+      }
+    } @else {
+      border-color: $color_footer;
+      @if ($i == 4) {
+        bottom: calc(100% + 16px);
+        left: 0;
+      } @else if ($i == 5) {
+        bottom: 100%;
+        left: calc(100% - 28px);
       }
     }
 
@@ -766,6 +885,8 @@ select {
     background-color: $color_m_bg;
     cursor: pointer;
 
+    .conts_box { width: calc(100% - 60px); }
+
     &.on {
       padding: 19px 15px;
       border: 2px solid $color_main;
@@ -791,13 +912,6 @@ select {
       overflow: hidden;
       transition: all 0.3s;
     }
-    .more_btn {
-      @include hiddenAltText;
-      width: 30px;
-      height: 30px;
-      background: url('Assets/Images/arr_drop02.png') no-repeat center / 24px;
-      transition: all 0.3s;
-    }
 
     &.on {
       border-color: $color_main;
@@ -805,13 +919,6 @@ select {
       .conts_box {
         height: 100%;
         padding: 0 16px 20px;
-      }
-      .more_btn {
-        transform: rotate(-180deg);
-        -webkit-transform: rotate(-180deg);
-        -moz-transform: rotate(-180deg);
-        -ms-transform: rotate(-180deg);
-        -o-transform: rotate(-180deg);
       }
     }
 

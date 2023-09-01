@@ -101,7 +101,7 @@ export default function AutoCompleteSearch(props) {
 
   return (
     <div className={`auto_search_wrap${(searchFocus) ? ' focus' : ''}`}>
-      <div className={`search_wrap${(style?.type === 1) ? ' type01' : (style?.type === 2) ? ' type02' : ''}`}>
+      <div className={`search_wrap${(style?.type === 1 || style?.type === 3) ? ' type01' : (style?.type === 2) ? ' type02' : ''}`}>
         <label htmlFor='search_text'>검색어로 검색</label>
         <input 
           type='text'
@@ -114,7 +114,10 @@ export default function AutoCompleteSearch(props) {
           placeholder='찾고 싶은 검색어를 입력해보세요.'
           autoComplete='off'
         />
-        <Button name={style?.name} onClick={searchEvent} icon={style?.icon} />
+        <div className={`search_btn${(style?.type === 3) ? ' tooltip_wrap' : ''}`}>
+          <Button name={style?.name} onClick={searchEvent} icon={style?.icon} />
+          {(style?.type === 3) && <span className='tooltip_style05 min-w-16'>검색하기</span>}
+        </div>
       </div>
       <div className='search_list'>
         <ul>

@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import ic_arrow from 'Assets/Images/ic_arrow02.png';
 import ic_filter from 'Assets/Images/ic_filter.png';
 import DiscoveryResultLayout from 'Domain/Home/Discovery/Layout/DiscoveryResultLayout';
 import Button from 'Domain/Home/Common/Componet/Button';
 import Pagination from 'Domain/Home/Common/Componet/Pagination';
 import WordClouds from 'Domain/Home/Common/Componet/Features/WordClouds';
+import $ from 'jquery';
 
 export default function DiscoveryResult() {
   const tempData = [
@@ -24,19 +25,28 @@ export default function DiscoveryResult() {
     },
   ];
 
-  const onItemSlide = (e) => {
-    const pd = 20;
-    const liEl = e.target.parentNode.parentNode.parentNode;
-    const contsEl = e.target.parentNode.parentNode.nextSibling;
+  const [newsActive, setNewsActive] = useState(null);
 
-    if(!liEl.classList.contains('on')) {
-      liEl.classList.add('on');
-      contsEl.style.height = `${contsEl.scrollHeight + pd}px`;
-      contsEl.style.paddingBottom = `${pd}px`;
-    } else {
-      liEl.classList.remove('on');
-      contsEl.style.height = 0;
-      contsEl.style.paddingBottom = 0;
+  // 뉴스 선택 시
+  const onItemSlide = (e, id) => {
+    if(e.currentTarget.nodeName !== 'BUTTON') {
+      const pd = 20;
+      const liEl = e.currentTarget;
+      const contsEl = e.currentTarget.children[1];
+
+      setNewsActive(id);
+      $(e.currentTarget).siblings().find('.conts_box').css('height', 0);
+      $(e.currentTarget).siblings().find('.conts_box').css('paddingBottom', 0);
+
+      if(!liEl.classList.contains('on')) {
+        liEl.classList.add('on');
+        contsEl.style.height = `${contsEl.scrollHeight + pd}px`;
+        contsEl.style.paddingBottom = `${pd}px`;
+      } else {
+        liEl.classList.remove('on');
+        contsEl.style.height = 0;
+        contsEl.style.paddingBottom = 0;
+      }
     }
   };
 
@@ -77,7 +87,14 @@ export default function DiscoveryResult() {
               {(tempData?.length > 0)
                 ? tempData?.map((e) => {
                   return (
-                    <li key={e.id}>
+                    <li 
+                      key={e.id} 
+                      className={(e.id === newsActive) ? 'on' : ''}
+                      onClick={(event) => onItemSlide(event, e.id)} 
+                      onKeyUp={(event) => (event.key === 'Enter') && onItemSlide(event, e.id)} 
+                      role={'button'}
+                      tabIndex={0}
+                    >
                       <div className='tit_box flex items-center justify-between gap-4'>
                         <p className='flex-1 text-base font-bold text-color-dark'>{e.title}</p>
                         <div className='text_style01 flex items-center gap-4'>
@@ -86,7 +103,6 @@ export default function DiscoveryResult() {
                             <p className='text-sm text-color-regular'>출처: <span className='font-medium text-color-main'>{e.source}</span></p>
                             <p className='text-sm text-color-regular'>출처일: <span className='font-medium text-color-main'>{e.date}</span></p>
                           </div>
-                          <button type="button" className='more_btn' onClick={onItemSlide}>자세히 보기</button>
                         </div>
                       </div>
                       <div className='conts_box'>

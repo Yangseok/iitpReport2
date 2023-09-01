@@ -13,6 +13,11 @@ export default function TabButtons(props) {
       setTabClass('tab_style02 grid0' + tab_length);
     } else if(style === '3') {
       setTabClass('tab_style03');
+    } else if(style === '4-1') {
+      setTabClass('tab_style04 grid_auto');
+    } else if(style === '4-2') {
+      const tab_length = tabs.length;
+      setTabClass('tab_style04 grid0' + tab_length);
     }
   }, [props]);
 

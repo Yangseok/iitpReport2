@@ -3,6 +3,68 @@
 /* ==================================================
   DISCOVERY
 ================================================== */
+/* Category */
+.category_wrap ul {
+  @include flexLayout(center, space-evenly);
+  padding: 20px 0;
+  border-radius: 8px;
+  background-color: $color_white;
+  box-shadow: 0 0 16px rgba(0,0,0, 0.256);
+
+  li {
+    button {
+      flex-direction: column;
+      gap: 0;
+      font-weight: 700;
+      opacity: 0.5;
+
+      img { width: 40px; }
+      b {
+        font-size: 14px;
+        color: $color_regular;
+      }
+      span {
+        font-size: 16px;
+        color: $color_regular;
+      }
+    }
+    
+    &.on button {
+      opacity: 1;
+
+      b { color: $color_dark; }
+      span { color: $color_main; }
+    }
+  }
+}
+
+/* Infomation */
+.info_wrap {
+  width: 100%;
+  max-width: 800px;
+  padding: 40px 16px;
+  margin: 0 auto;
+  border-radius: 8px;
+  background-color: $color_m_bg;
+
+  ul li {
+    position: relative;
+    padding-left: 16px;
+
+    &::before {
+      content: '';
+      position: absolute;
+      top: 8px;
+      left: 0;
+      display: block;
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background-color: $color_regular;
+    }
+  }
+}
+
 /* Keyword Result */
 .keywords_wrap {
   padding: 24px;
@@ -85,37 +147,16 @@
   }
 }
 
-/* Category */
-.category_wrap ul {
-  @include flexLayout(center, space-evenly);
-  padding: 20px 0;
-  border-radius: 8px;
-  background-color: $color_white;
-  box-shadow: 0 0 16px rgba(0,0,0, 0.256);
-
-  li {
-    button {
-      flex-direction: column;
-      gap: 0;
-      font-weight: 700;
-      opacity: 0.5;
-
-      img { width: 40px; }
-      b {
-        font-size: 14px;
-        color: $color_regular;
-      }
-      span {
-        font-size: 16px;
-        color: $color_regular;
-      }
-    }
+/* Search Result */
+.search_detail_wrap {
+  dl {
+    @include flexLayout(center, center, 16px);
+    flex-wrap: wrap;
     
-    &.on button {
-      opacity: 1;
-
-      b { color: $color_dark; }
-      span { color: $color_main; }
+    dt {
+      width: 180px;
+      padding-left: 24px;
     }
+    dd { width: calc(100% - 196px); }
   }
 }

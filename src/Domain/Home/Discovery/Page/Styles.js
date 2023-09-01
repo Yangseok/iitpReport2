@@ -324,7 +324,9 @@ export default function DiscoveryStyles() {
           <div className='search_wrap type02'>
             <label htmlFor='search' className=''>키워드 검색</label>
             <input type='text' name='search' id='search' defaultValue='' placeholder='찾고 싶은 검색어를 입력해보세요.' />
-            <Button name='키워드 찾기' icon={ic_analysis} />
+            <div className='search_btn'>
+              <Button name='키워드 찾기' icon={ic_analysis} />
+            </div>
           </div>
         </div>
       </section>
@@ -1028,16 +1030,16 @@ export default function DiscoveryStyles() {
                           {(e.safety === 0) 
                             ? <>
                               <img src={img_building01} alt='기관 재무안전성: 위험 이미지' className='w-11' />
-                              <span className='tooltip_style02 min-w-23'>재무안전성: 위험</span>
+                              <span className='tooltip_style01 min-w-23'>재무안전성: 위험</span>
                             </>
                             : (e.safety === 1) 
                               ? <>
                                 <img src={img_building02} alt='기관 재무안전성: 보통 이미지' className='w-11' />
-                                <div className='tooltip_style03 min-w-23'>재무안전성: 보통</div>
+                                <div className='tooltip_style02 min-w-23'>재무안전성: 보통</div>
                               </>
                               : <>
                                 <img src={img_building03} alt='기관 재무안전성: 안정 이미지' className='w-11' />
-                                <div className='tooltip_style04 min-w-23'>재무안전성: 안정</div>
+                                <div className='tooltip_style03 min-w-23'>재무안전성: 안정</div>
                               </>}
                         </div>
                         <div className='flex-1'>
@@ -1045,13 +1047,13 @@ export default function DiscoveryStyles() {
                             <p className='text-base font-bold text-color-main'>{e.name}</p>
                             <div className='tooltip_wrap' tabIndex={0}>
                               <span className="tag_style03">{e.sales}</span>
-                              <div className='tooltip_style01 min-w-30'>해당 산업 매출상위(%)</div>
+                              <div className='tooltip_style04 min-w-30'>해당 산업 매출상위(%)</div>
                             </div>
                             {(e.followup)
                               && (
                                 <div className='tooltip_wrap' tabIndex={0}>
                                   <span className="tag_style04">사후</span>
-                                  <div className='tooltip_style01 min-w-25'>사후관리 대상 기업</div>
+                                  <div className='tooltip_style04 min-w-25'>사후관리 대상 기업</div>
                                 </div>
                               )
                             }
@@ -1106,7 +1108,7 @@ export default function DiscoveryStyles() {
               <div className='mt-10'>
                 <div className='flex items-center gap-5'>
                   <h5 className='text-base font-bold text-color-dark'>{orgnActive.name}</h5>
-                  <div className='tab_btns tab_style04'>
+                  <div className='tab_btns tab_style05'>
                     <ul>
                       <li className='on'>
                         <button type='button' onClick={() => {}}>과제(83)</button>

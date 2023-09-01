@@ -94,7 +94,7 @@ export default function DiscoveryResult() {
 
   // 연구자 선택 시
   const onResearcherSelect = (e, id, name) => {
-    if(e.target.nodeName !== 'BUTTON') {
+    if(e.currentTarget.nodeName !== 'BUTTON') {
       setResearcherActive({ id, name });
     }
   };
@@ -146,13 +146,13 @@ export default function DiscoveryResult() {
                         key={e.id} 
                         className={`flex items-center gap-4${(e.id === researcherActive.id) ? ' on' : ''}`}
                         onClick={(event) => onResearcherSelect(event, e.id, e.name)} 
-                        onKeyUp={(event) => (event.key === 'Enter') && onResearcherSelect(event, e.id)} 
+                        onKeyUp={(event) => (event.key === 'Enter') && onResearcherSelect(event, e.id, e.name)} 
                         role={'button'}
                         tabIndex={0}
                       >
                         <img src={img_researcher01} alt='연구자 프로필 이미지' className='w-11' />
                         <div className='flex-1'>
-                          <div className='flex items-center gap-2'>
+                          <div className='flex items-center justify-between gap-2'>
                             <p className='text-base font-bold text-color-main'>{e.name}</p>
                             <a href={e.link} className='h-5 px-1.5 rounded-sm text-xs font-medium text-color-white bg-color-light1' target='_blank' rel='noreferrer' title={`새창이동, ${e.name} 연구자 페이지`}>연구자 보기↗</a>
                           </div>

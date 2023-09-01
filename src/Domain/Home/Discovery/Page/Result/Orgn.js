@@ -22,6 +22,7 @@ export default function DiscoveryResult() {
       name: '주식회사 마인즈랩(MINDS LAB., INC.)',
       assign: '10',
       patent: '10',
+      link: '#',
       institue: null,
       safety: 2,
       sales: 10,
@@ -32,6 +33,7 @@ export default function DiscoveryResult() {
       name: '주식회사 마인즈랩(MINDS LAB., INC.)',
       assign: '43',
       patent: '10',
+      link: '#',
       institue: 'OOO연구소',
       safety: 0,
       sales: 5,
@@ -42,6 +44,7 @@ export default function DiscoveryResult() {
       name: '주식회사 마인즈랩(MINDS LAB., INC.)',
       assign: '10',
       patent: '10',
+      link: '#',
       institue: 'OOO연구소',
       safety: 1,
       sales: 25,
@@ -113,7 +116,7 @@ export default function DiscoveryResult() {
 
   // 기관 선택 시
   const onOrgnSelect = (e, id, name) => {
-    if(e.target.nodeName !== 'BUTTON') {
+    if(e.currentTarget.nodeName !== 'BUTTON') {
       setOrgnActive({ id, name });
     }
   };
@@ -166,7 +169,7 @@ export default function DiscoveryResult() {
                           key={e.id} 
                           className={`flex items-center gap-4${(e.id === orgnActive.id) ? ' on' : ''}`}
                           onClick={(event) => onOrgnSelect(event, e.id, e.name)} 
-                          onKeyUp={(event) => (event.key === 'Enter') && onOrgnSelect(event, e.id)} 
+                          onKeyUp={(event) => (event.key === 'Enter') && onOrgnSelect(event, e.id, e.name)} 
                           role={'button'}
                           tabIndex={0}
                         >
@@ -174,33 +177,36 @@ export default function DiscoveryResult() {
                             {(e.safety === 0) 
                               ? <>
                                 <img src={img_building01} alt='기관 재무안전성: 위험 이미지' className='w-11' />
-                                <span className='tooltip_style02 min-w-23'>재무안전성: 위험</span>
+                                <span className='tooltip_style01 min-w-23'>재무안전성: 위험</span>
                               </>
                               : (e.safety === 1) 
                                 ? <>
                                   <img src={img_building02} alt='기관 재무안전성: 보통 이미지' className='w-11' />
-                                  <div className='tooltip_style03 min-w-23'>재무안전성: 보통</div>
+                                  <div className='tooltip_style02 min-w-23'>재무안전성: 보통</div>
                                 </>
                                 : <>
                                   <img src={img_building03} alt='기관 재무안전성: 안정 이미지' className='w-11' />
-                                  <div className='tooltip_style04 min-w-23'>재무안전성: 안정</div>
+                                  <div className='tooltip_style03 min-w-23'>재무안전성: 안정</div>
                                 </>}
                           </div>
-                          <div className='flex-1'>
-                            <div className='flex items-center gap-2'>
-                              <p className='text-base font-bold text-color-main'>{e.name}</p>
-                              <div className='tooltip_wrap' tabIndex={0}>
-                                <span className="tag_style03">{e.sales}</span>
-                                <div className='tooltip_style01 min-w-30'>해당 산업 매출상위(%)</div>
-                              </div>
-                              {(e.followup)
+                          <div className='conts_box'>
+                            <div className='flex items-center justify-between gap-2'>
+                              <p className='text-base font-bold text-color-main line1_text flex-1'>{e.name}</p>
+                              <div className='flex items-center gap-2'>
+                                <div className='tooltip_wrap' tabIndex={0}>
+                                  <span className="tag_style03">{e.sales}</span>
+                                  <div className='tooltip_style04 min-w-30'>해당 산업 매출상위(%)</div>
+                                </div>
+                                {(e.followup)
                                 && (
                                   <div className='tooltip_wrap' tabIndex={0}>
                                     <span className="tag_style04">사후</span>
-                                    <div className='tooltip_style01 min-w-25'>사후관리 대상 기업</div>
+                                    <div className='tooltip_style04 min-w-25'>사후관리 대상 기업</div>
                                   </div>
                                 )
-                              }
+                                }
+                              </div>
+                              {(e?.link) && <a href={e.link} className='h-5 px-1.5 rounded-sm text-xs font-medium text-color-white bg-color-light1 min-w-17' target='_blank' rel='noreferrer' title={`새창이동, ${e.name} 기관 페이지`}>기관 보기↗</a>}
                             </div>
                             <div className='text_style01'>
                               <p className='text-sm text-color-regular'>과제: <span className='font-medium text-color-main'>{e.assign}건</span></p>
@@ -253,7 +259,7 @@ export default function DiscoveryResult() {
               <div className='mt-10'>
                 <div className='flex items-center gap-5'>
                   <h5 className='text-base font-bold text-color-dark'>{orgnActive.name}</h5>
-                  <div className='tab_btns tab_style04'>
+                  <div className='tab_btns tab_style05'>
                     <ul>
                       <li className='on'>
                         <button type='button' onClick={() => {}}>과제(83)</button>
