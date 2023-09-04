@@ -622,6 +622,9 @@ button.btn_keyword05.on, a.btn_keyword05.on {
   color: #0056B8;
   font-weight: 700;
 }
+.tab_btns.tab_style04 ul li.on button b, .tab_btns.tab_style04 ul li.on a b {
+  color: #0F172A;
+}
 .tab_btns.tab_style04.grid02 ul li {
   width: 50%;
 }

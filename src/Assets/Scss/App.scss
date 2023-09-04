@@ -416,6 +416,8 @@ button, a {
         border-bottom: 2px solid $color_main;
         color: $color_main;
         font-weight: 700;
+
+        b { color: $color_dark; }
       }
     }
 

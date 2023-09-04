@@ -11,6 +11,7 @@ import { useSelector } from 'react-redux';
 import { getSearchKeyword, getSelectKeyword } from 'Domain/Home/Common/Status/CommonSlice';
 import * as projectAPI from 'Domain/Home/Discovery/API/ProjectCall';
 import * as discoveryAPI from 'Domain/Home/Discovery/API/Call';
+import Filter from 'Domain/Home/Discovery/Component/Filter';
 
 export default function Result() {
   const params = useParams();
@@ -195,6 +196,8 @@ export default function Result() {
               <Button className='gap-2 h-12 px-4 rounded text-sm font-bold btn_style01' name='필터' icon={icFilter} />
             </div>
           </div>
+
+          <Filter />
 
           <div className='list_style01 mt-2'>
             <ul>

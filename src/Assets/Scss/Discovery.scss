@@ -181,3 +181,70 @@
     dd { width: calc(100% - 196px); }
   }
 }
+
+/* Filter */
+.filter_btns {
+  padding: 24px 24px 0;
+
+  ul {
+    @include flexLayout(center, flex-start, 16px);
+
+    li button {
+      padding: 7px 10px;
+      border: 1px solid $color_placeholder;
+      border-radius: 4px;
+      font-size: 14px;
+      color: $color_footer;
+  
+      b {
+        font-size: 16px;
+        color: $color_regular;
+        font-weight: 500;
+      }
+  
+      &.on {
+        border-color: $color_main;
+  
+        b { color: $color_main; }
+      }
+    }
+  }
+}
+.filter_select_wrap {
+  @include flexLayout(flex-end, space-between, 24px);
+  padding: 24px;
+  background-color: $color_f_bg;
+
+  dl {
+    @include flexLayout(flex-start, flex-start, 16px);
+
+    & + dl { margin-top: 12px; }
+    dt {
+      font-size: 16px;
+      color: $color_regular;
+      font-weight: 500;
+    }
+    dd {
+      @include flexLayout(center, center, 4px);
+      font-size: 16px;
+      color: $color_main;
+      font-weight: 400;
+
+      .x_btn {
+        @include hiddenAltText;
+        width: 16px;
+        height: 16px;
+        background: url('Assets/Images/ic_x02.png') no-repeat center / contain;
+      }
+    }
+  }
+  .filter_reset_btn {
+    font-size: 14px;
+    color: $color_main;
+    font-weight: 500;
+  
+    &:disabled {
+      color: $color_placeholder;
+    }
+  }
+}
