@@ -4,7 +4,7 @@ import icFilter from 'Assets/Images/ic_filter.png';
 import DiscoveryResultLayout from 'Domain/Home/Discovery/Layout/DiscoveryResultLayout';
 import Button from 'Domain/Home/Common/Componet/Button';
 import Pagination from 'Domain/Home/Common/Componet/Pagination';
-import WordClouds from 'Domain/Home/Common/Componet/Features/WordClouds';
+import NewsWordClouds from 'Domain/Home/Discovery/Component/NewsWordClouds';
 import $ from 'jquery';
 import common from 'Utill';
 import { useParams } from 'react-router-dom';
@@ -50,6 +50,7 @@ export default function DiscoveryResult() {
             source: data?.data?.result?.dataList?.[i]?.source ?? '',
             date: (dateArr[0] ?? '').replaceAll('-','.'),
             link: data?.data?.result?.dataList?.[i]?.link ?? '',
+            wordCloud: data?.data?.result?.dataList?.[i]?.similarity ?? [],
           });
         }
     
@@ -220,7 +221,7 @@ export default function DiscoveryResult() {
                         </div>
                       </div>
                       <div className='conts_box'>
-                        <WordClouds />
+                        <NewsWordClouds wordCloudData={e.wordCloud ?? []} />
                       </div>
                     </li>
                   );
