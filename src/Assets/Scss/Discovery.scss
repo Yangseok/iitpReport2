@@ -188,6 +188,7 @@
 
   ul {
     @include flexLayout(center, flex-start, 16px);
+    flex-wrap: wrap;
 
     li button {
       padding: 7px 10px;
@@ -215,29 +216,37 @@
   padding: 24px;
   background-color: $color_f_bg;
 
-  dl {
+  & > div { flex: 1; }
+  .conts_box {
     @include flexLayout(flex-start, flex-start, 16px);
+    & + div { margin-top: 12px; }
 
-    & + dl { margin-top: 12px; }
-    dt {
+    p {
       font-size: 16px;
       color: $color_regular;
       font-weight: 500;
     }
-    dd {
-      @include flexLayout(center, center, 4px);
-      font-size: 16px;
-      color: $color_main;
-      font-weight: 400;
-
-      .x_btn {
-        @include hiddenAltText;
-        width: 16px;
-        height: 16px;
-        background: url('Assets/Images/ic_x02.png') no-repeat center / contain;
+    ul {
+      @include flexLayout(flex-start, flex-start, 2px 16px);
+      flex-wrap: wrap;
+      flex: 1;
+      
+      li {
+        @include flexLayout(center, center, 4px);
+        font-size: 16px;
+        color: $color_main;
+        font-weight: 400;
+  
+        .x_btn {
+          @include hiddenAltText;
+          width: 16px;
+          height: 16px;
+          background: url('Assets/Images/ic_x02.png') no-repeat center / contain;
+        }
       }
     }
   }
+  
   .filter_reset_btn {
     font-size: 14px;
     color: $color_main;

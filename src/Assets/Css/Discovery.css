@@ -213,6 +213,7 @@
   align-items: center;
   justify-content: flex-start;
   gap: 16px;
+  flex-wrap: wrap;
 }
 .filter_btns ul li button {
   padding: 7px 10px;
@@ -241,21 +242,32 @@
   padding: 24px;
   background-color: #F1F5F9;
 }
-.filter_select_wrap dl {
+.filter_select_wrap > div {
+  flex: 1;
+}
+.filter_select_wrap .conts_box {
   display: flex;
   align-items: flex-start;
   justify-content: flex-start;
   gap: 16px;
 }
-.filter_select_wrap dl + dl {
+.filter_select_wrap .conts_box + div {
   margin-top: 12px;
 }
-.filter_select_wrap dl dt {
+.filter_select_wrap .conts_box p {
   font-size: 16px;
   color: #334155;
   font-weight: 500;
 }
-.filter_select_wrap dl dd {
+.filter_select_wrap .conts_box ul {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: 2px 16px;
+  flex-wrap: wrap;
+  flex: 1;
+}
+.filter_select_wrap .conts_box ul li {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -264,7 +276,7 @@
   color: #0056B8;
   font-weight: 400;
 }
-.filter_select_wrap dl dd .x_btn {
+.filter_select_wrap .conts_box ul li .x_btn {
   font-size: 0;
   line-height: 0;
   text-indent: -9999px;

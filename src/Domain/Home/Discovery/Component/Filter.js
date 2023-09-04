@@ -89,45 +89,55 @@ export default function Filter() {
       </div>
       <div className='filter_select_wrap mt-6'>
         <div>
-          <dl>
-            <dt>기준연도</dt>
-            <dd>
-              <span>2023</span>
-              <button type='button' className='x_btn'>선택 필터 삭제</button>
-            </dd>
-            <dd>
-              <span>2022</span>
-              <button type='button' className='x_btn'>선택 필터 삭제</button>
-            </dd>
-          </dl>
-          <dl>
-            <dt>연구 개발비</dt>
-            <dd>
-              <span>1억이상~2억미만</span>
-              <button type='button' className='x_btn'>선택 필터 삭제</button>
-            </dd>
-          </dl>
-          <dl>
-            <dt>연구 개발기관</dt>
-            <dd>
-              <span>서울대학교</span>
-              <button type='button' className='x_btn'>선택 필터 삭제</button>
-            </dd>
-          </dl>
-          <dl>
-            <dt>부처명</dt>
-            <dd>
-              <span>미래창조과학부</span>
-              <button type='button' className='x_btn'>선택 필터 삭제</button>
-            </dd>
-          </dl>
-          <dl>
-            <dt>국제과학기술표준분류</dt>
-            <dd>
-              <span>생명과학</span>
-              <button type='button' className='x_btn'>선택 필터 삭제</button>
-            </dd>
-          </dl>
+          <div className='conts_box'>
+            <p>기준연도</p>
+            <ul>
+              <li>
+                <span>2023</span>
+                <button type='button' className='x_btn'>선택 필터 삭제</button>
+              </li>
+              <li>
+                <span>2022</span>
+                <button type='button' className='x_btn'>선택 필터 삭제</button>
+              </li>
+            </ul>
+          </div>
+          <div className='conts_box'>
+            <p>연구 개발비</p>
+            <ul>
+              <li>
+                <span>1억이상~2억미만</span>
+                <button type='button' className='x_btn'>선택 필터 삭제</button>
+              </li>
+            </ul>
+          </div>
+          <div className='conts_box'>
+            <p>연구 개발기관</p>
+            <ul>
+              <li>
+                <span>서울대학교</span>
+                <button type='button' className='x_btn'>선택 필터 삭제</button>
+              </li>
+            </ul>
+          </div>
+          <div className='conts_box'>
+            <p>부처명</p>
+            <ul>
+              <li>
+                <span>미래창조과학부</span>
+                <button type='button' className='x_btn'>선택 필터 삭제</button>
+              </li>
+            </ul>
+          </div>
+          <div className='conts_box'>
+            <p>국제과학기술표준분류</p>
+            <ul>
+              <li>
+                <span>생명과학</span>
+                <button type='button' className='x_btn'>선택 필터 삭제</button>
+              </li>
+            </ul>
+          </div>
         </div>
         <button type='button' className='filter_reset_btn' disabled={filterDisabled} onClick={() => setFilterDisabled(state => !state)}>
           선택 초기화

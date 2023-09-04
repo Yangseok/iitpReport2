@@ -906,7 +906,7 @@ textarea::placeholder {
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
   line-height: 1.4rem;
-  height: 2.8rem;
+  max-height: 2.8rem;
 }
 
 /* Image */
