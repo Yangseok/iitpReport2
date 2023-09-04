@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import ic_analysis from 'Assets/Images/ic_analysis.png';
+import icAnalysis from 'Assets/Images/ic_analysis.png';
 import AutoCompleteSearch from 'Domain/Home/Common/Componet/AutoCompleteSearch';
 import KeywordWrap from 'Domain/Home/Discovery/Component/Keyword/KeywordWrap';
 import * as mainAPI from 'Domain/Home/Main/API/Call';
@@ -77,7 +77,7 @@ export default function PageSearchArea(props) {
           <AutoCompleteSearch 
             handleSearch={handleSearch}
             data={dataSearch}
-            style={{ type: 2, name: '키워드 찾기', icon: ic_analysis }}
+            style={{ type: 2, name: '키워드 찾기', icon: icAnalysis }}
           />
           {(keywordResult) 
             && <KeywordWrap discoverySearchBttonClick={discoverySearchBttonClick} keyword={keyword} chfold={chfold} setChFold={setChFold} folded={(page === 'resultPage') ? true : ''} />}

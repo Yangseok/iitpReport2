@@ -889,6 +889,8 @@ textarea::placeholder {
 
 /* Text Line */
 .line1_text {
+  max-width: 100%;
+  display: block;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -1306,6 +1308,9 @@ textarea::placeholder {
 .list_style04 ul li {
   border-bottom: 1px solid #E2E8F0;
 }
+.list_style04 ul li.nodata {
+  padding: 14px 24px;
+}
 .list_style04 ul li a {
   padding: 14px 24px;
 }
@@ -1334,15 +1339,16 @@ textarea::placeholder {
 .text_style01 p {
   position: relative;
   display: inline-block;
+  vertical-align: middle;
 }
-.text_style01 p:not(:first-of-type) {
-  padding-left: 20px;
+.text_style01 p:not(:last-of-type) {
+  padding-right: 20px;
 }
-.text_style01 p:not(:first-of-type)::before {
+.text_style01 p:not(:last-of-type)::before {
   content: "";
   position: absolute;
   top: calc(50% - 6px);
-  left: 10px;
+  right: 10px;
   display: block;
   width: 1px;
   height: 12px;

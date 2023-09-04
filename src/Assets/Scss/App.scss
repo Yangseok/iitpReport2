@@ -663,6 +663,8 @@ textarea {
 
 /* Text Line */
 .line1_text {
+  max-width: 100%;
+  display: block;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -938,6 +940,7 @@ textarea {
 .list_style04 ul li {
   border-bottom: 1px solid $color_line;
 
+  &.nodata { padding: 14px 24px; }
   a { padding: 14px 24px; }
 }
 .list_wrap_style01 {
@@ -957,15 +960,16 @@ textarea {
 .text_style01 p {
   position: relative;
   display: inline-block;
+  vertical-align: middle;
 
-  &:not(:first-of-type) {
-    padding-left: 20px;
+  &:not(:last-of-type) {
+    padding-right: 20px;
 
     &::before {
       content: '';
       position: absolute;
       top: calc(50% - 6px);
-      left: 10px;
+      right: 10px;
       display: block;
       width: 1px;
       height: 12px;
