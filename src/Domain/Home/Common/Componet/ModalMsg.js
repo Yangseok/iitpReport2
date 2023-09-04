@@ -30,6 +30,9 @@ export default function ModalMsg(props) {
         console.log('리덕스 샘플이벤트입니다.');
         setShow(false);
         break;
+      case 'close':
+        setShow(false);
+        break;
       case 'goKeyword':
         navigate('/discovery/' + paramSe2);
         setShow(false);

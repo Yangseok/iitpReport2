@@ -23,14 +23,35 @@ import common from 'Utill';
 import AutoCompleteSearch from 'Domain/Home/Common/Componet/AutoCompleteSearch';
 import $ from 'jquery';
 import { FullPage, Slide } from 'react-full-page';
-import { useSelector } from 'react-redux';
-import { getSearchKeyword } from 'Domain/Home/Common/Status/CommonSlice';
+import { useSelector, useDispatch } from 'react-redux';
+import { getSearchKeyword, setSearchKeywordReset } from 'Domain/Home/Common/Status/CommonSlice';
+import { useNavigate } from 'react-router-dom';
+import { setMsg,setShow } from 'Domain/Home/Common/Status/MsgSlice';
 
 export default function Main() {
+  const dispatch = useDispatch();
   const keyword = useSelector(getSearchKeyword);
   const [dataCount, setDataCount] = useState({});
   const [dataSearch, setDataSearch] = useState([]);
   const fullpageRef = useRef(null);
+
+  const navigate = useNavigate();
+
+  const handleSearch = () => {
+    if (keyword.trim() === '') {
+      dispatch(setMsg({
+        title: '알림',
+        msg: '키워드를 입력해주세요.',
+        btnCss: ['inline-block rounded bg-primary-100 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-primary-700 transition duration-150 ease-in-out hover:bg-primary-accent-100 focus:bg-primary-accent-100 focus:outline-none focus:ring-0 active:bg-primary-accent-200'],
+        btnTxt: ['확인'],
+        btnEvent: ['close']
+      }));
+      dispatch(setShow(true));
+      return null;
+    }
+    dispatch(setSearchKeywordReset(true));
+    navigate('/search/result/all?keyword=' + keyword);
+  };
 
   useEffect(() => {
     (async () => {
@@ -124,7 +145,7 @@ export default function Main() {
 
   useEffect(() => {
     (async () => {
-      if(keyword !== '') {
+      if(keyword.trim() !== '') {
         const data = await mainAPI.autocomplete(keyword);
         setDataSearch(data?.data?.result);
       }
@@ -138,6 +159,7 @@ export default function Main() {
           <section className='section main_sec01' id='section1'>
             <div className='container'>
               <AutoCompleteSearch
+                handleSearch={handleSearch}
                 data={dataSearch}
                 style={{ type: 1, name: 'ICT 키워드 검색', icon: ic_search }}
               />

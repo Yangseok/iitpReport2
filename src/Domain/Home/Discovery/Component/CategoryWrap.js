@@ -78,7 +78,7 @@ export default function CategoryWrap(props) {
         <ul>
           {(page === 'search')
             && <li className={`all${(tabActive1 === 0) ? ' on' : ''}`}>
-              <CategoryButton type={0} name={'전체'} num='100,300' onClick={() => location.href = '/search/result/all'} />
+              <CategoryButton type={0} name={'전체'} num={common.setPriceInput(tabCount?.all ?? 0)} onClick={() => location.href = '/search/result/all'} />
             </li>}
           {tabButtons1?.map((e) => (
             <li key={e.id} className={(e.id === tabActive1) ? 'on' : ''}>

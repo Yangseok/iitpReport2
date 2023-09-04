@@ -1,7 +1,84 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import DiscoveryResultLayout from 'Domain/Home/Discovery/Layout/DiscoveryResultLayout';
+import { getSearchKeyword } from 'Domain/Home/Common/Status/CommonSlice';
+import { useSelector } from 'react-redux';
+import * as discoveryAPI from 'Domain/Home/Discovery/API/Call';
 
 export default function DiscoveryResult() {
+
+  const keyword = useSelector(getSearchKeyword);
+  const [tabCount, setTabCount] = useState({});
+  const [project, setProject] = useState([]);
+  const [patent, setPatent] = useState([]);
+  const [paper, setPaper] = useState([]);
+  const [ict, setIct] = useState([]);
+  const [policy, setPolicy] = useState([]);
+  const [researcher, setResearcher] = useState([]);
+  const [orgn, setOrgn] = useState([]);
+  const [news, setNews] = useState([]);
+
+  console.log(project,patent,paper,ict,policy,researcher,orgn,news);
+
+  useEffect(() => {
+    (async () => {
+      const data = await discoveryAPI.searchAll(keyword,4);
+      let projectData = [];
+      for (let i in data?.data?.result?.dataInfo?.projectOut ?? []) {
+        if (i > 1) continue;
+        const period = data?.data?.result?.dataInfo?.projectOut?.[i]?.period ?? '';
+        projectData.push({
+          id: data?.data?.result?.dataInfo?.projectOut?.[i]?.projectNumber ?? i,
+          tab: '국가R&D',
+          title: data?.data?.result?.dataInfo?.projectOut?.[i]?.title ?? '',
+          price: (data?.data?.result?.dataInfo?.projectOut?.[i]?.fund ?? '') + '억',
+          period: period.replaceAll('-','.'), 
+          agency: data?.data?.result?.dataInfo?.projectOut?.[i]?.researchAgencyName ?? '',
+          name: data?.data?.result?.dataInfo?.projectOut?.[i]?.researchManagerName ?? '',
+        });
+      }
+      for (let i in data?.data?.result?.dataInfo?.projectIn ?? []) {
+        if (i > 1) continue;
+        const period = data?.data?.result?.dataInfo?.projectIn?.[i]?.period ?? '';
+        projectData.push({
+          id: data?.data?.result?.dataInfo?.projectIn?.[i]?.projectNumber ?? i,
+          tab: 'IITP내부',
+          title: data?.data?.result?.dataInfo?.projectIn?.[i]?.title ?? '',
+          price: (data?.data?.result?.dataInfo?.projectIn?.[i]?.fund ?? '') + '억',
+          period: period.replaceAll('-','.'), 
+          agency: data?.data?.result?.dataInfo?.projectIn?.[i]?.researchAgencyName ?? '',
+          name: data?.data?.result?.dataInfo?.projectIn?.[i]?.researchManagerName ?? '',
+        });
+      }
+      let patentData = data?.data?.result?.dataInfo?.patent ?? [];
+      let paperData = data?.data?.result?.dataInfo?.paper ?? [];
+      let ictData = data?.data?.result?.dataInfo?.ict_report ?? [];
+      let policyData = data?.data?.result?.dataInfo?.policy ?? [];
+      let researcherData = data?.data?.result?.dataInfo?.indv ?? [];
+      let orgnData = data?.data?.result?.dataInfo?.orgn ?? [];
+      let newsData = data?.data?.result?.dataInfo?.news ?? [];
+
+      setTabCount({
+        'all': data?.data?.result?.countInfo?.all ?? 0,
+        1: data?.data?.result?.countInfo?.project ?? 0,
+        2: data?.data?.result?.countInfo?.patent ?? 0,
+        3: data?.data?.result?.countInfo?.paper ?? 0,
+        4: data?.data?.result?.countInfo?.ict_report ?? 0,
+        5: data?.data?.result?.countInfo?.policy ?? 0,
+        6: data?.data?.result?.countInfo?.indv ?? 0,
+        7: data?.data?.result?.countInfo?.orgn ?? 0,
+        8: data?.data?.result?.countInfo?.news ?? 0,
+      });
+      setProject(projectData);
+      setPatent(patentData);
+      setPaper(paperData);
+      setIct(ictData);
+      setPolicy(policyData);
+      setResearcher(researcherData);
+      setOrgn(orgnData);
+      setNews(newsData);
+    })();
+  }, [keyword]);
+
   const tempData1 = [
     {
       id: 0,
@@ -308,7 +385,7 @@ export default function DiscoveryResult() {
   ];
 
   return (
-    <DiscoveryResultLayout>
+    <DiscoveryResultLayout totalCount={tabCount?.all} tabCount={tabCount} keyword={keyword} >
       <section className='mt-6'>
         <div className='container'>
           <div className='list_wrap_style01'>

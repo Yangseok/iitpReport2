@@ -109,9 +109,9 @@ export default function Result() {
         1: data?.data?.result?.countInfo?.project ?? 0,
         2: data?.data?.result?.countInfo?.patent ?? 0,
         3: data?.data?.result?.countInfo?.paper ?? 0,
-        4: data?.data?.result?.countInfo?.ict ?? 0,
+        4: data?.data?.result?.countInfo?.ict_report ?? 0,
         5: data?.data?.result?.countInfo?.policy ?? 0,
-        6: data?.data?.result?.countInfo?.researcher ?? 0,
+        6: data?.data?.result?.countInfo?.indv ?? 0,
         7: data?.data?.result?.countInfo?.orgn ?? 0,
         8: data?.data?.result?.countInfo?.news ?? 0,
       });

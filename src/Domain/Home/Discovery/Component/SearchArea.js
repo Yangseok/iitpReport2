@@ -3,13 +3,34 @@ import ic_search from 'Assets/Images/ic_search.png';
 import arr_drop from 'Assets/Images/arr_drop.png';
 import AutoCompleteSearch from 'Domain/Home/Common/Componet/AutoCompleteSearch';
 import * as mainAPI from 'Domain/Home/Main/API/Call';
-import { useSelector } from 'react-redux';
-import { getSearchKeyword } from 'Domain/Home/Common/Status/CommonSlice';
+import { useSelector, useDispatch } from 'react-redux';
+import { getSearchKeyword, setSearchKeywordReset } from 'Domain/Home/Common/Status/CommonSlice';
 import Button from 'Domain/Home/Common/Componet/Button';
 import TabButtons from 'Domain/Home/Common/Componet/TabButtons';
 import InputTextXBtn from 'Domain/Home/Discovery/Component/InputTextXBtn';
+import { useNavigate } from 'react-router-dom';
+import { setMsg,setShow } from 'Domain/Home/Common/Status/MsgSlice';
 
 export default function Search() {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const handleSearch = () => {
+    if (keyword.trim() === '') {
+      dispatch(setMsg({
+        title: '알림',
+        msg: '키워드를 입력해주세요.',
+        btnCss: ['inline-block rounded bg-primary-100 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-primary-700 transition duration-150 ease-in-out hover:bg-primary-accent-100 focus:bg-primary-accent-100 focus:outline-none focus:ring-0 active:bg-primary-accent-200'],
+        btnTxt: ['확인'],
+        btnEvent: ['close']
+      }));
+      dispatch(setShow(true));
+      return null;
+    }
+    dispatch(setSearchKeywordReset(true));
+    navigate('/search/result/all?keyword=' + keyword);
+  };
+
   const tabButtons = [
     { id: 0, name: '과제', onClick: () => setTabActive(0) },
     { id: 1, name: '특허', onClick: () => setTabActive(1) },
@@ -29,7 +50,7 @@ export default function Search() {
 
   useEffect(() => {
     (async () => {
-      if(keyword !== '') {
+      if(keyword.trim() !== '') {
         const data = await mainAPI.autocomplete(keyword);
         setDataSearch(data?.data?.result);
       }
@@ -41,6 +62,7 @@ export default function Search() {
       <section>
         <div className='container'>
           <AutoCompleteSearch 
+            handleSearch={handleSearch}
             data={dataSearch}
             style={{ type: 3, name: '통합 검색', icon: ic_search }}
           />

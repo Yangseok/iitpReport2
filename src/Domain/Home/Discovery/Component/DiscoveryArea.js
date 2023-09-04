@@ -7,6 +7,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { getSearchKeyword, setSearchKeywordReset } from 'Domain/Home/Common/Status/CommonSlice';
 import common from 'Utill';
 import { useParams, useNavigate } from 'react-router-dom';
+import { setMsg,setShow } from 'Domain/Home/Common/Status/MsgSlice';
 
 export default function PageSearchArea(props) {
   const dispatch = useDispatch();
@@ -25,6 +26,17 @@ export default function PageSearchArea(props) {
   const se = common.getSegment();
 
   const handleSearch = () => {
+    if (keyword.trim() === '') {
+      dispatch(setMsg({
+        title: '알림',
+        msg: '키워드를 입력해주세요.',
+        btnCss: ['inline-block rounded bg-primary-100 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-primary-700 transition duration-150 ease-in-out hover:bg-primary-accent-100 focus:bg-primary-accent-100 focus:outline-none focus:ring-0 active:bg-primary-accent-200'],
+        btnTxt: ['확인'],
+        btnEvent: ['close']
+      }));
+      dispatch(setShow(true));
+      return null;
+    }
     dispatch(setSearchKeywordReset(true));
     navigate('/discovery/' + paramSe2 + '/result?keyword=' + keyword);
   };
@@ -62,7 +74,7 @@ export default function PageSearchArea(props) {
 
   useEffect(() => {
     (async () => {
-      if(keyword !== '') {
+      if(keyword.trim() !== '') {
         const data = await mainAPI.autocomplete(keyword);
         setDataSearch(data?.data?.result);
       }

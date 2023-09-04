@@ -23,7 +23,7 @@ export default function DiscoveryResultLayout({children, totalCount, tabCount, k
             <DiscoveryArea page={'resultPage'} setSearchButtonClick={setSearchButtonClick} />
           </div>
         </section>
-        : <SearchArea />
+        : <SearchArea page={'resultPage'} setSearchButtonClick={setSearchButtonClick} />
       }
       <section className='mt-10'>
         <div className='container'>
