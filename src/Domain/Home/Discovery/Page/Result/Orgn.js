@@ -19,7 +19,7 @@ import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { getSearchKeyword, getSelectKeyword } from 'Domain/Home/Common/Status/CommonSlice';
 import * as discoveryAPI from 'Domain/Home/Discovery/API/Call';
-import * as ictAPI from 'Domain/Home/Discovery/API/IctCall';
+import * as orgnAPI from 'Domain/Home/Discovery/API/OrgnCall';
 
 export default function DiscoveryResult() {
 
@@ -30,7 +30,6 @@ export default function DiscoveryResult() {
   const [tabCount, setTabCount] = useState({});
   const [totalCount, setTotalCount] = useState(0);
   const [projectData, setProjectData] = useState([]);
-  console.log(projectData);
 
   const [searchButtonClick, setSearchButtonClick] = useState(false);
   const [page, setPage] = useState(1);
@@ -44,7 +43,7 @@ export default function DiscoveryResult() {
         const similarity = common.procSimilarity(selectKeyword);
         let filterObj = {};
         let searchParam = {};
-        const data = await ictAPI.ict('search',size,page,keyword,similarity,sort,filterObj,searchParam);
+        const data = await orgnAPI.orgn('discovery',size,page,keyword,similarity,sort,filterObj,searchParam);
         console.log(data?.data?.result);
         setTotalCount(data?.data?.result?.totalCount ?? 0);
         let procData = [];
@@ -52,12 +51,14 @@ export default function DiscoveryResult() {
           // console.log(i, data?.data?.result?.dataList?.[i]);
           procData.push({
             id: data?.data?.result?.dataList?.[i]?.applNumber ?? i,
-            title: data?.data?.result?.dataList?.[i]?.title ?? '',
-            content: data?.data?.result?.dataList?.[i]?.contents ?? '',
-            date: (data?.data?.result?.dataList?.[i]?.publishedDate ?? '').replaceAll('-','.'),
-            agency: data?.data?.result?.dataList?.[i]?.source ?? '',
-            link: data?.data?.result?.dataList?.[i]?.link ?? '',
-            view: data?.data?.result?.dataList?.[i]?.view ?? '',
+            name: data?.data?.result?.dataList?.[i]?.orgnName ?? '',
+            assign: data?.data?.result?.dataList?.[i]?.projectCount ?? 0,
+            patent: data?.data?.result?.dataList?.[i]?.patentCount ?? 0,
+            link: '#',
+            institue: data?.data?.result?.dataList?.[i]?.researchInstitute,
+            safety: tempData1[i%3].safety,
+            sales: data?.data?.result?.dataList?.[i]?.topRankSales ?? '',
+            followup: data?.data?.result?.dataList?.[i]?.orgnVigilance ?? false,
           });
         }
     
@@ -79,9 +80,8 @@ export default function DiscoveryResult() {
         const similarity = common.procSimilarity(selectKeyword);
         let filterObj = {};
         let searchParam = {};
-        const data = await ictAPI.ict('search',excelSize,1,keyword,similarity,sort,filterObj,searchParam);
+        const data = await orgnAPI.orgn('search',excelSize,1,keyword,similarity,sort,filterObj,searchParam);
         console.log(data?.data?.result);
-        setTotalCount(data?.data?.result?.totalCount ?? 0);
         let procData = [];
         for (let i in data?.data?.result?.dataList ?? []) {
           // console.log(i, data?.data?.result?.dataList?.[i]);
@@ -274,8 +274,8 @@ export default function DiscoveryResult() {
             <div className='w-120'>
               <div className='list_style02'>
                 <ul>
-                  {(tempData1?.length > 0)
-                    ? tempData1?.map((e) => {
+                  {(projectData?.length > 0)
+                    ? projectData?.map((e) => {
                       return (
                         <li 
                           key={e.id} 
@@ -306,7 +306,7 @@ export default function DiscoveryResult() {
                               <p className='text-base font-bold text-color-main line1_text flex-1'>{e.name}</p>
                               <div className='flex items-center gap-2'>
                                 <div className='tooltip_wrap' tabIndex={0}>
-                                  <span className="tag_style03">{e.sales}</span>
+                                  {e.sales !== '' ? <span className="tag_style03">{e.sales}</span> : null}
                                   <div className='tooltip_style04 min-w-30'>해당 산업 매출상위(%)</div>
                                 </div>
                                 {(e.followup)
@@ -336,7 +336,7 @@ export default function DiscoveryResult() {
                 </ul>
               </div>
               <div className='mt-10'>
-                <Pagination total={50} page={1} onClick={(i) => console.log(i)} />
+                <Pagination total={totalCount} page={page} onClick={(page) => setPage(page)} />
               </div>
             </div>
             <div className='flex-1 p-4 pb-10 bg-color-f_bg'>
@@ -416,9 +416,6 @@ export default function DiscoveryResult() {
                       </li>
                     }
                   </ul>
-                </div>
-                <div className='mt-10'>
-                  <Pagination total={totalCount} page={page} onClick={(page) => setPage(page)} />
                 </div>
               </div>
             </div>

@@ -34,7 +34,7 @@ export default function Result() {
         const similarity = common.procSimilarity(selectKeyword);
         let filterObj = {};
         let searchParam = {};
-        const data = await projectAPI.projectOut('search',size,page,keyword,similarity,sort,filterObj,searchParam);
+        const data = await projectAPI.projectOut('discovery',size,page,keyword,similarity,sort,filterObj,searchParam);
         console.log(data?.data?.result);
         setTotalCount(data?.data?.result?.totalCount ?? 0);
         let procData = [];
@@ -77,9 +77,8 @@ export default function Result() {
         const similarity = common.procSimilarity(selectKeyword);
         let filterObj = {};
         let searchParam = {};
-        const data = await projectAPI.projectOut('search',excelSize,1,keyword,similarity,sort,filterObj,searchParam);
+        const data = await projectAPI.projectOut('discovery',excelSize,1,keyword,similarity,sort,filterObj,searchParam);
         console.log(data?.data?.result);
-        setTotalCount(data?.data?.result?.totalCount ?? 0);
         let procData = [];
         for (let i in data?.data?.result?.dataList ?? []) {
           // console.log(i, data?.data?.result?.dataList?.[i]);
