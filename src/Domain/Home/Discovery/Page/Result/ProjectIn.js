@@ -42,7 +42,6 @@ export default function Result() {
           // console.log(i, data?.data?.result?.dataList?.[i]);
           const period = data?.data?.result?.dataList?.[i]?.period ?? '';
           const periodArr = period.split('~');
-          const division = data?.data?.result?.dataList?.[i]?.technicalClassification ?? [];
           const keywordt = data?.data?.result?.dataList?.[i]?.keywords ?? [];
           procData.push({
             id: data?.data?.result?.dataList?.[i]?.projectNumber ?? i,
@@ -52,9 +51,7 @@ export default function Result() {
             period: period.replaceAll('-','.'), 
             agency: data?.data?.result?.dataList?.[i]?.researchAgencyName ?? '',
             name: data?.data?.result?.dataList?.[i]?.researchManagerName ?? '',
-            department: data?.data?.result?.dataList?.[i]?.orderAgencyName ?? '',
-            performance: data?.data?.result?.dataList?.[i]?.performance ?? '',
-            division: division.join(' / '),
+            ict: 'ICT 기술 분류',
             keyword: keywordt.join(', '),
           });
         }
@@ -83,7 +80,6 @@ export default function Result() {
         for (let i in data?.data?.result?.dataList ?? []) {
           // console.log(i, data?.data?.result?.dataList?.[i]);
           const period = data?.data?.result?.dataList?.[i]?.period ?? '';
-          const division = data?.data?.result?.dataList?.[i]?.technicalClassification ?? [];
           const keywordt = data?.data?.result?.dataList?.[i]?.keywords ?? [];
           procData.push([
             data?.data?.result?.dataList?.[i]?.title ?? '',
@@ -92,12 +88,11 @@ export default function Result() {
             data?.data?.result?.dataList?.[i]?.researchAgencyName ?? '',
             data?.data?.result?.dataList?.[i]?.researchManagerName ?? '',
             data?.data?.result?.dataList?.[i]?.orderAgencyName ?? '',
-            data?.data?.result?.dataList?.[i]?.performance ?? '',
-            division.join(', '),
+            'ICT 기술 분류',
             keywordt.join(', '),
           ]);
         }
-        common.excelExport('down', ['과제명', '연구 개발비', '연구 개발기간', '연구 개발기관', '연구 책임자', '부처명', '연구 개발성과', '국가과학기술표준분류', '한글 키워드'], procData);
+        common.excelExport('down', ['과제명', '연구 개발비', '연구 개발기간', '연구 개발기관', '연구 책임자', 'ICT 기술 분류', '한글 키워드'], procData);
       })();
       break;
         
@@ -180,11 +175,9 @@ export default function Result() {
                           <p className='text-sm text-color-regular'>연구 개발기간: <span className='font-medium text-color-main'>{e.period}</span></p>
                           <p className='text-sm text-color-regular'>연구 개발기관: <span className='font-medium text-color-main'>{e.agency}</span></p>
                           <p className='text-sm text-color-regular'>연구 책임자: <span className='font-medium text-color-main'>{e.name}</span></p>
-                          <p className='text-sm text-color-regular'>부처명: <span className='font-medium text-color-main'>{e.department}</span></p>
                         </div>
                         <div>
-                          <p className='text-sm text-color-regular'>연구 개발성과: <span className='font-medium text-color-main'>{e.performance}</span></p>
-                          <p className='text-sm text-color-regular'>국가과학기술표준분류: <span className='font-medium text-color-main'>{e.division}</span></p>
+                          <p className='text-sm text-color-regular'>ICT 기술 분류: <span className='font-medium text-color-main'>{e.ict}</span></p>
                           <p className='text-sm text-color-regular'>한글 키워드: <span className='font-medium text-color-main'>{e.keyword}</span></p>
                         </div>
                       </>}
