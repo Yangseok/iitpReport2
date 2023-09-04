@@ -34,6 +34,14 @@ export default function OrgnAPIButton(props) {
     await props.apiCallWrap(apiFn);
   };
 
+  const orgnDetailTest = async () => {
+    const apiFn = async () => {
+      const data = await orgnAPI.orgnDetail('0008634982');
+      console.log(data?.data?.result);
+    };
+    await props.apiCallWrap(apiFn);
+  };
+
   const orgnViewTest = async () => {
     const apiFn = async () => {
       const data = await orgnAPI.orgnView('0008634982');
@@ -45,6 +53,7 @@ export default function OrgnAPIButton(props) {
   return (
     <>
       <li className='mb-1'><Button text="기관 검색" onClick={() => orgnTest(false,false)} /></li>
+      <li className='mb-1'><Button text="기관 검색 상세" onClick={() => orgnDetailTest()} /></li>
       <li className='mb-1'><Button text="기관 검색 - 필터" onClick={() => orgnTest(true,false)} /></li>
       <li className='mb-1'><Button text="기관 검색 - 상세검색" onClick={() => orgnTest(false,true)} /></li>
       <li className='mb-1'><Button text="상세 페이지(기관)" onClick={orgnViewTest} /></li>

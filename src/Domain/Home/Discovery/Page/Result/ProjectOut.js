@@ -37,7 +37,7 @@ export default function Result() {
         let filterObj = {};
         let searchParam = {};
         // todo: 'discovery'로 호출해야 하나 색인이 안된 관계로 search로 호출 하라고 함.
-        const data = await projectAPI.projectOut('search',size,page,keyword,similarity,sort,filterObj,searchParam);
+        const data = await projectAPI.projectOut('discovery',size,page,keyword,similarity,sort,filterObj,searchParam);
         console.log(data?.data?.result);
         setTotalCount(data?.data?.result?.totalCount ?? 0);
         let procData = [];
@@ -81,9 +81,8 @@ export default function Result() {
         let filterObj = {};
         let searchParam = {};
         // todo: 'discovery'로 호출해야 하나 색인이 안된 관계로 search로 호출 하라고 함.
-        const data = await projectAPI.projectOut('search',excelSize,1,keyword,similarity,sort,filterObj,searchParam);
+        const data = await projectAPI.projectOut('discovery',excelSize,1,keyword,similarity,sort,filterObj,searchParam);
         console.log(data?.data?.result);
-        setTotalCount(data?.data?.result?.totalCount ?? 0);
         let procData = [];
         for (let i in data?.data?.result?.dataList ?? []) {
           // console.log(i, data?.data?.result?.dataList?.[i]);
