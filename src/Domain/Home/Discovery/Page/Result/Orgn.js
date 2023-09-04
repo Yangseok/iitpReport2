@@ -30,6 +30,12 @@ export default function DiscoveryResult() {
   const [tabCount, setTabCount] = useState({});
   const [totalCount, setTotalCount] = useState(0);
   const [projectData, setProjectData] = useState([]);
+  const [orgnActive, setOrgnActive] = useState({id: -1, name: ''});
+  const [simialityOrgn, setSimialityOrgn] = useState([]);
+  const [subProjectList, setSubProjectList] = useState([]);
+  const [subPatentList, setSubPatentList] = useState([]);
+  const [subListMode, setSubListMode] = useState('project');
+
 
   const [searchButtonClick, setSearchButtonClick] = useState(false);
   const [page, setPage] = useState(1);
@@ -50,7 +56,7 @@ export default function DiscoveryResult() {
         for (let i in data?.data?.result?.dataList ?? []) {
           // console.log(i, data?.data?.result?.dataList?.[i]);
           procData.push({
-            id: data?.data?.result?.dataList?.[i]?.applNumber ?? i,
+            id: data?.data?.result?.dataList?.[i]?.id ?? i,
             name: data?.data?.result?.dataList?.[i]?.orgnName ?? '',
             assign: data?.data?.result?.dataList?.[i]?.projectCount ?? 0,
             patent: data?.data?.result?.dataList?.[i]?.patentCount ?? 0,
@@ -64,6 +70,7 @@ export default function DiscoveryResult() {
     
         setProjectData(procData);
         setSearchButtonClick(false);
+        setOrgnActive({ id: data?.data?.result?.dataList?.[0]?.id, name: data?.data?.result?.dataList?.[0]?.orgnName });
       })();
       break;
       
@@ -80,19 +87,20 @@ export default function DiscoveryResult() {
         const similarity = common.procSimilarity(selectKeyword);
         let filterObj = {};
         let searchParam = {};
-        const data = await orgnAPI.orgn('search',excelSize,1,keyword,similarity,sort,filterObj,searchParam);
+        const data = await orgnAPI.orgn('discovery',excelSize,1,keyword,similarity,sort,filterObj,searchParam);
         console.log(data?.data?.result);
         let procData = [];
         for (let i in data?.data?.result?.dataList ?? []) {
           // console.log(i, data?.data?.result?.dataList?.[i]);
           procData.push([
-            data?.data?.result?.dataList?.[i]?.title ?? '',
-            data?.data?.result?.dataList?.[i]?.source ?? '',
-            data?.data?.result?.dataList?.[i]?.contents ?? '',
-            (data?.data?.result?.dataList?.[i]?.publishedDate ?? '').replaceAll('-','.'),
+            data?.data?.result?.dataList?.[i]?.orgnName ?? '',
+            data?.data?.result?.dataList?.[i]?.projectCount ?? 0,
+            data?.data?.result?.dataList?.[i]?.patentCount ?? 0,
+            (data?.data?.result?.dataList?.[i]?.orgnVigilance ?? false) ? 'O': 'X',
+            data?.data?.result?.dataList?.[i]?.topRankSales ?? '',
           ]);
         }
-        common.excelExport('down', ['ICT 자료명', '출처', '본문', '발행일'], procData);
+        common.excelExport('down', ['기관명', '과제갯수', '특허갯수', '사후관리대상기업', '매출상위(%)'], procData);
       })();
       break;
         
@@ -100,6 +108,82 @@ export default function DiscoveryResult() {
       break;
     }
   }, [sort]);
+
+  const getOrgnDetail = useCallback(async () => {
+    if (orgnActive.id === -1) return null;
+    switch (paramSe2) {
+    case 'keyword':
+      (async () => {
+        const data = await orgnAPI.orgnDetail(orgnActive.id);
+        // const data = await orgnAPI.orgnDetail('0008634982');
+        console.log(data?.data?.result);
+        let simialityOrgn = [];
+        for (let i in data?.data?.result?.simialityOrgnList ?? []) {
+          // console.log(i, data?.data?.result?.dataList?.[i]);
+          simialityOrgn.push({
+            id: i,
+            name: data?.data?.result?.simialityOrgnList?.[i]?.orgnName ?? '',
+            relation: common.colorSet(data?.data?.result?.simialityOrgnList?.[i]?.weight ?? 0)
+          });
+        }
+        setSimialityOrgn(simialityOrgn);
+
+        let subProjectList = [];
+        for (let i in data?.data?.result?.orgnResultInfo?.projectOut ?? []) {
+          // console.log(i, data?.data?.result?.orgnResultInfo?.projectOut?.[i]);
+          const period = data?.data?.result?.orgnResultInfo?.projectOut?.[i]?.period ?? '';
+          const periodArr = period.split('~');
+          const division = data?.data?.result?.orgnResultInfo?.projectOut?.[i]?.technicalClassification ?? [];
+          const keywordt = data?.data?.result?.orgnResultInfo?.projectOut?.[i]?.keywords ?? [];
+          subProjectList.push({
+            id: data?.data?.result?.orgnResultInfo?.projectOut?.[i]?.projectNumber ?? i,
+            tag : ((periodArr?.[1]??'').replaceAll(' ','') === '9999-12-31') ? 1 : 2,
+            title: data?.data?.result?.orgnResultInfo?.projectOut?.[i]?.bigProjectName ?? '',
+            price: (data?.data?.result?.orgnResultInfo?.projectOut?.[i]?.fund ?? '') + '억',
+            period: period.replaceAll('-','.'), 
+            agency: data?.data?.result?.orgnResultInfo?.projectOut?.[i]?.researchAgencyName ?? '',
+            name: data?.data?.result?.orgnResultInfo?.projectOut?.[i]?.researchManagerName ?? '',
+            department: data?.data?.result?.orgnResultInfo?.projectOut?.[i]?.orderAgencyName ?? '',
+            performance: data?.data?.result?.orgnResultInfo?.projectOut?.[i]?.performance ?? '',
+            division: division.join(' / '),
+            keyword: keywordt.join(', '),
+          });
+        }
+        setSubProjectList(subProjectList);
+
+        let subPatentList = [];
+        for (let i in data?.data?.result?.orgnResultInfo?.patent ?? []) {
+          const agency = data?.data?.result?.orgnResultInfo?.patent?.[i]?.applicantName ?? [];
+          const name = data?.data?.result?.orgnResultInfo?.patent?.[i]?.inventorName ?? [];
+          const date = data?.data?.result?.orgnResultInfo?.patent?.[i]?.applDate ?? '';
+          subPatentList.push({
+            id: data?.data?.result?.orgnResultInfo?.patent?.[i]?.applNumber ?? i,
+            title: data?.data?.result?.orgnResultInfo?.patent?.[i]?.applName ?? '',
+            project: data?.data?.result?.orgnResultInfo?.patent?.[i]?.applName ?? '',
+            division: data?.data?.result?.orgnResultInfo?.patent?.[i]?.registrationType ?? '',
+            num: data?.data?.result?.orgnResultInfo?.patent?.[i]?.applNumber ?? '',
+            date: date.replace(/^(\d{4})(\d{2})(\d{2})$/, '$1.$2.$3'),
+            agency: agency.join(', '),
+            name: name.join(', '),
+          });
+        }
+        setSubPatentList(subPatentList);
+
+        setSubListMode('project');
+      })();
+      break;
+          
+    default:
+      break;
+    }
+  }, [orgnActive]);
+
+  // 기관 선택 시
+  const onOrgnSelect = (e, id, name) => {
+    if(e.currentTarget.nodeName !== 'BUTTON') {
+      setOrgnActive({ id, name });
+    }
+  };
 
   useEffect(() => {
     getKeywordList();
@@ -128,6 +212,10 @@ export default function DiscoveryResult() {
       });
     })();
   }, [keyword]);
+
+  useEffect(() => {
+    getOrgnDetail();
+  }, [orgnActive]);
 
   const tempData1 = [
     {
@@ -164,80 +252,66 @@ export default function DiscoveryResult() {
       followup: true,
     },
   ];
-  const tempData2 = [
-    {
-      id: 0,
-      name: '주식회사 마인즈랩',
-      relation: 0,
-    },
-    {
-      id: 1,
-      name: '솔트룩스',
-      relation: 1,
-    },
-    {
-      id: 2,
-      name: '아이브릭스',
-      relation: 2,
-    },
-    {
-      id: 3,
-      name: '주식회사 빅스터',
-      relation: 3,
-    },
-    {
-      id: 4,
-      name: '주식회사 빅스터',
-      relation: 4,
-    },
-    {
-      id: 5,
-      name: '주식회사 빅스터',
-      relation: 5,
-    },
-  ];
-  const tempData3 = [
-    {
-      id: 0,
-      progress: true,
-      title: '인공지능 학습 및 디지털 트윈을 위한 3차원 데이터 수집·전처리 및 가공 플랫폼 개발',
-      price: '10억',
-      period: '2023.04.01 ~ 2024.04.30',
-      agency: '주식회사 오름',
-      name: '홍길동',
-      department: '중소벤처기업부',
-      performance: '논문(1), 특허(3)',
-      division: '정보 / 통신 / 소프트웨어 / S/W솔루션 ',
-      keyword: '3D 데이터, 디지털 트윈, 지능형 데이터 가공 플랫폼, 깊이 추정',
-    },
-    {
-      id: 1,
-      progress: false,
-      title: '인공지능 학습 및 디지털 트윈을 위한 3차원 데이터 수집·전처리 및 가공 플랫폼 개발',
-      price: '10억',
-      period: '2023.04.01 ~ 2024.04.30',
-      agency: '주식회사 오름',
-      name: '홍길동',
-      department: '중소벤처기업부',
-      performance: '논문(1), 특허(3)',
-      division: '정보 / 통신 / 소프트웨어 / S/W솔루션 ',
-      keyword: '3D 데이터, 디지털 트윈, 지능형 데이터 가공 플랫폼, 깊이 추정',
-    },
-  ];
-
-  const [orgnActive, setOrgnActive] = useState({});
-
-  // 기관 선택 시
-  const onOrgnSelect = (e, id, name) => {
-    if(e.currentTarget.nodeName !== 'BUTTON') {
-      setOrgnActive({ id, name });
-    }
-  };
-
-  useEffect(() => {
-    // 처음 데이터 노출
-    setOrgnActive({ id: 0, name: '주식회사 마인즈랩(MINDS LAB., INC.)' });
-  }, []);
+  // const tempData2 = [
+  //   {
+  //     id: 0,
+  //     name: '주식회사 마인즈랩',
+  //     relation: 0,
+  //   },
+  //   {
+  //     id: 1,
+  //     name: '솔트룩스',
+  //     relation: 1,
+  //   },
+  //   {
+  //     id: 2,
+  //     name: '아이브릭스',
+  //     relation: 2,
+  //   },
+  //   {
+  //     id: 3,
+  //     name: '주식회사 빅스터',
+  //     relation: 3,
+  //   },
+  //   {
+  //     id: 4,
+  //     name: '주식회사 빅스터',
+  //     relation: 4,
+  //   },
+  //   {
+  //     id: 5,
+  //     name: '주식회사 빅스터',
+  //     relation: 5,
+  //   },
+  // ];
+  // const tempData3 = [
+  //   {
+  //     id: 0,
+  //     progress: true,
+  //     title: '인공지능 학습 및 디지털 트윈을 위한 3차원 데이터 수집·전처리 및 가공 플랫폼 개발',
+  //     price: '10억',
+  //     period: '2023.04.01 ~ 2024.04.30',
+  //     agency: '주식회사 오름',
+  //     name: '홍길동',
+  //     department: '중소벤처기업부',
+  //     performance: '논문(1), 특허(3)',
+  //     division: '정보 / 통신 / 소프트웨어 / S/W솔루션 ',
+  //     keyword: '3D 데이터, 디지털 트윈, 지능형 데이터 가공 플랫폼, 깊이 추정',
+  //   },
+  //   {
+  //     id: 1,
+  //     progress: false,
+  //     title: '인공지능 학습 및 디지털 트윈을 위한 3차원 데이터 수집·전처리 및 가공 플랫폼 개발',
+  //     price: '10억',
+  //     period: '2023.04.01 ~ 2024.04.30',
+  //     agency: '주식회사 오름',
+  //     name: '홍길동',
+  //     department: '중소벤처기업부',
+  //     performance: '논문(1), 특허(3)',
+  //     division: '정보 / 통신 / 소프트웨어 / S/W솔루션 ',
+  //     keyword: '3D 데이터, 디지털 트윈, 지능형 데이터 가공 플랫폼, 깊이 추정',
+  //   },
+  // ];
 
   return (
     <DiscoveryResultLayout totalCount={tabCount?.all} tabCount={tabCount} keyword={keyword} setSearchButtonClick={setSearchButtonClick} >
@@ -343,7 +417,7 @@ export default function DiscoveryResult() {
               <div>
                 <h5 className='text-base font-bold text-color-dark'>{orgnActive.name} 유사 기관</h5>
                 <ul className='flex mt-4'>
-                  {tempData2?.map((e, i) => {
+                  {simialityOrgn?.map((e, i) => {
                     let imgSrc = '';
                     if(e.relation === 0) {
                       imgSrc = imgBuilding04;
@@ -373,47 +447,82 @@ export default function DiscoveryResult() {
                   <h5 className='text-base font-bold text-color-dark'>{orgnActive.name}</h5>
                   <div className='tab_btns tab_style05'>
                     <ul>
-                      <li className='on'>
-                        <button type='button' onClick={() => {}}>과제(83)</button>
+                      <li className={(subListMode === 'project')? 'on' : ''}>
+                        <button type='button' onClick={() => setSubListMode('project')}>과제({common.setPriceInput(subProjectList.length)})</button>
                       </li>
-                      <li>
-                        <button type='button' onClick={() => {}}>특허(10)</button>
+                      <li className={(subListMode === 'patent')? 'on' : ''}>
+                        <button type='button' onClick={() => setSubListMode('patent')}>특허({common.setPriceInput(subPatentList.length)})</button>
                       </li>
                     </ul>
                   </div>
                 </div>
                 <div className='list_style01 mt-4'>
                   <ul>
-                    {(tempData3?.length > 0) 
-                      ? tempData3?.map((e) => {
-                        return  <ListItem 
-                          key={e.id}
-                          tag={(e?.progress !== null) 
-                            ? (e.progress) ? 1 : 2 
-                            : ''}
-                          title={e.title}
-                          contents={<>
-                            <div>
-                              <p className='text-sm text-color-regular'>연구 개발비: <span className='font-medium text-color-main'>{e.price}</span></p>
-                              <p className='text-sm text-color-regular'>연구 개발기간: <span className='font-medium text-color-main'>{e.period}</span></p>
-                              <p className='text-sm text-color-regular'>연구 개발기관: <span className='font-medium text-color-main'>{e.agency}</span></p>
-                              <p className='text-sm text-color-regular'>연구 책임자: <span className='font-medium text-color-main'>{e.name}</span></p>
-                            </div>
-                            <div>
-                              <p className='text-sm text-color-regular'>부처명: <span className='font-medium text-color-main'>{e.department}</span></p>
-                              <p className='text-sm text-color-regular'>연구 개발성과: <span className='font-medium text-color-main'>{e.performance}</span></p>
-                              <p className='text-sm text-color-regular'>국가과학기술표준분류: <span className='font-medium text-color-main'>{e.division}</span></p>
-                            </div>
-                            <p className='text-sm text-color-regular'>한글 키워드: <span className='font-medium text-color-main'>{e.keyword}</span></p>
-                          </>}
-                          desc={<>
-                            <a href={`${e.id}`} className='h-5 text-base font-bold text-color-footer'>더보기 ＋</a>
-                          </>}
-                        />;
-                      })
-                      : <li>
-                        <p className='text-base text-color-placeholder'>데이터가 없습니다.</p>
-                      </li>
+                    {
+                      (subListMode === 'project') ?
+                        (subProjectList?.length > 0) 
+                          ? subProjectList?.map((e) => {
+                            return  <ListItem 
+                              key={e.id}
+                              tag={(e?.progress !== null) 
+                                ? (e.progress) ? 1 : 2 
+                                : ''}
+                              title={e.title}
+                              contents={<>
+                                <div>
+                                  <p className='text-sm text-color-regular'>연구 개발비: <span className='font-medium text-color-main'>{e.price}</span></p>
+                                  <p className='text-sm text-color-regular'>연구 개발기간: <span className='font-medium text-color-main'>{e.period}</span></p>
+                                  <p className='text-sm text-color-regular'>연구 개발기관: <span className='font-medium text-color-main'>{e.agency}</span></p>
+                                  <p className='text-sm text-color-regular'>연구 책임자: <span className='font-medium text-color-main'>{e.name}</span></p>
+                                </div>
+                                <div>
+                                  <p className='text-sm text-color-regular'>부처명: <span className='font-medium text-color-main'>{e.department}</span></p>
+                                  <p className='text-sm text-color-regular'>연구 개발성과: <span className='font-medium text-color-main'>{e.performance}</span></p>
+                                  <p className='text-sm text-color-regular'>국가과학기술표준분류: <span className='font-medium text-color-main'>{e.division}</span></p>
+                                </div>
+                                <p className='text-sm text-color-regular'>한글 키워드: <span className='font-medium text-color-main'>{e.keyword}</span></p>
+                              </>}
+                              desc={<>
+                                <a href={`${e.id}`} className='h-5 text-base font-bold text-color-footer'>더보기 ＋</a>
+                              </>}
+                            />;
+                          })
+                          : <li>
+                            <p className='text-base text-color-placeholder'>데이터가 없습니다.</p>
+                          </li>
+                        : null
+                    }
+                    {
+                      (subListMode === 'patent') ?
+                        (subPatentList?.length > 0) 
+                          ? subPatentList?.map((e) => {
+                            return  <ListItem 
+                              key={e.id}
+                              tag={(e?.progress !== null) 
+                                ? (e.progress) ? 1 : 2 
+                                : ''}
+                              title={e.title}
+                              contents={<>
+                                <div>
+                                  <p className='text-sm text-color-regular'>유발 과제: <span className='font-medium text-color-main'>{e.project}</span></p>
+                                  <p className='text-sm text-color-regular'>출원등록구분: <span className='font-medium text-color-main'>{e.division}</span></p>
+                                  <p className='text-sm text-color-regular'>출원(등록)번호: <span className='font-medium text-color-main'>{e.num}</span></p>
+                                </div>
+                                <div>
+                                  <p className='text-sm text-color-regular'>출원(등록)일: <span className='font-medium text-color-main'>{e.date}</span></p>
+                                  <p className='text-sm text-color-regular'>출원(등록)인: <span className='font-medium text-color-main'>{e.agency}</span></p>
+                                  <p className='text-sm text-color-regular'>발명자: <span className='font-medium text-color-main'>{e.name}</span></p>
+                                </div>
+                              </>}
+                              desc={<>
+                                <a href={`${e.id}`} className='h-5 text-base font-bold text-color-footer'>더보기 ＋</a>
+                              </>}
+                            />;
+                          })
+                          : <li>
+                            <p className='text-base text-color-placeholder'>데이터가 없습니다.</p>
+                          </li>
+                        : null
                     }
                   </ul>
                 </div>

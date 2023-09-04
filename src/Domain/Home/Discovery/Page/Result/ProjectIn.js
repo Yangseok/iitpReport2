@@ -87,7 +87,6 @@ export default function Result() {
             period.replaceAll('-','.'),
             data?.data?.result?.dataList?.[i]?.researchAgencyName ?? '',
             data?.data?.result?.dataList?.[i]?.researchManagerName ?? '',
-            data?.data?.result?.dataList?.[i]?.orderAgencyName ?? '',
             'ICT 기술 분류',
             keywordt.join(', '),
           ]);
