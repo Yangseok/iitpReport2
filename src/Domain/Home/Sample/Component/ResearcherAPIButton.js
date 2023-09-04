@@ -31,10 +31,19 @@ export default function ResearcherAPIButton(props) {
     };
     await props.apiCallWrap(apiFn);
   };
+  
+  const researcherDetailTest = async () => {
+    const apiFn = async () => {
+      const data = await researcherAPI.researcherDetail('IDV201700016229');
+      console.log(data?.data?.result);
+    };
+    await props.apiCallWrap(apiFn);
+  };
 
   return (
     <>
       <li className='mb-1'><Button text="연구자 검색" onClick={() => researcherTest(false, false)} /></li>
+      <li className='mb-1'><Button text="연구자 검색 상세" onClick={() => researcherDetailTest()} /></li>
       <li className='mb-1'><Button text="연구자 검색 - 필터" onClick={() => researcherTest(true, false)} /></li>
       <li className='mb-1'><Button text="연구자 검색 - 상세검색" onClick={() => researcherTest(false, true)} /></li>
     </>

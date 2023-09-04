@@ -70,7 +70,7 @@ export default function DiscoveryResult() {
     
         setProjectData(procData);
         setSearchButtonClick(false);
-        setOrgnActive({ id: data?.data?.result?.dataList?.[0]?.id, name: data?.data?.result?.dataList?.[0]?.orgnName });
+        setOrgnActive({ id: data?.data?.result?.dataList?.[0]?.id ?? -1, name: data?.data?.result?.dataList?.[0]?.orgnName ?? '' });
       })();
       break;
       

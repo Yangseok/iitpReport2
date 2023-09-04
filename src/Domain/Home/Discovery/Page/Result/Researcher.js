@@ -1,12 +1,12 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import icArrow from 'Assets/Images/ic_arrow02.png';
 import icFilter from 'Assets/Images/ic_filter.png';
-import img_researcher01 from 'Assets/Images/researcher_img01.png';
-import img_researcher02 from 'Assets/Images/researcher_img02.png';
-import img_researcher03 from 'Assets/Images/researcher_img03.png';
-import img_researcher04 from 'Assets/Images/researcher_img04.png';
-import img_researcher05 from 'Assets/Images/researcher_img05.png';
-import img_researcher06 from 'Assets/Images/researcher_img06.png';
+import imgResearcher01 from 'Assets/Images/researcher_img01.png';
+import imgResearcher02 from 'Assets/Images/researcher_img02.png';
+import imgResearcher03 from 'Assets/Images/researcher_img03.png';
+import imgResearcher04 from 'Assets/Images/researcher_img04.png';
+import imgResearcher05 from 'Assets/Images/researcher_img05.png';
+import imgResearcher06 from 'Assets/Images/researcher_img06.png';
 import DiscoveryResultLayout from 'Domain/Home/Discovery/Layout/DiscoveryResultLayout';
 import Button from 'Domain/Home/Common/Componet/Button';
 import Pagination from 'Domain/Home/Common/Componet/Pagination';
@@ -16,7 +16,7 @@ import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { getSearchKeyword, getSelectKeyword } from 'Domain/Home/Common/Status/CommonSlice';
 import * as discoveryAPI from 'Domain/Home/Discovery/API/Call';
-import * as ictAPI from 'Domain/Home/Discovery/API/IctCall';
+import * as researcherAPI from 'Domain/Home/Discovery/API/ResearcherCall';
 
 export default function DiscoveryResult() {
 
@@ -27,7 +27,9 @@ export default function DiscoveryResult() {
   const [tabCount, setTabCount] = useState({});
   const [totalCount, setTotalCount] = useState(0);
   const [projectData, setProjectData] = useState([]);
-  console.log(projectData);
+  const [researcherActive, setResearcherActive] = useState({id: -1, name: ''});
+  const [simialityResearcher, setSimialityResearcher] = useState([]);
+  const [subList, setSubList] = useState([]);
 
   const [searchButtonClick, setSearchButtonClick] = useState(false);
   const [page, setPage] = useState(1);
@@ -41,25 +43,24 @@ export default function DiscoveryResult() {
         const similarity = common.procSimilarity(selectKeyword);
         let filterObj = {};
         let searchParam = {};
-        const data = await ictAPI.ict('search',size,page,keyword,similarity,sort,filterObj,searchParam);
+        const data = await researcherAPI.researcher('search',size,page,keyword,similarity,sort,filterObj,searchParam);
         console.log(data?.data?.result);
         setTotalCount(data?.data?.result?.totalCount ?? 0);
         let procData = [];
         for (let i in data?.data?.result?.dataList ?? []) {
           // console.log(i, data?.data?.result?.dataList?.[i]);
           procData.push({
-            id: data?.data?.result?.dataList?.[i]?.applNumber ?? i,
-            title: data?.data?.result?.dataList?.[i]?.title ?? '',
-            content: data?.data?.result?.dataList?.[i]?.contents ?? '',
-            date: (data?.data?.result?.dataList?.[i]?.publishedDate ?? '').replaceAll('-','.'),
-            agency: data?.data?.result?.dataList?.[i]?.source ?? '',
-            link: data?.data?.result?.dataList?.[i]?.link ?? '',
-            view: data?.data?.result?.dataList?.[i]?.view ?? '',
+            id: data?.data?.result?.dataList?.[i]?.id ?? i,
+            name: common.maskingName(data?.data?.result?.dataList?.[i]?.indvName ?? ''),
+            agency: data?.data?.result?.dataList?.[i]?.orgn ?? '',
+            assign: data?.data?.result?.dataList?.[i]?.projectCount ?? 0,
+            link: data?.data?.result?.dataList?.[i]?.link ?? '#',
           });
         }
     
         setProjectData(procData);
         setSearchButtonClick(false);
+        setResearcherActive({ id: data?.data?.result?.dataList?.[0]?.id ?? -1, name: data?.data?.result?.dataList?.[0]?.indvName ?? '' });
       })();
       break;
       
@@ -76,7 +77,7 @@ export default function DiscoveryResult() {
         const similarity = common.procSimilarity(selectKeyword);
         let filterObj = {};
         let searchParam = {};
-        const data = await ictAPI.ict('search',excelSize,1,keyword,similarity,sort,filterObj,searchParam);
+        const data = await researcherAPI.researcher('search',excelSize,1,keyword,similarity,sort,filterObj,searchParam);
         console.log(data?.data?.result);
         let procData = [];
         for (let i in data?.data?.result?.dataList ?? []) {
@@ -96,6 +97,61 @@ export default function DiscoveryResult() {
       break;
     }
   }, [sort]);
+
+  const getDetail = useCallback(async () => {
+    if (researcherActive.id === -1) return null;
+    switch (paramSe2) {
+    case 'keyword':
+      (async () => {
+        const data = await researcherAPI.researcherDetail(researcherActive.id);
+        // const data = await orgnAPI.orgnDetail('0008634982');
+        console.log(data?.data?.result);
+        let simiality = [];
+        for (let i in data?.data?.result?.simialityIndvList ?? []) {
+          // console.log(i, data?.data?.result?.dataList?.[i]);
+          simiality.push({
+            id: i,
+            name: data?.data?.result?.simialityIndvList?.[i]?.orgnName ?? '',
+            relation: common.colorSet(data?.data?.result?.simialityIndvList?.[i]?.weight ?? 0)
+          });
+        }
+        setSimialityResearcher(simiality);
+
+        let subList = [];
+        for (let i in data?.data?.result?.indvResultInfo?.projectIn ?? []) {
+          // console.log(i, data?.data?.result?.indvResultInfo?.projectIn?.[i]);
+          const period = data?.data?.result?.indvResultInfo?.projectIn?.[i]?.period ?? '';
+          const division = [];
+          const keywordt = data?.data?.result?.indvResultInfo?.projectIn?.[i]?.keywords ?? [];
+          subList.push({
+            id: data?.data?.result?.indvResultInfo?.projectIn?.[i]?.projectNumber ?? i,
+            progress: data?.data?.result?.indvResultInfo?.projectIn?.[i]?.progress ?? false,
+            title: data?.data?.result?.indvResultInfo?.projectIn?.[i]?.bigProjectName ?? '',
+            price: (data?.data?.result?.indvResultInfo?.projectIn?.[i]?.fund ?? '') + '억',
+            period: period.replaceAll('-','.'), 
+            agency: data?.data?.result?.indvResultInfo?.projectIn?.[i]?.researchAgencyName ?? '',
+            name: data?.data?.result?.indvResultInfo?.projectIn?.[i]?.researchManagerName ?? '',
+            department: data?.data?.result?.indvResultInfo?.projectIn?.[i]?.orderAgencyName ?? '',
+            performance: data?.data?.result?.indvResultInfo?.projectIn?.[i]?.performance ?? '',
+            division: division.join(' / '),
+            keyword: keywordt.join(', '),
+          });
+        }
+        setSubList(subList);
+      })();
+      break;
+          
+    default:
+      break;
+    }
+  }, [researcherActive]);
+
+  // 연구자 선택 시
+  const onResearcherSelect = (e, id, name) => {
+    if(e.currentTarget.nodeName !== 'BUTTON') {
+      setResearcherActive({ id, name });
+    }
+  };
 
   useEffect(() => {
     getKeywordList();
@@ -125,96 +181,86 @@ export default function DiscoveryResult() {
     })();
   }, [keyword]);
 
-  const tempData1 = [
-    {
-      id: 0,
-      name: '장*탁',
-      agency: '서울대학교',
-      assign: '43',
-      link: '#',
-    },
-    {
-      id: 1,
-      name: '장*탁',
-      agency: '서울대학교',
-      assign: '43',
-      link: '#',
-    },
-  ];
-  const tempData2 = [
-    {
-      id: 0,
-      name: '장*탁',
-      relation: 0,
-    },
-    {
-      id: 1,
-      name: '차*훈',
-      relation: 1,
-    },
-    {
-      id: 2,
-      name: '임*원',
-      relation: 2,
-    },
-    {
-      id: 3,
-      name: '정*은',
-      relation: 3,
-    },
-    {
-      id: 4,
-      name: '이*호',
-      relation: 4,
-    },
-    {
-      id: 5,
-      name: '장*탁',
-      relation: 5,
-    },
-  ];
-  const tempData3 = [
-    {
-      id: 0,
-      progress: true,
-      title: '인공지능 학습 및 디지털 트윈을 위한 3차원 데이터 수집·전처리 및 가공 플랫폼 개발',
-      price: '10억',
-      period: '2023.04.01 ~ 2024.04.30',
-      agency: '주식회사 오름',
-      name: '홍길동',
-      department: '중소벤처기업부',
-      performance: '논문(1), 특허(3)',
-      division: '정보 / 통신 / 소프트웨어 / S/W솔루션 ',
-      keyword: '3D 데이터, 디지털 트윈, 지능형 데이터 가공 플랫폼, 깊이 추정',
-    },
-    {
-      id: 1,
-      progress: false,
-      title: '인공지능 학습 및 디지털 트윈을 위한 3차원 데이터 수집·전처리 및 가공 플랫폼 개발',
-      price: '10억',
-      period: '2023.04.01 ~ 2024.04.30',
-      agency: '주식회사 오름',
-      name: '홍길동',
-      department: '중소벤처기업부',
-      performance: '논문(1), 특허(3)',
-      division: '정보 / 통신 / 소프트웨어 / S/W솔루션 ',
-      keyword: '3D 데이터, 디지털 트윈, 지능형 데이터 가공 플랫폼, 깊이 추정',
-    },
-  ];
-
-  const [researcherActive, setResearcherActive] = useState({});
-
-  // 연구자 선택 시
-  const onResearcherSelect = (e, id, name) => {
-    if(e.currentTarget.nodeName !== 'BUTTON') {
-      setResearcherActive({ id, name });
-    }
-  };
-
   useEffect(() => {
-    // 처음 데이터 노출
-    setResearcherActive({ id: 0, name: '장*탁' });
-  }, []);
+    getDetail();
+  }, [researcherActive]);
+
+  // const tempData1 = [
+  //   {
+  //     id: 0,
+  //     name: '장*탁',
+  //     agency: '서울대학교',
+  //     assign: '43',
+  //     link: '#',
+  //   },
+  //   {
+  //     id: 1,
+  //     name: '장*탁',
+  //     agency: '서울대학교',
+  //     assign: '43',
+  //     link: '#',
+  //   },
+  // ];
+  // const tempData2 = [
+  //   {
+  //     id: 0,
+  //     name: '장*탁',
+  //     relation: 0,
+  //   },
+  //   {
+  //     id: 1,
+  //     name: '차*훈',
+  //     relation: 1,
+  //   },
+  //   {
+  //     id: 2,
+  //     name: '임*원',
+  //     relation: 2,
+  //   },
+  //   {
+  //     id: 3,
+  //     name: '정*은',
+  //     relation: 3,
+  //   },
+  //   {
+  //     id: 4,
+  //     name: '이*호',
+  //     relation: 4,
+  //   },
+  //   {
+  //     id: 5,
+  //     name: '장*탁',
+  //     relation: 5,
+  //   },
+  // ];
+  // const tempData3 = [
+  //   {
+  //     id: 0,
+  //     progress: true,
+  //     title: '인공지능 학습 및 디지털 트윈을 위한 3차원 데이터 수집·전처리 및 가공 플랫폼 개발',
+  //     price: '10억',
+  //     period: '2023.04.01 ~ 2024.04.30',
+  //     agency: '주식회사 오름',
+  //     name: '홍길동',
+  //     department: '중소벤처기업부',
+  //     performance: '논문(1), 특허(3)',
+  //     division: '정보 / 통신 / 소프트웨어 / S/W솔루션 ',
+  //     keyword: '3D 데이터, 디지털 트윈, 지능형 데이터 가공 플랫폼, 깊이 추정',
+  //   },
+  //   {
+  //     id: 1,
+  //     progress: false,
+  //     title: '인공지능 학습 및 디지털 트윈을 위한 3차원 데이터 수집·전처리 및 가공 플랫폼 개발',
+  //     price: '10억',
+  //     period: '2023.04.01 ~ 2024.04.30',
+  //     agency: '주식회사 오름',
+  //     name: '홍길동',
+  //     department: '중소벤처기업부',
+  //     performance: '논문(1), 특허(3)',
+  //     division: '정보 / 통신 / 소프트웨어 / S/W솔루션 ',
+  //     keyword: '3D 데이터, 디지털 트윈, 지능형 데이터 가공 플랫폼, 깊이 추정',
+  //   },
+  // ];
 
   return (
     <DiscoveryResultLayout totalCount={tabCount?.all} tabCount={tabCount} keyword={keyword} setSearchButtonClick={setSearchButtonClick} >
@@ -251,8 +297,8 @@ export default function DiscoveryResult() {
             <div className='w-120'>
               <div className='list_style02'>
                 <ul>
-                  {(tempData1?.length > 0)
-                    ? tempData1?.map((e) => (
+                  {(projectData?.length > 0)
+                    ? projectData?.map((e) => (
                       <li 
                         key={e.id} 
                         className={`flex items-center gap-4${(e.id === researcherActive.id) ? ' on' : ''}`}
@@ -261,7 +307,7 @@ export default function DiscoveryResult() {
                         role={'button'}
                         tabIndex={0}
                       >
-                        <img src={img_researcher01} alt='연구자 프로필 이미지' className='w-11' />
+                        <img src={imgResearcher01} alt='연구자 프로필 이미지' className='w-11' />
                         <div className='flex-1'>
                           <div className='flex items-center justify-between gap-2'>
                             <p className='text-base font-bold text-color-main'>{e.name}</p>
@@ -281,27 +327,27 @@ export default function DiscoveryResult() {
                 </ul>
               </div>
               <div className='mt-10'>
-                <Pagination total={50} page={1} onClick={(i) => console.log(i)} />
+                <Pagination total={totalCount} page={page} onClick={(page) => setPage(page)} />
               </div>
             </div>
             <div className='flex-1 p-4 pb-10 bg-color-f_bg'>
               <div>
                 <h5 className='text-base font-bold text-color-dark'>{researcherActive.name} 님 관련 연구자</h5>
                 <ul className='flex mt-4'>
-                  {tempData2?.map((e, i) => {
+                  {simialityResearcher?.map((e, i) => {
                     let imgSrc = '';
                     if(e.relation === 0) {
-                      imgSrc = img_researcher01;
+                      imgSrc = imgResearcher01;
                     } else if(e.relation === 1) {
-                      imgSrc = img_researcher02;
+                      imgSrc = imgResearcher02;
                     } else if(e.relation === 2) {
-                      imgSrc = img_researcher03;
+                      imgSrc = imgResearcher03;
                     } else if(e.relation === 3) {
-                      imgSrc = img_researcher04;
+                      imgSrc = imgResearcher04;
                     } else if(e.relation === 4) {
-                      imgSrc = img_researcher05;
+                      imgSrc = imgResearcher05;
                     } else if(e.relation === 5) {
-                      imgSrc = img_researcher06;
+                      imgSrc = imgResearcher06;
                     }
 
                     return <li key={e.id} className='w-1/6 px-1'>
@@ -317,8 +363,8 @@ export default function DiscoveryResult() {
                 <h5 className='text-base font-bold text-color-dark'>{researcherActive.name} 님 과제</h5>
                 <div className='list_style01 mt-4'>
                   <ul>
-                    {(tempData3?.length > 0) 
-                      ? tempData3?.map((e) => {
+                    {(subList?.length > 0) 
+                      ? subList?.map((e) => {
                         return  <ListItem 
                           key={e.id}
                           tag={(e?.progress !== null) 
@@ -349,9 +395,6 @@ export default function DiscoveryResult() {
                       </li>
                     }
                   </ul>
-                </div>
-                <div className='mt-10'>
-                  <Pagination total={totalCount} page={page} onClick={(page) => setPage(page)} />
                 </div>
               </div>
             </div>
