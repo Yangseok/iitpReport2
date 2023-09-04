@@ -243,8 +243,8 @@ export default function Main() {
                     <span>{common.setPriceInput(dataCount.indv ?? 0)}</span>
                   </li>
                   <li>
-                    <img src={img_category07} alt='기업 데이터 현황' />
-                    <p>기업</p>
+                    <img src={img_category07} alt='기관 데이터 현황' />
+                    <p>기관</p>
                     <span>{common.setPriceInput(dataCount.orgn ?? 0)}</span>
                   </li>
                   <li>
