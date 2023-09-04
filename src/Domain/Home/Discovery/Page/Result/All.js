@@ -11,10 +11,6 @@ export default function DiscoveryResult() {
       period: '2023.04.01 ~ 2024.04.30',
       agency: '주식회사 오름',
       name: '홍길동',
-      department: '중소벤처기업부',
-      performance: '논문(1), 특허(3)',
-      division: '정보 / 통신 / 소프트웨어 / S/W솔루션 ',
-      keyword: '3D 데이터, 디지털 트윈, 지능형 데이터 가공 플랫폼, 깊이 추정',
     },
     {
       id: 1,
@@ -24,10 +20,6 @@ export default function DiscoveryResult() {
       period: '2023.04.01 ~ 2024.04.30',
       agency: '주식회사 오름',
       name: '홍길동',
-      department: '중소벤처기업부',
-      performance: '논문(1), 특허(3)',
-      division: '정보 / 통신 / 소프트웨어 / S/W솔루션 ',
-      keyword: '3D 데이터, 디지털 트윈, 지능형 데이터 가공 플랫폼, 깊이 추정',
     },
     {
       id: 2,
@@ -37,10 +29,6 @@ export default function DiscoveryResult() {
       period: '2023.04.01 ~ 2024.04.30',
       agency: '주식회사 오름',
       name: '홍길동',
-      department: '중소벤처기업부',
-      performance: '논문(1), 특허(3)',
-      division: '정보 / 통신 / 소프트웨어 / S/W솔루션 ',
-      keyword: '3D 데이터, 디지털 트윈, 지능형 데이터 가공 플랫폼, 깊이 추정',
     },
     {
       id: 3,
@@ -50,10 +38,6 @@ export default function DiscoveryResult() {
       period: '2023.04.01 ~ 2024.04.30',
       agency: '주식회사 오름',
       name: '홍길동',
-      department: '중소벤처기업부',
-      performance: '논문(1), 특허(3)',
-      division: '정보 / 통신 / 소프트웨어 / S/W솔루션 ',
-      keyword: '3D 데이터, 디지털 트윈, 지능형 데이터 가공 플랫폼, 깊이 추정',
     },
   ];
   const tempData2 = [
@@ -344,13 +328,10 @@ export default function DiscoveryResult() {
                           </p>
                           <div className='text_style01 mt-0.5 line1_text'>
                             <p className='text-sm text-color-regular line1_text'>연구 개발비: <span className='font-medium text-color-main'>{e.price}</span></p>
-                            <p className='text-sm text-color-regular line1_text'>연구 개발기간: <span className='font-medium text-color-main'>{e.date}</span></p>
+                            <p className='text-sm text-color-regular line1_text'>연구 개발기간: <span className='font-medium text-color-main'>{e.period}</span></p>
                             <p className='text-sm text-color-regular line1_text'>연구 개발기관: <span className='font-medium text-color-main'>{e.agency}</span></p>
                             <p className='text-sm text-color-regular line1_text'>연구 책임자: <span className='font-medium text-color-main'>{e.name}</span></p>
-                            <p className='text-sm text-color-regular line1_text'>부처명: <span className='font-medium text-color-main'>{e.department}</span></p>
-                            <p className='text-sm text-color-regular line1_text'>연구 개발성과: <span className='font-medium text-color-main'>{e.performance}</span></p>
-                            <p className='text-sm text-color-regular line1_text'>국가과학기술표준분류: <span className='font-medium text-color-main'>{e.division}</span></p>
-                            <p className='text-sm text-color-regular line1_text'>한글 키워드: <span className='font-medium text-color-main'>{e.keyword}</span></p>
+                            
                           </div>
                         </a>
                       </li>;

@@ -216,6 +216,7 @@
   flex-wrap: wrap;
 }
 .filter_btns ul li button {
+  gap: 4px;
   padding: 7px 10px;
   border: 1px solid #94A3B8;
   border-radius: 4px;

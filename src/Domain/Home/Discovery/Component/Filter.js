@@ -5,37 +5,72 @@ import icSearch from 'Assets/Images/ic_search.png';
 import Button from 'Domain/Home/Common/Componet/Button';
 
 export default function Filter() {
+  /* tabButtons
+    1: 과제 - 국가 R&D 과제 / 2: 과제 - IITP 내부 과제
+    3: 특허 / 4: 논문 / 5: ICT 자료 / 6: 정부정책 / 7: 연구자 / 8: 기관 / 9: 뉴스
+  */
+  const tabButtons1 = [
+    { id: 0, name: '기준연도', cnt: '12,931', onClick: () => setTabActive1(0) },
+    { id: 1, name: '연구개발비', cnt: '12,931', onClick: () => setTabActive1(1) },
+    { id: 2, name: '연구 개발기관', cnt: '12,931', onClick: () => setTabActive1(2) },
+    { id: 3, name: '부처명', cnt: '12,931', onClick: () => setTabActive1(3) },
+    { id: 4, name: '국제과학기술표준분류', cnt: '12,931', onClick: () => setTabActive1(4) },
+  ];
+  // const tabButtons2 = [
+  //   { id: 0, name: '기준연도', cnt: '12,931', onClick: () => setTabActive1(0) },
+  //   { id: 1, name: '연구개발비', cnt: '12,931', onClick: () => setTabActive1(1) },
+  //   { id: 2, name: '연구 개발기관', cnt: '12,931', onClick: () => setTabActive1(2) },
+  //   { id: 3, name: 'ICT 기술분류', cnt: '12,931', onClick: () => setTabActive1(3) },
+  //   { id: 4, name: '연구수행주체', cnt: '12,931', onClick: () => setTabActive1(4) },
+  // ];
+  // const tabButtons3 = [
+  //   { id: 0, name: '성과연도', cnt: '12,931', onClick: () => setTabActive1(0) },
+  //   { id: 1, name: '출원등록 구분', cnt: '12,931', onClick: () => setTabActive1(1) },
+  //   { id: 2, name: '출원인', cnt: '12,931', onClick: () => setTabActive1(2) },
+  //   { id: 3, name: '해외출원여부', cnt: '12,931', onClick: () => setTabActive1(3) },
+  // ];
+  // const tabButtons4 = [ 
+  //   { id: 0, name: '성과연도', cnt: '12,931', onClick: () => setTabActive1(0) },
+  //   { id: 1, name: '논문 구분', cnt: '12,931', onClick: () => setTabActive1(1) },
+  // ];
+  // const tabButtons5 = [
+  //   { id: 0, name: '발행연도', cnt: '12,931', onClick: () => setTabActive1(0) },
+  //   { id: 1, name: '발행기관명', cnt: '12,931', onClick: () => setTabActive1(1) },
+  // ];
+  // const tabButtons6 = [
+  //   { id: 0, name: '발행연도', cnt: '12,931', onClick: () => setTabActive1(0) },
+  //   { id: 1, name: '출처명', cnt: '12,931', onClick: () => setTabActive1(1) },
+  //   { id: 2, name: '부처명', cnt: '12,931', onClick: () => setTabActive1(2) },
+  // ];
+  // const tabButtons7 = [
+  //   { id: 0, name: '제작기관', cnt: '12,931', onClick: () => setTabActive1(0) },
+  // ];
+  // const tabButtons8 = [
+  //   { id: 0, name: '기관유형', cnt: '12,931', onClick: () => setTabActive1(0) },
+  //   { id: 1, name: '업종명', cnt: '12,931', onClick: () => setTabActive1(1) },
+  //   { id: 2, name: '지역', cnt: '12,931', onClick: () => setTabActive1(2) },
+  // ];
+  // const tabButtons9 = [
+  //   { id: 0, name: '기준연도', cnt: '12,931', onClick: () => setTabActive1(0) },
+  //   { id: 1, name: '주제별', cnt: '12,931', onClick: () => setTabActive1(1) },
+  //   { id: 2, name: '출처명', cnt: '12,931', onClick: () => setTabActive1(2) },
+  // ];
+  const [tabActive1, setTabActive1] = useState(0);
   const [filterDisabled, setFilterDisabled] = useState(false);
 
   return (
     <section className='mb-10'>
       <div className='tab_btns tab_style04 grid_auto'>
         <ul>
-          <li className='on'>
-            <button type='button'>
-              <b>기준연도</b>(12,931)
-            </button>
-          </li>
-          <li>
-            <button type='button'>
-              <b>연구개발비</b>(12,931)
-            </button>
-          </li>
-          <li>
-            <button type='button'>
-              <b>연구 개발기관</b>(12,931)
-            </button>
-          </li>
-          <li>
-            <button type='button'>
-              <b>부처명</b>(12,931)
-            </button>
-          </li>
-          <li>
-            <button type='button'>
-              <b>국제과학기술표준분류</b>(12,931)
-            </button>
-          </li>
+          {tabButtons1?.map((e) => {
+            return (
+              <li key={e.id} className={(e.id === tabActive1) && 'on'}>
+                <button type='button' onClick={e.onClick}>
+                  <b>{e.name}</b>({e.cnt})
+                </button>
+              </li>
+            );
+          })}
         </ul>
       </div>
       <div className='filter_btns'>

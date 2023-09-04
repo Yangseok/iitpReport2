@@ -228,7 +228,7 @@ export default function Search() {
                     </dl>}
                   {(tabActive === 4)
                     && <dl>
-                      <dt>기준연도</dt>
+                      <dt>발행연도</dt>
                       <dd>
                         <label htmlFor='startYear' className='hidden_text'>기준연도 범위 - 시작 연도</label>
                         <select name='startYear' id='startYear'>

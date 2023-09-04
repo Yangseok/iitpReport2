@@ -431,6 +431,10 @@ button.btn_style01, a.btn_style01 {
   border: 1px solid #E2E8F0;
   background-color: #FFFFFF;
 }
+button.btn_style01.on, a.btn_style01.on {
+  color: #0056B8;
+  border-color: #0056B8;
+}
 button.btn_style02, a.btn_style02 {
   color: #64748B;
   border: 1px solid #64748B;

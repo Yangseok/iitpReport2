@@ -251,6 +251,10 @@ button, a {
     color: $color_regular;
     border: 1px solid $color_line;
     background-color: $color_white;
+    &.on {
+      color: $color_main;
+      border-color: $color_main;
+    }
   }
   &.btn_style02 {
     color: $color_footer;

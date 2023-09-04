@@ -191,6 +191,7 @@
     flex-wrap: wrap;
 
     li button {
+      gap: 4px;
       padding: 7px 10px;
       border: 1px solid $color_placeholder;
       border-radius: 4px;
