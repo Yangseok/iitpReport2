@@ -14,11 +14,9 @@ export default function NewsWordClouds(props) {
     // console.log(wordCloudData);
     setNewData(
       wordCloudData.map((item) => {
-        // console.log(Number(Math.floor(Math.floor((item.weight - minValue) * 1000000) / 1000)) + 1);
-        // console.log(Number(Math.floor(Math.floor((item.weight - minValue + 1) * 1000000) / 1000)));
         return {
           text: item.keyword,
-          value: Number(Math.floor(Math.floor((item.weight - minValue) * 1000000) / 10))
+          value: Number(Math.floor(Math.floor((item.weight - minValue) * 500000) / 10))
         };
       })
     );
