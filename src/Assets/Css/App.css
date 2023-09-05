@@ -1025,6 +1025,7 @@ textarea::placeholder {
 /* Tooltip */
 .tooltip_wrap {
   position: relative;
+  cursor: pointer;
 }
 .tooltip_wrap:hover [class*=tooltip_style], .tooltip_wrap:focus [class*=tooltip_style] {
   visibility: visible;
@@ -1265,9 +1266,31 @@ textarea::placeholder {
   display: flex;
 }
 
+/* Chart */
+.chart_wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  width: 100%;
+  min-height: 350px;
+}
+
+/* HightLight Style */
+.highlight {
+  color: #52A3FF !important;
+  font-weight: 700;
+}
+
 /* Table Styles */
 .table_style01 table {
   width: 100%;
+}
+.table_style01 table thead {
+  border-top: 1px solid #E2E8F0;
+}
+.table_style01 table thead th {
+  border-bottom: 1px solid #94A3B8;
 }
 .table_style01 table th {
   padding: 14px 16px;
@@ -1276,14 +1299,31 @@ textarea::placeholder {
   font-size: 14px;
   color: #334155;
   font-weight: 500;
-  text-align: left;
+}
+.table_style01 table th.text-left {
+  padding: 14px 10px 14px 16px;
 }
 .table_style01 table td {
-  padding: 14px 16px 14px 40px;
+  padding: 14px 16px;
   border-bottom: 1px solid #E2E8F0;
   font-size: 14px;
   color: #0F172A;
   font-weight: 500;
+}
+.table_style01 table td.text-left {
+  padding: 14px 16px 14px 40px;
+}
+.table_style01 table .bg01 {
+  color: #FFFFFF;
+  background-color: #FD0943;
+}
+.table_style01 table .bg02 {
+  color: #0F172A;
+  background-color: #E7D500;
+}
+.table_style01 table .bg03 {
+  color: #FFFFFF;
+  background-color: #00A545;
 }
 
 /* List Styles */
@@ -1391,6 +1431,41 @@ textarea::placeholder {
   padding: 12px 24px;
   border-radius: 8px;
   background-color: #F9FBFF;
+}
+
+.list_wrap_style02 {
+  display: flex;
+  align-items: normal;
+  justify-content: flex-start;
+  gap: 40px;
+  flex-wrap: wrap;
+}
+.list_wrap_style02 > * {
+  width: 100%;
+  padding: 32px 24px;
+  border: 1px solid #E2E8F0;
+  border-radius: 8px;
+}
+.list_wrap_style02.grid02 > * {
+  width: calc(50% - 40px);
+}
+.list_wrap_style02.grid03 > * {
+  width: calc(33.3333333333% - 80px);
+}
+.list_wrap_style02.grid04 > * {
+  width: calc(25% - 120px);
+}
+.list_wrap_style02.grid05 > * {
+  width: calc(20% - 160px);
+}
+.list_wrap_style02.grid06 > * {
+  width: calc(16.6666666667% - 200px);
+}
+.list_wrap_style02.grid07 > * {
+  width: calc(14.2857142857% - 240px);
+}
+.list_wrap_style02.grid08 > * {
+  width: calc(12.5% - 280px);
 }
 
 /* Text Styles */

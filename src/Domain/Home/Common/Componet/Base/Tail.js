@@ -10,8 +10,8 @@ export default function Tail() {
         <div className='text_box'>
           <div className='top_text_box'>
             <NavLink to='/' className='logo'>IITP 정보통신기획평가원</NavLink>
-            <a href='#'>개인정보처리방침</a>
-            <a href='#'>이용약관</a>
+            <a href='/policy'>개인정보처리방침</a>
+            <a href='/agree'>이용약관</a>
           </div>
           <p className='mt-8'>
             대전광역시 유성구 유성대로 1548 (정보통신기획평가원) 동향분석팀 담장자 E-mail: key@iitp.kr <br/>

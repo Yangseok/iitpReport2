@@ -741,6 +741,7 @@ textarea {
 /* Tooltip */
 .tooltip_wrap {
   position: relative;
+  cursor: pointer;
 
   &:hover [class*='tooltip_style'],
   &:focus [class*='tooltip_style'] {
@@ -873,11 +874,31 @@ textarea {
   }
 }
 
+/* Chart */
+.chart_wrap {
+  @include flexLayout(center, center);
+  width: 100%;
+  min-height: 350px;
+}
+
+/* HightLight Style */
+.highlight {
+  // color: $color_white !important;
+  // background-color: $color_regular !important;
+  color: $color_light1 !important;
+  font-weight: 700;
+}
+
 /* Table Styles */
 .table_style01 {
   table {
     width: 100%;
     // border-spacing: 16px 0;
+
+    thead {
+      border-top: 1px solid $color_line;
+      th { border-bottom: 1px solid $color_placeholder; }
+    }
 
     th {
       padding: 14px 16px;
@@ -886,14 +907,32 @@ textarea {
       font-size: 14px;
       color: $color_regular;
       font-weight: 500;
-      text-align: left;
+
+      &.text-left { padding: 14px 10px 14px 16px; }
     }
     td {
-      padding: 14px 16px 14px 40px;
+      padding: 14px 16px;
       border-bottom: 1px solid $color_line;
       font-size: 14px;
       color: $color_dark;
       font-weight:500;
+      
+      &.text-left { padding: 14px 16px 14px 40px; }
+    }
+
+    @for $i from 1 through 3 {
+      .bg0#{$i} {
+        @if($i == 1) {
+          color: $color_white;
+          background-color: $color_safety3;
+        } @else if ($i == 2) {
+          color: $color_dark;
+          background-color: $color_safety2;
+        } @else if ($i == 3) {
+          color: $color_white;
+          background-color: $color_safety1;
+        }
+      }
     }
   }
 }
@@ -986,6 +1025,21 @@ textarea {
     padding: 12px 24px;
     border-radius: 8px;
     background-color: $color_m_bg;
+  }
+}
+.list_wrap_style02 {
+  @include flexLayout(normal, flex-start, 40px);
+  flex-wrap: wrap;
+
+  & > * {
+    width: 100%;
+    padding: 32px 24px;
+    border: 1px solid $color_line;
+    border-radius: 8px;
+  }
+
+  @for $i from 2 through 8 {
+    &.grid0#{$i} > * { width: calc((100% / $i) - (40px * ($i - 1))); }
   }
 }
 

@@ -1,19 +1,20 @@
 import React from 'react';
-import DiscoveryLayout from 'Domain/Home/Discovery/Layout/DiscoveryLayout';
+import Layout from 'Domain/Home/Common/Layout/Sub';
 import TabButtons from 'Domain/Home/Common/Componet/TabButtons';
 
 export default function View(props) {
-  const { children, tabStyle, tabs, active, tags, title, subTitle, keywords } = props;
+  const { children, tabStyle, tabs, active, tags, title, subTitle, desc, keywords } = props;
 
   return (
-    <DiscoveryLayout>
+    <Layout>
       <section>
         <div className='container'>
           {tags}
-          <div>
-            <h3 className='text-xl font-bold text-color-dark mt-2'>{title}</h3>
+          <div className='flex items-center mt-2'>
+            <h3 className='text-xl font-bold text-color-dark'>{title}</h3>
+            {subTitle}
           </div>
-          <p className='text-sm font-medium text-color-dark mt-2'>{subTitle}</p>
+          <p className='text-sm font-medium text-color-dark mt-2'>{desc}</p>
           {
             (keywords?.ko?.length > 0 || keywords?.en?.length > 0)
               ? <>
@@ -49,6 +50,6 @@ export default function View(props) {
           {children}
         </div>
       </section>
-    </DiscoveryLayout>
+    </Layout>
   );
 }

@@ -91,23 +91,25 @@ export default function View() {
       active={tabActive1}
       keywords={tempData1}
       title={'인공지능 학습 및 디지털 트윈을 위한 3차원 데이터 수집·전처리 및 가공 플랫폼 개발'}
-      subTitle={'3D Data Collection, Pre-Processing and Annotation Platform Development  for AI-Training and Digital Twin'}
+      desc={'3D Data Collection, Pre-Processing and Annotation Platform Development  for AI-Training and Digital Twin'}
       tags={<>
         <div className="flex items-center gap-4">
           {/* 진행중 : tag_style05 | 종료 : tag_style02 */}
           <p className="tag_style05">진행중</p>
-          <p className="text-sm text-color-regular line1_text">과제고유번호: <span className="font-medium text-color-main">1425165402</span></p>
-          <p className="text-sm text-color-regular line1_text">기관별 과제번호: <span className="font-medium text-color-main">S3257603</span></p>
+          <p className="text-sm text-color-regular">과제고유번호: <span className="font-medium text-color-main">1425165402</span></p>
+          <p className="text-sm text-color-regular">기관별 과제번호: <span className="font-medium text-color-main">S3257603</span></p>
         </div>
       </>}
     >
       {(tabActive1 === 0)
-        ? <ViewTable
+        ? // 기본 정보
+        <ViewTable
           summary={'인공지능 학습 및 디지털 트윈을 위한 3차원 데이터 수집·전처리 및 가공 플랫폼 개발 기본 정보'}
           bodyData={tempData2}
         />
         : (tabActive1 === 1)
-          ? <div className='p-6'>
+          ? // 연구 목표
+          <div className='p-6'>
             <p className='text-sm font-medium text-color-dark leading-loose break-keep'>
               1. 연속 촬영 데이터 기반 3D 공간 생성 알고리즘 개발 - 시간 축 및 멀티모달 센서로 누적된 공간데이터 3D 맵핑 알고리즘 개발 - Depth Completion 알고리즘 최적화 - 깊이 추정 알고리즘 최적화 <br />
               2. 3D 데이터 가공 플랫폼 개발 - 하이브리드 인프라 플랫폼 서버 구축 - 3D 데이터 가공 프로젝트 관리를 위한 플랫폼 작업 대쉬보드(Dashboard) 구현 - 플랫폼 내 사용자 역할 및 역할에 따른 권한 설정 기능 구현 - 가공 도구 페이지 UI 구현 <br />
@@ -115,7 +117,8 @@ export default function View() {
             </p>
           </div>
           : (tabActive1 === 2)
-            ? <div className='p-6'>
+            ?  // 연구 내용 
+            <div className='p-6'>
               <p className='text-sm font-medium text-color-dark leading-loose break-keep'>
                 1. 연속 촬영 데이터 기반 3D 공간 생성 알고리즘 개발 - 3차원 지도 생성 및 다중 데이터 가공 수행을 위한 SLAM(Simultaneous localization and mapping) 알고리즘 연구 및 개발 - 2022년에 개발한 Depth Completion 알고리즘 및 깊이 추정 알고리즘 최적화 <br/>
                 2. 3D 데이터 가공 플랫폼 개발 - On-premise GPU 자원과 클라우드 컴퓨팅 서비스를 활용한 하이브리드 인프라 플랫폼 서버 구축 - 3D 데이터 가공 프로젝트 관리를 위한 플랫폼 작업 대쉬보드 구현 (작업 생성, 분배, 조회, 수행, 진행률 확인, 삭제 등 전반적인 프로젝트 운영 가능) - 사용자 역할 설정(관리자, 검수자, 가공 작업자) 및 역할에 따른 권한 설정 기능 구현 - 웹 페이지 상에서 원활한 3D 데이터 가공 작업을 수행할 수 있는 가공 도구 페이지 UI 구현 <br/>
@@ -123,12 +126,14 @@ export default function View() {
               </p>
             </div>
             : (tabActive1 === 3)
-              ? <div className='p-6'>
+              ? // 기대 효과
+              <div className='p-6'>
                 <p className='text-sm font-medium text-color-dark leading-loose break-keep'>
                   3D 데이터는 다양한 센서(카메라, LiDAR, GPS 등)를 통해 획득되기 때문에, 센서 제조사 별 수집하는 방식 및 정책의 차이가 존재하여 이를 통합하여 데이터를 수집하는 것이 어려우며, 고품질 3D 데이터를 구축하기 위해서는 원천데이터의 전처리 작업이 필요하지만 기존의 도구들은 지원하는 기능이 극히 제한적이다. 본 과제를 수행함으로써 센서 제조사별로 상이한 수집 시스템 및 분산된 전처리 작업에 대해서 하나의 공통 포맷으로 통합하는 3D 데이터 수집 및 전처리를 수행할 수 있는, 정제된 데이터에 대해서 유의미한 3D 데이터를 가공 및 구축할 수 있는 파이프라인 플랫폼이 개발된다. 해당 플랫폼을 통해서, 멀티모달 센서를 필요로 하는 3차원 데이터 활용 및 멀티모달 3D 데이터 기반으로 새로운 연구 분야를 창출함으로써 3D 데이터 활용 생태계 구축이 가능하게 되며, 메타버스 환경 조성 및 이를 기반으로 융합 연구를 통해서 기존 업계가 활성화 됨으로써 3D 데이터 분야에 대한 경쟁력도 강화될 것이다.
                 </p>
               </div>
-              : <>
+              : // 성과 정보 (논문, 특허)
+              <>
                 <div className='tab_btns tab_style05 pt-6 px-4'>
                   <ul>
                     {tabButtons2?.map((e) => {

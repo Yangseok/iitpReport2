@@ -35,7 +35,7 @@ ChartJS.register(
 );
 
 export default function Chart(props) {
-  const {data, options, type} = props;
+  const {data, options, type, width, height} = props;
   const barType = (type === undefined) ? 'bar' : (type === 'bar') ? 'bar' : type;
-  return ((barType === 'line') ? <Line options={options} data={data} /> : (barType === 'scatter') ? <Scatter options={options} data={data} /> : (barType === 'treemap') ? <Chart2 options={options} data={data} type="treemap" /> : (barType === 'multitype1') ? <Chart2 data={data} options={options} type="bar" /> : (barType === 'reg') ? <></> : <Bar options={options} data={data}/>);
+  return ((barType === 'line') ? <Line options={options} data={data} width={width} height={height} /> : (barType === 'scatter') ? <Scatter options={options} data={data} width={width} height={height} /> : (barType === 'treemap') ? <Chart2 options={options} data={data} type="treemap" width={width} height={height} /> : (barType === 'multitype1') ? <Chart2 data={data} options={options} type="bar" width={width} height={height} /> : (barType === 'reg') ? <></> : <Bar options={options} data={data} width={width} height={height}/>);
 }
