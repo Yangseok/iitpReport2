@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import Button from './Button';
+import { useNavigate } from 'react-router-dom';
 
 export default function TabButtons(props) {
+  const navigate = useNavigate();
   const { style, tabs, active = 0 } = props;
   const [tabClass, setTabClass] = useState('');
 
@@ -28,7 +30,7 @@ export default function TabButtons(props) {
       <ul>
         {tabs.map((e) => (
           <React.Fragment key={e.id}>
-            <li className={(e.id == active) ? 'on' : ''}><Button name={e.name} onClick={(e?.to) ? () => location.href = e.to : e.onClick} /></li>
+            <li className={(e.id == active) ? 'on' : ''}><Button name={e.name} onClick={(e?.to) ? () => navigate(e.to) : e.onClick} /></li>
           </React.Fragment>
         ))}
       </ul>

@@ -6,16 +6,13 @@ import Button from 'Domain/Home/Common/Componet/Button';
 import Pagination from 'Domain/Home/Common/Componet/Pagination';
 import ListItem from 'Domain/Home/Common/Componet/ListItem';
 import common from 'Utill';
-import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { getSearchKeyword, getSelectKeyword } from 'Domain/Home/Common/Status/CommonSlice';
 import * as discoveryAPI from 'Domain/Home/Discovery/API/Call';
 import * as policyAPI from 'Domain/Home/Discovery/API/PolicyCall';
 
 export default function Result() {
-
-  const params = useParams();
-  const paramSe2 = params?.se2;
+  const se = common.getSegment();
   const selectKeyword = useSelector(getSelectKeyword);
   const keyword = useSelector(getSearchKeyword);
   const [tabCount, setTabCount] = useState({});
@@ -27,80 +24,94 @@ export default function Result() {
   const [size, setSize] = useState(10);
   const [sort, setSort] = useState('score');
 
-  const getKeywordList = useCallback(async () => {
-    switch (paramSe2) {
-    case 'keyword':
-      (async () => {
-        const similarity = common.procSimilarity(selectKeyword);
-        let filterObj = {};
-        let searchParam = {};
-        const data = await policyAPI.policy('search',size,page,keyword,similarity,sort,filterObj,searchParam);
-        console.log(data?.data?.result);
-        setTotalCount(data?.data?.result?.totalCount ?? 0);
-        let procData = [];
-        for (let i in data?.data?.result?.dataList ?? []) {
-          // console.log(i, data?.data?.result?.dataList?.[i]);
-          const date = data?.data?.result?.dataList?.[i]?.publishedDate ?? '';
-          const dateArr = date.split(' ');
-          procData.push({
-            id: data?.data?.result?.dataList?.[i]?.applNumber ?? i,
-            title: data?.data?.result?.dataList?.[i]?.title ?? '',
-            content: data?.data?.result?.dataList?.[i]?.contents ?? '',
-            source: data?.data?.result?.dataList?.[i]?.source ?? '',
-            date: (dateArr[0] ?? '').replaceAll('-','.'),
-            link: data?.data?.result?.dataList?.[i]?.link ?? '',
-          });
+  const getList = useCallback(async () => {
+    const se1 = se[1] ?? '';
+    const se2 = se[2] ?? '';
+    (async () => {
+      const similarity = common.procSimilarity(selectKeyword);
+      let filterObj = {};
+      let searchParam = {};
+      let data = [];
+      if (se1 == 'search') {
+        data = await policyAPI.policy('search',size,page,keyword,similarity,sort,filterObj,searchParam);
+      } else if (se1 == 'discovery') {
+        if (se2 == 'keyword') {
+          data = await policyAPI.policy('discovery',size,page,keyword,similarity,sort,filterObj,searchParam);
+        } else if (se2 == 'file') {
+          data = await policyAPI.policy('discovery',size,page,keyword,similarity,sort,filterObj,searchParam);
+        } else if (se2 == 'project') {
+          data = await policyAPI.policy('discovery',size,page,keyword,similarity,sort,filterObj,searchParam);
         }
-    
-        setProjectData(procData);
-        setSearchButtonClick(false);
-      })();
-      break;
-      
-    default:
-      break;
-    }
-  }, [searchButtonClick, page, size, sort]);
+      }
+      console.log(data?.data?.result);
+      setTotalCount(data?.data?.result?.totalCount ?? 0);
+      let procData = [];
+      for (let i in data?.data?.result?.dataList ?? []) {
+        // console.log(i, data?.data?.result?.dataList?.[i]);
+        const date = data?.data?.result?.dataList?.[i]?.publishedDate ?? '';
+        const dateArr = date.split(' ');
+        const pushData = {
+          id: data?.data?.result?.dataList?.[i]?.applNumber ?? i,
+          title: data?.data?.result?.dataList?.[i]?.title ?? '',
+          content: data?.data?.result?.dataList?.[i]?.contents ?? '',
+          source: data?.data?.result?.dataList?.[i]?.source ?? '',
+          date: (dateArr[0] ?? '').replaceAll('-','.'),
+          link: data?.data?.result?.dataList?.[i]?.link ?? '',
+        };
+        procData.push(pushData);
+      }
+  
+      setProjectData(procData);
+      setSearchButtonClick(false);
+    })();
+  }, [searchButtonClick, page, size, sort, se]);
 
   const downExcel = useCallback(async () => {
+    const se1 = se[1] ?? '';
+    const se2 = se[2] ?? '';
     const excelSize = 1000;
-    switch (paramSe2) {
-    case 'keyword':
-      (async () => {
-        const similarity = common.procSimilarity(selectKeyword);
-        let filterObj = {};
-        let searchParam = {};
-        const data = await policyAPI.policy('search',excelSize,1,keyword,similarity,sort,filterObj,searchParam);
-        console.log(data?.data?.result);
-        let procData = [];
-        for (let i in data?.data?.result?.dataList ?? []) {
-          // console.log(i, data?.data?.result?.dataList?.[i]);
-          const date = data?.data?.result?.dataList?.[i]?.publishedDate ?? '';
-          const dateArr = date.split(' ');
-          procData.push([
-            data?.data?.result?.dataList?.[i]?.title ?? '',
-            data?.data?.result?.dataList?.[i]?.source ?? '',
-            (dateArr[0] ?? '').replaceAll('-','.'),
-            data?.data?.result?.dataList?.[i]?.contents ?? '',
-          ]);
+    (async () => {
+      const similarity = common.procSimilarity(selectKeyword);
+      let filterObj = {};
+      let searchParam = {};
+      let data = [];
+      if (se1 == 'search') {
+        data = await policyAPI.policy('search',excelSize,1,keyword,similarity,sort,filterObj,searchParam);
+      } else if (se1 == 'discovery') {
+        if (se2 == 'keyword') {
+          data = await policyAPI.policy('discovery',excelSize,1,keyword,similarity,sort,filterObj,searchParam);
+        } else if (se2 == 'file') {
+          data = await policyAPI.policy('discovery',excelSize,1,keyword,similarity,sort,filterObj,searchParam);
+        } else if (se2 == 'project') {
+          data = await policyAPI.policy('discovery',excelSize,1,keyword,similarity,sort,filterObj,searchParam);
         }
-        common.excelExport('down', ['정부 정책 자료명', '출처', '작성일', '본문'], procData);
-      })();
-      break;
-        
-    default:
-      break;
-    }
-  }, [sort]);
+      }
+      console.log(data?.data?.result);
+      let procData = [];
+      for (let i in data?.data?.result?.dataList ?? []) {
+        // console.log(i, data?.data?.result?.dataList?.[i]);
+        const date = data?.data?.result?.dataList?.[i]?.publishedDate ?? '';
+        const dateArr = date.split(' ');
+        const pushData = [
+          data?.data?.result?.dataList?.[i]?.title ?? '',
+          data?.data?.result?.dataList?.[i]?.source ?? '',
+          (dateArr[0] ?? '').replaceAll('-','.'),
+          data?.data?.result?.dataList?.[i]?.contents ?? '',
+        ];
+        procData.push(pushData);
+      }
+      common.excelExport('down', ['정부 정책 자료명', '출처', '작성일', '본문'], procData);
+    })();
+  }, [sort, se]);
 
   useEffect(() => {
-    getKeywordList();
+    getList();
   }, [page, size, sort]);
 
   useEffect(() => {
     if (searchButtonClick) {
       setPage(1); 
-      getKeywordList();
+      getList();
     }
   }, [searchButtonClick]);
 

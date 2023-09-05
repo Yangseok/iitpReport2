@@ -15,16 +15,13 @@ import Button from 'Domain/Home/Common/Componet/Button';
 import Pagination from 'Domain/Home/Common/Componet/Pagination';
 import ListItem from 'Domain/Home/Common/Componet/ListItem';
 import common from 'Utill';
-import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { getSearchKeyword, getSelectKeyword } from 'Domain/Home/Common/Status/CommonSlice';
 import * as discoveryAPI from 'Domain/Home/Discovery/API/Call';
 import * as orgnAPI from 'Domain/Home/Discovery/API/OrgnCall';
 
 export default function DiscoveryResult() {
-
-  const params = useParams();
-  const paramSe2 = params?.se2;
+  const se = common.getSegment();
   const selectKeyword = useSelector(getSelectKeyword);
   const keyword = useSelector(getSearchKeyword);
   const [tabCount, setTabCount] = useState({});
@@ -42,141 +39,164 @@ export default function DiscoveryResult() {
   const [size, setSize] = useState(10);
   const [sort, setSort] = useState('score');
 
-  const getKeywordList = useCallback(async () => {
-    switch (paramSe2) {
-    case 'keyword':
-      (async () => {
-        const similarity = common.procSimilarity(selectKeyword);
-        let filterObj = {};
-        let searchParam = {};
-        const data = await orgnAPI.orgn('discovery',size,page,keyword,similarity,sort,filterObj,searchParam);
-        console.log(data?.data?.result);
-        setTotalCount(data?.data?.result?.totalCount ?? 0);
-        let procData = [];
-        for (let i in data?.data?.result?.dataList ?? []) {
-          // console.log(i, data?.data?.result?.dataList?.[i]);
-          procData.push({
-            id: data?.data?.result?.dataList?.[i]?.id ?? i,
-            name: data?.data?.result?.dataList?.[i]?.orgnName ?? '',
-            assign: data?.data?.result?.dataList?.[i]?.projectCount ?? 0,
-            patent: data?.data?.result?.dataList?.[i]?.patentCount ?? 0,
-            link: '#',
-            institue: data?.data?.result?.dataList?.[i]?.researchInstitute ?? '',
-            safety: [2,0,1][i%3],
-            sales: data?.data?.result?.dataList?.[i]?.topRankSales ?? '',
-            followup: data?.data?.result?.dataList?.[i]?.orgnVigilance ?? false,
-          });
+  const getList = useCallback(async () => {
+    const se1 = se[1] ?? '';
+    const se2 = se[2] ?? '';
+    (async () => {
+      const similarity = common.procSimilarity(selectKeyword);
+      let filterObj = {};
+      let searchParam = {};
+      let data = [];
+      if (se1 == 'search') {
+        data = await orgnAPI.orgn('search',size,page,keyword,similarity,sort,filterObj,searchParam);
+      } else if (se1 == 'discovery') {
+        if (se2 == 'keyword') {
+          data = await orgnAPI.orgn('discovery',size,page,keyword,similarity,sort,filterObj,searchParam);
+        } else if (se2 == 'file') {
+          data = await orgnAPI.orgn('discovery',size,page,keyword,similarity,sort,filterObj,searchParam);
+        } else if (se2 == 'project') {
+          data = await orgnAPI.orgn('discovery',size,page,keyword,similarity,sort,filterObj,searchParam);
         }
-    
-        setProjectData(procData);
-        setSearchButtonClick(false);
-        setOrgnActive({ id: data?.data?.result?.dataList?.[0]?.id ?? -1, name: data?.data?.result?.dataList?.[0]?.orgnName ?? '' });
-      })();
-      break;
-      
-    default:
-      break;
-    }
-  }, [searchButtonClick, page, size, sort]);
+      }
+      console.log(data?.data?.result);
+      setTotalCount(data?.data?.result?.totalCount ?? 0);
+      let procData = [];
+      for (let i in data?.data?.result?.dataList ?? []) {
+        // console.log(i, data?.data?.result?.dataList?.[i]);
+        const pushData = {
+          id: data?.data?.result?.dataList?.[i]?.id ?? i,
+          name: data?.data?.result?.dataList?.[i]?.orgnName ?? '',
+          assign: data?.data?.result?.dataList?.[i]?.projectCount ?? 0,
+          patent: data?.data?.result?.dataList?.[i]?.patentCount ?? 0,
+          link: '#',
+          institue: data?.data?.result?.dataList?.[i]?.researchInstitute ?? '',
+          safety: [2,0,1][i%3],
+          sales: data?.data?.result?.dataList?.[i]?.topRankSales ?? '',
+          followup: data?.data?.result?.dataList?.[i]?.orgnVigilance ?? false,
+        };
+        procData.push(pushData);
+      }
+  
+      setProjectData(procData);
+      setSearchButtonClick(false);
+      setOrgnActive({ id: data?.data?.result?.dataList?.[0]?.id ?? -1, name: data?.data?.result?.dataList?.[0]?.orgnName ?? '' });
+    })();
+  }, [searchButtonClick, page, size, sort, se]);
 
   const downExcel = useCallback(async () => {
+    const se1 = se[1] ?? '';
+    const se2 = se[2] ?? '';
     const excelSize = 1000;
-    switch (paramSe2) {
-    case 'keyword':
-      (async () => {
-        const similarity = common.procSimilarity(selectKeyword);
-        let filterObj = {};
-        let searchParam = {};
-        const data = await orgnAPI.orgn('discovery',excelSize,1,keyword,similarity,sort,filterObj,searchParam);
-        console.log(data?.data?.result);
-        let procData = [];
-        for (let i in data?.data?.result?.dataList ?? []) {
-          // console.log(i, data?.data?.result?.dataList?.[i]);
-          procData.push([
-            data?.data?.result?.dataList?.[i]?.orgnName ?? '',
-            data?.data?.result?.dataList?.[i]?.projectCount ?? 0,
-            data?.data?.result?.dataList?.[i]?.patentCount ?? 0,
-            (data?.data?.result?.dataList?.[i]?.orgnVigilance ?? false) ? 'O': 'X',
-            data?.data?.result?.dataList?.[i]?.topRankSales ?? '',
-          ]);
+    (async () => {
+      const similarity = common.procSimilarity(selectKeyword);
+      let filterObj = {};
+      let searchParam = {};
+      let data = [];
+      if (se1 == 'search') {
+        data = await orgnAPI.orgn('search',excelSize,1,keyword,similarity,sort,filterObj,searchParam);
+      } else if (se1 == 'discovery') {
+        if (se2 == 'keyword') {
+          data = await orgnAPI.orgn('discovery',excelSize,1,keyword,similarity,sort,filterObj,searchParam);
+        } else if (se2 == 'file') {
+          data = await orgnAPI.orgn('discovery',excelSize,1,keyword,similarity,sort,filterObj,searchParam);
+        } else if (se2 == 'project') {
+          data = await orgnAPI.orgn('discovery',excelSize,1,keyword,similarity,sort,filterObj,searchParam);
         }
-        common.excelExport('down', ['기관명', '과제갯수', '특허갯수', '사후관리대상기업', '매출상위(%)'], procData);
-      })();
-      break;
-        
-    default:
-      break;
-    }
-  }, [sort]);
+      }
+      console.log(data?.data?.result);
+      let procData = [];
+      for (let i in data?.data?.result?.dataList ?? []) {
+        // console.log(i, data?.data?.result?.dataList?.[i]);
+        const pushData = [
+          data?.data?.result?.dataList?.[i]?.orgnName ?? '',
+          data?.data?.result?.dataList?.[i]?.projectCount ?? 0,
+          data?.data?.result?.dataList?.[i]?.patentCount ?? 0,
+          (data?.data?.result?.dataList?.[i]?.orgnVigilance ?? false) ? 'O': 'X',
+          data?.data?.result?.dataList?.[i]?.topRankSales ?? '',
+        ];
+        procData.push(pushData);
+      }
+      common.excelExport('down', ['기관명', '과제갯수', '특허갯수', '사후관리대상기업', '매출상위(%)'], procData);
+    })();
+  }, [sort, se]);
 
-  const getOrgnDetail = useCallback(async () => {
+  const getDetail = useCallback(async () => {
     if (orgnActive.id === -1) return null;
-    switch (paramSe2) {
-    case 'keyword':
-      (async () => {
-        const data = await orgnAPI.orgnDetail(orgnActive.id);
-        // const data = await orgnAPI.orgnDetail('0008634982');
-        console.log(data?.data?.result);
-        let simialityOrgn = [];
-        for (let i in data?.data?.result?.simialityOrgnList ?? []) {
-          // console.log(i, data?.data?.result?.dataList?.[i]);
-          simialityOrgn.push({
-            id: i,
-            name: data?.data?.result?.simialityOrgnList?.[i]?.orgnName ?? '',
-            relation: common.colorSet(data?.data?.result?.simialityOrgnList?.[i]?.weight ?? 0)
-          });
+    const se1 = se[1] ?? '';
+    const se2 = se[2] ?? '';
+    (async () => {
+      let data = [];
+      if (se1 == 'search') {
+        data = await orgnAPI.orgnDetail(orgnActive.id);
+      } else if (se1 == 'discovery') {
+        if (se2 == 'keyword') {
+          data = await orgnAPI.orgnDetail(orgnActive.id);
+        } else if (se2 == 'file') {
+          data = await orgnAPI.orgnDetail(orgnActive.id);
+        } else if (se2 == 'project') {
+          data = await orgnAPI.orgnDetail(orgnActive.id);
         }
-        setSimialityOrgn(simialityOrgn);
+      }
+      // const data = await orgnAPI.orgnDetail('0008634982');
+      console.log(data?.data?.result);
+      let simialityOrgn = [];
+      for (let i in data?.data?.result?.simialityOrgnList ?? []) {
+        // console.log(i, data?.data?.result?.dataList?.[i]);
+        const simialityPushData = {
+          id: i,
+          name: data?.data?.result?.simialityOrgnList?.[i]?.orgnName ?? '',
+          relation: common.colorSet(data?.data?.result?.simialityOrgnList?.[i]?.weight ?? 0)
+        };
+        simialityOrgn.push(simialityPushData);
+      }
+      setSimialityOrgn(simialityOrgn);
 
-        let subProjectList = [];
-        for (let i in data?.data?.result?.orgnResultInfo?.projectOut ?? []) {
-          // console.log(i, data?.data?.result?.orgnResultInfo?.projectOut?.[i]);
-          const period = data?.data?.result?.orgnResultInfo?.projectOut?.[i]?.period ?? '';
-          const periodArr = period.split('~');
-          const division = data?.data?.result?.orgnResultInfo?.projectOut?.[i]?.technicalClassification ?? [];
-          const keywordt = data?.data?.result?.orgnResultInfo?.projectOut?.[i]?.keywords ?? [];
-          subProjectList.push({
-            id: data?.data?.result?.orgnResultInfo?.projectOut?.[i]?.projectNumber ?? i,
-            tag : ((periodArr?.[1]??'').replaceAll(' ','') === '9999-12-31') ? 1 : 2,
-            title: data?.data?.result?.orgnResultInfo?.projectOut?.[i]?.bigProjectName ?? '',
-            price: (data?.data?.result?.orgnResultInfo?.projectOut?.[i]?.fund ?? '') + '억',
-            period: period.replaceAll('-','.'), 
-            agency: data?.data?.result?.orgnResultInfo?.projectOut?.[i]?.researchAgencyName ?? '',
-            name: data?.data?.result?.orgnResultInfo?.projectOut?.[i]?.researchManagerName ?? '',
-            department: data?.data?.result?.orgnResultInfo?.projectOut?.[i]?.orderAgencyName ?? '',
-            performance: data?.data?.result?.orgnResultInfo?.projectOut?.[i]?.performance ?? '',
-            division: division.join(' / '),
-            keyword: keywordt.join(', '),
-          });
-        }
-        setSubProjectList(subProjectList);
+      let subProjectList = [];
+      for (let i in data?.data?.result?.orgnResultInfo?.projectOut ?? []) {
+        // console.log(i, data?.data?.result?.orgnResultInfo?.projectOut?.[i]);
+        const period = data?.data?.result?.orgnResultInfo?.projectOut?.[i]?.period ?? '';
+        const periodArr = period.split('~');
+        const division = data?.data?.result?.orgnResultInfo?.projectOut?.[i]?.technicalClassification ?? [];
+        const keywordt = data?.data?.result?.orgnResultInfo?.projectOut?.[i]?.keywords ?? [];
+        const subProjectListPushData = {
+          id: data?.data?.result?.orgnResultInfo?.projectOut?.[i]?.projectNumber ?? i,
+          tag : ((periodArr?.[1]??'').replaceAll(' ','') === '9999-12-31') ? 1 : 2,
+          title: data?.data?.result?.orgnResultInfo?.projectOut?.[i]?.bigProjectName ?? '',
+          price: (data?.data?.result?.orgnResultInfo?.projectOut?.[i]?.fund ?? '') + '억',
+          period: period.replaceAll('-','.'), 
+          agency: data?.data?.result?.orgnResultInfo?.projectOut?.[i]?.researchAgencyName ?? '',
+          name: data?.data?.result?.orgnResultInfo?.projectOut?.[i]?.researchManagerName ?? '',
+          department: data?.data?.result?.orgnResultInfo?.projectOut?.[i]?.orderAgencyName ?? '',
+          performance: data?.data?.result?.orgnResultInfo?.projectOut?.[i]?.performance ?? '',
+          division: division.join(' / '),
+          keyword: keywordt.join(', '),
+        };
+        subProjectList.push(subProjectListPushData);
+      }
+      setSubProjectList(subProjectList);
 
-        let subPatentList = [];
-        for (let i in data?.data?.result?.orgnResultInfo?.patent ?? []) {
-          const agency = data?.data?.result?.orgnResultInfo?.patent?.[i]?.applicantName ?? [];
-          const name = data?.data?.result?.orgnResultInfo?.patent?.[i]?.inventorName ?? [];
-          const date = data?.data?.result?.orgnResultInfo?.patent?.[i]?.applDate ?? '';
-          subPatentList.push({
-            id: data?.data?.result?.orgnResultInfo?.patent?.[i]?.applNumber ?? i,
-            title: data?.data?.result?.orgnResultInfo?.patent?.[i]?.applName ?? '',
-            project: data?.data?.result?.orgnResultInfo?.patent?.[i]?.applName ?? '',
-            division: data?.data?.result?.orgnResultInfo?.patent?.[i]?.registrationType ?? '',
-            num: data?.data?.result?.orgnResultInfo?.patent?.[i]?.applNumber ?? '',
-            date: date.replace(/^(\d{4})(\d{2})(\d{2})$/, '$1.$2.$3'),
-            agency: agency.join(', '),
-            name: name.join(', '),
-          });
-        }
-        setSubPatentList(subPatentList);
+      let subPatentList = [];
+      for (let i in data?.data?.result?.orgnResultInfo?.patent ?? []) {
+        const agency = data?.data?.result?.orgnResultInfo?.patent?.[i]?.applicantName ?? [];
+        const name = data?.data?.result?.orgnResultInfo?.patent?.[i]?.inventorName ?? [];
+        const date = data?.data?.result?.orgnResultInfo?.patent?.[i]?.applDate ?? '';
+        const subPatentListPushData = {
+          id: data?.data?.result?.orgnResultInfo?.patent?.[i]?.applNumber ?? i,
+          title: data?.data?.result?.orgnResultInfo?.patent?.[i]?.applName ?? '',
+          project: data?.data?.result?.orgnResultInfo?.patent?.[i]?.applName ?? '',
+          division: data?.data?.result?.orgnResultInfo?.patent?.[i]?.registrationType ?? '',
+          num: data?.data?.result?.orgnResultInfo?.patent?.[i]?.applNumber ?? '',
+          date: date.replace(/^(\d{4})(\d{2})(\d{2})$/, '$1.$2.$3'),
+          agency: agency.join(', '),
+          name: name.join(', '),
+        };
+        subPatentList.push(subPatentListPushData);
+      }
+      setSubPatentList(subPatentList);
 
-        setSubListMode('project');
-      })();
-      break;
-          
-    default:
-      break;
-    }
-  }, [orgnActive]);
+      setSubListMode('project');
+    })();
+  }, [orgnActive, se]);
 
   // 기관 선택 시
   const onOrgnSelect = (e, id, name) => {
@@ -186,13 +206,13 @@ export default function DiscoveryResult() {
   };
 
   useEffect(() => {
-    getKeywordList();
+    getList();
   }, [page, size, sort]);
 
   useEffect(() => {
     if (searchButtonClick) {
       setPage(1); 
-      getKeywordList();
+      getList();
     }
   }, [searchButtonClick]);
 
@@ -214,7 +234,7 @@ export default function DiscoveryResult() {
   }, [keyword]);
 
   useEffect(() => {
-    getOrgnDetail();
+    getDetail();
   }, [orgnActive]);
 
   // const tempData1 = [

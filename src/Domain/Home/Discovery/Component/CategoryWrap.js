@@ -3,8 +3,10 @@ import { useLocation } from 'react-router-dom';
 import TabButtons from 'Domain/Home/Common/Componet/TabButtons';
 import CategoryButton from './CategoryButton';
 import common from 'Utill';
+import { useNavigate } from 'react-router-dom';
 
 export default function CategoryWrap(props) {
+  const navigate = useNavigate();
   const { tabCount } = props;
   const locations = useLocation();
   const pathName = locations.pathname;
@@ -78,11 +80,11 @@ export default function CategoryWrap(props) {
         <ul>
           {(page === 'search')
             && <li className={`all${(tabActive1 === 0) ? ' on' : ''}`}>
-              <CategoryButton type={0} name={'전체'} num={common.setPriceInput(tabCount?.all ?? 0)} onClick={() => location.href = '/search/result/all' + lctSearch} />
+              <CategoryButton type={0} name={'전체'} num={common.setPriceInput(tabCount?.all ?? 0)} onClick={() => navigate('/search/result/all' + lctSearch)} />
             </li>}
           {tabButtons1?.map((e) => (
             <li key={e.id} className={(e.id === tabActive1) ? 'on' : ''}>
-              <CategoryButton type={e.id} name={e.name} num={common.setPriceInput(tabCount?.[e.id] ?? 0)} onClick={() => location.href = e.to} />
+              <CategoryButton type={e.id} name={e.name} num={common.setPriceInput(tabCount?.[e.id] ?? 0)} onClick={() => navigate(e.to)} />
             </li>
           ))}
         </ul>

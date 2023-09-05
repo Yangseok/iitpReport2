@@ -10,6 +10,7 @@ export const projectOut = async (
   sort='date',
   filterParam={},
   searchParam={},
+  etcParam={},
 ) => {
   let params = {
     type: type,
@@ -31,6 +32,13 @@ export const projectOut = async (
     for (const key in searchParam) {
       // console.log(key, searchParam[key]);
       params[key] = searchParam[key];
+    }
+  }
+  if (etcParam != {}) {
+    // console.log('etcParam', etcParam);
+    for (const key in etcParam) {
+      // console.log(key, etcParam[key]);
+      params[key] = etcParam[key];
     }
   }
   // console.log('params', JSON.stringify(params));
@@ -46,6 +54,7 @@ export const projectIn = async (
   sort='date',
   filterParam={},
   searchParam={},
+  etcParam={},
 ) => {
   let params = {
     type: type,
@@ -67,6 +76,13 @@ export const projectIn = async (
     for (const key in searchParam) {
       // console.log(key, searchParam[key]);
       params[key] = searchParam[key];
+    }
+  }
+  if (etcParam != {}) {
+    // console.log('etcParam', etcParam);
+    for (const key in etcParam) {
+      // console.log(key, etcParam[key]);
+      params[key] = etcParam[key];
     }
   }
   // console.log('params', JSON.stringify(params));

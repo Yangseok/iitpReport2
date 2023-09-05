@@ -6,16 +6,13 @@ import Button from 'Domain/Home/Common/Componet/Button';
 import Pagination from 'Domain/Home/Common/Componet/Pagination';
 import ListItem from 'Domain/Home/Common/Componet/ListItem';
 import common from 'Utill';
-import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { getSearchKeyword, getSelectKeyword } from 'Domain/Home/Common/Status/CommonSlice';
 import * as discoveryAPI from 'Domain/Home/Discovery/API/Call';
 import * as paperAPI from 'Domain/Home/Discovery/API/PaperCall';
 
 export default function Result() {
-
-  const params = useParams();
-  const paramSe2 = params?.se2;
+  const se = common.getSegment();
   const selectKeyword = useSelector(getSelectKeyword);
   const keyword = useSelector(getSearchKeyword);
   const [tabCount, setTabCount] = useState({});
@@ -27,84 +24,99 @@ export default function Result() {
   const [size, setSize] = useState(10);
   const [sort, setSort] = useState('score');
 
-  const getKeywordList = useCallback(async () => {
-    switch (paramSe2) {
-    case 'keyword':
-      (async () => {
-        const similarity = common.procSimilarity(selectKeyword);
-        let filterObj = {};
-        let searchParam = {};
-        const data = await paperAPI.paper('search',size,page,keyword,similarity,sort,filterObj,searchParam);
-        console.log(data?.data?.result);
-        setTotalCount(data?.data?.result?.totalCount ?? 0);
-        let procData = [];
-        for (let i in data?.data?.result?.dataList ?? []) {
-          // console.log(i, data?.data?.result?.dataList?.[i]);
-          const agency = data?.data?.result?.dataList?.[i]?.affiliation ?? [];
-          const name = data?.data?.result?.dataList?.[i]?.author ?? [];
-          procData.push({
-            id: data?.data?.result?.dataList?.[i]?.applNumber ?? i,
-            title: data?.data?.result?.dataList?.[i]?.title ?? '',
-            year: data?.data?.result?.dataList?.[i]?.year ?? '',
-            division: data?.data?.result?.dataList?.[i]?.type ?? '',
-            agency: agency.join(', '),
-            name: name.join(', '),
-            journal: data?.data?.result?.dataList?.[i]?.journalTitle ?? '',
-            link: data?.data?.result?.dataList?.[i]?.link ?? '',
-          });
+  const getList = useCallback(async () => {
+    const se1 = se[1] ?? '';
+    const se2 = se[2] ?? '';
+    (async () => {
+      const similarity = common.procSimilarity(selectKeyword);
+      let filterObj = {};
+      let searchParam = {};
+      let data = [];
+      if (se1 == 'search') {
+        data = await paperAPI.paper('search',size,page,keyword,similarity,sort,filterObj,searchParam);
+      } else if (se1 == 'discovery') {
+        if (se2 == 'keyword') {
+          data = await paperAPI.paper('discovery',size,page,keyword,similarity,sort,filterObj,searchParam);
+        } else if (se2 == 'file') {
+          data = await paperAPI.paper('discovery',size,page,keyword,similarity,sort,filterObj,searchParam);
+        } else if (se2 == 'project') {
+          data = await paperAPI.paper('discovery',size,page,keyword,similarity,sort,filterObj,searchParam);
         }
-    
-        setProjectData(procData);
-        setSearchButtonClick(false);
-      })();
-      break;
+      }
       
-    default:
-      break;
-    }
-  }, [searchButtonClick, page, size, sort]);
+      console.log(data?.data?.result);
+      setTotalCount(data?.data?.result?.totalCount ?? 0);
+      let procData = [];
+      for (let i in data?.data?.result?.dataList ?? []) {
+        // console.log(i, data?.data?.result?.dataList?.[i]);
+        const agency = data?.data?.result?.dataList?.[i]?.affiliation ?? [];
+        const name = data?.data?.result?.dataList?.[i]?.author ?? [];
+        const pushData = {
+          id: data?.data?.result?.dataList?.[i]?.applNumber ?? i,
+          title: data?.data?.result?.dataList?.[i]?.title ?? '',
+          year: data?.data?.result?.dataList?.[i]?.year ?? '',
+          division: data?.data?.result?.dataList?.[i]?.type ?? '',
+          agency: agency.join(', '),
+          name: name.join(', '),
+          journal: data?.data?.result?.dataList?.[i]?.journalTitle ?? '',
+          link: data?.data?.result?.dataList?.[i]?.link ?? '',
+        };
+        procData.push(pushData);
+      }
+  
+      setProjectData(procData);
+      setSearchButtonClick(false);
+    })();
+  }, [searchButtonClick, page, size, sort, se]);
 
   const downExcel = useCallback(async () => {
+    const se1 = se[1] ?? '';
+    const se2 = se[2] ?? '';
     const excelSize = 1000;
-    switch (paramSe2) {
-    case 'keyword':
-      (async () => {
-        const similarity = common.procSimilarity(selectKeyword);
-        let filterObj = {};
-        let searchParam = {};
-        const data = await paperAPI.paper('search',excelSize,1,keyword,similarity,sort,filterObj,searchParam);
-        console.log(data?.data?.result);
-        let procData = [];
-        for (let i in data?.data?.result?.dataList ?? []) {
-          // console.log(i, data?.data?.result?.dataList?.[i]);
-          const agency = data?.data?.result?.dataList?.[i]?.affiliation ?? [];
-          const name = data?.data?.result?.dataList?.[i]?.author ?? [];
-          procData.push([
-            data?.data?.result?.dataList?.[i]?.title ?? '',
-            data?.data?.result?.dataList?.[i]?.year ?? '',
-            data?.data?.result?.dataList?.[i]?.type ?? '',
-            agency.join(', '),
-            name.join(', '),
-            data?.data?.result?.dataList?.[i]?.journalTitle ?? '',
-          ]);
+    (async () => {
+      const similarity = common.procSimilarity(selectKeyword);
+      let filterObj = {};
+      let searchParam = {};
+      let data = [];
+      if (se1 == 'search') {
+        data = await paperAPI.paper('search',excelSize,1,keyword,similarity,sort,filterObj,searchParam);
+      } else if (se1 == 'discovery') {
+        if (se2 == 'keyword') {
+          data = await paperAPI.paper('discovery',excelSize,1,keyword,similarity,sort,filterObj,searchParam);
+        } else if (se2 == 'file') {
+          data = await paperAPI.paper('discovery',excelSize,1,keyword,similarity,sort,filterObj,searchParam);
+        } else if (se2 == 'project') {
+          data = await paperAPI.paper('discovery',excelSize,1,keyword,similarity,sort,filterObj,searchParam);
         }
-        common.excelExport('down', ['논문명', '발행년도', '논문 구분', '소속기관', '주 저자', '학술지/학술대회명'], procData);
-      })();
-      break;
-        
-    default:
-      break;
-    }
-  }, [sort]);
+      }
+      console.log(data?.data?.result);
+      let procData = [];
+      for (let i in data?.data?.result?.dataList ?? []) {
+        // console.log(i, data?.data?.result?.dataList?.[i]);
+        const agency = data?.data?.result?.dataList?.[i]?.affiliation ?? [];
+        const name = data?.data?.result?.dataList?.[i]?.author ?? [];
+        const pushData = [
+          data?.data?.result?.dataList?.[i]?.title ?? '',
+          data?.data?.result?.dataList?.[i]?.year ?? '',
+          data?.data?.result?.dataList?.[i]?.type ?? '',
+          agency.join(', '),
+          name.join(', '),
+          data?.data?.result?.dataList?.[i]?.journalTitle ?? '',
+        ];
+        procData.push(pushData);
+      }
+      common.excelExport('down', ['논문명', '발행년도', '논문 구분', '소속기관', '주 저자', '학술지/학술대회명'], procData);
+    })();
+  }, [sort, se]);
 
   useEffect(() => {
-    getKeywordList();
+    getList();
   }, [page, size, sort]);
 
   useEffect(() => {
     if (searchButtonClick) {
       setPage(1); 
-      getKeywordList();
+      getList();
     }
   }, [searchButtonClick]);
 

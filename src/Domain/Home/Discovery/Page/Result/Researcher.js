@@ -12,16 +12,13 @@ import Button from 'Domain/Home/Common/Componet/Button';
 import Pagination from 'Domain/Home/Common/Componet/Pagination';
 import ListItem from 'Domain/Home/Common/Componet/ListItem';
 import common from 'Utill';
-import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { getSearchKeyword, getSelectKeyword } from 'Domain/Home/Common/Status/CommonSlice';
 import * as discoveryAPI from 'Domain/Home/Discovery/API/Call';
 import * as researcherAPI from 'Domain/Home/Discovery/API/ResearcherCall';
 
 export default function DiscoveryResult() {
-
-  const params = useParams();
-  const paramSe2 = params?.se2;
+  const se = common.getSegment();
   const selectKeyword = useSelector(getSelectKeyword);
   const keyword = useSelector(getSearchKeyword);
   const [tabCount, setTabCount] = useState({});
@@ -36,115 +33,137 @@ export default function DiscoveryResult() {
   const [size, setSize] = useState(10);
   const [sort, setSort] = useState('score');
 
-  const getKeywordList = useCallback(async () => {
-    switch (paramSe2) {
-    case 'keyword':
-      (async () => {
-        const similarity = common.procSimilarity(selectKeyword);
-        let filterObj = {};
-        let searchParam = {};
-        const data = await researcherAPI.researcher('search',size,page,keyword,similarity,sort,filterObj,searchParam);
-        console.log(data?.data?.result);
-        setTotalCount(data?.data?.result?.totalCount ?? 0);
-        let procData = [];
-        for (let i in data?.data?.result?.dataList ?? []) {
-          // console.log(i, data?.data?.result?.dataList?.[i]);
-          procData.push({
-            id: data?.data?.result?.dataList?.[i]?.id ?? i,
-            name: common.maskingName(data?.data?.result?.dataList?.[i]?.indvName ?? ''),
-            agency: data?.data?.result?.dataList?.[i]?.orgn ?? '',
-            assign: data?.data?.result?.dataList?.[i]?.projectCount ?? 0,
-            link: data?.data?.result?.dataList?.[i]?.link ?? '#',
-          });
+  const getList = useCallback(async () => {
+    const se1 = se[1] ?? '';
+    const se2 = se[2] ?? '';
+    (async () => {
+      const similarity = common.procSimilarity(selectKeyword);
+      let filterObj = {};
+      let searchParam = {};
+      let data = [];
+      if (se1 == 'search') {
+        data = await researcherAPI.researcher('search',size,page,keyword,similarity,sort,filterObj,searchParam);
+      } else if (se1 == 'discovery') {
+        if (se2 == 'keyword') {
+          data = await researcherAPI.researcher('discovery',size,page,keyword,similarity,sort,filterObj,searchParam);
+        } else if (se2 == 'file') {
+          data = await researcherAPI.researcher('discovery',size,page,keyword,similarity,sort,filterObj,searchParam);
+        } else if (se2 == 'project') {
+          data = await researcherAPI.researcher('discovery',size,page,keyword,similarity,sort,filterObj,searchParam);
         }
-    
-        setProjectData(procData);
-        setSearchButtonClick(false);
-        setResearcherActive({ id: data?.data?.result?.dataList?.[0]?.id ?? -1, name: data?.data?.result?.dataList?.[0]?.indvName ?? '' });
-      })();
-      break;
-      
-    default:
-      break;
-    }
-  }, [searchButtonClick, page, size, sort]);
+      }
+      console.log(data?.data?.result);
+      setTotalCount(data?.data?.result?.totalCount ?? 0);
+      let procData = [];
+      for (let i in data?.data?.result?.dataList ?? []) {
+        // console.log(i, data?.data?.result?.dataList?.[i]);
+        const pushData = {
+          id: data?.data?.result?.dataList?.[i]?.id ?? i,
+          name: common.maskingName(data?.data?.result?.dataList?.[i]?.indvName ?? ''),
+          agency: data?.data?.result?.dataList?.[i]?.orgn ?? '',
+          assign: data?.data?.result?.dataList?.[i]?.projectCount ?? 0,
+          link: data?.data?.result?.dataList?.[i]?.link ?? '#',
+        };
+        procData.push(pushData);
+      }
+  
+      setProjectData(procData);
+      setSearchButtonClick(false);
+      setResearcherActive({ id: data?.data?.result?.dataList?.[0]?.id ?? -1, name: data?.data?.result?.dataList?.[0]?.indvName ?? '' });
+    })();
+  }, [searchButtonClick, page, size, sort, se]);
 
   const downExcel = useCallback(async () => {
+    const se1 = se[1] ?? '';
+    const se2 = se[2] ?? '';
     const excelSize = 1000;
-    switch (paramSe2) {
-    case 'keyword':
-      (async () => {
-        const similarity = common.procSimilarity(selectKeyword);
-        let filterObj = {};
-        let searchParam = {};
-        const data = await researcherAPI.researcher('search',excelSize,1,keyword,similarity,sort,filterObj,searchParam);
-        console.log(data?.data?.result);
-        let procData = [];
-        for (let i in data?.data?.result?.dataList ?? []) {
-          // console.log(i, data?.data?.result?.dataList?.[i]);
-          procData.push([
-            data?.data?.result?.dataList?.[i]?.title ?? '',
-            data?.data?.result?.dataList?.[i]?.source ?? '',
-            data?.data?.result?.dataList?.[i]?.contents ?? '',
-            (data?.data?.result?.dataList?.[i]?.publishedDate ?? '').replaceAll('-','.'),
-          ]);
+    (async () => {
+      const similarity = common.procSimilarity(selectKeyword);
+      let filterObj = {};
+      let searchParam = {};
+      let data = [];
+      if (se1 == 'search') {
+        data = await researcherAPI.researcher('search',excelSize,1,keyword,similarity,sort,filterObj,searchParam);
+      } else if (se1 == 'discovery') {
+        if (se2 == 'keyword') {
+          data = await researcherAPI.researcher('discovery',excelSize,1,keyword,similarity,sort,filterObj,searchParam);
+        } else if (se2 == 'file') {
+          data = await researcherAPI.researcher('discovery',excelSize,1,keyword,similarity,sort,filterObj,searchParam);
+        } else if (se2 == 'project') {
+          data = await researcherAPI.researcher('discovery',excelSize,1,keyword,similarity,sort,filterObj,searchParam);
         }
-        common.excelExport('down', ['ICT 자료명', '출처', '본문', '발행일'], procData);
-      })();
-      break;
-        
-    default:
-      break;
-    }
-  }, [sort]);
+      }
+      console.log(data?.data?.result);
+      let procData = [];
+      for (let i in data?.data?.result?.dataList ?? []) {
+        // console.log(i, data?.data?.result?.dataList?.[i]);
+        const pushData = [
+          data?.data?.result?.dataList?.[i]?.title ?? '',
+          data?.data?.result?.dataList?.[i]?.source ?? '',
+          data?.data?.result?.dataList?.[i]?.contents ?? '',
+          (data?.data?.result?.dataList?.[i]?.publishedDate ?? '').replaceAll('-','.'),
+        ];
+        procData.push(pushData);
+      }
+      common.excelExport('down', ['ICT 자료명', '출처', '본문', '발행일'], procData);
+    })();
+  }, [sort, se]);
 
   const getDetail = useCallback(async () => {
     if (researcherActive.id === -1) return null;
-    switch (paramSe2) {
-    case 'keyword':
-      (async () => {
-        const data = await researcherAPI.researcherDetail(researcherActive.id);
-        // const data = await orgnAPI.orgnDetail('0008634982');
-        console.log(data?.data?.result);
-        let simiality = [];
-        for (let i in data?.data?.result?.simialityIndvList ?? []) {
-          // console.log(i, data?.data?.result?.dataList?.[i]);
-          simiality.push({
-            id: i,
-            name: data?.data?.result?.simialityIndvList?.[i]?.orgnName ?? '',
-            relation: common.colorSet(data?.data?.result?.simialityIndvList?.[i]?.weight ?? 0)
-          });
+    const se1 = se[1] ?? '';
+    const se2 = se[2] ?? '';
+    (async () => {
+      let data = [];
+      if (se1 == 'search') {
+        data = await researcherAPI.researcherDetail(researcherActive.id);
+      } else if (se1 == 'discovery') {
+        if (se2 == 'keyword') {
+          data = await researcherAPI.researcherDetail(researcherActive.id);
+        } else if (se2 == 'file') {
+          data = await researcherAPI.researcherDetail(researcherActive.id);
+        } else if (se2 == 'project') {
+          data = await researcherAPI.researcherDetail(researcherActive.id);
         }
-        setSimialityResearcher(simiality);
+      }
+      // const data = await orgnAPI.orgnDetail('0008634982');
+      console.log(data?.data?.result);
+      let simiality = [];
+      for (let i in data?.data?.result?.simialityIndvList ?? []) {
+        // console.log(i, data?.data?.result?.dataList?.[i]);
+        const simialityPushData = {
+          id: i,
+          name: data?.data?.result?.simialityIndvList?.[i]?.orgnName ?? '',
+          relation: common.colorSet(data?.data?.result?.simialityIndvList?.[i]?.weight ?? 0)
+        };
+        simiality.push(simialityPushData);
+      }
+      setSimialityResearcher(simiality);
 
-        let subList = [];
-        for (let i in data?.data?.result?.indvResultInfo?.projectIn ?? []) {
-          // console.log(i, data?.data?.result?.indvResultInfo?.projectIn?.[i]);
-          const period = data?.data?.result?.indvResultInfo?.projectIn?.[i]?.period ?? '';
-          const division = [];
-          const keywordt = data?.data?.result?.indvResultInfo?.projectIn?.[i]?.keywords ?? [];
-          subList.push({
-            id: data?.data?.result?.indvResultInfo?.projectIn?.[i]?.projectNumber ?? i,
-            progress: data?.data?.result?.indvResultInfo?.projectIn?.[i]?.progress ?? false,
-            title: data?.data?.result?.indvResultInfo?.projectIn?.[i]?.bigProjectName ?? '',
-            price: (data?.data?.result?.indvResultInfo?.projectIn?.[i]?.fund ?? '') + '억',
-            period: period.replaceAll('-','.'), 
-            agency: data?.data?.result?.indvResultInfo?.projectIn?.[i]?.researchAgencyName ?? '',
-            name: data?.data?.result?.indvResultInfo?.projectIn?.[i]?.researchManagerName ?? '',
-            department: data?.data?.result?.indvResultInfo?.projectIn?.[i]?.orderAgencyName ?? '',
-            performance: data?.data?.result?.indvResultInfo?.projectIn?.[i]?.performance ?? '',
-            division: division.join(' / '),
-            keyword: keywordt.join(', '),
-          });
-        }
-        setSubList(subList);
-      })();
-      break;
-          
-    default:
-      break;
-    }
-  }, [researcherActive]);
+      let subList = [];
+      for (let i in data?.data?.result?.indvResultInfo?.projectIn ?? []) {
+        // console.log(i, data?.data?.result?.indvResultInfo?.projectIn?.[i]);
+        const period = data?.data?.result?.indvResultInfo?.projectIn?.[i]?.period ?? '';
+        const division = [];
+        const keywordt = data?.data?.result?.indvResultInfo?.projectIn?.[i]?.keywords ?? [];
+        const subListPushData = {
+          id: data?.data?.result?.indvResultInfo?.projectIn?.[i]?.projectNumber ?? i,
+          progress: data?.data?.result?.indvResultInfo?.projectIn?.[i]?.progress ?? false,
+          title: data?.data?.result?.indvResultInfo?.projectIn?.[i]?.bigProjectName ?? '',
+          price: (data?.data?.result?.indvResultInfo?.projectIn?.[i]?.fund ?? '') + '억',
+          period: period.replaceAll('-','.'), 
+          agency: data?.data?.result?.indvResultInfo?.projectIn?.[i]?.researchAgencyName ?? '',
+          name: data?.data?.result?.indvResultInfo?.projectIn?.[i]?.researchManagerName ?? '',
+          department: data?.data?.result?.indvResultInfo?.projectIn?.[i]?.orderAgencyName ?? '',
+          performance: data?.data?.result?.indvResultInfo?.projectIn?.[i]?.performance ?? '',
+          division: division.join(' / '),
+          keyword: keywordt.join(', '),
+        };
+        subList.push(subListPushData);
+      }
+      setSubList(subList);
+    })();
+  }, [researcherActive, se]);
 
   // 연구자 선택 시
   const onResearcherSelect = (e, id, name) => {
@@ -154,13 +173,13 @@ export default function DiscoveryResult() {
   };
 
   useEffect(() => {
-    getKeywordList();
+    getList();
   }, [page, size, sort]);
 
   useEffect(() => {
     if (searchButtonClick) {
       setPage(1); 
-      getKeywordList();
+      getList();
     }
   }, [searchButtonClick]);
 

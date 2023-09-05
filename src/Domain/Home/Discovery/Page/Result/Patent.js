@@ -6,16 +6,13 @@ import Button from 'Domain/Home/Common/Componet/Button';
 import Pagination from 'Domain/Home/Common/Componet/Pagination';
 import ListItem from 'Domain/Home/Common/Componet/ListItem';
 import common from 'Utill';
-import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { getSearchKeyword, getSelectKeyword } from 'Domain/Home/Common/Status/CommonSlice';
 import * as discoveryAPI from 'Domain/Home/Discovery/API/Call';
 import * as patentAPI from 'Domain/Home/Discovery/API/PatentCall';
 
 export default function Result() {
-
-  const params = useParams();
-  const paramSe2 = params?.se2;
+  const se = common.getSegment();
   const selectKeyword = useSelector(getSelectKeyword);
   const keyword = useSelector(getSearchKeyword);
   const [tabCount, setTabCount] = useState({});
@@ -27,87 +24,103 @@ export default function Result() {
   const [size, setSize] = useState(10);
   const [sort, setSort] = useState('score');
 
-  const getKeywordList = useCallback(async () => {
-    switch (paramSe2) {
-    case 'keyword':
-      (async () => {
-        const similarity = common.procSimilarity(selectKeyword);
-        let filterObj = {};
-        let searchParam = {};
-        const data = await patentAPI.patent('search',size,page,keyword,similarity,sort,filterObj,searchParam);
-        console.log(data?.data?.result);
-        setTotalCount(data?.data?.result?.totalCount ?? 0);
-        let procData = [];
-        for (let i in data?.data?.result?.dataList ?? []) {
-          // console.log(i, data?.data?.result?.dataList?.[i]);
-          const agency = data?.data?.result?.dataList?.[i]?.applicantName ?? [];
-          const name = data?.data?.result?.dataList?.[i]?.inventorName ?? [];
-          const date = data?.data?.result?.dataList?.[i]?.applDate ?? '';
-          procData.push({
-            id: data?.data?.result?.dataList?.[i]?.applNumber ?? i,
-            title: data?.data?.result?.dataList?.[i]?.title ?? '',
-            project: data?.data?.result?.dataList?.[i]?.projectName ?? '',
-            division: data?.data?.result?.dataList?.[i]?.type ?? '',
-            num: data?.data?.result?.dataList?.[i]?.applNumber ?? '',
-            date: date.replace(/^(\d{4})(\d{2})(\d{2})$/, '$1.$2.$3'),
-            agency: agency.join(', '),
-            name: name.join(', '),
-          });
+  const getList = useCallback(async () => {
+    const se1 = se[1] ?? '';
+    const se2 = se[2] ?? '';
+    (async () => {
+      const similarity = common.procSimilarity(selectKeyword);
+      let filterObj = {};
+      let searchParam = {};
+
+      let data = [];
+      if (se1 == 'search') {
+        data = await patentAPI.patent('search',size,page,keyword,similarity,sort,filterObj,searchParam);
+      } else if (se1 == 'discovery') {
+        if (se2 == 'keyword') {
+          data = await patentAPI.patent('discovery',size,page,keyword,similarity,sort,filterObj,searchParam);
+        } else if (se2 == 'file') {
+          data = await patentAPI.patent('discovery',size,page,keyword,similarity,sort,filterObj,searchParam);
+        } else if (se2 == 'project') {
+          data = await patentAPI.patent('discovery',size,page,keyword,similarity,sort,filterObj,searchParam);
         }
-    
-        setProjectData(procData);
-        setSearchButtonClick(false);
-      })();
-      break;
-      
-    default:
-      break;
-    }
-  }, [searchButtonClick, page, size, sort]);
+      }
+
+      console.log(data?.data?.result);
+      setTotalCount(data?.data?.result?.totalCount ?? 0);
+      let procData = [];
+      for (let i in data?.data?.result?.dataList ?? []) {
+        // console.log(i, data?.data?.result?.dataList?.[i]);
+        const agency = data?.data?.result?.dataList?.[i]?.applicantName ?? [];
+        const name = data?.data?.result?.dataList?.[i]?.inventorName ?? [];
+        const date = data?.data?.result?.dataList?.[i]?.applDate ?? '';
+        const pushData = {
+          id: data?.data?.result?.dataList?.[i]?.applNumber ?? i,
+          title: data?.data?.result?.dataList?.[i]?.title ?? '',
+          project: data?.data?.result?.dataList?.[i]?.projectName ?? '',
+          division: data?.data?.result?.dataList?.[i]?.type ?? '',
+          num: data?.data?.result?.dataList?.[i]?.applNumber ?? '',
+          date: date.replace(/^(\d{4})(\d{2})(\d{2})$/, '$1.$2.$3'),
+          agency: agency.join(', '),
+          name: name.join(', '),
+        };
+        procData.push(pushData);
+      }
+  
+      setProjectData(procData);
+      setSearchButtonClick(false);
+    })();
+  }, [searchButtonClick, page, size, sort, se]);
 
   const downExcel = useCallback(async () => {
+    const se1 = se[1] ?? '';
+    const se2 = se[2] ?? '';
     const excelSize = 1000;
-    switch (paramSe2) {
-    case 'keyword':
-      (async () => {
-        const similarity = common.procSimilarity(selectKeyword);
-        let filterObj = {};
-        let searchParam = {};
-        const data = await patentAPI.patent('search',excelSize,1,keyword,similarity,sort,filterObj,searchParam);
-        console.log(data?.data?.result);
-        let procData = [];
-        for (let i in data?.data?.result?.dataList ?? []) {
-          // console.log(i, data?.data?.result?.dataList?.[i]);
-          const agency = data?.data?.result?.dataList?.[i]?.applicantName ?? [];
-          const name = data?.data?.result?.dataList?.[i]?.inventorName ?? [];
-          const date = data?.data?.result?.dataList?.[i]?.applDate ?? '';
-          procData.push([
-            data?.data?.result?.dataList?.[i]?.title ?? '',
-            data?.data?.result?.dataList?.[i]?.projectName ?? '',
-            data?.data?.result?.dataList?.[i]?.type ?? '',
-            data?.data?.result?.dataList?.[i]?.applNumber ?? '',
-            date.replace(/^(\d{4})(\d{2})(\d{2})$/, '$1.$2.$3'),
-            agency.join(', '),
-            name.join(', '),
-          ]);
+    (async () => {
+      const similarity = common.procSimilarity(selectKeyword);
+      let filterObj = {};
+      let searchParam = {};
+      let data = [];
+      if (se1 == 'search') {
+        data = await patentAPI.patent('search',excelSize,1,keyword,similarity,sort,filterObj,searchParam);
+      } else if (se1 == 'discovery') {
+        if (se2 == 'keyword') {
+          data = await patentAPI.patent('discovery',excelSize,1,keyword,similarity,sort,filterObj,searchParam);
+        } else if (se2 == 'file') {
+          data = await patentAPI.patent('discovery',excelSize,1,keyword,similarity,sort,filterObj,searchParam);
+        } else if (se2 == 'project') {
+          data = await patentAPI.patent('discovery',excelSize,1,keyword,similarity,sort,filterObj,searchParam);
         }
-        common.excelExport('down', ['과제명', '유발 과제', '출원등록구분', '출원(등록)번호', '출원(등록)일', '출원(등록)인', '발명자'], procData);
-      })();
-      break;
-        
-    default:
-      break;
-    }
-  }, [sort]);
+      }
+      console.log(data?.data?.result);
+      let procData = [];
+      for (let i in data?.data?.result?.dataList ?? []) {
+        // console.log(i, data?.data?.result?.dataList?.[i]);
+        const agency = data?.data?.result?.dataList?.[i]?.applicantName ?? [];
+        const name = data?.data?.result?.dataList?.[i]?.inventorName ?? [];
+        const date = data?.data?.result?.dataList?.[i]?.applDate ?? '';
+        const pushData = [
+          data?.data?.result?.dataList?.[i]?.title ?? '',
+          data?.data?.result?.dataList?.[i]?.projectName ?? '',
+          data?.data?.result?.dataList?.[i]?.type ?? '',
+          data?.data?.result?.dataList?.[i]?.applNumber ?? '',
+          date.replace(/^(\d{4})(\d{2})(\d{2})$/, '$1.$2.$3'),
+          agency.join(', '),
+          name.join(', '),
+        ];
+        procData.push(pushData);
+      }
+      common.excelExport('down', ['과제명', '유발 과제', '출원등록구분', '출원(등록)번호', '출원(등록)일', '출원(등록)인', '발명자'], procData);
+    })();
+  }, [sort, se]);
 
   useEffect(() => {
-    getKeywordList();
+    getList();
   }, [page, size, sort]);
 
   useEffect(() => {
     if (searchButtonClick) {
       setPage(1); 
-      getKeywordList();
+      getList();
     }
   }, [searchButtonClick]);
 

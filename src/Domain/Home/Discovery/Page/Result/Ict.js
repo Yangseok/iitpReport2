@@ -6,16 +6,13 @@ import Button from 'Domain/Home/Common/Componet/Button';
 import Pagination from 'Domain/Home/Common/Componet/Pagination';
 import ListItem from 'Domain/Home/Common/Componet/ListItem';
 import common from 'Utill';
-import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { getSearchKeyword, getSelectKeyword } from 'Domain/Home/Common/Status/CommonSlice';
 import * as discoveryAPI from 'Domain/Home/Discovery/API/Call';
 import * as ictAPI from 'Domain/Home/Discovery/API/IctCall';
 
 export default function Result() {
-
-  const params = useParams();
-  const paramSe2 = params?.se2;
+  const se = common.getSegment();
   const selectKeyword = useSelector(getSelectKeyword);
   const keyword = useSelector(getSearchKeyword);
   const [tabCount, setTabCount] = useState({});
@@ -27,77 +24,91 @@ export default function Result() {
   const [size, setSize] = useState(10);
   const [sort, setSort] = useState('score');
 
-  const getKeywordList = useCallback(async () => {
-    switch (paramSe2) {
-    case 'keyword':
-      (async () => {
-        const similarity = common.procSimilarity(selectKeyword);
-        let filterObj = {};
-        let searchParam = {};
-        const data = await ictAPI.ict('search',size,page,keyword,similarity,sort,filterObj,searchParam);
-        console.log(data?.data?.result);
-        setTotalCount(data?.data?.result?.totalCount ?? 0);
-        let procData = [];
-        for (let i in data?.data?.result?.dataList ?? []) {
-          // console.log(i, data?.data?.result?.dataList?.[i]);
-          procData.push({
-            id: data?.data?.result?.dataList?.[i]?.applNumber ?? i,
-            title: data?.data?.result?.dataList?.[i]?.title ?? '',
-            content: data?.data?.result?.dataList?.[i]?.contents ?? '',
-            date: (data?.data?.result?.dataList?.[i]?.publishedDate ?? '').replaceAll('-','.'),
-            agency: data?.data?.result?.dataList?.[i]?.source ?? '',
-            link: data?.data?.result?.dataList?.[i]?.link ?? '',
-            view: data?.data?.result?.dataList?.[i]?.view ?? '',
-          });
+  const getList = useCallback(async () => {
+    const se1 = se[1] ?? '';
+    const se2 = se[2] ?? '';
+    (async () => {
+      const similarity = common.procSimilarity(selectKeyword);
+      let filterObj = {};
+      let searchParam = {};
+      let data = [];
+      if (se1 == 'search') {
+        data = await ictAPI.ict('search',size,page,keyword,similarity,sort,filterObj,searchParam);
+      } else if (se1 == 'discovery') {
+        if (se2 == 'keyword') {
+          data = await ictAPI.ict('discovery',size,page,keyword,similarity,sort,filterObj,searchParam);
+        } else if (se2 == 'file') {
+          data = await ictAPI.ict('discovery',size,page,keyword,similarity,sort,filterObj,searchParam);
+        } else if (se2 == 'project') {
+          data = await ictAPI.ict('discovery',size,page,keyword,similarity,sort,filterObj,searchParam);
         }
-    
-        setProjectData(procData);
-        setSearchButtonClick(false);
-      })();
-      break;
-      
-    default:
-      break;
-    }
-  }, [searchButtonClick, page, size, sort]);
+      }
+      console.log(data?.data?.result);
+      setTotalCount(data?.data?.result?.totalCount ?? 0);
+      let procData = [];
+      for (let i in data?.data?.result?.dataList ?? []) {
+        // console.log(i, data?.data?.result?.dataList?.[i]);
+        const pushData = {
+          id: data?.data?.result?.dataList?.[i]?.applNumber ?? i,
+          title: data?.data?.result?.dataList?.[i]?.title ?? '',
+          content: data?.data?.result?.dataList?.[i]?.contents ?? '',
+          date: (data?.data?.result?.dataList?.[i]?.publishedDate ?? '').replaceAll('-','.'),
+          agency: data?.data?.result?.dataList?.[i]?.source ?? '',
+          link: data?.data?.result?.dataList?.[i]?.link ?? '',
+          view: data?.data?.result?.dataList?.[i]?.view ?? '',
+        };
+        procData.push(pushData);
+      }
+  
+      setProjectData(procData);
+      setSearchButtonClick(false);
+    })();
+  }, [searchButtonClick, page, size, sort, se]);
 
   const downExcel = useCallback(async () => {
+    const se1 = se[1] ?? '';
+    const se2 = se[2] ?? '';
     const excelSize = 1000;
-    switch (paramSe2) {
-    case 'keyword':
-      (async () => {
-        const similarity = common.procSimilarity(selectKeyword);
-        let filterObj = {};
-        let searchParam = {};
-        const data = await ictAPI.ict('search',excelSize,1,keyword,similarity,sort,filterObj,searchParam);
-        console.log(data?.data?.result);
-        let procData = [];
-        for (let i in data?.data?.result?.dataList ?? []) {
-          // console.log(i, data?.data?.result?.dataList?.[i]);
-          procData.push([
-            data?.data?.result?.dataList?.[i]?.title ?? '',
-            data?.data?.result?.dataList?.[i]?.source ?? '',
-            data?.data?.result?.dataList?.[i]?.contents ?? '',
-            (data?.data?.result?.dataList?.[i]?.publishedDate ?? '').replaceAll('-','.'),
-          ]);
+    (async () => {
+      const similarity = common.procSimilarity(selectKeyword);
+      let filterObj = {};
+      let searchParam = {};
+      let data = [];
+      if (se1 == 'search') {
+        data = await ictAPI.ict('search',excelSize,1,keyword,similarity,sort,filterObj,searchParam);
+      } else if (se1 == 'discovery') {
+        if (se2 == 'keyword') {
+          data = await ictAPI.ict('discovery',excelSize,1,keyword,similarity,sort,filterObj,searchParam);
+        } else if (se2 == 'file') {
+          data = await ictAPI.ict('discovery',excelSize,1,keyword,similarity,sort,filterObj,searchParam);
+        } else if (se2 == 'project') {
+          data = await ictAPI.ict('discovery',excelSize,1,keyword,similarity,sort,filterObj,searchParam);
         }
-        common.excelExport('down', ['ICT 자료명', '출처', '본문', '발행일'], procData);
-      })();
-      break;
-        
-    default:
-      break;
-    }
-  }, [sort]);
+      }
+      console.log(data?.data?.result);
+      let procData = [];
+      for (let i in data?.data?.result?.dataList ?? []) {
+        // console.log(i, data?.data?.result?.dataList?.[i]);
+        const pushData = [
+          data?.data?.result?.dataList?.[i]?.title ?? '',
+          data?.data?.result?.dataList?.[i]?.source ?? '',
+          data?.data?.result?.dataList?.[i]?.contents ?? '',
+          (data?.data?.result?.dataList?.[i]?.publishedDate ?? '').replaceAll('-','.'),
+        ];
+        procData.push(pushData);
+      }
+      common.excelExport('down', ['ICT 자료명', '출처', '본문', '발행일'], procData);
+    })();
+  }, [sort, se]);
 
   useEffect(() => {
-    getKeywordList();
+    getList();
   }, [page, size, sort]);
 
   useEffect(() => {
     if (searchButtonClick) {
       setPage(1); 
-      getKeywordList();
+      getList();
     }
   }, [searchButtonClick]);
 

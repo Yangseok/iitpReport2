@@ -7,7 +7,6 @@ import Button from 'Domain/Home/Common/Componet/Button';
 import Pagination from 'Domain/Home/Common/Componet/Pagination';
 import ListItem from 'Domain/Home/Common/Componet/ListItem';
 import common from 'Utill';
-import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { getSearchKeyword, getSelectKeyword } from 'Domain/Home/Common/Status/CommonSlice';
 import * as projectAPI from 'Domain/Home/Discovery/API/ProjectCall';
@@ -15,8 +14,7 @@ import * as discoveryAPI from 'Domain/Home/Discovery/API/Call';
 import Filter from 'Domain/Home/Discovery/Component/Filter';
 
 export default function Result() {
-  const params = useParams();
-  const paramSe2 = params?.se2;
+  const se = common.getSegment();
   const selectKeyword = useSelector(getSelectKeyword);
   const keyword = useSelector(getSearchKeyword);
   const [tabCount, setTabCount] = useState({});
@@ -29,95 +27,111 @@ export default function Result() {
   const [sort, setSort] = useState('score');
   const [filterShow, setFilterShow] = useState(false);
 
-  const getKeywordList = useCallback(async () => {
-    switch (paramSe2) {
-    case 'keyword':
-      (async () => {
-        const similarity = common.procSimilarity(selectKeyword);
-        let filterObj = {};
-        let searchParam = {};
-        // todo: 'discovery'로 호출해야 하나 색인이 안된 관계로 search로 호출 하라고 함.
-        const data = await projectAPI.projectOut('discovery',size,page,keyword,similarity,sort,filterObj,searchParam);
-        console.log(data?.data?.result);
-        setTotalCount(data?.data?.result?.totalCount ?? 0);
-        let procData = [];
-        for (let i in data?.data?.result?.dataList ?? []) {
-          // console.log(i, data?.data?.result?.dataList?.[i]);
-          const period = data?.data?.result?.dataList?.[i]?.period ?? '';
-          const periodArr = period.split('~');
-          const division = data?.data?.result?.dataList?.[i]?.technicalClassification ?? [];
-          const keywordt = data?.data?.result?.dataList?.[i]?.keywords ?? [];
-          procData.push({
-            id: data?.data?.result?.dataList?.[i]?.projectNumber ?? i,
-            tag : ((periodArr?.[1]??'').replaceAll(' ','') === '9999-12-31') ? 1 : 2,
-            title: data?.data?.result?.dataList?.[i]?.title ?? '',
-            price: (data?.data?.result?.dataList?.[i]?.fund ?? '') + '억',
-            period: period.replaceAll('-','.'), 
-            agency: data?.data?.result?.dataList?.[i]?.researchAgencyName ?? '',
-            name: data?.data?.result?.dataList?.[i]?.researchManagerName ?? '',
-            department: data?.data?.result?.dataList?.[i]?.orderAgencyName ?? '',
-            performance: data?.data?.result?.dataList?.[i]?.performance ?? '',
-            division: division.join(' / '),
-            keyword: keywordt.join(', '),
-          });
+  const getList = useCallback(async () => {
+    const se1 = se[1] ?? '';
+    const se2 = se[2] ?? '';
+
+    (async () => {
+      const similarity = common.procSimilarity(selectKeyword);
+      let filterObj = {};
+      let searchParam = {};
+      // todo: 'discovery'로 호출해야 하나 색인이 안된 관계로 search로 호출 하라고 함.
+      let data = [];
+      if (se1 == 'search') {
+        data = await projectAPI.projectOut('search',size,page,keyword,similarity,sort,filterObj,searchParam);
+      } else if (se1 == 'discovery') {
+        if (se2 == 'keyword') {
+          data = await projectAPI.projectOut('discovery',size,page,keyword,similarity,sort,filterObj,searchParam);
+        } else if (se2 == 'file') {
+          data = await projectAPI.projectOut('discovery',size,page,keyword,similarity,sort,filterObj,searchParam);
+        } else if (se2 == 'project') {
+          data = await projectAPI.projectOut('discovery',size,page,keyword,similarity,sort,filterObj,searchParam);
         }
-    
-        setProjectData(procData);
-        setSearchButtonClick(false);
-      })();
-      break;
+      }
       
-    default:
-      break;
-    }
-  }, [searchButtonClick, page, size, sort]);
+      console.log(data?.data?.result);
+      setTotalCount(data?.data?.result?.totalCount ?? 0);
+      let procData = [];
+      for (let i in data?.data?.result?.dataList ?? []) {
+        // console.log(i, data?.data?.result?.dataList?.[i]);
+        const period = data?.data?.result?.dataList?.[i]?.period ?? '';
+        const periodArr = period.split('~');
+        const division = data?.data?.result?.dataList?.[i]?.technicalClassification ?? [];
+        const keywordt = data?.data?.result?.dataList?.[i]?.keywords ?? [];
+        const pushData = {
+          id: data?.data?.result?.dataList?.[i]?.projectNumber ?? i,
+          tag : ((periodArr?.[1]??'').replaceAll(' ','') === '9999-12-31') ? 1 : 2,
+          title: data?.data?.result?.dataList?.[i]?.title ?? '',
+          price: (data?.data?.result?.dataList?.[i]?.fund ?? '') + '억',
+          period: period.replaceAll('-','.'), 
+          agency: data?.data?.result?.dataList?.[i]?.researchAgencyName ?? '',
+          name: data?.data?.result?.dataList?.[i]?.researchManagerName ?? '',
+          department: data?.data?.result?.dataList?.[i]?.orderAgencyName ?? '',
+          performance: data?.data?.result?.dataList?.[i]?.performance ?? '',
+          division: division.join(' / '),
+          keyword: keywordt.join(', '),
+        };
+        procData.push(pushData);
+      }
+  
+      setProjectData(procData);
+      setSearchButtonClick(false);
+    })();
+
+  }, [searchButtonClick, page, size, sort, se]);
 
   const downExcel = useCallback(async () => {
+    const se1 = se[1] ?? '';
+    const se2 = se[2] ?? '';
     const excelSize = 1000;
-    switch (paramSe2) {
-    case 'keyword':
-      (async () => {
-        const similarity = common.procSimilarity(selectKeyword);
-        let filterObj = {};
-        let searchParam = {};
-        // todo: 'discovery'로 호출해야 하나 색인이 안된 관계로 search로 호출 하라고 함.
-        const data = await projectAPI.projectOut('discovery',excelSize,1,keyword,similarity,sort,filterObj,searchParam);
-        console.log(data?.data?.result);
-        let procData = [];
-        for (let i in data?.data?.result?.dataList ?? []) {
-          // console.log(i, data?.data?.result?.dataList?.[i]);
-          const period = data?.data?.result?.dataList?.[i]?.period ?? '';
-          const division = data?.data?.result?.dataList?.[i]?.technicalClassification ?? [];
-          const keywordt = data?.data?.result?.dataList?.[i]?.keywords ?? [];
-          procData.push([
-            data?.data?.result?.dataList?.[i]?.title ?? '',
-            (data?.data?.result?.dataList?.[i]?.fund ?? '') + '억',
-            period.replaceAll('-','.'),
-            data?.data?.result?.dataList?.[i]?.researchAgencyName ?? '',
-            data?.data?.result?.dataList?.[i]?.researchManagerName ?? '',
-            data?.data?.result?.dataList?.[i]?.orderAgencyName ?? '',
-            data?.data?.result?.dataList?.[i]?.performance ?? '',
-            division.join(', '),
-            keywordt.join(', '),
-          ]);
+    (async () => {
+      const similarity = common.procSimilarity(selectKeyword);
+      let filterObj = {};
+      let searchParam = {};
+      let data = [];
+      if (se1 == 'search') {
+        data = await projectAPI.projectOut('search',excelSize,1,keyword,similarity,sort,filterObj,searchParam);
+      } else if (se1 == 'discovery') {
+        if (se2 == 'keyword') {
+          data = await projectAPI.projectOut('discovery',excelSize,1,keyword,similarity,sort,filterObj,searchParam);
+        } else if (se2 == 'file') {
+          data = await projectAPI.projectOut('discovery',excelSize,1,keyword,similarity,sort,filterObj,searchParam);
+        } else if (se2 == 'project') {
+          data = await projectAPI.projectOut('discovery',excelSize,1,keyword,similarity,sort,filterObj,searchParam);
         }
-        common.excelExport('down', ['과제명', '연구 개발비', '연구 개발기간', '연구 개발기관', '연구 책임자', '부처명', '연구 개발성과', '국가과학기술표준분류', '한글 키워드'], procData);
-      })();
-      break;
-        
-    default:
-      break;
-    }
-  }, [sort]);
+      }
+      console.log(data?.data?.result);
+      let procData = [];
+      for (let i in data?.data?.result?.dataList ?? []) {
+        // console.log(i, data?.data?.result?.dataList?.[i]);
+        const period = data?.data?.result?.dataList?.[i]?.period ?? '';
+        const division = data?.data?.result?.dataList?.[i]?.technicalClassification ?? [];
+        const keywordt = data?.data?.result?.dataList?.[i]?.keywords ?? [];
+        const pushData = [
+          data?.data?.result?.dataList?.[i]?.title ?? '',
+          (data?.data?.result?.dataList?.[i]?.fund ?? '') + '억',
+          period.replaceAll('-','.'),
+          data?.data?.result?.dataList?.[i]?.researchAgencyName ?? '',
+          data?.data?.result?.dataList?.[i]?.researchManagerName ?? '',
+          data?.data?.result?.dataList?.[i]?.orderAgencyName ?? '',
+          data?.data?.result?.dataList?.[i]?.performance ?? '',
+          division.join(', '),
+          keywordt.join(', '),
+        ];
+        procData.push(pushData);
+      }
+      common.excelExport('down', ['과제명', '연구 개발비', '연구 개발기간', '연구 개발기관', '연구 책임자', '부처명', '연구 개발성과', '국가과학기술표준분류', '한글 키워드'], procData);
+    })();
+  }, [sort, se]);
 
   useEffect(() => {
-    getKeywordList();
+    getList();
   }, [page, size, sort]);
 
   useEffect(() => {
     if (searchButtonClick) {
       setPage(1); 
-      getKeywordList();
+      getList();
     }
   }, [searchButtonClick]);
 
