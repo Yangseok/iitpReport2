@@ -16,11 +16,6 @@
 .text-color-m_bg { color: $color_m_bg; }
 .text-color-white { color: $color_white; }
 .text-color-explain { color: $color_explain; }
-// .text-color-keyword1 { color: $color_keyword1; }
-// .text-color-keyword2 { color: $color_keyword2; }
-// .text-color-keyword3 { color: $color_keyword3; }
-// .text-color-keyword4 { color: $color_keyword4; }
-// .text-color-keyword5 { color: $color_keyword5; }
 
 // Background Color
 .bg-color-point1 { background-color: $color_point1; }
@@ -37,11 +32,6 @@
 .bg-color-m_bg { background-color: $color_m_bg; }
 .bg-color-white { background-color: $color_white; }
 .bg-color-explain { background-color: $color_explain; }
-// .bg-color-keyword1 { background-color: $color_keyword1; }
-// .bg-color-keyword2 { background-color: $color_keyword2; }
-// .bg-color-keyword3 { background-color: $color_keyword3; }
-// .bg-color-keyword4 { background-color: $color_keyword4; }
-// .bg-color-keyword5 { background-color: $color_keyword5; }
 
 /* ==================================================
   COMMON LAYOUT
@@ -52,6 +42,7 @@ body {
   min-width: 1320px;
   overflow-x: auto;
 }
+hr { color: $color_line; }
 .container {
   max-width: 1320px;
   padding: 0 20px;
@@ -77,6 +68,7 @@ body {
 
   .container {
     @include flexLayout(center, space-between);
+    min-width: 800px;
     height: 80px;
 
     & > div { @include flexLayout(center, center, 100px); }
@@ -270,6 +262,11 @@ button, a {
     color: $color_regular;
     border: 1px solid $color_line;
     background-color: $color_f_bg;
+  }
+  &.btn_style05 {
+    color: $color_dark;
+    border: 1px solid $color_placeholder;
+    background-color: $color_white;
   }
 
   &.btn_fold {
@@ -712,7 +709,7 @@ textarea {
 }
 
 /* Tags */
-@for $i from 1 through 4 {
+@for $i from 1 through 5 {
   .tag_style0#{$i} {
     @include flexLayout(center, center);
     height: 20px;
@@ -730,9 +727,12 @@ textarea {
     } @else if($i == 3) {
       color: $color_dark;
       background-color: $color_light2;
-    } @else {
+    } @else if($i == 4) {
       color: $color_dark;
       background-color: $color_keyword5;
+    } @else {
+      color: $color_white;
+      background-color: $color_explain;
     }
   }
 }
@@ -869,6 +869,31 @@ textarea {
 
   &.show {
     display: flex;
+  }
+}
+
+/* Table Styles */
+.table_style01 {
+  table {
+    width: 100%;
+    // border-spacing: 16px 0;
+
+    th {
+      padding: 14px 16px;
+      background-color: $color_m_bg;
+      border-bottom: 1px solid $color_line;
+      font-size: 14px;
+      color: $color_regular;
+      font-weight: 500;
+      text-align: left;
+    }
+    td {
+      padding: 14px 16px 14px 40px;
+      border-bottom: 1px solid $color_line;
+      font-size: 14px;
+      color: $color_dark;
+      font-weight:500;
+    }
   }
 }
 

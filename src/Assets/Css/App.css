@@ -175,6 +175,10 @@ body {
   overflow-x: auto;
 }
 
+hr {
+  color: #E2E8F0;
+}
+
 .container {
   max-width: 1320px;
   padding: 0 20px;
@@ -205,6 +209,7 @@ body {
   align-items: center;
   justify-content: space-between;
   gap: 0;
+  min-width: 800px;
   height: 80px;
 }
 #header .container > div {
@@ -449,6 +454,11 @@ button.btn_style04, a.btn_style04 {
   color: #334155;
   border: 1px solid #E2E8F0;
   background-color: #F1F5F9;
+}
+button.btn_style05, a.btn_style05 {
+  color: #0F172A;
+  border: 1px solid #94A3B8;
+  background-color: #FFFFFF;
 }
 button.btn_fold, a.btn_fold {
   font-size: 14px;
@@ -995,6 +1005,20 @@ textarea::placeholder {
   background-color: #F5B76E;
 }
 
+.tag_style05 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  height: 20px;
+  padding: 0 6px;
+  border-radius: 2px;
+  font-size: 12px;
+  font-weight: 500;
+  color: #FFFFFF;
+  background-color: #F4636A;
+}
+
 /* Tooltip */
 .tooltip_wrap {
   position: relative;
@@ -1236,6 +1260,27 @@ textarea::placeholder {
 }
 .loading_wrap.show {
   display: flex;
+}
+
+/* Table Styles */
+.table_style01 table {
+  width: 100%;
+}
+.table_style01 table th {
+  padding: 14px 16px;
+  background-color: #F9FBFF;
+  border-bottom: 1px solid #E2E8F0;
+  font-size: 14px;
+  color: #334155;
+  font-weight: 500;
+  text-align: left;
+}
+.table_style01 table td {
+  padding: 14px 16px 14px 40px;
+  border-bottom: 1px solid #E2E8F0;
+  font-size: 14px;
+  color: #0F172A;
+  font-weight: 500;
 }
 
 /* List Styles */

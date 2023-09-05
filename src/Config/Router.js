@@ -14,6 +14,11 @@ import DiscoveryResultResearcher from 'Domain/Home/Discovery/Page/Result/Researc
 import DiscoveryResultOrgn from 'Domain/Home/Discovery/Page/Result/Orgn';
 import DiscoveryResultNews from 'Domain/Home/Discovery/Page/Result/News';
 import Search from 'Domain/Home/Discovery/Page/Search';
+import ViewProjectOut from 'Domain/Home/Discovery/Page/View/ProjectOut';
+import ViewProjectIn from 'Domain/Home/Discovery/Page/View/ProjectIn';
+import ViewPatent from 'Domain/Home/Discovery/Page/View/Patent';
+import ViewPaper from 'Domain/Home/Discovery/Page/View/Paper';
+import ViewOrgn from 'Domain/Home/Discovery/Page/View/Orgn';
 import DemandBanking from 'Domain/Home/DemandBanking/Page/Main';
 import ICTTrend from 'Domain/Home/ICTTrend/Page/Main';
 import PageNotFound from 'Domain/Home/Common/ErrorPage/404';
@@ -70,6 +75,11 @@ export default function Router() {
         <Route path='/search/result/researcher' element={<DiscoveryResultResearcher />} />
         <Route path='/search/result/orgn' element={<DiscoveryResultOrgn />} />
         <Route path='/search/result/news' element={<DiscoveryResultNews />} />
+        <Route path='/view/projectout/:id' element={<ViewProjectOut />} />
+        <Route path='/view/projectin/:id' element={<ViewProjectIn />} />
+        <Route path='/view/patent/:id' element={<ViewPatent />} />
+        <Route path='/view/paper/:id' element={<ViewPaper />} />
+        <Route path='/view/orgn/:id' element={<ViewOrgn />} />
         <Route path='/demandbanking' element={<DemandBanking />} />
         <Route path='/icttrend' element={<ICTTrend />} />
         <Route path='/sample/redux' element={<Counter />} />
