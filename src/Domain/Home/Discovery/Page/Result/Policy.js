@@ -10,6 +10,7 @@ import { useSelector } from 'react-redux';
 import { getSearchKeyword, getSelectKeyword } from 'Domain/Home/Common/Status/CommonSlice';
 import * as discoveryAPI from 'Domain/Home/Discovery/API/Call';
 import * as policyAPI from 'Domain/Home/Discovery/API/PolicyCall';
+import parse from 'html-react-parser';
 
 export default function Result() {
   const se = common.getSegment();
@@ -52,9 +53,9 @@ export default function Result() {
         const dateArr = date.split(' ');
         const pushData = {
           id: data?.data?.result?.dataList?.[i]?.applNumber ?? i,
-          title: data?.data?.result?.dataList?.[i]?.title ?? '',
-          content: data?.data?.result?.dataList?.[i]?.contents ?? '',
-          source: data?.data?.result?.dataList?.[i]?.source ?? '',
+          title: parse(data?.data?.result?.dataList?.[i]?.title ?? ''),
+          content: parse(data?.data?.result?.dataList?.[i]?.contents ?? ''),
+          source: parse(data?.data?.result?.dataList?.[i]?.source ?? ''),
           date: (dateArr[0] ?? '').replaceAll('-','.'),
           link: data?.data?.result?.dataList?.[i]?.link ?? '',
         };
@@ -93,10 +94,10 @@ export default function Result() {
         const date = data?.data?.result?.dataList?.[i]?.publishedDate ?? '';
         const dateArr = date.split(' ');
         const pushData = [
-          data?.data?.result?.dataList?.[i]?.title ?? '',
-          data?.data?.result?.dataList?.[i]?.source ?? '',
+          common.deHighlight(data?.data?.result?.dataList?.[i]?.title ?? ''),
+          common.deHighlight(data?.data?.result?.dataList?.[i]?.source ?? ''),
           (dateArr[0] ?? '').replaceAll('-','.'),
-          data?.data?.result?.dataList?.[i]?.contents ?? '',
+          common.deHighlight(data?.data?.result?.dataList?.[i]?.contents ?? ''),
         ];
         procData.push(pushData);
       }

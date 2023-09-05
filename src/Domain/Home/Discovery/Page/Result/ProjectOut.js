@@ -12,6 +12,7 @@ import { getSearchKeyword, getSelectKeyword } from 'Domain/Home/Common/Status/Co
 import * as projectAPI from 'Domain/Home/Discovery/API/ProjectCall';
 import * as discoveryAPI from 'Domain/Home/Discovery/API/Call';
 import Filter from 'Domain/Home/Discovery/Component/Filter';
+import parse from 'html-react-parser';
 
 export default function Result() {
   const se = common.getSegment();
@@ -35,17 +36,19 @@ export default function Result() {
       const similarity = common.procSimilarity(selectKeyword);
       let filterObj = {};
       let searchParam = {};
-      // todo: 'discovery'로 호출해야 하나 색인이 안된 관계로 search로 호출 하라고 함.
+      let etcParam = {
+        aggs: true
+      };
       let data = [];
       if (se1 == 'search') {
-        data = await projectAPI.projectOut('search',size,page,keyword,similarity,sort,filterObj,searchParam);
+        data = await projectAPI.projectOut('search',size,page,keyword,similarity,sort,filterObj,searchParam,etcParam);
       } else if (se1 == 'discovery') {
         if (se2 == 'keyword') {
-          data = await projectAPI.projectOut('discovery',size,page,keyword,similarity,sort,filterObj,searchParam);
+          data = await projectAPI.projectOut('discovery',size,page,keyword,similarity,sort,filterObj,searchParam,etcParam);
         } else if (se2 == 'file') {
-          data = await projectAPI.projectOut('discovery',size,page,keyword,similarity,sort,filterObj,searchParam);
+          data = await projectAPI.projectOut('discovery',size,page,keyword,similarity,sort,filterObj,searchParam,etcParam);
         } else if (se2 == 'project') {
-          data = await projectAPI.projectOut('discovery',size,page,keyword,similarity,sort,filterObj,searchParam);
+          data = await projectAPI.projectOut('discovery',size,page,keyword,similarity,sort,filterObj,searchParam,etcParam);
         }
       }
       
@@ -61,12 +64,12 @@ export default function Result() {
         const pushData = {
           id: data?.data?.result?.dataList?.[i]?.projectNumber ?? i,
           tag : ((periodArr?.[1]??'').replaceAll(' ','') === '9999-12-31') ? 1 : 2,
-          title: data?.data?.result?.dataList?.[i]?.title ?? '',
+          title: parse(data?.data?.result?.dataList?.[i]?.title ?? ''),
           price: (data?.data?.result?.dataList?.[i]?.fund ?? '') + '억',
           period: period.replaceAll('-','.'), 
-          agency: data?.data?.result?.dataList?.[i]?.researchAgencyName ?? '',
-          name: data?.data?.result?.dataList?.[i]?.researchManagerName ?? '',
-          department: data?.data?.result?.dataList?.[i]?.orderAgencyName ?? '',
+          agency: parse(data?.data?.result?.dataList?.[i]?.researchAgencyName ?? ''),
+          name: parse(data?.data?.result?.dataList?.[i]?.researchManagerName ?? ''),
+          department: parse(data?.data?.result?.dataList?.[i]?.orderAgencyName ?? ''),
           performance: data?.data?.result?.dataList?.[i]?.performance ?? '',
           division: division.join(' / '),
           keyword: keywordt.join(', '),
@@ -108,12 +111,12 @@ export default function Result() {
         const division = data?.data?.result?.dataList?.[i]?.technicalClassification ?? [];
         const keywordt = data?.data?.result?.dataList?.[i]?.keywords ?? [];
         const pushData = [
-          data?.data?.result?.dataList?.[i]?.title ?? '',
+          common.deHighlight(data?.data?.result?.dataList?.[i]?.title ?? ''),
           (data?.data?.result?.dataList?.[i]?.fund ?? '') + '억',
           period.replaceAll('-','.'),
-          data?.data?.result?.dataList?.[i]?.researchAgencyName ?? '',
-          data?.data?.result?.dataList?.[i]?.researchManagerName ?? '',
-          data?.data?.result?.dataList?.[i]?.orderAgencyName ?? '',
+          common.deHighlight(data?.data?.result?.dataList?.[i]?.researchAgencyName ?? ''),
+          common.deHighlight(data?.data?.result?.dataList?.[i]?.researchManagerName ?? ''),
+          common.deHighlight(data?.data?.result?.dataList?.[i]?.orderAgencyName ?? ''),
           data?.data?.result?.dataList?.[i]?.performance ?? '',
           division.join(', '),
           keywordt.join(', '),

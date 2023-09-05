@@ -10,6 +10,7 @@ import { useSelector } from 'react-redux';
 import { getSearchKeyword, getSelectKeyword } from 'Domain/Home/Common/Status/CommonSlice';
 import * as discoveryAPI from 'Domain/Home/Discovery/API/Call';
 import * as patentAPI from 'Domain/Home/Discovery/API/PatentCall';
+import parse from 'html-react-parser';
 
 export default function Result() {
   const se = common.getSegment();
@@ -54,11 +55,11 @@ export default function Result() {
         const name = data?.data?.result?.dataList?.[i]?.inventorName ?? [];
         const date = data?.data?.result?.dataList?.[i]?.applDate ?? '';
         const pushData = {
-          id: data?.data?.result?.dataList?.[i]?.applNumber ?? i,
-          title: data?.data?.result?.dataList?.[i]?.title ?? '',
-          project: data?.data?.result?.dataList?.[i]?.projectName ?? '',
+          id: common.deHighlight(data?.data?.result?.dataList?.[i]?.applNumber ?? i),
+          title: parse(data?.data?.result?.dataList?.[i]?.title ?? ''),
+          project: parse(data?.data?.result?.dataList?.[i]?.projectName ?? ''),
           division: data?.data?.result?.dataList?.[i]?.type ?? '',
-          num: data?.data?.result?.dataList?.[i]?.applNumber ?? '',
+          num: parse(data?.data?.result?.dataList?.[i]?.applNumber ?? ''),
           date: date.replace(/^(\d{4})(\d{2})(\d{2})$/, '$1.$2.$3'),
           agency: agency.join(', '),
           name: name.join(', '),
@@ -99,10 +100,10 @@ export default function Result() {
         const name = data?.data?.result?.dataList?.[i]?.inventorName ?? [];
         const date = data?.data?.result?.dataList?.[i]?.applDate ?? '';
         const pushData = [
-          data?.data?.result?.dataList?.[i]?.title ?? '',
-          data?.data?.result?.dataList?.[i]?.projectName ?? '',
+          common.deHighlight(data?.data?.result?.dataList?.[i]?.title ?? ''),
+          common.deHighlight(data?.data?.result?.dataList?.[i]?.projectName ?? ''),
           data?.data?.result?.dataList?.[i]?.type ?? '',
-          data?.data?.result?.dataList?.[i]?.applNumber ?? '',
+          common.deHighlight(data?.data?.result?.dataList?.[i]?.applNumber ?? ''),
           date.replace(/^(\d{4})(\d{2})(\d{2})$/, '$1.$2.$3'),
           agency.join(', '),
           name.join(', '),

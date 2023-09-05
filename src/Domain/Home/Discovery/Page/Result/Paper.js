@@ -10,6 +10,7 @@ import { useSelector } from 'react-redux';
 import { getSearchKeyword, getSelectKeyword } from 'Domain/Home/Common/Status/CommonSlice';
 import * as discoveryAPI from 'Domain/Home/Discovery/API/Call';
 import * as paperAPI from 'Domain/Home/Discovery/API/PaperCall';
+import parse from 'html-react-parser';
 
 export default function Result() {
   const se = common.getSegment();
@@ -53,12 +54,12 @@ export default function Result() {
         const name = data?.data?.result?.dataList?.[i]?.author ?? [];
         const pushData = {
           id: data?.data?.result?.dataList?.[i]?.applNumber ?? i,
-          title: data?.data?.result?.dataList?.[i]?.title ?? '',
+          title: parse(data?.data?.result?.dataList?.[i]?.title ?? ''),
           year: data?.data?.result?.dataList?.[i]?.year ?? '',
           division: data?.data?.result?.dataList?.[i]?.type ?? '',
           agency: agency.join(', '),
           name: name.join(', '),
-          journal: data?.data?.result?.dataList?.[i]?.journalTitle ?? '',
+          journal: parse(data?.data?.result?.dataList?.[i]?.journalTitle ?? ''),
           link: data?.data?.result?.dataList?.[i]?.link ?? '',
         };
         procData.push(pushData);
@@ -96,12 +97,12 @@ export default function Result() {
         const agency = data?.data?.result?.dataList?.[i]?.affiliation ?? [];
         const name = data?.data?.result?.dataList?.[i]?.author ?? [];
         const pushData = [
-          data?.data?.result?.dataList?.[i]?.title ?? '',
+          common.deHighlight(data?.data?.result?.dataList?.[i]?.title ?? ''),
           data?.data?.result?.dataList?.[i]?.year ?? '',
           data?.data?.result?.dataList?.[i]?.type ?? '',
           agency.join(', '),
           name.join(', '),
-          data?.data?.result?.dataList?.[i]?.journalTitle ?? '',
+          common.deHighlight(data?.data?.result?.dataList?.[i]?.journalTitle ?? ''),
         ];
         procData.push(pushData);
       }

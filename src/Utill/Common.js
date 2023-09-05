@@ -161,3 +161,6 @@ export const maskingEmail = (email) => {
 
   return email[0] + mask + email.slice(mask.length + 1, email.length);
 };
+export const deHighlight = (text) => {
+  return text.replaceAll('<span class="highlight">', '').replaceAll('<span class=\'highlight\'>', '').replaceAll('</span>', '');
+};

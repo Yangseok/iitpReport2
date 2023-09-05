@@ -19,6 +19,7 @@ import { useSelector } from 'react-redux';
 import { getSearchKeyword, getSelectKeyword } from 'Domain/Home/Common/Status/CommonSlice';
 import * as discoveryAPI from 'Domain/Home/Discovery/API/Call';
 import * as orgnAPI from 'Domain/Home/Discovery/API/OrgnCall';
+import parse from 'html-react-parser';
 
 export default function DiscoveryResult() {
   const se = common.getSegment();
@@ -65,7 +66,7 @@ export default function DiscoveryResult() {
         // console.log(i, data?.data?.result?.dataList?.[i]);
         const pushData = {
           id: data?.data?.result?.dataList?.[i]?.id ?? i,
-          name: data?.data?.result?.dataList?.[i]?.orgnName ?? '',
+          name: parse(data?.data?.result?.dataList?.[i]?.orgnName ?? ''),
           assign: data?.data?.result?.dataList?.[i]?.projectCount ?? 0,
           patent: data?.data?.result?.dataList?.[i]?.patentCount ?? 0,
           link: '#',
@@ -79,7 +80,7 @@ export default function DiscoveryResult() {
   
       setProjectData(procData);
       setSearchButtonClick(false);
-      setOrgnActive({ id: data?.data?.result?.dataList?.[0]?.id ?? -1, name: data?.data?.result?.dataList?.[0]?.orgnName ?? '' });
+      setOrgnActive({ id: data?.data?.result?.dataList?.[0]?.id ?? -1, name: common.deHighlight(data?.data?.result?.dataList?.[0]?.orgnName ?? '') });
     })();
   }, [searchButtonClick, page, size, sort, se]);
 
@@ -108,7 +109,7 @@ export default function DiscoveryResult() {
       for (let i in data?.data?.result?.dataList ?? []) {
         // console.log(i, data?.data?.result?.dataList?.[i]);
         const pushData = [
-          data?.data?.result?.dataList?.[i]?.orgnName ?? '',
+          common.deHighlight(data?.data?.result?.dataList?.[i]?.orgnName ?? ''),
           data?.data?.result?.dataList?.[i]?.projectCount ?? 0,
           data?.data?.result?.dataList?.[i]?.patentCount ?? 0,
           (data?.data?.result?.dataList?.[i]?.orgnVigilance ?? false) ? 'O': 'X',

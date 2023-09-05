@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import icArrow from 'Assets/Images/ic_arrow02.png';
 import icFilter from 'Assets/Images/ic_filter.png';
+import icFilter02 from 'Assets/Images/ic_filter02.png';
 import DiscoveryResultLayout from 'Domain/Home/Discovery/Layout/DiscoveryResultLayout';
 import Button from 'Domain/Home/Common/Componet/Button';
 import Pagination from 'Domain/Home/Common/Componet/Pagination';
@@ -10,6 +11,8 @@ import { useSelector } from 'react-redux';
 import { getSearchKeyword, getSelectKeyword } from 'Domain/Home/Common/Status/CommonSlice';
 import * as discoveryAPI from 'Domain/Home/Discovery/API/Call';
 import * as projectAPI from 'Domain/Home/Discovery/API/ProjectCall';
+import Filter from 'Domain/Home/Discovery/Component/Filter';
+import parse from 'html-react-parser';
 
 export default function Result() {
   const se = common.getSegment();
@@ -23,6 +26,7 @@ export default function Result() {
   const [page, setPage] = useState(1);
   const [size, setSize] = useState(10);
   const [sort, setSort] = useState('score');
+  const [filterShow, setFilterShow] = useState(false);
 
   const getList = useCallback(async () => {
     const se1 = se[1] ?? '';
@@ -31,16 +35,19 @@ export default function Result() {
       const similarity = common.procSimilarity(selectKeyword);
       let filterObj = {};
       let searchParam = {};
+      let etcParam = {
+        aggs: true
+      };
       let data = [];
       if (se1 == 'search') {
-        data = await projectAPI.projectIn('search',size,page,keyword,similarity,sort,filterObj,searchParam);
+        data = await projectAPI.projectIn('search',size,page,keyword,similarity,sort,filterObj,searchParam,etcParam);
       } else if (se1 == 'discovery') {
         if (se2 == 'keyword') {
-          data = await projectAPI.projectIn('discovery',size,page,keyword,similarity,sort,filterObj,searchParam);
+          data = await projectAPI.projectIn('discovery',size,page,keyword,similarity,sort,filterObj,searchParam,etcParam);
         } else if (se2 == 'file') {
-          data = await projectAPI.projectIn('discovery',size,page,keyword,similarity,sort,filterObj,searchParam);
+          data = await projectAPI.projectIn('discovery',size,page,keyword,similarity,sort,filterObj,searchParam,etcParam);
         } else if (se2 == 'project') {
-          data = await projectAPI.projectIn('discovery',size,page,keyword,similarity,sort,filterObj,searchParam);
+          data = await projectAPI.projectIn('discovery',size,page,keyword,similarity,sort,filterObj,searchParam,etcParam);
         }
       }
       
@@ -55,11 +62,11 @@ export default function Result() {
         const pushData = {
           id: data?.data?.result?.dataList?.[i]?.projectNumber ?? i,
           tag : ((periodArr?.[1]??'').replaceAll(' ','') === '9999-12-31') ? 1 : 2,
-          title: data?.data?.result?.dataList?.[i]?.title ?? '',
+          title: parse(data?.data?.result?.dataList?.[i]?.title ?? ''),
           price: (data?.data?.result?.dataList?.[i]?.fund ?? '') + '억',
           period: period.replaceAll('-','.'), 
-          agency: data?.data?.result?.dataList?.[i]?.researchAgencyName ?? '',
-          name: data?.data?.result?.dataList?.[i]?.researchManagerName ?? '',
+          agency: parse(data?.data?.result?.dataList?.[i]?.researchAgencyName ?? ''),
+          name: parse(data?.data?.result?.dataList?.[i]?.researchManagerName ?? ''),
           ict: 'ICT 기술 분류',
           keyword: keywordt.join(', '),
         };
@@ -100,11 +107,11 @@ export default function Result() {
         const period = data?.data?.result?.dataList?.[i]?.period ?? '';
         const keywordt = data?.data?.result?.dataList?.[i]?.keywords ?? [];
         const pushData = [
-          data?.data?.result?.dataList?.[i]?.title ?? '',
+          common.deHighlight(data?.data?.result?.dataList?.[i]?.title ?? ''),
           (data?.data?.result?.dataList?.[i]?.fund ?? '') + '억',
           period.replaceAll('-','.'),
-          data?.data?.result?.dataList?.[i]?.researchAgencyName ?? '',
-          data?.data?.result?.dataList?.[i]?.researchManagerName ?? '',
+          common.deHighlight(data?.data?.result?.dataList?.[i]?.researchAgencyName ?? ''),
+          common.deHighlight(data?.data?.result?.dataList?.[i]?.researchManagerName ?? ''),
           'ICT 기술 분류',
           keywordt.join(', '),
         ];
@@ -169,9 +176,11 @@ export default function Result() {
                   <option value='100'>100</option>
                 </select>
               </div>
-              <Button className='gap-2 h-12 px-4 rounded text-sm font-bold btn_style01' name='필터' icon={icFilter} />
+              <Button className={`gap-2 h-12 px-4 rounded text-sm font-bold btn_style01${filterShow ? ' on' : ''}`} name='필터' icon={filterShow ? icFilter02 : icFilter} onClick={() => setFilterShow(state => !state)} />
             </div>
           </div>
+
+          {filterShow && <Filter />}
 
           <div className='list_style01 mt-2'>
             <ul>

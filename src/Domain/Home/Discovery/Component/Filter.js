@@ -64,7 +64,7 @@ export default function Filter() {
         <ul>
           {tabButtons1?.map((e) => {
             return (
-              <li key={e.id} className={(e.id === tabActive1) && 'on'}>
+              <li key={e.id} className={(e.id === tabActive1) ? 'on' : ''}>
                 <button type='button' onClick={e.onClick}>
                   <b>{e.name}</b>({e.cnt})
                 </button>

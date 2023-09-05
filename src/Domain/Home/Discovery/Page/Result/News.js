@@ -11,6 +11,7 @@ import { useSelector } from 'react-redux';
 import { getSearchKeyword, getSelectKeyword } from 'Domain/Home/Common/Status/CommonSlice';
 import * as discoveryAPI from 'Domain/Home/Discovery/API/Call';
 import * as newsAPI from 'Domain/Home/Discovery/API/NewsCall';
+import parse from 'html-react-parser';
 
 export default function DiscoveryResult() {
   const se = common.getSegment();
@@ -53,9 +54,9 @@ export default function DiscoveryResult() {
         const dateArr = date.split(' ');
         const pushData = {
           id: i,
-          title: data?.data?.result?.dataList?.[i]?.title ?? '',
+          title: parse(data?.data?.result?.dataList?.[i]?.title ?? ''),
           content: data?.data?.result?.dataList?.[i]?.contents ?? '',
-          source: data?.data?.result?.dataList?.[i]?.source ?? '',
+          source: parse(data?.data?.result?.dataList?.[i]?.source ?? ''),
           date: (dateArr[0] ?? '').replaceAll('-','.'),
           link: data?.data?.result?.dataList?.[i]?.link ?? '',
           wordCloud: data?.data?.result?.dataList?.[i]?.similarity ?? [],
@@ -95,9 +96,9 @@ export default function DiscoveryResult() {
         const date = data?.data?.result?.dataList?.[i]?.publishedDate ?? '';
         const dateArr = date.split(' ');
         const pushData = [
-          data?.data?.result?.dataList?.[i]?.title ?? '',
+          common.deHighlight(data?.data?.result?.dataList?.[i]?.title ?? ''),
           data?.data?.result?.dataList?.[i]?.contents ?? '',
-          data?.data?.result?.dataList?.[i]?.source ?? '',
+          common.deHighlight(data?.data?.result?.dataList?.[i]?.source ?? ''),
           (dateArr[0] ?? '').replaceAll('-','.'),
         ];
         procData.push(pushData);

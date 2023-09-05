@@ -5,6 +5,7 @@ import { getSearchKeyword } from 'Domain/Home/Common/Status/CommonSlice';
 import { setLoading } from 'Domain/Home/Common/Status/CommonSlice';
 import * as discoveryAPI from 'Domain/Home/Discovery/API/Call';
 import common from 'Utill';
+import parse from 'html-react-parser';
 
 export default function DiscoveryResult() {
 
@@ -41,11 +42,11 @@ export default function DiscoveryResult() {
         projectData.push({
           id: data?.data?.result?.dataInfo?.projectOut?.[i]?.projectNumber ?? i,
           tab: '국가R&D',
-          title: data?.data?.result?.dataInfo?.projectOut?.[i]?.title ?? '',
+          title: parse(data?.data?.result?.dataInfo?.projectOut?.[i]?.title ?? ''),
           price: (data?.data?.result?.dataInfo?.projectOut?.[i]?.fund ?? '') + '억',
           period: period.replaceAll('-','.'), 
-          agency: data?.data?.result?.dataInfo?.projectOut?.[i]?.researchAgencyName ?? '',
-          name: data?.data?.result?.dataInfo?.projectOut?.[i]?.researchManagerName ?? '',
+          agency: parse(data?.data?.result?.dataInfo?.projectOut?.[i]?.researchAgencyName ?? ''),
+          name: parse(data?.data?.result?.dataInfo?.projectOut?.[i]?.researchManagerName ?? ''),
         });
       }
       for (let i in data?.data?.result?.dataInfo?.projectIn ?? []) {
@@ -54,11 +55,11 @@ export default function DiscoveryResult() {
         projectData.push({
           id: data?.data?.result?.dataInfo?.projectIn?.[i]?.projectNumber ?? i,
           tab: 'IITP내부',
-          title: data?.data?.result?.dataInfo?.projectIn?.[i]?.title ?? '',
+          title: parse(data?.data?.result?.dataInfo?.projectIn?.[i]?.title ?? ''),
           price: (data?.data?.result?.dataInfo?.projectIn?.[i]?.fund ?? '') + '억',
           period: period.replaceAll('-','.'), 
-          agency: data?.data?.result?.dataInfo?.projectIn?.[i]?.researchAgencyName ?? '',
-          name: data?.data?.result?.dataInfo?.projectIn?.[i]?.researchManagerName ?? '',
+          agency: parse(data?.data?.result?.dataInfo?.projectIn?.[i]?.researchAgencyName ?? ''),
+          name: parse(data?.data?.result?.dataInfo?.projectIn?.[i]?.researchManagerName ?? ''),
         });
       }
 
@@ -69,11 +70,11 @@ export default function DiscoveryResult() {
         const name = data?.data?.result?.dataInfo?.patent?.[i]?.inventorName ?? [];
         const date = data?.data?.result?.dataInfo?.patent?.[i]?.applDate ?? '';
         patentData.push({
-          id: data?.data?.result?.dataInfo?.patent?.[i]?.applNumber ?? i,
-          title: data?.data?.result?.dataInfo?.patent?.[i]?.title ?? '',
-          project: data?.data?.result?.dataInfo?.patent?.[i]?.projectName ?? '',
+          id: common.deHighlight(data?.data?.result?.dataInfo?.patent?.[i]?.applNumber ?? i),
+          title: parse(data?.data?.result?.dataInfo?.patent?.[i]?.title ?? ''),
+          project: parse(data?.data?.result?.dataInfo?.patent?.[i]?.projectName ?? ''),
           division: data?.data?.result?.dataInfo?.patent?.[i]?.type ?? '',
-          num: data?.data?.result?.dataInfo?.patent?.[i]?.applNumber ?? '',
+          num: parse(data?.data?.result?.dataInfo?.patent?.[i]?.applNumber ?? ''),
           date: date.replace(/^(\d{4})(\d{2})(\d{2})$/, '$1.$2.$3'),
           agency: agency.join(', '),
           name: name.join(', '),
@@ -87,12 +88,12 @@ export default function DiscoveryResult() {
         const name = data?.data?.result?.dataInfo?.paper?.[i]?.author ?? [];
         paperData.push({
           id: data?.data?.result?.dataInfo?.paper?.[i]?.id ?? i,
-          title: data?.data?.result?.dataInfo?.paper?.[i]?.title ?? '',
+          title: parse(data?.data?.result?.dataInfo?.paper?.[i]?.title ?? ''),
           year: data?.data?.result?.dataInfo?.paper?.[i]?.year ?? '',
           division: data?.data?.result?.dataInfo?.paper?.[i]?.type ?? '',
           agency: agency.join(', '),
           name: name.join(', '),
-          journal: data?.data?.result?.dataInfo?.paper?.[i]?.journalTitle ?? '',
+          journal: parse(data?.data?.result?.dataInfo?.paper?.[i]?.journalTitle ?? ''),
           link: data?.data?.result?.dataInfo?.paper?.[i]?.link ?? '',
         });
       }
@@ -101,10 +102,10 @@ export default function DiscoveryResult() {
       for (let i in data?.data?.result?.dataInfo?.ict_report ?? []) {
         ictData.push({
           id: data?.data?.result?.dataInfo?.ict_report?.[i]?.applNumber ?? i,
-          title: data?.data?.result?.dataInfo?.ict_report?.[i]?.title ?? '',
-          content: data?.data?.result?.dataInfo?.ict_report?.[i]?.contents ?? '',
+          title: parse(data?.data?.result?.dataInfo?.ict_report?.[i]?.title ?? ''),
+          content: parse(data?.data?.result?.dataInfo?.ict_report?.[i]?.contents ?? ''),
           date: (data?.data?.result?.dataInfo?.ict_report?.[i]?.publishedDate ?? '').replaceAll('-','.'),
-          agency: data?.data?.result?.dataInfo?.ict_report?.[i]?.source ?? '',
+          agency: parse(data?.data?.result?.dataInfo?.ict_report?.[i]?.source ?? ''),
           link: data?.data?.result?.dataInfo?.ict_report?.[i]?.link ?? '',
           view: data?.data?.result?.dataInfo?.ict_report?.[i]?.view ?? '',
         });
@@ -116,9 +117,9 @@ export default function DiscoveryResult() {
         const dateArr = date.split(' ');
         policyData.push({
           id: data?.data?.result?.dataInfo?.policy?.[i]?.applNumber ?? i,
-          title: data?.data?.result?.dataInfo?.policy?.[i]?.title ?? '',
-          content: data?.data?.result?.dataInfo?.policy?.[i]?.contents ?? '',
-          source: data?.data?.result?.dataInfo?.policy?.[i]?.source ?? '',
+          title: parse(data?.data?.result?.dataInfo?.policy?.[i]?.title ?? ''),
+          content: parse(data?.data?.result?.dataInfo?.policy?.[i]?.contents ?? ''),
+          source: parse(data?.data?.result?.dataInfo?.policy?.[i]?.source ?? ''),
           date: (dateArr[0] ?? '').replaceAll('-','.'),
           link: data?.data?.result?.dataInfo?.policy?.[i]?.link ?? '',
         });
@@ -139,7 +140,7 @@ export default function DiscoveryResult() {
       for (let i in data?.data?.result?.dataInfo?.orgn ?? []) {
         orgnData.push({
           id: data?.data?.result?.dataInfo?.orgn?.[i]?.id ?? i,
-          name: data?.data?.result?.dataInfo?.orgn?.[i]?.orgnName ?? '',
+          name: parse(data?.data?.result?.dataInfo?.orgn?.[i]?.orgnName ?? ''),
           assign: data?.data?.result?.dataInfo?.orgn?.[i]?.projectCount ?? 0,
           patent: data?.data?.result?.dataInfo?.orgn?.[i]?.patentCount ?? 0,
           link: '#',
@@ -156,9 +157,9 @@ export default function DiscoveryResult() {
         const dateArr = date.split(' ');
         newsData.push({
           id: i,
-          title: data?.data?.result?.dataInfo?.news?.[i]?.title ?? '',
+          title: parse(data?.data?.result?.dataInfo?.news?.[i]?.title ?? ''),
           content: data?.data?.result?.dataInfo?.news?.[i]?.contents ?? '',
-          source: data?.data?.result?.dataInfo?.news?.[i]?.source ?? '',
+          source: parse(data?.data?.result?.dataInfo?.news?.[i]?.source ?? ''),
           date: (dateArr[0] ?? '').replaceAll('-','.'),
           link: data?.data?.result?.dataInfo?.news?.[i]?.link ?? '',
           wordCloud: data?.data?.result?.dataInfo?.news?.[i]?.similarity ?? [],
