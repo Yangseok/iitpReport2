@@ -400,33 +400,7 @@ button, a {
     }
   }
   &.tab_style04 {
-    ul li {
-      width: 100%;
-
-      button, a {
-        @include flexLayout(center, center);
-        width: 100%;
-        padding-bottom: 1px;
-        border-bottom: 1px solid $color_placeholder;
-        color: $color_regular;
-        font-weight: 500;
-      }
-
-      &.on button, &.on a {
-        padding-bottom: 0;
-        border-bottom: 2px solid $color_main;
-        color: $color_main;
-        font-weight: 700;
-
-        b { color: $color_dark; }
-      }
-    }
-
-    @for $i from 2 through 8 {
-      &.grid0#{$i} ul li { width: calc(100% / $i); }
-    }
-
-    &.grid_auto ul {
+    ul {
       position: relative;
 
       &::before {
@@ -441,14 +415,41 @@ button, a {
         z-index: -1;
       }
       li {
-        width: auto;
+        width: 100%;
   
         button, a {
-          padding-left: 16px;
-          padding-right: 16px;
+          @include flexLayout(center, center);
+          width: 100%;
+          padding-bottom: 1px;
+          border-bottom: 1px solid $color_placeholder;
+          color: $color_regular;
+          font-weight: 500;
+        }
+  
+        &.on button, &.on a {
+          padding-bottom: 0;
+          border-bottom: 2px solid $color_main;
+          color: $color_main;
+          font-weight: 700;
+  
+          b { color: $color_dark; }
         }
       }
     }
+
+    @for $i from 2 through 8 {
+      &.grid0#{$i} ul li { width: calc(100% / $i); }
+    }
+
+    &.grid_auto ul li {
+      width: auto;
+
+      button, a {
+        padding-left: 16px;
+        padding-right: 16px;
+      }
+    }
+    &.grid_min ul li { max-width: 20%; }
   }
   &.tab_style05 ul {
     li {
@@ -948,6 +949,7 @@ textarea {
       transition: all 0.3s;
     }
 
+    &.nodata  { padding: 17px 16px; }
     &.on {
       border-color: $color_main;
 

@@ -3,7 +3,7 @@ import DiscoveryLayout from 'Domain/Home/Discovery/Layout/DiscoveryLayout';
 import TabButtons from 'Domain/Home/Common/Componet/TabButtons';
 
 export default function View(props) {
-  const { children, tabs, active, tags, title, subTitle, keywords } = props;
+  const { children, tabStyle, tabs, active, tags, title, subTitle, keywords } = props;
 
   return (
     <DiscoveryLayout>
@@ -45,7 +45,7 @@ export default function View(props) {
       </section>
       <section className='mt-8'>
         <div className='container'>
-          <TabButtons style='4-2' tabs={tabs} active={active} />
+          <TabButtons style={tabStyle ?? '4-2'} tabs={tabs} active={active} />
           {children}
         </div>
       </section>

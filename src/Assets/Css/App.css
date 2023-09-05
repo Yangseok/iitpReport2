@@ -616,6 +616,20 @@ button.btn_keyword05.on, a.btn_keyword05.on {
   color: #0056B8;
   border-bottom-color: #0056B8;
 }
+.tab_btns.tab_style04 ul {
+  position: relative;
+}
+.tab_btns.tab_style04 ul::before {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  display: block;
+  width: 100%;
+  height: 1px;
+  background-color: #94A3B8;
+  z-index: -1;
+}
 .tab_btns.tab_style04 ul li {
   width: 100%;
 }
@@ -660,26 +674,15 @@ button.btn_keyword05.on, a.btn_keyword05.on {
 .tab_btns.tab_style04.grid08 ul li {
   width: 12.5%;
 }
-.tab_btns.tab_style04.grid_auto ul {
-  position: relative;
-}
-.tab_btns.tab_style04.grid_auto ul::before {
-  content: "";
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  display: block;
-  width: 100%;
-  height: 1px;
-  background-color: #94A3B8;
-  z-index: -1;
-}
 .tab_btns.tab_style04.grid_auto ul li {
   width: auto;
 }
 .tab_btns.tab_style04.grid_auto ul li button, .tab_btns.tab_style04.grid_auto ul li a {
   padding-left: 16px;
   padding-right: 16px;
+}
+.tab_btns.tab_style04.grid_min ul li {
+  max-width: 20%;
 }
 .tab_btns.tab_style05 ul li {
   position: relative;
@@ -1341,6 +1344,9 @@ textarea::placeholder {
   padding: 0 16px;
   overflow: hidden;
   transition: all 0.3s;
+}
+.list_style03 ul li.nodata {
+  padding: 17px 16px;
 }
 .list_style03 ul li.on {
   border-color: #0056B8;

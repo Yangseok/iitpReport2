@@ -18,6 +18,8 @@ export default function TabButtons(props) {
     } else if(style === '4-2') {
       const tab_length = tabs.length;
       setTabClass('tab_style04 grid0' + tab_length);
+    } else if(style === '4-3') {
+      setTabClass('tab_style04 grid_min');
     }
   }, [props]);
 
