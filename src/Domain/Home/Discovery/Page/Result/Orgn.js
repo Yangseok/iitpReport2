@@ -61,8 +61,8 @@ export default function DiscoveryResult() {
             assign: data?.data?.result?.dataList?.[i]?.projectCount ?? 0,
             patent: data?.data?.result?.dataList?.[i]?.patentCount ?? 0,
             link: '#',
-            institue: data?.data?.result?.dataList?.[i]?.researchInstitute,
-            safety: tempData1[i%3].safety,
+            institue: data?.data?.result?.dataList?.[i]?.researchInstitute ?? '',
+            safety: [2,0,1][i%3],
             sales: data?.data?.result?.dataList?.[i]?.topRankSales ?? '',
             followup: data?.data?.result?.dataList?.[i]?.orgnVigilance ?? false,
           });
@@ -217,41 +217,41 @@ export default function DiscoveryResult() {
     getOrgnDetail();
   }, [orgnActive]);
 
-  const tempData1 = [
-    {
-      id: 0,
-      name: '주식회사 마인즈랩(MINDS LAB., INC.)',
-      assign: '10',
-      patent: '10',
-      link: '#',
-      institue: null,
-      safety: 2,
-      sales: 10,
-      followup: true,
-    },
-    {
-      id: 1,
-      name: '주식회사 마인즈랩(MINDS LAB., INC.)',
-      assign: '43',
-      patent: '10',
-      link: '#',
-      institue: 'OOO연구소',
-      safety: 0,
-      sales: 5,
-      followup: false,
-    },
-    {
-      id: 2,
-      name: '주식회사 마인즈랩(MINDS LAB., INC.)',
-      assign: '10',
-      patent: '10',
-      link: '#',
-      institue: 'OOO연구소',
-      safety: 1,
-      sales: 25,
-      followup: true,
-    },
-  ];
+  // const tempData1 = [
+  //   {
+  //     id: 0,
+  //     name: '주식회사 마인즈랩(MINDS LAB., INC.)',
+  //     assign: '10',
+  //     patent: '10',
+  //     link: '#',
+  //     institue: null,
+  //     safety: 2,
+  //     sales: 10,
+  //     followup: true,
+  //   },
+  //   {
+  //     id: 1,
+  //     name: '주식회사 마인즈랩(MINDS LAB., INC.)',
+  //     assign: '43',
+  //     patent: '10',
+  //     link: '#',
+  //     institue: 'OOO연구소',
+  //     safety: 0,
+  //     sales: 5,
+  //     followup: false,
+  //   },
+  //   {
+  //     id: 2,
+  //     name: '주식회사 마인즈랩(MINDS LAB., INC.)',
+  //     assign: '10',
+  //     patent: '10',
+  //     link: '#',
+  //     institue: 'OOO연구소',
+  //     safety: 1,
+  //     sales: 25,
+  //     followup: true,
+  //   },
+  // ];
   // const tempData2 = [
   //   {
   //     id: 0,
