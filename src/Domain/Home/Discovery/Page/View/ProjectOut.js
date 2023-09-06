@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import ViewLayout from 'Domain/Home/Discovery/Layout/ViewLayout';
 import ListItem from 'Domain/Home/Common/Componet/ListItem';
 import Button from 'Domain/Home/Common/Componet/Button';
-import ViewTable from 'Domain/Home/Discovery/Component/ViewTable';
+import ViewTable from 'Domain/Home/Discovery/Component/View/ViewTable';
 
 export default function View() {
   const tempData1 = {
