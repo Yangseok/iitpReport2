@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import SiteMap from './SiteMap';
+import common from 'Utill';
 
 export default function Head(props) {
   const { className } = props;
@@ -34,6 +35,9 @@ export default function Head(props) {
     },
   ];
 
+  const se = common.getSegment();
+  const se1 = se[1] ?? '';
+
   const [sitemapShow, setSitemapShow] = useState(false);
 
   return (
@@ -44,8 +48,15 @@ export default function Head(props) {
           <nav>
             <ul>
               {nav.map((e, i) => {
+                let classOn = '';
+                e.depth2.map((e2) => 
+                  (e2.to.split('/')[1] === se1) ? classOn = true : '');
+                
                 if(i !== (nav.length - 1)) {
-                  return <li key={i}>
+                  return <li 
+                    key={i} 
+                    className={classOn ? 'on' : ''}
+                  >
                     <NavLink to={e.to}>
                       {e.name}
                     </NavLink>

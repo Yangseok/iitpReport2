@@ -80,7 +80,18 @@ hr { color: $color_line; }
     height: 36px;
     background: url('Assets/Images/logo.png') no-repeat center / contain;
   }
-  nav ul { @include flexLayout(center, center, 60px); }
+  nav ul { 
+    @include flexLayout(center, center, 60px);
+    li {
+      a {
+        font-size: 16px;
+        font-weight: 700;
+        color: $color_regular;
+      }
+
+      &.on a { color: $color_main; }
+    }
+  }
   ul.right_menu {
     @include flexLayout(center, center, 8px);
 
@@ -802,7 +813,7 @@ textarea {
 }
 
 /* Tags */
-@for $i from 1 through 5 {
+@for $i from 1 through 7 {
   .tag_style0#{$i} {
     @include flexLayout(center, center);
     height: 20px;
@@ -823,9 +834,15 @@ textarea {
     } @else if($i == 4) {
       color: $color_dark;
       background-color: $color_keyword5;
-    } @else {
+    } @else if($i == 5) {
       color: $color_white;
       background-color: $color_explain;
+    } @else if($i == 6) {
+      color: $color_main;
+      background-color: $color_f_bg;
+    } @else if($i == 7) {
+      color: $color_point1;
+      background-color: $color_f_bg;
     }
   }
 }

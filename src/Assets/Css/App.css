@@ -234,6 +234,14 @@ hr {
   justify-content: center;
   gap: 60px;
 }
+#header nav ul li a {
+  font-size: 16px;
+  font-weight: 700;
+  color: #334155;
+}
+#header nav ul li.on a {
+  color: #0056B8;
+}
 #header ul.right_menu {
   display: flex;
   align-items: center;
@@ -1122,6 +1130,34 @@ textarea::placeholder {
   font-weight: 500;
   color: #FFFFFF;
   background-color: #F4636A;
+}
+
+.tag_style06 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  height: 20px;
+  padding: 0 6px;
+  border-radius: 2px;
+  font-size: 12px;
+  font-weight: 500;
+  color: #0056B8;
+  background-color: #F1F5F9;
+}
+
+.tag_style07 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  height: 20px;
+  padding: 0 6px;
+  border-radius: 2px;
+  font-size: 12px;
+  font-weight: 500;
+  color: #FC6C0F;
+  background-color: #F1F5F9;
 }
 
 /* Tooltip */
