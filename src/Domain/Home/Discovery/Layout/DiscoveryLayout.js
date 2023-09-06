@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import 'Assets/Css/Discovery.css';
-import ic_guide from 'Assets/Images/ic_guide.png';
+import icGuide from 'Assets/Images/ic_guide.png';
 import Layout from 'Domain/Home/Common/Layout/Sub';
 import TabButtons from 'Domain/Home/Common/Componet/TabButtons';
 import common from 'Utill';
@@ -59,7 +59,7 @@ export default function DiscoveryLayout({children}) {
               }
             </div>
             <button type='button' className='gap-1'>
-              <img src={ic_guide} alt='검색 가이드' className='w-6' />
+              <img src={icGuide} alt='검색 가이드' className='w-6' />
               검색 가이드
             </button>
           </div>

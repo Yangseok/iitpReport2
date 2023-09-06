@@ -1,26 +1,26 @@
 import React, { useState } from 'react';
 import 'Assets/Css/Discovery.css';
-import ic_filter from 'Assets/Images/ic_filter.png';
-import ic_arrow from 'Assets/Images/ic_arrow02.png';
-import ic_analysis from 'Assets/Images/ic_analysis.png';
-import ic_guide from 'Assets/Images/ic_guide.png';
-import ic_reset from 'Assets/Images/ic_reset.png';
-import arr_drop from 'Assets/Images/arr_drop.png';
-import img_researcher01 from 'Assets/Images/researcher_img01.png';
-import img_researcher02 from 'Assets/Images/researcher_img02.png';
-import img_researcher03 from 'Assets/Images/researcher_img03.png';
-import img_researcher04 from 'Assets/Images/researcher_img04.png';
-import img_researcher05 from 'Assets/Images/researcher_img05.png';
-import img_researcher06 from 'Assets/Images/researcher_img06.png';
-import img_building01 from 'Assets/Images/building_img01.png';
-import img_building02 from 'Assets/Images/building_img02.png';
-import img_building03 from 'Assets/Images/building_img03.png';
-import img_building04 from 'Assets/Images/building_img04.png';
-import img_building05 from 'Assets/Images/building_img05.png';
-import img_building06 from 'Assets/Images/building_img06.png';
-import img_building07 from 'Assets/Images/building_img07.png';
-import img_building08 from 'Assets/Images/building_img08.png';
-import img_building09 from 'Assets/Images/building_img09.png';
+import icFilter from 'Assets/Images/ic_filter.png';
+import icArrow from 'Assets/Images/ic_arrow02.png';
+import icAnalysis from 'Assets/Images/ic_analysis.png';
+import icGuide from 'Assets/Images/ic_guide.png';
+import icReset from 'Assets/Images/ic_reset.png';
+import arrDrop from 'Assets/Images/arr_drop.png';
+import imgResearcher01 from 'Assets/Images/researcher_img01.png';
+import imgResearcher02 from 'Assets/Images/researcher_img02.png';
+import imgResearcher03 from 'Assets/Images/researcher_img03.png';
+import imgResearcher04 from 'Assets/Images/researcher_img04.png';
+import imgResearcher05 from 'Assets/Images/researcher_img05.png';
+import imgResearcher06 from 'Assets/Images/researcher_img06.png';
+import imgBuilding01 from 'Assets/Images/building_img01.png';
+import imgBuilding02 from 'Assets/Images/building_img02.png';
+import imgBuilding03 from 'Assets/Images/building_img03.png';
+import imgBuilding04 from 'Assets/Images/building_img04.png';
+import imgBuilding05 from 'Assets/Images/building_img05.png';
+import imgBuilding06 from 'Assets/Images/building_img06.png';
+import imgBuilding07 from 'Assets/Images/building_img07.png';
+import imgBuilding08 from 'Assets/Images/building_img08.png';
+import imgBuilding09 from 'Assets/Images/building_img09.png';
 import SampleLayout from 'Domain/Home/Sample/Layout/SampleLayout';
 import Button from 'Domain/Home/Common/Componet/Button';
 import TabButtons from 'Domain/Home/Common/Componet/TabButtons';
@@ -316,10 +316,10 @@ export default function Styles() {
       <h2 className="text-center mb-10">Styles</h2>
       <div className='container'>
         <div className='flex items-center gap-2'>
-          <Button name="필터" icon={ic_filter} className="gap-2 h-12 px-4 rounded text-sm font-bold btn_style01" />
-          <Button name='목록 다운로드' icon={ic_arrow} className='gap-2 h-12 px-4 rounded text-sm font-bold btn_style04' />
+          <Button name="필터" icon={icFilter} className="gap-2 h-12 px-4 rounded text-sm font-bold btn_style01" />
+          <Button name='목록 다운로드' icon={icArrow} className='gap-2 h-12 px-4 rounded text-sm font-bold btn_style04' />
           <Button name='초기화' className='py-2.75 px-6.5 rounded-3xl text-base font-bold btn_style02' />
-          <Button name="디스커버리" icon={ic_analysis} className="gap-2 py-3 px-6.5 rounded-3xl text-base font-bold btn_style03" />
+          <Button name="디스커버리" icon={icAnalysis} className="gap-2 py-3 px-6.5 rounded-3xl text-base font-bold btn_style03" />
           <Button name="혼합현실" className="py-1.75 px-2.5 rounded text-base font-bold btn_keyword01" />
           <Button name="혼합현실" className="py-1.75 px-2.5 rounded text-base font-bold btn_keyword02" />
           <Button name="현실" className="py-1.75 px-2.5 rounded text-base font-bold btn_keyword03" />
@@ -355,7 +355,7 @@ export default function Styles() {
               <TabButtons style='3' tabs={tabButtons2} active={tabActive2} />
             </div>
             <button type='button' className='gap-1'>
-              <img src={ic_guide} alt='검색 가이드' className='w-6' />
+              <img src={icGuide} alt='검색 가이드' className='w-6' />
               검색 가이드
             </button>
           </div>
@@ -363,7 +363,7 @@ export default function Styles() {
             <label htmlFor='search' className=''>키워드 검색</label>
             <input type='text' name='search' id='search' defaultValue='' placeholder='찾고 싶은 검색어를 입력해보세요.' />
             <div className='search_btn'>
-              <Button name='키워드 찾기' icon={ic_analysis} />
+              <Button name='키워드 찾기' icon={icAnalysis} />
             </div>
           </div>
         </div>
@@ -374,8 +374,8 @@ export default function Styles() {
           <div className='flex items-center justify-between mt-10 px-4'>
             <h3 className='text-xl font-bold text-color-dark'>키워드 결과</h3>
             <div className='flex items-center gap-6'>
-              <button type='button' className='text-sm font-medium text-color-placeholder'>선택 초기화 <img src={ic_reset} alt='선택 초기화' className='w-6' /></button>
-              <button type='button' className='text-sm font-medium text-color-regular'>접기 <img src={arr_drop} alt='화살표' className='w-6' /></button>
+              <button type='button' className='text-sm font-medium text-color-placeholder'>선택 초기화 <img src={icReset} alt='선택 초기화' className='w-6' /></button>
+              <button type='button' className='text-sm font-medium text-color-regular'>접기 <img src={arrDrop} alt='화살표' className='w-6' /></button>
             </div>
           </div>
           <div className='keywords_wrap mt-4'>
@@ -409,9 +409,9 @@ export default function Styles() {
             </ul>
           </div>
           <div className='keywords_btn'>
-            <button type='button' disabled>키워드 확장 <img src={ic_analysis} alt='키워드 확장' /></button>
+            <button type='button' disabled>키워드 확장 <img src={icAnalysis} alt='키워드 확장' /></button>
           </div>
-          <Button className='gap-2 mt-6 mx-auto py-3 px-6.5 rounded-3xl text-base font-bold btn_style03' name='디스커버리' icon={ic_analysis} />
+          <Button className='gap-2 mt-6 mx-auto py-3 px-6.5 rounded-3xl text-base font-bold btn_style03' name='디스커버리' icon={icAnalysis} />
         </div>
       </section>
       {/* 분석 결과 수 & 탭 버튼 */}
@@ -430,7 +430,7 @@ export default function Styles() {
               과제 <span className='text-color-main'>50,150건</span>
             </h4>
             <div className='flex gap-4'>
-              <Button className='gap-2 h-12 px-4 rounded text-sm font-bold btn_style04 mr-2' name='목록 다운로드' icon={ic_arrow} />
+              <Button className='gap-2 h-12 px-4 rounded text-sm font-bold btn_style04 mr-2' name='목록 다운로드' icon={icArrow} />
               <div>
                 <label htmlFor='sort_order' className='hidden_text'>정렬 순서</label>
                 <select name='sort_order' id='sort_order'>
@@ -449,7 +449,7 @@ export default function Styles() {
                   <option value=''>100</option>
                 </select>
               </div>
-              <Button className='gap-2 h-12 px-4 rounded text-sm font-bold btn_style01' name='필터' icon={ic_filter} />
+              <Button className='gap-2 h-12 px-4 rounded text-sm font-bold btn_style01' name='필터' icon={icFilter} />
             </div>
           </div>
         </div>
@@ -755,7 +755,7 @@ export default function Styles() {
                         onKeyUp={(event) => (event.key === 'Enter') && onResearcherSelect(event, e.id)} 
                         tabIndex={0}
                       >
-                        <img src={img_researcher01} alt='연구자 프로필 이미지' className='w-11' />
+                        <img src={imgResearcher01} alt='연구자 프로필 이미지' className='w-11' />
                         <div className='flex-1'>
                           <div className='flex items-center gap-2'>
                             <p className='text-base font-bold text-color-main'>{e.name}</p>
@@ -785,17 +785,17 @@ export default function Styles() {
                   {tempData6_2?.map((e, i) => {
                     let imgSrc = '';
                     if(e.relation === 0) {
-                      imgSrc = img_researcher01;
+                      imgSrc = imgResearcher01;
                     } else if(e.relation === 1) {
-                      imgSrc = img_researcher02;
+                      imgSrc = imgResearcher02;
                     } else if(e.relation === 2) {
-                      imgSrc = img_researcher03;
+                      imgSrc = imgResearcher03;
                     } else if(e.relation === 3) {
-                      imgSrc = img_researcher04;
+                      imgSrc = imgResearcher04;
                     } else if(e.relation === 4) {
-                      imgSrc = img_researcher05;
+                      imgSrc = imgResearcher05;
                     } else if(e.relation === 5) {
-                      imgSrc = img_researcher06;
+                      imgSrc = imgResearcher06;
                     }
 
                     return <li key={e.id} className='w-1/6 px-1'>
@@ -902,16 +902,16 @@ export default function Styles() {
                         <div className='tooltip_wrap' tabIndex={0}>
                           {(e.safety === 0) 
                             ? <>
-                              <img src={img_building01} alt='기관 재무안전성: 위험 이미지' className='w-11' />
+                              <img src={imgBuilding01} alt='기관 재무안전성: 위험 이미지' className='w-11' />
                               <span className='tooltip_style01 min-w-23'>재무안전성: 위험</span>
                             </>
                             : (e.safety === 1) 
                               ? <>
-                                <img src={img_building02} alt='기관 재무안전성: 보통 이미지' className='w-11' />
+                                <img src={imgBuilding02} alt='기관 재무안전성: 보통 이미지' className='w-11' />
                                 <div className='tooltip_style02 min-w-23'>재무안전성: 보통</div>
                               </>
                               : <>
-                                <img src={img_building03} alt='기관 재무안전성: 안정 이미지' className='w-11' />
+                                <img src={imgBuilding03} alt='기관 재무안전성: 안정 이미지' className='w-11' />
                                 <div className='tooltip_style03 min-w-23'>재무안전성: 안정</div>
                               </>}
                         </div>
@@ -956,17 +956,17 @@ export default function Styles() {
                   {tempData7_2?.map((e, i) => {
                     let imgSrc = '';
                     if(e.relation === 0) {
-                      imgSrc = img_building04;
+                      imgSrc = imgBuilding04;
                     } else if(e.relation === 1) {
-                      imgSrc = img_building05;
+                      imgSrc = imgBuilding05;
                     } else if(e.relation === 2) {
-                      imgSrc = img_building06;
+                      imgSrc = imgBuilding06;
                     } else if(e.relation === 3) {
-                      imgSrc = img_building07;
+                      imgSrc = imgBuilding07;
                     } else if(e.relation === 4) {
-                      imgSrc = img_building08;
+                      imgSrc = imgBuilding08;
                     } else if(e.relation === 5) {
-                      imgSrc = img_building09;
+                      imgSrc = imgBuilding09;
                     }
 
                     return <li key={e.id} className='w-1/6 px-1'>

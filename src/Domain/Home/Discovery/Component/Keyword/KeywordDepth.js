@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import ic_analysis from 'Assets/Images/ic_analysis.png';
+import icAnalysis from 'Assets/Images/ic_analysis.png';
 import Button from 'Domain/Home/Common/Componet/Button';
 
 export default function KeywordDepth(props) {
@@ -52,7 +52,7 @@ export default function KeywordDepth(props) {
       </div>
       {(idx < 3)
         ? <div className='keywords_btn'>
-          <button type='button' disabled={disabled} onClick={() => onExpendClick(idx + 1)}>키워드 확장 <img src={ic_analysis} alt={`${idx + 1}depth 키워드 확장`} /></button>
+          <button type='button' disabled={disabled} onClick={() => onExpendClick(idx + 1)}>키워드 확장 <img src={icAnalysis} alt={`${idx + 1}depth 키워드 확장`} /></button>
         </div>
         : ''
       }

@@ -1,20 +1,20 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { NavLink } from 'react-router-dom';
 import 'Assets/Css/Main.css';
-import ic_scroll from 'Assets/Images/main_scroll01.png';
-import img_service01 from 'Assets/Images/service_img01.png';
-import img_service02 from 'Assets/Images/service_img02.png';
-import img_service03 from 'Assets/Images/service_img03.png';
-import img_category00 from 'Assets/Images/cate_img00.png';
-import img_category01 from 'Assets/Images/cate_img01.png';
-import img_category02 from 'Assets/Images/cate_img02.png';
-import img_category03 from 'Assets/Images/cate_img03.png';
-import img_category04 from 'Assets/Images/cate_img04.png';
-import img_category05 from 'Assets/Images/cate_img05.png';
-import img_category06 from 'Assets/Images/cate_img06.png';
-import img_category07 from 'Assets/Images/cate_img07.png';
-import img_category08 from 'Assets/Images/cate_img08.png';
-import ic_search from 'Assets/Images/ic_search.png';
+import icScroll from 'Assets/Images/main_scroll01.png';
+import imgService01 from 'Assets/Images/service_img01.png';
+import imgService02 from 'Assets/Images/service_img02.png';
+import imgService03 from 'Assets/Images/service_img03.png';
+import imgCategory00 from 'Assets/Images/cate_img00.png';
+import imgCategory01 from 'Assets/Images/cate_img01.png';
+import imgCategory02 from 'Assets/Images/cate_img02.png';
+import imgCategory03 from 'Assets/Images/cate_img03.png';
+import imgCategory04 from 'Assets/Images/cate_img04.png';
+import imgCategory05 from 'Assets/Images/cate_img05.png';
+import imgCategory06 from 'Assets/Images/cate_img06.png';
+import imgCategory07 from 'Assets/Images/cate_img07.png';
+import imgCategory08 from 'Assets/Images/cate_img08.png';
+import icSearch from 'Assets/Images/ic_search.png';
 import Layout from 'Domain/Home/Common/Layout/Main';
 import Tail from 'Domain/Home/Common/Componet/Base/Tail';
 import * as mainAPI from 'Domain/Home/Main/API/Call';
@@ -161,14 +161,14 @@ export default function Main() {
               <AutoCompleteSearch
                 handleSearch={handleSearch}
                 data={dataSearch}
-                style={{ type: 1, name: 'ICT 키워드 검색', icon: ic_search }}
+                style={{ type: 1, name: 'ICT 키워드 검색', icon: icSearch }}
               />
               <div className='keywords_box mt-3'>
                 <p>추천 키워드</p>
                 <RecommandKeyword />
               </div>
               <div className='scroll_deco'>
-                <img src={ic_scroll} alt='스크롤해서 보세요.' />
+                <img src={icScroll} alt='스크롤해서 보세요.' />
                 <div></div>
               </div>
             </div>
@@ -186,7 +186,7 @@ export default function Main() {
               <ul>
                 <li>
                   <NavLink to='/discovery/keyword'>
-                    <img src={img_service01} alt='통합검색 & 디스커버리로 이동' />
+                    <img src={imgService01} alt='통합검색 & 디스커버리로 이동' />
                     <h4>통합검색 & 디스커버리</h4>
                     <p>
                       <b>Technical Feature 확장</b> 기능을 통해 <br/>
@@ -197,7 +197,7 @@ export default function Main() {
                 </li>
                 <li>
                   <NavLink to='/demandbanking'>
-                    <img src={img_service02} alt='수요 뱅킹 서비스로 이동' />
+                    <img src={imgService02} alt='수요 뱅킹 서비스로 이동' />
                     <h4>수요 뱅킹 서비스</h4>
                     <p>
                       <b>ICT 기술 분류 체계</b>별 기술 수요 조사서 정보와 <br />
@@ -208,7 +208,7 @@ export default function Main() {
                 </li>
                 <li>
                   <NavLink to='/icttrend'>
-                    <img src={img_service03} alt='ICT 트렌드로 이동' />
+                    <img src={imgService03} alt='ICT 트렌드로 이동' />
                     <h4>ICT 트렌드</h4>
                     <p>
                       키워드와 관련된 특허, 보고서, 논문 등의 정보를 <br />
@@ -229,48 +229,48 @@ export default function Main() {
               </div>
               <div className='conts_box'>
                 <div className='all_conts'>
-                  <img src={img_category00} alt='전체 데이터 현황' />
+                  <img src={imgCategory00} alt='전체 데이터 현황' />
                   <p>전체</p>
                   <span>{common.setPriceInput(dataCount.all ?? 0)}</span>
                 </div>
                 <ul>
                   <li>
-                    <img src={img_category01} alt='과제 데이터 현황' />
+                    <img src={imgCategory01} alt='과제 데이터 현황' />
                     <p>과제</p>
                     <span>{common.setPriceInput(dataCount.project ?? 0)}</span>
                   </li>
                   <li>
-                    <img src={img_category02} alt='논문 데이터 현황' />
+                    <img src={imgCategory02} alt='논문 데이터 현황' />
                     <p>논문</p>
                     <span>{common.setPriceInput(dataCount.paper ?? 0)}</span>
                   </li>
                   <li>
-                    <img src={img_category03} alt='특허 데이터 현황' />
+                    <img src={imgCategory03} alt='특허 데이터 현황' />
                     <p>특허</p>
                     <span>{common.setPriceInput(dataCount.patent ?? 0)}</span>
                   </li>
                   <li>
-                    <img src={img_category04} alt='ICT 자료 데이터 현황' />
+                    <img src={imgCategory04} alt='ICT 자료 데이터 현황' />
                     <p>ICT 자료</p>
                     <span>{common.setPriceInput(dataCount.ict_report ?? 0)}</span>
                   </li>
                   <li>
-                    <img src={img_category05} alt='정부정책 데이터 현황' />
+                    <img src={imgCategory05} alt='정부정책 데이터 현황' />
                     <p>정부정책</p>
                     <span>{common.setPriceInput(dataCount.policy ?? 0)}</span>
                   </li>
                   <li>
-                    <img src={img_category06} alt='연구자 데이터 현황' />
+                    <img src={imgCategory06} alt='연구자 데이터 현황' />
                     <p>연구자</p>
                     <span>{common.setPriceInput(dataCount.indv ?? 0)}</span>
                   </li>
                   <li>
-                    <img src={img_category07} alt='기관 데이터 현황' />
+                    <img src={imgCategory07} alt='기관 데이터 현황' />
                     <p>기관</p>
                     <span>{common.setPriceInput(dataCount.orgn ?? 0)}</span>
                   </li>
                   <li>
-                    <img src={img_category08} alt='뉴스 데이터 현황' />
+                    <img src={imgCategory08} alt='뉴스 데이터 현황' />
                     <p>뉴스</p>
                     <span>{common.setPriceInput(dataCount.news ?? 0)}</span>
                   </li>

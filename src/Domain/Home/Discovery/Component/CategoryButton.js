@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import img_category0 from 'Assets/Images/cate_img00.png';
-import img_category1 from 'Assets/Images/cate_img01.png';
-import img_category2 from 'Assets/Images/cate_img02.png';
-import img_category3 from 'Assets/Images/cate_img03.png';
-import img_category4 from 'Assets/Images/cate_img04.png';
-import img_category5 from 'Assets/Images/cate_img05.png';
-import img_category6 from 'Assets/Images/cate_img06.png';
-import img_category7 from 'Assets/Images/cate_img07.png';
-import img_category8 from 'Assets/Images/cate_img08.png';
+import imgCategory0 from 'Assets/Images/cate_img00.png';
+import imgCategory1 from 'Assets/Images/cate_img01.png';
+import imgCategory2 from 'Assets/Images/cate_img02.png';
+import imgCategory3 from 'Assets/Images/cate_img03.png';
+import imgCategory4 from 'Assets/Images/cate_img04.png';
+import imgCategory5 from 'Assets/Images/cate_img05.png';
+import imgCategory6 from 'Assets/Images/cate_img06.png';
+import imgCategory7 from 'Assets/Images/cate_img07.png';
+import imgCategory8 from 'Assets/Images/cate_img08.png';
 
 export default function CategoryButton(props) {
   const { type, name, num, onClick } = props;
@@ -15,23 +15,23 @@ export default function CategoryButton(props) {
 
   useEffect(() => {
     if(type === 0) {
-      setImg(img_category0);
+      setImg(imgCategory0);
     } else if(type === 1) {
-      setImg(img_category1);
+      setImg(imgCategory1);
     } else if(type === 2) {
-      setImg(img_category2);
+      setImg(imgCategory2);
     } else if(type === 3) {
-      setImg(img_category3);
+      setImg(imgCategory3);
     } else if(type === 4) {
-      setImg(img_category4);
+      setImg(imgCategory4);
     } else if(type === 5) {
-      setImg(img_category5);
+      setImg(imgCategory5);
     } else if(type === 6) {
-      setImg(img_category6);
+      setImg(imgCategory6);
     } else if(type === 7) {
-      setImg(img_category7);
+      setImg(imgCategory7);
     } else if(type === 8) {
-      setImg(img_category8);
+      setImg(imgCategory8);
     }
   }, [props]);
   

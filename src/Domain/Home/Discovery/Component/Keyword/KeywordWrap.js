@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import ic_reset from 'Assets/Images/ic_reset.png';
-import ic_reset02 from 'Assets/Images/ic_reset02.png';
-import ic_search from 'Assets/Images/ic_search.png';
-import arr_drop from 'Assets/Images/arr_drop.png';
+import icReset from 'Assets/Images/ic_reset.png';
+import icReset02 from 'Assets/Images/ic_reset02.png';
+import icSearch from 'Assets/Images/ic_search.png';
+import arrDrop from 'Assets/Images/arr_drop.png';
 import Button from 'Domain/Home/Common/Componet/Button';
 import KeywordDepth from './KeywordDepth';
 import * as discoveryAPI from 'Domain/Home/Discovery/API/Call';
@@ -140,11 +140,11 @@ export default function KeywordWrap(props) {
         <div className='flex items-center gap-6'>
           <button type='button' className='keywords_reset_btn' disabled={resetDisabled} onClick={onKeywordReset}>
             선택 초기화
-            <img src={(resetDisabled) ? ic_reset : ic_reset02} alt='선택 초기화' className='w-6' />
+            <img src={(resetDisabled) ? icReset : icReset02} alt='선택 초기화' className='w-6' />
           </button>
           <button type='button' className={`keywords_fold_btn${(fullFold) ? ' fold' : ''}`} onClick={() => setFullFold(state => !state)}>
             {(fullFold) ? '펼치기' : '접기'} 
-            <img src={arr_drop} alt='화살표' className='w-6' />
+            <img src={arrDrop} alt='화살표' className='w-6' />
           </button>
         </div>
       </div>
@@ -164,7 +164,7 @@ export default function KeywordWrap(props) {
         </>
         : ''
       }
-      <Button className='gap-2 mt-6 mx-auto py-3 px-6.5 rounded-3xl text-base font-bold btn_style03' name='디스커버리' icon={ic_search} onClick={props.discoverySearchBttonClick} />
+      <Button className='gap-2 mt-6 mx-auto py-3 px-6.5 rounded-3xl text-base font-bold btn_style03' name='디스커버리' icon={icSearch} onClick={props.discoverySearchBttonClick} />
     </>
   );
 }

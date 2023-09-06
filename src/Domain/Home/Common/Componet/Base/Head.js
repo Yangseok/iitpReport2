@@ -32,7 +32,9 @@ export default function Head(props) {
                */}
               <NavLink to='/login'>Guest Login</NavLink>
             </li>
-            <li><a href="#">Menu</a></li>
+            <li>
+              <button type='button'>Menu</button>
+            </li>
           </ul>
         </div>
       </div>

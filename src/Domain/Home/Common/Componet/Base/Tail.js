@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import ic_arrow from 'Assets/Images/ic_arrow01.png';
+import icArrow from 'Assets/Images/ic_arrow01.png';
 import Button from 'Domain/Home/Common/Componet/Button';
 
 export default function Tail() {
@@ -25,7 +25,7 @@ export default function Tail() {
               <option value=''>정보통신기획평가원</option>
               <option value=''>정보통신연차보고서</option>
             </select>
-            <Button className="gap-2 h-12 px-4.5 rounded text-sm btn_style01" name="유관기관 바로가기" icon={ic_arrow} onClick={() => {}} />
+            <Button className="gap-2 h-12 px-4.5 rounded text-sm btn_style01" name="유관기관 바로가기" icon={icArrow} onClick={() => {}} />
           </div>
         </div>
       </div>
