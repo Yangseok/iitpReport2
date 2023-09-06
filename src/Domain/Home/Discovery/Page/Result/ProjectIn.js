@@ -8,7 +8,7 @@ import Pagination from 'Domain/Home/Common/Componet/Pagination';
 import ListItem from 'Domain/Home/Common/Componet/ListItem';
 import common from 'Utill';
 import { useSelector } from 'react-redux';
-import { getSearchKeyword, getSelectKeyword } from 'Domain/Home/Common/Status/CommonSlice';
+import { getSearchKeyword, getSelectKeyword, getFilterActive } from 'Domain/Home/Common/Status/CommonSlice';
 import * as discoveryAPI from 'Domain/Home/Discovery/API/Call';
 import * as projectAPI from 'Domain/Home/Discovery/API/ProjectCall';
 import Filter from 'Domain/Home/Discovery/Component/Filter';
@@ -27,17 +27,26 @@ export default function Result() {
   const [size, setSize] = useState(10);
   const [sort, setSort] = useState('score');
   const [filterShow, setFilterShow] = useState(false);
+  const [filterItem, setFileterItem] = useState({});
+
+  const filterActive = useSelector(getFilterActive);
+  const filterKey = 'search/projectIn';
 
   const getList = useCallback(async () => {
     const se1 = se[1] ?? '';
     const se2 = se[2] ?? '';
     (async () => {
       const similarity = common.procSimilarity(selectKeyword);
-      let filterObj = {};
-      let searchParam = {};
-      let etcParam = {
-        aggs: true
+      let filterObj = {
+        year: (filterActive[filterKey]?.selected?.resultYear ?? []).join('|'),
+        fund: (filterActive[filterKey]?.selected?.fund ?? []).join('|'),
+        researchAgency: (filterActive[filterKey]?.selected?.researchAgency ?? []).join('|'),
+        ministry: (filterActive[filterKey]?.selected?.ministry ?? []).join('|'),
+        technicalClassification: (filterActive[filterKey]?.selected?.technicalClassification ?? []).join('|'),
       };
+      // console.log('filterObj:', filterObj);
+      let searchParam = {};
+      let etcParam = { aggs: true };
       let data = [];
       if (se1 == 'search') {
         data = await projectAPI.projectIn('search',size,page,keyword,similarity,sort,filterObj,searchParam,etcParam);
@@ -72,11 +81,12 @@ export default function Result() {
         };
         procData.push(pushData);
       }
-  
+
+      setFileterItem(data?.data?.result?.aggsInfo ?? {});
       setProjectData(procData);
       setSearchButtonClick(false);
     })();
-  }, [searchButtonClick, page, size, sort, se]);
+  }, [searchButtonClick, page, size, sort, se, filterActive]);
 
   const downExcel = useCallback(async () => {
     const se1 = se[1] ?? '';
@@ -84,7 +94,13 @@ export default function Result() {
     const excelSize = 1000;
     (async () => {
       const similarity = common.procSimilarity(selectKeyword);
-      let filterObj = {};
+      let filterObj = {
+        year: (filterActive[filterKey]?.selected?.resultYear ?? []).join('|'),
+        fund: (filterActive[filterKey]?.selected?.fund ?? []).join('|'),
+        researchAgency: (filterActive[filterKey]?.selected?.researchAgency ?? []).join('|'),
+        ministry: (filterActive[filterKey]?.selected?.ministry ?? []).join('|'),
+        technicalClassification: (filterActive[filterKey]?.selected?.technicalClassification ?? []).join('|'),
+      };
       let searchParam = {};
 
       let data = [];
@@ -119,7 +135,12 @@ export default function Result() {
       }
       common.excelExport('down', ['과제명', '연구 개발비', '연구 개발기간', '연구 개발기관', '연구 책임자', 'ICT 기술 분류', '한글 키워드'], procData);
     })();
-  }, [sort, se]);
+  }, [sort, se, filterActive]);
+
+  // useEffect(() => {
+  //   console.log('page 이동 필터값 변경', se);
+  //   dispatch(setFilterActive(items));
+  // }, [se]);
 
   useEffect(() => {
     getList();
@@ -180,7 +201,7 @@ export default function Result() {
             </div>
           </div>
 
-          {filterShow && <Filter />}
+          {filterShow && <Filter filterItem={filterItem} filterKey={filterKey} setSearchButtonClick={setSearchButtonClick} />}
 
           <div className='list_style01 mt-2'>
             <ul>

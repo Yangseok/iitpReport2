@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { items } from 'Domain/Home/Discovery/Data/FilterItems';
 
 const initialState = {
   loading: false,
@@ -7,6 +8,7 @@ const initialState = {
   selectKeyword: {},
   searchKeywordResult: {},
   searchKeywordReset: false,
+  filterActive: items,
 };
 
 export const commonSlice = createSlice({
@@ -30,15 +32,19 @@ export const commonSlice = createSlice({
     },
     setSearchKeywordReset: (state, action) => {
       state.searchKeywordReset = action.payload;
+    },
+    setFilterActive:  (state, action) => {
+      state.filterActive = action.payload;
     }
   },
 });
 
-export const { setLoading, setSearchKeyword, setSelectKeyword, setSearchKeywordResult, setSearchKeywordReset, setTmpSearchKeyword } = commonSlice.actions;
+export const { setLoading, setSearchKeyword, setSelectKeyword, setSearchKeywordResult, setSearchKeywordReset, setTmpSearchKeyword, setFilterActive } = commonSlice.actions;
 export const getLoading = (state) => state.common.loading;
 export const getSearchKeyword = (state) => state.common.searchKeyword;
 export const getTmpSearchKeyword = (state) => state.common.tmpSearchKeyword;
 export const getSelectKeyword = (state) => state.common.selectKeyword;
 export const getSearchKeywordResult = (state) => state.common.searchKeywordResult;
 export const getSearchKeywordReset = (state) => state.common.searchKeywordReset;
+export const getFilterActive = (state) => state.common.filterActive;
 export default commonSlice.reducer;

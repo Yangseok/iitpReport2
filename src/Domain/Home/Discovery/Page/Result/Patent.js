@@ -1,15 +1,17 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import icArrow from 'Assets/Images/ic_arrow02.png';
 import icFilter from 'Assets/Images/ic_filter.png';
+import icFilter02 from 'Assets/Images/ic_filter02.png';
 import DiscoveryResultLayout from 'Domain/Home/Discovery/Layout/DiscoveryResultLayout';
 import Button from 'Domain/Home/Common/Componet/Button';
 import Pagination from 'Domain/Home/Common/Componet/Pagination';
 import ListItem from 'Domain/Home/Common/Componet/ListItem';
 import common from 'Utill';
 import { useSelector } from 'react-redux';
-import { getSearchKeyword, getSelectKeyword } from 'Domain/Home/Common/Status/CommonSlice';
+import { getSearchKeyword, getSelectKeyword, getFilterActive } from 'Domain/Home/Common/Status/CommonSlice';
 import * as discoveryAPI from 'Domain/Home/Discovery/API/Call';
 import * as patentAPI from 'Domain/Home/Discovery/API/PatentCall';
+import Filter from 'Domain/Home/Discovery/Component/Filter';
 import parse from 'html-react-parser';
 
 export default function Result() {
@@ -24,25 +26,36 @@ export default function Result() {
   const [page, setPage] = useState(1);
   const [size, setSize] = useState(10);
   const [sort, setSort] = useState('score');
+  const [filterShow, setFilterShow] = useState(false);
+  const [filterItem, setFileterItem] = useState({});
+
+  const filterActive = useSelector(getFilterActive);
+  const filterKey = 'search/patent';
 
   const getList = useCallback(async () => {
     const se1 = se[1] ?? '';
     const se2 = se[2] ?? '';
     (async () => {
       const similarity = common.procSimilarity(selectKeyword);
-      let filterObj = {};
+      let filterObj = {
+        year: (filterActive[filterKey]?.selected?.resultYear ?? []).join('|'),
+        regType: (filterActive[filterKey]?.selected?.registerType ?? []).join('|'),
+        applType: (filterActive[filterKey]?.selected?.applType ?? []).join('|'),
+        applicant: (filterActive[filterKey]?.selected?.applicantName ?? []).join('|'),
+      };
+      // console.log('filterObj:', filterObj);
       let searchParam = {};
-
+      let etcParam = { aggs: true };
       let data = [];
       if (se1 == 'search') {
-        data = await patentAPI.patent('search',size,page,keyword,similarity,sort,filterObj,searchParam);
+        data = await patentAPI.patent('search',size,page,keyword,similarity,sort,filterObj,searchParam,etcParam);
       } else if (se1 == 'discovery') {
         if (se2 == 'keyword') {
-          data = await patentAPI.patent('discovery',size,page,keyword,similarity,sort,filterObj,searchParam);
+          data = await patentAPI.patent('discovery',size,page,keyword,similarity,sort,filterObj,searchParam,etcParam);
         } else if (se2 == 'file') {
-          data = await patentAPI.patent('discovery',size,page,keyword,similarity,sort,filterObj,searchParam);
+          data = await patentAPI.patent('discovery',size,page,keyword,similarity,sort,filterObj,searchParam,etcParam);
         } else if (se2 == 'project') {
-          data = await patentAPI.patent('discovery',size,page,keyword,similarity,sort,filterObj,searchParam);
+          data = await patentAPI.patent('discovery',size,page,keyword,similarity,sort,filterObj,searchParam,etcParam);
         }
       }
 
@@ -67,10 +80,11 @@ export default function Result() {
         procData.push(pushData);
       }
   
+      setFileterItem(data?.data?.result?.aggsInfo ?? {});
       setProjectData(procData);
       setSearchButtonClick(false);
     })();
-  }, [searchButtonClick, page, size, sort, se]);
+  }, [searchButtonClick, page, size, sort, se, filterActive]);
 
   const downExcel = useCallback(async () => {
     const se1 = se[1] ?? '';
@@ -78,7 +92,12 @@ export default function Result() {
     const excelSize = 1000;
     (async () => {
       const similarity = common.procSimilarity(selectKeyword);
-      let filterObj = {};
+      let filterObj = {
+        year: (filterActive[filterKey]?.selected?.resultYear ?? []).join('|'),
+        regType: (filterActive[filterKey]?.selected?.registerType ?? []).join('|'),
+        applType: (filterActive[filterKey]?.selected?.applType ?? []).join('|'),
+        applicant: (filterActive[filterKey]?.selected?.applicantName ?? []).join('|'),
+      };
       let searchParam = {};
       let data = [];
       if (se1 == 'search') {
@@ -112,7 +131,7 @@ export default function Result() {
       }
       common.excelExport('down', ['과제명', '유발 과제', '출원등록구분', '출원(등록)번호', '출원(등록)일', '출원(등록)인', '발명자'], procData);
     })();
-  }, [sort, se]);
+  }, [sort, se, filterActive]);
 
   useEffect(() => {
     getList();
@@ -183,9 +202,11 @@ export default function Result() {
                   <option value='100'>100</option>
                 </select>
               </div>
-              <Button className='gap-2 h-12 px-4 rounded text-sm font-bold btn_style01' name='필터' icon={icFilter} />
+              <Button className={`gap-2 h-12 px-4 rounded text-sm font-bold btn_style01${filterShow ? ' on' : ''}`} name='필터' icon={filterShow ? icFilter02 : icFilter} onClick={() => setFilterShow(state => !state)} />
             </div>
           </div>
+
+          {filterShow && <Filter filterItem={filterItem} filterKey={filterKey} setSearchButtonClick={setSearchButtonClick} />}
 
           <div className='list_style01 mt-2'>
             <ul>

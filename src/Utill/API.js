@@ -71,9 +71,9 @@ const API = axios.create({
 
 API.interceptors.request.use(
   config => {
-    console.log('API call url ::', config.baseURL + config.url);
-    console.log('data', JSON.stringify(config.data));
-    console.log('params', JSON.stringify(config.params));
+    // console.log('API call url ::', config.baseURL + config.url);
+    // console.log('data', JSON.stringify(config.data));
+    // console.log('params', JSON.stringify(config.params));
 
     // console.log('config', config);
     // 요청이 전달되기 전에 작업 수행

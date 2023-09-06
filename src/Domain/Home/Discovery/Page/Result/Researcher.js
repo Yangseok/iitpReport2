@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import icArrow from 'Assets/Images/ic_arrow02.png';
 import icFilter from 'Assets/Images/ic_filter.png';
+import icFilter02 from 'Assets/Images/ic_filter02.png';
 import imgResearcher01 from 'Assets/Images/researcher_img01.png';
 import imgResearcher02 from 'Assets/Images/researcher_img02.png';
 import imgResearcher03 from 'Assets/Images/researcher_img03.png';
@@ -13,9 +14,10 @@ import Pagination from 'Domain/Home/Common/Componet/Pagination';
 import ListItem from 'Domain/Home/Common/Componet/ListItem';
 import common from 'Utill';
 import { useSelector } from 'react-redux';
-import { getSearchKeyword, getSelectKeyword } from 'Domain/Home/Common/Status/CommonSlice';
+import { getSearchKeyword, getSelectKeyword, getFilterActive } from 'Domain/Home/Common/Status/CommonSlice';
 import * as discoveryAPI from 'Domain/Home/Discovery/API/Call';
 import * as researcherAPI from 'Domain/Home/Discovery/API/ResearcherCall';
+import Filter from 'Domain/Home/Discovery/Component/Filter';
 
 export default function DiscoveryResult() {
   const se = common.getSegment();
@@ -32,24 +34,33 @@ export default function DiscoveryResult() {
   const [page, setPage] = useState(1);
   const [size, setSize] = useState(10);
   const [sort, setSort] = useState('score');
+  const [filterShow, setFilterShow] = useState(false);
+  const [filterItem, setFileterItem] = useState({});
+
+  const filterActive = useSelector(getFilterActive);
+  const filterKey = 'search/indv';
 
   const getList = useCallback(async () => {
     const se1 = se[1] ?? '';
     const se2 = se[2] ?? '';
     (async () => {
       const similarity = common.procSimilarity(selectKeyword);
-      let filterObj = {};
+      let filterObj = {
+        orgn: (filterActive[filterKey]?.selected?.orgn ?? []).join('|'),
+      };
+      // console.log('filterObj:', filterObj);
       let searchParam = {};
+      let etcParam = { aggs: true };
       let data = [];
       if (se1 == 'search') {
-        data = await researcherAPI.researcher('search',size,page,keyword,similarity,sort,filterObj,searchParam);
+        data = await researcherAPI.researcher('search',size,page,keyword,similarity,sort,filterObj,searchParam,etcParam);
       } else if (se1 == 'discovery') {
         if (se2 == 'keyword') {
-          data = await researcherAPI.researcher('discovery',size,page,keyword,similarity,sort,filterObj,searchParam);
+          data = await researcherAPI.researcher('discovery',size,page,keyword,similarity,sort,filterObj,searchParam,etcParam);
         } else if (se2 == 'file') {
-          data = await researcherAPI.researcher('discovery',size,page,keyword,similarity,sort,filterObj,searchParam);
+          data = await researcherAPI.researcher('discovery',size,page,keyword,similarity,sort,filterObj,searchParam,etcParam);
         } else if (se2 == 'project') {
-          data = await researcherAPI.researcher('discovery',size,page,keyword,similarity,sort,filterObj,searchParam);
+          data = await researcherAPI.researcher('discovery',size,page,keyword,similarity,sort,filterObj,searchParam,etcParam);
         }
       }
       console.log(data?.data?.result);
@@ -67,11 +78,12 @@ export default function DiscoveryResult() {
         procData.push(pushData);
       }
   
+      setFileterItem(data?.data?.result?.aggsInfo ?? {});
       setProjectData(procData);
       setSearchButtonClick(false);
       setResearcherActive({ id: data?.data?.result?.dataList?.[0]?.id ?? -1, name: data?.data?.result?.dataList?.[0]?.indvName ?? '' });
     })();
-  }, [searchButtonClick, page, size, sort, se]);
+  }, [searchButtonClick, page, size, sort, se, filterActive]);
 
   const downExcel = useCallback(async () => {
     const se1 = se[1] ?? '';
@@ -79,7 +91,9 @@ export default function DiscoveryResult() {
     const excelSize = 1000;
     (async () => {
       const similarity = common.procSimilarity(selectKeyword);
-      let filterObj = {};
+      let filterObj = {
+        orgn: (filterActive[filterKey]?.selected?.orgn ?? []).join('|'),
+      };
       let searchParam = {};
       let data = [];
       if (se1 == 'search') {
@@ -107,7 +121,7 @@ export default function DiscoveryResult() {
       }
       common.excelExport('down', ['ICT 자료명', '출처', '본문', '발행일'], procData);
     })();
-  }, [sort, se]);
+  }, [sort, se, filterActive]);
 
   const getDetail = useCallback(async () => {
     if (researcherActive.id === -1) return null;
@@ -308,9 +322,11 @@ export default function DiscoveryResult() {
                   <option value='100'>100</option>
                 </select>
               </div>
-              <Button className='gap-2 h-12 px-4 rounded text-sm font-bold btn_style01' name='필터' icon={icFilter} />
+              <Button className={`gap-2 h-12 px-4 rounded text-sm font-bold btn_style01${filterShow ? ' on' : ''}`} name='필터' icon={filterShow ? icFilter02 : icFilter} onClick={() => setFilterShow(state => !state)} />
             </div>
           </div>
+
+          {filterShow && <Filter filterItem={filterItem} filterKey={filterKey} setSearchButtonClick={setSearchButtonClick} />}
           
           <div className='flex items-start gap-6 mt-2'>
             <div className='w-120'>
