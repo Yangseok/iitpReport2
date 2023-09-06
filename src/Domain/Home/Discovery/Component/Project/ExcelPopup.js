@@ -1,24 +1,15 @@
 import React, { useEffect } from 'react';
 import InputFile from 'Domain/Home/Discovery/Component/InputFile';
 import excelFile from 'Assets/Images/Sample/sample_excel.xlsx';
+import $ from 'jquery';
 
 export default function ExcelPopup(props) {
   const { setPopup } = props;
 
   useEffect(() => {
-    const findParentWithClass = (e, className) => {
-      while (e && e !== document) {
-        if (e.classList && e.classList.contains(className)) {
-          return e;
-        }
-        e = e.parentNode;
-      }
-      return null;
-    };
-    document.querySelector('.popup_bg').addEventListener('click', (e) => {
-      const isParentClass = findParentWithClass(e.target, 'popup_wrap');
-      
-      if (!isParentClass) {
+    $('.popup_bg').on('click', function(e) {
+      const modal = $(e.target).parents('.popup_bg');
+      if (!modal.hasClass('popup_bg')) {
         setPopup(false);
       }
     });

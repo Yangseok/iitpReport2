@@ -68,31 +68,21 @@ export default function AutoCompleteSearch(props) {
   };
 
   useEffect(() => {
-    const findParentWithClass = (e, className) => {
-      while (e && e !== document) {
-        if (e.classList && e.classList.contains(className)) {
-          return e;
-        }
-        e = e.parentNode;
-      }
-      return null;
-    };
-    const pageInit = () => {
-      // 검색영역 외의 영역 클릭 시, 검색창 꺼짐
-      $(document).on('click', (e) => {
-        const isParentClass = findParentWithClass(e.target, 'auto_search_wrap');
-        
-        if (!isParentClass) {
-          setSearchFocus(false);
-        }
-      });
-      // 검색영역 바깥의 버튼 focus 시, 검색창 꺼짐
-      $(document).on('focus', '.main_sec01 .keywords_box button:first-of-type', () => {
+    // 검색영역 외의 영역 클릭 시, 검색창 꺼짐
+    $(document).on('click', function(e) {
+      const searchWrap = $(e.target).parents('.auto_search_wrap');
+      if (!searchWrap.hasClass('auto_search_wrap')) {
         setSearchFocus(false);
-      });
-    };
+      }
+    });
 
-    pageInit();
+    // 검색영역 바깥의 버튼 focus 시, 검색창 꺼짐
+    $('button, a').on('focusin', (e) => {
+      const searchWrap = $(e.target).parents('.auto_search_wrap');
+      if (!searchWrap.hasClass('auto_search_wrap')) {
+        setSearchFocus(false);
+      }
+    });
   }, []);
 
   useEffect(() => {

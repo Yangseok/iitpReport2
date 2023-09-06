@@ -110,6 +110,62 @@ hr { color: $color_line; }
   }
 }
 
+/* SITEMAP */
+#sitemap {
+  @include flexLayout(center, center);
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.5);
+  
+  nav {
+    width: 96%;
+    max-width: 1280px;
+    min-width: 800px;
+    padding: 48px 70px;
+    background-color: $color_white;
+
+    ul {
+      @include flexLayout(flex-start, space-between, 8px);
+      text-align: center;
+
+      li {
+        min-width: calc((100% - 180px) / 4);
+        border: 1px solid $color_line;
+        border-radius: 8px;
+        overflow: hidden;
+
+        p {
+          padding: 9px 0;
+          font-size: 20px;
+          color: $color_white;
+          font-weight: 500;
+          background-color: $color_main;
+        }
+        a {
+          position: relative;
+          height: 48px;
+          font-size: 16px;
+          color: $color_regular;
+
+          &:not(:last-child)::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 24px;
+            display: block;
+            width: calc(100% - 48px);
+            height: 1px;
+            background-color: $color_line;
+          }
+        }
+      }
+    }
+  }
+}
+
 /* FOOTER */
 #footer {
   padding: 40px 0 100px;
@@ -1075,7 +1131,7 @@ textarea {
   }
 
   @for $i from 2 through 8 {
-    &.grid0#{$i} > * { width: calc((100% / $i) - (40px * ($i - 1))); }
+    &.grid0#{$i} > * { width: calc((100% - 40px * ($i - 1)) / $i); }
   }
 }
 
@@ -1129,4 +1185,10 @@ $bg_percents: (1: -7%,  2: 7%, 3: -7%);
 ================================================== */
 @media all and (max-width: 1600px) {
   .visual_bg_deco div { background-size: 120%; }
+}
+@media all and (max-width: 991px) {
+  #sitemap nav {
+    padding: 48px;
+    ul li { min-width: calc((100% - 48px) / 4); }
+  }
 }

@@ -21,11 +21,12 @@ export default function DiscoveryLayout({children}) {
     { id: 2, name: '과제 정보 분석', to:'/discovery/project'},
   ];
 
+  const se = common.getSegment();
+  const paramSe1 = se[1] ?? '';
+  const paramSe2 = se[2] ?? '';
+
   useEffect(() => {
     let url = '';
-    const se = common.getSegment();
-    const paramSe1 = se[1] ?? '';
-    const paramSe2 = se[2] ?? '';
 
     if(paramSe1 === 'discovery') {
       url = `/${paramSe1}/${paramSe2}`;
@@ -44,7 +45,7 @@ export default function DiscoveryLayout({children}) {
         setTabActive2(e.id);
       }
     });
-  }, []);
+  }, [se]);
 
   return (
     <Layout>

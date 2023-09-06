@@ -25,7 +25,7 @@ export default function ProjectWrap(props) {
       <div className='flex items-center justify-between px-4'>
         <h3 className='text-xl font-bold text-color-dark'>과제 정보</h3>
         <div className='flex items-center gap-6'>
-          <button type='button' className='discovery_excel_btn' onClick={() => setPopup(state => !state)}>
+          <button type='button' className='text-sm font-medium text-color-placeholder' onClick={() => setPopup(state => !state)}>
             엑셀로 입력
             <img src={icFile} alt='엑셀 등록' className='w-6' />
           </button>
@@ -46,44 +46,34 @@ export default function ProjectWrap(props) {
             <dd>
               <InputTextXBtn id={'project'} title={'과제명'} value={''} onChange={() => {}} />
             </dd>
-          </dl>
-          <dl>
             <dt className='flex items-center gap-1'>
-              한글 키워드
+              키워드(한글)
               <div className='tooltip_wrap' tabIndex={0}>
                 <img src={icQuestion} alt='한글 키워드 설명글' className='w-6' />
-                <span className='tooltip_style04 min-w-25'>한글 키워드 설명글</span>
+                <span className='tooltip_style04 min-w-20'>콤마(,)로 구분</span>
               </div>
             </dt>
             <dd>
               <InputTextXBtn id={'keywordsKo'} title={'한글 키워드'} value={''} onChange={() => {}} />
             </dd>
-          </dl>
-          <dl>
             <dt className='flex items-center gap-1'>
-              영문 키워드
+              키워드(영문)
               <div className='tooltip_wrap' tabIndex={0}>
                 <img src={icQuestion} alt='영문 키워드 설명글' className='w-6' />
-                <span className='tooltip_style04 min-w-25'>영문 키워드 설명글</span>
+                <span className='tooltip_style04 min-w-20'>콤마(,)로 구분</span>
               </div>
             </dt>
             <dd>
               <InputTextXBtn id={'keywordsEn'} title={'영문 키워드'} value={''} onChange={() => {}} />
             </dd>
-          </dl>
-          <dl>
             <dt>연구 목표</dt>
             <dd>
               <InputTextXBtn id={'subject'} title={'연구 목표'} value={''} onChange={() => {}} />
             </dd>
-          </dl>
-          <dl>
             <dt>연구 내용</dt>
             <dd>
               <InputTextXBtn id={'content'} title={'연구 내용'} value={''} onChange={() => {}} />
             </dd>
-          </dl>
-          <dl>
             <dt>기대 효과</dt>
             <dd>
               <InputTextXBtn id={'benefit'} title={'기대 효과'} value={''} onChange={() => {}} />

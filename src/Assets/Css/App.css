@@ -268,6 +268,63 @@ hr {
   background-color: #FFFFFF;
 }
 
+/* SITEMAP */
+#sitemap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+#sitemap nav {
+  width: 96%;
+  max-width: 1280px;
+  min-width: 800px;
+  padding: 48px 70px;
+  background-color: #FFFFFF;
+}
+#sitemap nav ul {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px;
+  text-align: center;
+}
+#sitemap nav ul li {
+  min-width: calc((100% - 180px) / 4);
+  border: 1px solid #E2E8F0;
+  border-radius: 8px;
+  overflow: hidden;
+}
+#sitemap nav ul li p {
+  padding: 9px 0;
+  font-size: 20px;
+  color: #FFFFFF;
+  font-weight: 500;
+  background-color: #0056B8;
+}
+#sitemap nav ul li a {
+  position: relative;
+  height: 48px;
+  font-size: 16px;
+  color: #334155;
+}
+#sitemap nav ul li a:not(:last-child)::before {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 24px;
+  display: block;
+  width: calc(100% - 48px);
+  height: 1px;
+  background-color: #E2E8F0;
+}
+
 /* FOOTER */
 #footer {
   padding: 40px 0 100px;
@@ -1492,25 +1549,25 @@ textarea::placeholder {
   border-radius: 8px;
 }
 .list_wrap_style02.grid02 > * {
-  width: calc(50% - 40px);
+  width: calc((100% - 40px) / 2);
 }
 .list_wrap_style02.grid03 > * {
-  width: calc(33.3333333333% - 80px);
+  width: calc((100% - 80px) / 3);
 }
 .list_wrap_style02.grid04 > * {
-  width: calc(25% - 120px);
+  width: calc((100% - 120px) / 4);
 }
 .list_wrap_style02.grid05 > * {
-  width: calc(20% - 160px);
+  width: calc((100% - 160px) / 5);
 }
 .list_wrap_style02.grid06 > * {
-  width: calc(16.6666666667% - 200px);
+  width: calc((100% - 200px) / 6);
 }
 .list_wrap_style02.grid07 > * {
-  width: calc(14.2857142857% - 240px);
+  width: calc((100% - 240px) / 7);
 }
 .list_wrap_style02.grid08 > * {
-  width: calc(12.5% - 280px);
+  width: calc((100% - 280px) / 8);
 }
 
 /* Text Styles */
@@ -1588,5 +1645,13 @@ textarea::placeholder {
 @media all and (max-width: 1600px) {
   .visual_bg_deco div {
     background-size: 120%;
+  }
+}
+@media all and (max-width: 991px) {
+  #sitemap nav {
+    padding: 48px;
+  }
+  #sitemap nav ul li {
+    min-width: calc((100% - 48px) / 4);
   }
 }

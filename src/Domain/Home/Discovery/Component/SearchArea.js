@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import ic_search from 'Assets/Images/ic_search.png';
-import arr_drop from 'Assets/Images/arr_drop.png';
+import icSearch from 'Assets/Images/ic_search.png';
+import icQuestion from 'Assets/Images/ic_question.png';
+import arrDrop from 'Assets/Images/arr_drop.png';
 import AutoCompleteSearch from 'Domain/Home/Common/Componet/AutoCompleteSearch';
 import * as mainAPI from 'Domain/Home/Main/API/Call';
 import { useSelector, useDispatch } from 'react-redux';
@@ -45,7 +46,7 @@ export default function Search() {
   const keyword = useSelector(getSearchKeyword);
   const [dataSearch, setDataSearch] = useState([]);
 
-  const [fold, setFold] = useState(false);
+  const [fold, setFold] = useState(true);
   const [tabActive, setTabActive] = useState(0);
 
   useEffect(() => {
@@ -64,7 +65,7 @@ export default function Search() {
           <AutoCompleteSearch 
             handleSearch={handleSearch}
             data={dataSearch}
-            style={{ type: 3, name: '통합 검색', icon: ic_search }}
+            style={{ type: 3, name: '통합 검색', icon: icSearch }}
           />
         </div>
       </section>
@@ -74,11 +75,11 @@ export default function Search() {
             {/* Input에 입력된 값이 하나라도 있을 경우, className 'on' 추가 */}
             <button type='button' className={`btn_fold${(fold) ? ' fold' : ''}`} onClick={() => setFold(state => !state)}>
             상세 검색 {(fold) ? '보기' : '숨기기'} 
-              <img src={arr_drop} alt='화살표' className='w-6' />
+              <img src={arrDrop} alt='화살표' className='w-6' />
             </button>
           </div>
         </div>
-        {(fold) 
+        {(!fold) 
           && <>
             <div className='pt-4'>
               <div className='container'>
@@ -138,11 +139,23 @@ export default function Search() {
                       <dd>
                         <InputTextXBtn id={'benefit'} title={'기대 효과'} value={''} onChange={() => {}} />
                       </dd>
-                      <dt>한글 키워드</dt>
+                      <dt className='flex items-center gap-1'>
+                        키워드(한글)
+                        <div className='tooltip_wrap' tabIndex={0}>
+                          <img src={icQuestion} alt='한글 키워드 설명글' className='w-6' />
+                          <span className='tooltip_style04 min-w-20'>콤마(,)로 구분</span>
+                        </div>
+                      </dt>
                       <dd>
                         <InputTextXBtn id={'keywordsKo'} title={'한글 키워드'} value={''} onChange={() => {}} />
                       </dd>
-                      <dt>영문 키워드</dt>
+                      <dt className='flex items-center gap-1'>
+                        키워드(영문)
+                        <div className='tooltip_wrap' tabIndex={0}>
+                          <img src={icQuestion} alt='영문 키워드 설명글' className='w-6' />
+                          <span className='tooltip_style04 min-w-20'>콤마(,)로 구분</span>
+                        </div>
+                      </dt>
                       <dd>
                         <InputTextXBtn id={'keywordsEn'} title={'영문 키워드'} value={''} onChange={() => {}} />
                       </dd>
@@ -318,7 +331,7 @@ export default function Search() {
             <div className='flex items-center justify-center gap-6 mt-6'>
               {/* Input에 입력된 값이 하나라도 있을 경우, disabled false 값 */}
               <Button className='py-2.75 px-6.5 rounded-3xl text-base font-bold btn_style02' name='초기화' onClick={() => {}} disabled={true} />
-              <Button className='gap-2 py-3 px-6.5 rounded-3xl text-base font-bold btn_style03' name='상세 검색' icon={ic_search} onClick={() => {}} />
+              <Button className='gap-2 py-3 px-6.5 rounded-3xl text-base font-bold btn_style03' name='상세 검색' icon={icSearch} onClick={() => {}} />
             </div>
           </>
         }
