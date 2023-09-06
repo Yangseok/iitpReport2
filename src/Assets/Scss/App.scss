@@ -90,7 +90,7 @@ hr { color: $color_line; }
         color: $color_regular;
         font-weight: 700;
       }
-      a {
+      button, a {
         @include hiddenAltText;
         display: block;
         width: 24px;
@@ -99,8 +99,8 @@ hr { color: $color_line; }
         background-position: center;
         background-size: contain;
       }
-      &:nth-of-type(1) a { background-image: url('Assets/Images/ic_guest.png'); }
-      &:nth-of-type(2) a { background-image: url('Assets/Images/ic_menu.png'); }
+      &:nth-of-type(1) > * { background-image: url('Assets/Images/ic_guest.png'); }
+      &:nth-of-type(2) > * { background-image: url('Assets/Images/ic_menu.png'); }
     }
   }
 
@@ -234,6 +234,8 @@ hr { color: $color_line; }
 *:focus-visible { outline-color: $color_main; }
 .hidden_text { @include hiddenAltText; }
 .max-w-calc-20 { max-width: calc(100% - 80px); }
+.border-top { border-top: 1px solid $color_placeholder; }
+.border-bottom { border-bottom: 1px solid $color_placeholder; }
 
 /* Button */
 button, a {
@@ -519,6 +521,40 @@ textarea {
   color: $color_regular;
 
   &::placeholder { color: $color_placeholder; }
+}
+
+.file_custom {
+  position: relative;
+  border: 2px solid $color_main;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  overflow: hidden;
+
+  .file_name {
+    @include flexLayout(center, center, 4px);
+    height: 80px;
+
+    button {
+      @include hiddenAltText;
+      width: 24px;
+      height: 24px;
+      background: url('Assets/Images/ic_x03.png') no-repeat center / contain;
+    }
+  }
+  .file_btn {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+
+    input {
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+      cursor: pointer;
+    }
+  }
 }
 
 .input_x_wrap {
@@ -988,7 +1024,7 @@ textarea {
       transition: all 0.3s;
     }
 
-    &.nodata  { padding: 17px 16px; }
+    &.nodata { padding: 17px 16px; }
     &.on {
       border-color: $color_main;
 

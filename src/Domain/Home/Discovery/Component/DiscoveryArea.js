@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import icAnalysis from 'Assets/Images/ic_analysis.png';
+import icSearch from 'Assets/Images/ic_search.png';
 import AutoCompleteSearch from 'Domain/Home/Common/Componet/AutoCompleteSearch';
 import KeywordWrap from 'Domain/Home/Discovery/Component/Keyword/KeywordWrap';
 import * as mainAPI from 'Domain/Home/Main/API/Call';
@@ -8,6 +9,9 @@ import { getSearchKeyword, setSearchKeywordReset } from 'Domain/Home/Common/Stat
 import common from 'Utill';
 import { useParams, useNavigate } from 'react-router-dom';
 import { setMsg,setShow } from 'Domain/Home/Common/Status/MsgSlice';
+import InputFile from 'Domain/Home/Discovery/Component/InputFile';
+import Button from 'Domain/Home/Common/Componet/Button';
+import ProjectWrap from 'Domain/Home/Discovery/Component/Project/ProjectWrap';
 
 export default function PageSearchArea(props) {
   const dispatch = useDispatch();
@@ -96,11 +100,14 @@ export default function PageSearchArea(props) {
         </>
         : (menu === 1)
           ? <>
-            파일 분석
+            <div className='container-800 p-0'>
+              <InputFile />
+              <Button name="파일 분석" icon={icSearch} className="gap-2 mt-6 mx-auto py-3 px-6.5 rounded-3xl text-base font-bold btn_style03" />
+            </div>
           </>
           :  (menu === 2)
             ? <>
-              과제 정보 분석
+              <ProjectWrap folded={(page === 'resultPage') ? true : ''} />
             </>
             : ''
       }

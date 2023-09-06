@@ -138,11 +138,11 @@ export default function KeywordWrap(props) {
       <div className='flex items-center justify-between mt-10 px-4'>
         <h3 className='text-xl font-bold text-color-dark'>키워드 결과</h3>
         <div className='flex items-center gap-6'>
-          <button type='button' className='keywords_reset_btn' disabled={resetDisabled} onClick={onKeywordReset}>
+          <button type='button' className='discovery_reset_btn' disabled={resetDisabled} onClick={onKeywordReset}>
             선택 초기화
             <img src={(resetDisabled) ? icReset : icReset02} alt='선택 초기화' className='w-6' />
           </button>
-          <button type='button' className={`keywords_fold_btn${(fullFold) ? ' fold' : ''}`} onClick={() => setFullFold(state => !state)}>
+          <button type='button' className={`discovery_fold_btn${(fullFold) ? ' fold' : ''}`} onClick={() => setFullFold(state => !state)}>
             {(fullFold) ? '펼치기' : '접기'} 
             <img src={arrDrop} alt='화살표' className='w-6' />
           </button>

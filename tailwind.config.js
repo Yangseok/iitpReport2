@@ -19,6 +19,7 @@ module.exports = {
         24: '6rem',
         25: '6.25rem',
         30: '7.5rem',
+        84: '21rem',
       },
       padding: {
         1.75: '0.4375rem',
