@@ -13,6 +13,7 @@ import * as discoveryAPI from 'Domain/Home/Discovery/API/Call';
 import * as projectAPI from 'Domain/Home/Discovery/API/ProjectCall';
 import Filter from 'Domain/Home/Discovery/Component/Filter';
 import parse from 'html-react-parser';
+import { NavLink } from 'react-router-dom';
 
 export default function Result() {
   const dispatch = useDispatch();
@@ -241,7 +242,7 @@ export default function Result() {
                         </div>
                       </>}
                       btns={<>
-                        <a href={`${e.id}`} className='h-5 px-1.5 rounded-sm text-xs font-medium text-color-white bg-color-light1'>자세히 보기↗</a>
+                        <NavLink to={`/view/projectin/${e.id}`} className='h-5 px-1.5 rounded-sm text-xs font-medium text-color-white bg-color-light1'>자세히 보기↗</NavLink>
                       </>}
                     />
                   );

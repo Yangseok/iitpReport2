@@ -6,7 +6,6 @@ import DiscoveryResultLayout from 'Domain/Home/Discovery/Layout/DiscoveryResultL
 import Button from 'Domain/Home/Common/Componet/Button';
 import Pagination from 'Domain/Home/Common/Componet/Pagination';
 import NewsWordClouds from 'Domain/Home/Discovery/Component/NewsWordClouds';
-import $ from 'jquery';
 import common from 'Utill';
 import { useSelector, useDispatch } from 'react-redux';
 import { getSearchKeyword, getSelectKeyword, getFilterActive, setLoading } from 'Domain/Home/Common/Status/CommonSlice';
@@ -14,6 +13,7 @@ import * as discoveryAPI from 'Domain/Home/Discovery/API/Call';
 import * as newsAPI from 'Domain/Home/Discovery/API/NewsCall';
 import Filter from 'Domain/Home/Discovery/Component/Filter';
 import parse from 'html-react-parser';
+import ToggleListItem from 'Domain/Home/Common/Componet/ToggleListItem';
 
 export default function DiscoveryResult() {
   const dispatch = useDispatch();
@@ -171,31 +171,6 @@ export default function DiscoveryResult() {
     })();
   }, [keyword]);
 
-  const [newsActive, setNewsActive] = useState(null);
-
-  // 뉴스 선택 시
-  const onItemSlide = (e, id) => {
-    if(e.currentTarget.nodeName !== 'BUTTON') {
-      const pd = 20;
-      const liEl = e.currentTarget;
-      const contsEl = e.currentTarget.children[1];
-
-      setNewsActive(id);
-      $(e.currentTarget).siblings().find('.conts_box').css('height', 0);
-      $(e.currentTarget).siblings().find('.conts_box').css('paddingBottom', 0);
-
-      if(!liEl.classList.contains('on')) {
-        liEl.classList.add('on');
-        contsEl.style.height = `${contsEl.scrollHeight + pd}px`;
-        contsEl.style.paddingBottom = `${pd}px`;
-      } else {
-        liEl.classList.remove('on');
-        contsEl.style.height = 0;
-        contsEl.style.paddingBottom = 0;
-      }
-    }
-  };
-
   // const tempData = [
   //   {
   //     id: 0,
@@ -251,28 +226,23 @@ export default function DiscoveryResult() {
               {(projectData?.length > 0)
                 ? projectData?.map((e) => {
                   return (
-                    <li 
+                    <ToggleListItem 
                       key={e.id} 
-                      className={(e.id === newsActive) ? 'on' : ''}
-                      onClick={(event) => onItemSlide(event, e.id)} 
-                      onKeyUp={(event) => (event.key === 'Enter') && onItemSlide(event, e.id)} 
-                      role={'button'}
-                      tabIndex={0}
-                    >
-                      <div className='tit_box flex items-center justify-between gap-4'>
+                      id={e.id}
+                      title={<>
                         <p className='flex-1 text-base font-bold text-color-dark'>{e.title}</p>
                         <div className='text_style01 flex items-center gap-4'>
-                          <a href={e.link} className='h-5 px-1.5 rounded-sm text-xs font-medium text-color-white bg-color-light1' target='_blank' rel='noreferrer' title={`새창이동, ${e.title} 원문 페이지`}>원문 보러가기↗</a>
                           <div>
                             <p className='text-sm text-color-regular'>출처: <span className='font-medium text-color-main'>{e.source}</span></p>
                             <p className='text-sm text-color-regular'>출처일: <span className='font-medium text-color-main'>{e.date}</span></p>
                           </div>
+                          <a href={e.link} className='h-5 px-1.5 rounded-sm text-xs font-medium text-color-white bg-color-light1' target='_blank' rel='noreferrer' title={`새창이동, ${e.title} 원문 페이지`}>원문 보기↗</a>
                         </div>
-                      </div>
-                      <div className='conts_box'>
+                      </>}
+                      contents={<>
                         <NewsWordClouds wordCloudData={e.wordCloud ?? []} />
-                      </div>
-                    </li>
+                      </>}
+                    />
                   );
                 })
                 : <li className='nodata'>

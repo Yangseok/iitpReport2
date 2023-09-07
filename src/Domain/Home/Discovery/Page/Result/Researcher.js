@@ -18,6 +18,7 @@ import { getSearchKeyword, getSelectKeyword, getFilterActive, setLoading } from 
 import * as discoveryAPI from 'Domain/Home/Discovery/API/Call';
 import * as researcherAPI from 'Domain/Home/Discovery/API/ResearcherCall';
 import Filter from 'Domain/Home/Discovery/Component/Filter';
+import { NavLink } from 'react-router-dom';
 
 export default function DiscoveryResult() {
   const dispatch = useDispatch();
@@ -448,7 +449,7 @@ export default function DiscoveryResult() {
                             <p className='text-sm text-color-regular'>한글 키워드: <span className='font-medium text-color-main'>{e.keyword}</span></p>
                           </>}
                           desc={<>
-                            <a href={`${e.id}`} className='h-5 text-base font-bold text-color-footer'>더보기 ＋</a>
+                            <NavLink to={`/view/projectout/${e.id}`} className='h-5 text-base font-bold text-color-footer'>더보기 ＋</NavLink>
                           </>}
                         />;
                       })

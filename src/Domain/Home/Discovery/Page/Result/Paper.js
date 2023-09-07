@@ -13,6 +13,7 @@ import * as discoveryAPI from 'Domain/Home/Discovery/API/Call';
 import * as paperAPI from 'Domain/Home/Discovery/API/PaperCall';
 import Filter from 'Domain/Home/Discovery/Component/Filter';
 import parse from 'html-react-parser';
+import { NavLink } from 'react-router-dom';
 
 export default function Result() {
   const dispatch = useDispatch();
@@ -231,7 +232,7 @@ export default function Result() {
                       <p className='text-sm text-color-regular'>학술지/학술대회명: <span className='font-medium text-color-main'>{e.journal}</span></p>
                     </>}
                     btns={<>
-                      <a href={`${e.id}`} className='h-5 px-1.5 rounded-sm text-xs font-medium text-color-white bg-color-light1'>자세히 보기↗</a>
+                      <NavLink to={`/view/paper/${e.id}`} className='h-5 px-1.5 rounded-sm text-xs font-medium text-color-white bg-color-light1'>자세히 보기↗</NavLink>
                       <a href={e.link} className='h-5 px-1.5 rounded-sm text-xs font-medium text-color-white bg-color-footer' target='_blank' rel='noreferrer' title={`새창이동, ${e.title} 원문 페이지`}>원문 보기↗</a>
                     </>}
                   />);

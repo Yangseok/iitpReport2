@@ -22,6 +22,7 @@ import * as discoveryAPI from 'Domain/Home/Discovery/API/Call';
 import * as orgnAPI from 'Domain/Home/Discovery/API/OrgnCall';
 import Filter from 'Domain/Home/Discovery/Component/Filter';
 import parse from 'html-react-parser';
+import { NavLink } from 'react-router-dom';
 
 export default function DiscoveryResult() {
   const dispatch = useDispatch();
@@ -91,7 +92,6 @@ export default function DiscoveryResult() {
           name: parse(data?.data?.result?.dataList?.[i]?.orgnName ?? ''),
           assign: data?.data?.result?.dataList?.[i]?.projectCount ?? 0,
           patent: data?.data?.result?.dataList?.[i]?.patentCount ?? 0,
-          link: '#',
           institue: data?.data?.result?.dataList?.[i]?.researchInstitute ?? '',
           safety: [2,0,1][i%3],
           sales: data?.data?.result?.dataList?.[i]?.topRankSales ?? '',
@@ -460,7 +460,7 @@ export default function DiscoveryResult() {
                                 )
                                 }
                               </div>
-                              {(e?.link) && <a href={e.link} className='h-5 px-1.5 rounded-sm text-xs font-medium text-color-white bg-color-light1 min-w-17' target='_blank' rel='noreferrer' title={`새창이동, ${e.name} 기관 페이지`}>기관 보기↗</a>}
+                              <NavLink to={`/view/orgn/${e.id}`} className='h-5 px-1.5 rounded-sm text-xs font-medium text-color-white bg-color-light1 min-w-17'>기관 보기↗</NavLink>
                             </div>
                             <div className='text_style01'>
                               <p className='text-sm text-color-regular'>과제: <span className='font-medium text-color-main'>{e.assign}건</span></p>
@@ -551,7 +551,7 @@ export default function DiscoveryResult() {
                                 <p className='text-sm text-color-regular'>한글 키워드: <span className='font-medium text-color-main'>{e.keyword}</span></p>
                               </>}
                               desc={<>
-                                <a href={`${e.id}`} className='h-5 text-base font-bold text-color-footer'>더보기 ＋</a>
+                                <NavLink to={`/view/projectout/${e.id}`} className='h-5 text-base font-bold text-color-footer'>더보기 ＋</NavLink>
                               </>}
                             />;
                           })
@@ -583,7 +583,7 @@ export default function DiscoveryResult() {
                                 </div>
                               </>}
                               desc={<>
-                                <a href={`${e.id}`} className='h-5 text-base font-bold text-color-footer'>더보기 ＋</a>
+                                <NavLink to={`/view/patent/${e.id}`} className='h-5 text-base font-bold text-color-footer'>더보기 ＋</NavLink>
                               </>}
                             />;
                           })
