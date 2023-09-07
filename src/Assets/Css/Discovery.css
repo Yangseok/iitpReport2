@@ -129,6 +129,9 @@
   background: url("Assets/Images/arr_drop.png") no-repeat center/24px;
   transition: all 0.3s;
 }
+.keywords_wrap .title button:disabled {
+  opacity: 0.2;
+}
 .keywords_wrap ul {
   display: flex;
   align-items: center;

@@ -106,6 +106,8 @@
       height: 30px;
       background: url('Assets/Images/arr_drop.png') no-repeat center / 24px;
       transition: all 0.3s;
+
+      &:disabled { opacity: 0.2; }
     }
   }
   ul {
