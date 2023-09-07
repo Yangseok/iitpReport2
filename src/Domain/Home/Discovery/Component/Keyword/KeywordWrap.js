@@ -7,22 +7,15 @@ import Button from 'Domain/Home/Common/Componet/Button';
 import KeywordDepth from './KeywordDepth';
 import * as discoveryAPI from 'Domain/Home/Discovery/API/Call';
 import common from 'Utill';
-import { useSearchParams } from 'react-router-dom';
+
 import { useSelector, useDispatch } from 'react-redux';
-import { setSelectKeyword, setSearchKeywordResult, getSearchKeywordResult, setSearchKeywordReset, getSearchKeywordReset, setTmpSearchKeyword, getTmpSearchKeyword } from 'Domain/Home/Common/Status/CommonSlice';
-import { setMsg,setShow } from 'Domain/Home/Common/Status/MsgSlice';
+import { setSelectKeyword, setSearchKeywordResult, getSearchKeywordResult, setSearchKeywordReset, getSearchKeywordReset } from 'Domain/Home/Common/Status/CommonSlice';
 
 export default function KeywordWrap(props) {
   const dispatch = useDispatch();
 
   const searchKeywordResult = useSelector(getSearchKeywordResult) ?? {};
   const searchKeywordReset = useSelector(getSearchKeywordReset);
-  const tmpSearchKeyword = useSelector(getTmpSearchKeyword);
-  
-  const [searchParams] = useSearchParams();
-  const searchParamKeyword = searchParams.get('keyword')??'';
-  
-  const se = common.getSegment();
 
   const { folded, chfold, setChFold } = props;
   const [selectedData, setSelectedData] = useState({});
@@ -75,8 +68,6 @@ export default function KeywordWrap(props) {
     // 1depth 키워드 데이터 노출
     dispatch(setSearchKeywordResult({ 1: { fold: false, list: keywordData } }));
     setSelectedData({});
-
-    dispatch(setTmpSearchKeyword(props.keyword));
   };
 
   useEffect(() => {
@@ -107,24 +98,6 @@ export default function KeywordWrap(props) {
     // console.log('SELECT DATA : ', selectedData);
     dispatch(setSelectKeyword(selectedData));
   }, [selectedData]);
-
-  useEffect(() => {
-    if (tmpSearchKeyword !== searchParamKeyword && se[4] !== undefined) {
-      // searchEvent();
-      // console.log('tmpSearchKeyword', tmpSearchKeyword);
-      // console.log('searchParamKeyword', searchParamKeyword);
-      // console.log('se4', se[4]);
-
-      dispatch(setMsg({
-        title: '알림',
-        msg: '"'+searchParamKeyword+'"에서 "'+tmpSearchKeyword + '"로 키워드 분석을 변경하여 페이지를 이동합니다.',
-        btnCss: ['inline-block rounded bg-primary-100 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-primary-700 transition duration-150 ease-in-out hover:bg-primary-accent-100 focus:bg-primary-accent-100 focus:outline-none focus:ring-0 active:bg-primary-accent-200'],
-        btnTxt: ['확인'],
-        btnEvent: ['goKeyword']
-      }));
-      dispatch(setShow(true));
-    }
-  }, [tmpSearchKeyword, searchParamKeyword, se]);
 
   useEffect(() => {
     if (chfold) {
@@ -161,10 +134,10 @@ export default function KeywordWrap(props) {
               onExpendClick={handleExpendClick}
             />
           ))}
+          <Button className='gap-2 mt-6 mx-auto py-3 px-6.5 rounded-3xl text-base font-bold btn_style03' name='디스커버리' icon={icSearch} onClick={props.discoverySearchBttonClick} />
         </>
-        : ''
+        : null
       }
-      <Button className='gap-2 mt-6 mx-auto py-3 px-6.5 rounded-3xl text-base font-bold btn_style03' name='디스커버리' icon={icSearch} onClick={props.discoverySearchBttonClick} />
     </>
   );
 }

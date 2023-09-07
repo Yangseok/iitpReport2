@@ -52,7 +52,7 @@ export default function DiscoveryResult() {
     const se1 = se[1] ?? '';
     const se2 = se[2] ?? '';
     await (async () => {
-      const similarity = common.procSimilarity(selectKeyword);
+      let similarity = [];
       let filterObj = {
         orgnType: (filterActive[filterKey]?.selected?.orgnType ?? []).join('|'),
         industry: (filterActive[filterKey]?.selected?.industry ?? []).join('|'),
@@ -69,6 +69,7 @@ export default function DiscoveryResult() {
           data = await orgnAPI.orgn('search',size,page,keyword,similarity,sort,filterObj,searchParam,etcParam);
         } else if (se1 == 'discovery') {
           if (se2 == 'keyword') {
+            similarity = common.procSimilarity(selectKeyword);
             data = await orgnAPI.orgn('discovery',size,page,keyword,similarity,sort,filterObj,searchParam,etcParam);
           } else if (se2 == 'file') {
             data = await orgnAPI.orgn('discovery',size,page,keyword,similarity,sort,filterObj,searchParam,etcParam);
@@ -105,14 +106,14 @@ export default function DiscoveryResult() {
       setSearchButtonClick(false);
       setOrgnActive({ id: data?.data?.result?.dataList?.[0]?.id ?? -1, name: common.deHighlight(data?.data?.result?.dataList?.[0]?.orgnName ?? '') });
     })();
-  }, [searchButtonClick, page, size, sort, se, filterActive]);
+  }, [keyword, searchButtonClick, page, size, sort, se, filterActive]);
 
   const downExcel = useCallback(async () => {
     const se1 = se[1] ?? '';
     const se2 = se[2] ?? '';
     const excelSize = 1000;
     await (async () => {
-      const similarity = common.procSimilarity(selectKeyword);
+      let similarity = [];
       let filterObj = {
         orgnType: (filterActive[filterKey]?.selected?.orgnType ?? []).join('|'),
         industry: (filterActive[filterKey]?.selected?.industry ?? []).join('|'),
@@ -124,6 +125,7 @@ export default function DiscoveryResult() {
       try {
         dispatch(setLoading(true));
         if (se1 == 'search') {
+          similarity = common.procSimilarity(selectKeyword);
           data = await orgnAPI.orgn('search',excelSize,1,keyword,similarity,sort,filterObj,searchParam);
         } else if (se1 == 'discovery') {
           if (se2 == 'keyword') {
@@ -155,7 +157,7 @@ export default function DiscoveryResult() {
       }
       await common.excelExport('down', ['기관명', '과제갯수', '특허갯수', '사후관리대상기업', '매출상위(%)'], procData);
     })();
-  }, [sort, se, filterActive]);
+  }, [keyword, sort, se, filterActive]);
 
   const getDetail = useCallback(async () => {
     if (orgnActive.id === -1) return null;
@@ -202,8 +204,10 @@ export default function DiscoveryResult() {
         // console.log(i, data?.data?.result?.orgnResultInfo?.projectOut?.[i]);
         const period = data?.data?.result?.orgnResultInfo?.projectOut?.[i]?.period ?? '';
         const periodArr = period.split('~');
-        const division = data?.data?.result?.orgnResultInfo?.projectOut?.[i]?.technicalClassification ?? [];
-        const keywordt = data?.data?.result?.orgnResultInfo?.projectOut?.[i]?.keywords ?? [];
+        let division = data?.data?.result?.orgnResultInfo?.projectOut?.[i]?.technicalClassification ?? [];
+        if (division == '') division = [];
+        let keywordt = data?.data?.result?.orgnResultInfo?.projectOut?.[i]?.keywords ?? [];
+        if (keywordt == '') keywordt = [];
         const subProjectListPushData = {
           id: data?.data?.result?.orgnResultInfo?.projectOut?.[i]?.projectNumber ?? i,
           tag : ((periodArr?.[1]??'').replaceAll(' ','') === '9999-12-31') ? 1 : 2,
@@ -253,7 +257,7 @@ export default function DiscoveryResult() {
 
   useEffect(() => {
     getList();
-  }, [page, size, sort, filterActive]);
+  }, [keyword, page, size, sort, filterActive]);
 
   useEffect(() => {
     if (searchButtonClick) {

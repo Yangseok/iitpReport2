@@ -5,7 +5,7 @@ import AutoCompleteSearch from 'Domain/Home/Common/Componet/AutoCompleteSearch';
 import KeywordWrap from 'Domain/Home/Discovery/Component/Keyword/KeywordWrap';
 import * as mainAPI from 'Domain/Home/Main/API/Call';
 import { useSelector, useDispatch } from 'react-redux';
-import { getSearchKeyword, setSearchKeywordReset } from 'Domain/Home/Common/Status/CommonSlice';
+import { getSearchKeyword, setSearchKeywordReset, getTmpSearchKeyword } from 'Domain/Home/Common/Status/CommonSlice';
 import common from 'Utill';
 import { useParams, useNavigate } from 'react-router-dom';
 import { setMsg,setShow } from 'Domain/Home/Common/Status/MsgSlice';
@@ -24,13 +24,14 @@ export default function PageSearchArea(props) {
   const [chfold, setChFold] = useState(false);
   
   const keyword = useSelector(getSearchKeyword);
+  const tmpSearchKeyword = useSelector(getTmpSearchKeyword);
   const [dataSearch, setDataSearch] = useState([]);
 
   const navigate = useNavigate();
   const se = common.getSegment();
 
   const handleSearch = () => {
-    if (keyword.trim() === '') {
+    if (tmpSearchKeyword.trim() === '') {
       dispatch(setMsg({
         title: '알림',
         msg: '키워드를 입력해주세요.',
@@ -42,7 +43,7 @@ export default function PageSearchArea(props) {
       return null;
     }
     dispatch(setSearchKeywordReset(true));
-    navigate('/discovery/' + paramSe2 + '/result?keyword=' + keyword);
+    navigate('/discovery/' + paramSe2 + '/result');
   };
 
   const discoverySearchBttonClick = () => {
@@ -55,7 +56,7 @@ export default function PageSearchArea(props) {
     if (se[4] !== undefined) {
       defaultSe4 = se[4];
     }
-    navigate('/discovery/' + paramSe2 + '/result/' + defaultSe4 + '?keyword=' + keyword);
+    navigate('/discovery/' + paramSe2 + '/result/' + defaultSe4);
   };
 
   useEffect(() => {
@@ -78,12 +79,12 @@ export default function PageSearchArea(props) {
 
   useEffect(() => {
     (async () => {
-      if(keyword.trim() !== '') {
-        const data = await mainAPI.autocomplete(keyword);
+      if(tmpSearchKeyword.trim() !== '') {
+        const data = await mainAPI.autocomplete(tmpSearchKeyword);
         setDataSearch(data?.data?.result);
       }
     })();
-  }, [keyword]);
+  }, [tmpSearchKeyword]);
 
   return (
     <>

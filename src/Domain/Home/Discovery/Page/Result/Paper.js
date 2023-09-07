@@ -38,7 +38,7 @@ export default function Result() {
     const se1 = se[1] ?? '';
     const se2 = se[2] ?? '';
     await (async () => {
-      const similarity = common.procSimilarity(selectKeyword);
+      let similarity = [];
       let filterObj = {
         year: (filterActive[filterKey]?.selected?.resultYear ?? []).join('|'),
         paperType: (filterActive[filterKey]?.selected?.paperType ?? []).join('|'),
@@ -54,6 +54,7 @@ export default function Result() {
           data = await paperAPI.paper('search',size,page,keyword,similarity,sort,filterObj,searchParam,etcParam);
         } else if (se1 == 'discovery') {
           if (se2 == 'keyword') {
+            similarity = common.procSimilarity(selectKeyword);
             data = await paperAPI.paper('discovery',size,page,keyword,similarity,sort,filterObj,searchParam,etcParam);
           } else if (se2 == 'file') {
             data = await paperAPI.paper('discovery',size,page,keyword,similarity,sort,filterObj,searchParam,etcParam);
@@ -91,14 +92,14 @@ export default function Result() {
       setProjectData(procData);
       setSearchButtonClick(false);
     })();
-  }, [searchButtonClick, page, size, sort, se, filterActive]);
+  }, [keyword, searchButtonClick, page, size, sort, se, filterActive]);
 
   const downExcel = useCallback(async () => {
     const se1 = se[1] ?? '';
     const se2 = se[2] ?? '';
     const excelSize = 1000;
     await (async () => {
-      const similarity = common.procSimilarity(selectKeyword);
+      let similarity = [];
       let filterObj = {
         year: (filterActive[filterKey]?.selected?.resultYear ?? []).join('|'),
         paperType: (filterActive[filterKey]?.selected?.paperType ?? []).join('|'),
@@ -111,6 +112,7 @@ export default function Result() {
           data = await paperAPI.paper('search',excelSize,1,keyword,similarity,sort,filterObj,searchParam);
         } else if (se1 == 'discovery') {
           if (se2 == 'keyword') {
+            similarity = common.procSimilarity(selectKeyword);
             data = await paperAPI.paper('discovery',excelSize,1,keyword,similarity,sort,filterObj,searchParam);
           } else if (se2 == 'file') {
             data = await paperAPI.paper('discovery',excelSize,1,keyword,similarity,sort,filterObj,searchParam);
@@ -141,11 +143,11 @@ export default function Result() {
       }
       await common.excelExport('down', ['논문명', '발행년도', '논문 구분', '소속기관', '주 저자', '학술지/학술대회명'], procData);
     })();
-  }, [sort, se, filterActive]);
+  }, [keyword, sort, se, filterActive]);
 
   useEffect(() => {
     getList();
-  }, [page, size, sort, filterActive]);
+  }, [keyword, page, size, sort, filterActive]);
 
   useEffect(() => {
     if (searchButtonClick) {

@@ -2,9 +2,9 @@ import React, { useEffect, useState } from 'react';
 import * as Hangul from 'hangul-js';
 import Button from 'Domain/Home/Common/Componet/Button';
 import { useSelector, useDispatch } from 'react-redux';
-import { getSearchKeyword, setSearchKeyword } from 'Domain/Home/Common/Status/CommonSlice';
+import { setSearchKeyword, setTmpSearchKeyword, getTmpSearchKeyword } from 'Domain/Home/Common/Status/CommonSlice';
 import $ from 'jquery';
-import { useSearchParams } from 'react-router-dom';
+// import { useSearchParams } from 'react-router-dom';
 import parse from 'html-react-parser';
 
 export default function AutoCompleteSearch(props) {
@@ -12,12 +12,13 @@ export default function AutoCompleteSearch(props) {
   const [listData, setListData] = useState([]);
   const [searchFocus, setSearchFocus] = useState(false);
   const dispatch = useDispatch();
-  const keyword = useSelector(getSearchKeyword);
-  const [searchParams] = useSearchParams();
-  const searchParamKeyword = searchParams.get('keyword')??'';
+  const tmpSearchKeyword = useSelector(getTmpSearchKeyword);
+  // const [searchParams] = useSearchParams();
+  // const searchParamKeyword = searchParams.get('keyword')??'';
 
   const searchEvent = async () => {
     setSearchFocus(false);
+    dispatch(setSearchKeyword(tmpSearchKeyword));
     const handleSearch = props?.handleSearch;
     if (handleSearch !== undefined) handleSearch();
     return null;
@@ -63,7 +64,7 @@ export default function AutoCompleteSearch(props) {
 
   const onListClick = (text) => {
     setListData([]);
-    dispatch(setSearchKeyword(text));
+    dispatch(setTmpSearchKeyword(text));
     setSearchFocus(false);
   };
 
@@ -85,9 +86,10 @@ export default function AutoCompleteSearch(props) {
     });
   }, []);
 
-  useEffect(() => {
-    dispatch(setSearchKeyword(searchParamKeyword));
-  }, [searchParamKeyword]);
+  // useEffect(() => {
+  //   dispatch(setSearchKeyword(searchParamKeyword));
+  //   dispatch(setTmpSearchKeyword(searchParamKeyword));
+  // }, [searchParamKeyword]);
 
   return (
     <div className={`auto_search_wrap${(searchFocus) ? ' focus' : ''}`}>
@@ -97,10 +99,10 @@ export default function AutoCompleteSearch(props) {
           type='text'
           name='search_text'
           id='search_text'
-          onChange={(e) => dispatch(setSearchKeyword(e.target.value))}
+          onChange={(e) => dispatch(setTmpSearchKeyword(e.target.value))}
           onKeyUp={onSearchKeyUp}
           onFocus={() => setSearchFocus(true)}
-          value={keyword}
+          value={tmpSearchKeyword}
           placeholder='찾고 싶은 검색어를 입력해보세요.'
           autoComplete='off'
         />
@@ -121,7 +123,7 @@ export default function AutoCompleteSearch(props) {
               </li>
             ))
             : <li className='no_data'>
-              {(keyword) 
+              {(tmpSearchKeyword) 
                 ? '해당하는 검색어가 없습니다.'
                 : '검색어를 입력해주세요.'
               }

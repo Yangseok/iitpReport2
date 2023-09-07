@@ -38,7 +38,7 @@ export default function DiscoveryResult() {
     const se1 = se[1] ?? '';
     const se2 = se[2] ?? '';
     await (async () => {
-      const similarity = common.procSimilarity(selectKeyword);
+      let similarity = [];
       let filterObj = {
         year: (filterActive[filterKey]?.selected?.resultYear ?? []).join('|'),
         newsCategory: (filterActive[filterKey]?.selected?.category ?? []).join('|'),
@@ -55,6 +55,7 @@ export default function DiscoveryResult() {
           data = await newsAPI.news('search',size,page,keyword,similarity,sort,filterObj,searchParam,etcParam);
         } else if (se1 == 'discovery') {
           if (se2 == 'keyword') {
+            similarity = common.procSimilarity(selectKeyword);
             data = await newsAPI.news('discovery',size,page,keyword,similarity,sort,filterObj,searchParam,etcParam);
           } else if (se2 == 'file') {
             data = await newsAPI.news('discovery',size,page,keyword,similarity,sort,filterObj,searchParam,etcParam);
@@ -91,14 +92,14 @@ export default function DiscoveryResult() {
       setProjectData(procData);
       setSearchButtonClick(false);
     })();
-  }, [searchButtonClick, page, size, sort, se, filterActive]);
+  }, [keyword, searchButtonClick, page, size, sort, se, filterActive]);
 
   const downExcel = useCallback(async () => {
     const se1 = se[1] ?? '';
     const se2 = se[2] ?? '';
     const excelSize = 1000;
     await (async () => {
-      const similarity = common.procSimilarity(selectKeyword);
+      let similarity = [];
       let filterObj = {
         year: (filterActive[filterKey]?.selected?.resultYear ?? []).join('|'),
         newsCategory: (filterActive[filterKey]?.selected?.category ?? []).join('|'),
@@ -113,6 +114,7 @@ export default function DiscoveryResult() {
           data = await newsAPI.news('search',excelSize,1,keyword,similarity,sort,filterObj,searchParam);
         } else if (se1 == 'discovery') {
           if (se2 == 'keyword') {
+            similarity = common.procSimilarity(selectKeyword);
             data = await newsAPI.news('discovery',excelSize,1,keyword,similarity,sort,filterObj,searchParam);
           } else if (se2 == 'file') {
             data = await newsAPI.news('discovery',excelSize,1,keyword,similarity,sort,filterObj,searchParam);
@@ -141,11 +143,11 @@ export default function DiscoveryResult() {
       }
       await common.excelExport('down', ['뉴스 제목', '내용', '출처', '출처일'], procData);
     })();
-  }, [sort, se, filterActive]);
+  }, [keyword, sort, se, filterActive]);
 
   useEffect(() => {
     getList();
-  }, [page, size, sort, filterActive]);
+  }, [keyword, page, size, sort, filterActive]);
 
   useEffect(() => {
     if (searchButtonClick) {

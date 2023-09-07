@@ -37,7 +37,7 @@ export default function Result() {
     const se1 = se[1] ?? '';
     const se2 = se[2] ?? '';
     await (async () => {
-      const similarity = common.procSimilarity(selectKeyword);
+      let similarity = [];
       let filterObj = {
         year: (filterActive[filterKey]?.selected?.resultYear ?? []).join('|'),
         source: (filterActive[filterKey]?.selected?.source ?? []).join('|'),
@@ -54,6 +54,7 @@ export default function Result() {
           data = await policyAPI.policy('search',size,page,keyword,similarity,sort,filterObj,searchParam,etcParam);
         } else if (se1 == 'discovery') {
           if (se2 == 'keyword') {
+            similarity = common.procSimilarity(selectKeyword);
             data = await policyAPI.policy('discovery',size,page,keyword,similarity,sort,filterObj,searchParam,etcParam);
           } else if (se2 == 'file') {
             data = await policyAPI.policy('discovery',size,page,keyword,similarity,sort,filterObj,searchParam,etcParam);
@@ -74,10 +75,17 @@ export default function Result() {
         // console.log(i, data?.data?.result?.dataList?.[i]);
         const date = data?.data?.result?.dataList?.[i]?.publishedDate ?? '';
         const dateArr = date.split(' ');
+
+        // parse(data?.data?.result?.dataList?.[i]?.contents ?? '',{
+        //   replace: (domNode) => {
+        //     console.dir(domNode, { depth: null });
+        //   }
+        // })
+
         const pushData = {
           id: data?.data?.result?.dataList?.[i]?.applNumber ?? i,
           title: parse(data?.data?.result?.dataList?.[i]?.title ?? ''),
-          content: parse(data?.data?.result?.dataList?.[i]?.contents ?? ''),
+          content: data?.data?.result?.dataList?.[i]?.contents ?? '',
           source: parse(data?.data?.result?.dataList?.[i]?.source ?? ''),
           date: (dateArr[0] ?? '').replaceAll('-','.'),
           link: data?.data?.result?.dataList?.[i]?.link ?? '',
@@ -89,14 +97,14 @@ export default function Result() {
       setProjectData(procData);
       setSearchButtonClick(false);
     })();
-  }, [searchButtonClick, page, size, sort, se, filterActive]);
+  }, [keyword, searchButtonClick, page, size, sort, se, filterActive]);
 
   const downExcel = useCallback(async () => {
     const se1 = se[1] ?? '';
     const se2 = se[2] ?? '';
     const excelSize = 1000;
     await (async () => {
-      const similarity = common.procSimilarity(selectKeyword);
+      let similarity = [];
       let filterObj = {
         year: (filterActive[filterKey]?.selected?.resultYear ?? []).join('|'),
         source: (filterActive[filterKey]?.selected?.source ?? []).join('|'),
@@ -111,6 +119,7 @@ export default function Result() {
           data = await policyAPI.policy('search',excelSize,1,keyword,similarity,sort,filterObj,searchParam);
         } else if (se1 == 'discovery') {
           if (se2 == 'keyword') {
+            similarity = common.procSimilarity(selectKeyword);
             data = await policyAPI.policy('discovery',excelSize,1,keyword,similarity,sort,filterObj,searchParam);
           } else if (se2 == 'file') {
             data = await policyAPI.policy('discovery',excelSize,1,keyword,similarity,sort,filterObj,searchParam);
@@ -140,13 +149,14 @@ export default function Result() {
       }
       await common.excelExport('down', ['정부 정책 자료명', '출처', '작성일', '본문'], procData);
     })();
-  }, [sort, se, filterActive]);
+  }, [keyword, sort, se, filterActive]);
 
   useEffect(() => {
     getList();
-  }, [page, size, sort, filterActive]);
+  }, [keyword, page, size, sort, filterActive]);
 
   useEffect(() => {
+    console.log('searchButtonClick:', searchButtonClick);
     if (searchButtonClick) {
       setPage(1); 
       getList();
@@ -183,7 +193,7 @@ export default function Result() {
   // ];
 
   return (
-    <DiscoveryResultLayout totalCount={tabCount?.all} tabCount={tabCount} keyword={keyword} >
+    <DiscoveryResultLayout totalCount={tabCount?.all} tabCount={tabCount} keyword={keyword} setSearchButtonClick={setSearchButtonClick} >
       <section className='mt-6'>
         <div className='container'>
           <div className='flex items-center justify-between'>
@@ -213,7 +223,7 @@ export default function Result() {
             </div>
           </div>
 
-          {filterShow && <Filter filterItem={filterItem} filterKey={filterKey} setSearchButtonClick={setSearchButtonClick} />}
+          {filterShow && <Filter filterItem={filterItem} filterKey={filterKey} />}
 
           <div className='list_style01 mt-2'>
             <ul>
@@ -223,7 +233,7 @@ export default function Result() {
                     key={e.id}
                     title={e.title}
                     contents={<>
-                      <p className='text-sm text-color-regular line2_text'>{e.content}</p>
+                      <p className='text-sm text-color-regular line2_text' dangerouslySetInnerHTML={{__html : e.content}} />
                     </>}
                     desc={<>
                       <div className='text_style01 flex items-center gap-4'>

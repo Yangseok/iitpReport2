@@ -24,21 +24,22 @@ import AutoCompleteSearch from 'Domain/Home/Common/Componet/AutoCompleteSearch';
 import $ from 'jquery';
 import { FullPage, Slide } from 'react-full-page';
 import { useSelector, useDispatch } from 'react-redux';
-import { getSearchKeyword, setSearchKeywordReset } from 'Domain/Home/Common/Status/CommonSlice';
+import { setSearchKeywordReset, getTmpSearchKeyword } from 'Domain/Home/Common/Status/CommonSlice';
 import { useNavigate } from 'react-router-dom';
 import { setMsg,setShow } from 'Domain/Home/Common/Status/MsgSlice';
 
 export default function Main() {
   const dispatch = useDispatch();
-  const keyword = useSelector(getSearchKeyword);
+  const tmpSearchKeyword = useSelector(getTmpSearchKeyword);
   const [dataCount, setDataCount] = useState({});
+  
   const [dataSearch, setDataSearch] = useState([]);
   const fullpageRef = useRef(null);
 
   const navigate = useNavigate();
 
   const handleSearch = () => {
-    if (keyword.trim() === '') {
+    if (tmpSearchKeyword.trim() === '') {
       dispatch(setMsg({
         title: '알림',
         msg: '키워드를 입력해주세요.',
@@ -50,7 +51,7 @@ export default function Main() {
       return null;
     }
     dispatch(setSearchKeywordReset(true));
-    navigate('/search/result/all?keyword=' + keyword);
+    navigate('/search/result/all');
   };
 
   useEffect(() => {
@@ -145,12 +146,12 @@ export default function Main() {
 
   useEffect(() => {
     (async () => {
-      if(keyword.trim() !== '') {
-        const data = await mainAPI.autocomplete(keyword);
+      if(tmpSearchKeyword.trim() !== '') {
+        const data = await mainAPI.autocomplete(tmpSearchKeyword);
         setDataSearch(data?.data?.result);
       }
     })();
-  }, [keyword]);
+  }, [tmpSearchKeyword]);
 
   return (
     <Layout>

@@ -46,7 +46,7 @@ export default function DiscoveryResult() {
     const se1 = se[1] ?? '';
     const se2 = se[2] ?? '';
     await (async () => {
-      const similarity = common.procSimilarity(selectKeyword);
+      let similarity = [];
       let filterObj = {
         orgn: (filterActive[filterKey]?.selected?.orgn ?? []).join('|'),
       };
@@ -61,6 +61,7 @@ export default function DiscoveryResult() {
           data = await researcherAPI.researcher('search',size,page,keyword,similarity,sort,filterObj,searchParam,etcParam);
         } else if (se1 == 'discovery') {
           if (se2 == 'keyword') {
+            similarity = common.procSimilarity(selectKeyword);
             data = await researcherAPI.researcher('discovery',size,page,keyword,similarity,sort,filterObj,searchParam,etcParam);
           } else if (se2 == 'file') {
             data = await researcherAPI.researcher('discovery',size,page,keyword,similarity,sort,filterObj,searchParam,etcParam);
@@ -94,14 +95,14 @@ export default function DiscoveryResult() {
       setSearchButtonClick(false);
       setResearcherActive({ id: data?.data?.result?.dataList?.[0]?.id ?? -1, name: data?.data?.result?.dataList?.[0]?.indvName ?? '' });
     })();
-  }, [searchButtonClick, page, size, sort, se, filterActive]);
+  }, [keyword, searchButtonClick, page, size, sort, se, filterActive]);
 
   const downExcel = useCallback(async () => {
     const se1 = se[1] ?? '';
     const se2 = se[2] ?? '';
     const excelSize = 1000;
     await (async () => {
-      const similarity = common.procSimilarity(selectKeyword);
+      let similarity = [];
       let filterObj = {
         orgn: (filterActive[filterKey]?.selected?.orgn ?? []).join('|'),
       };
@@ -113,6 +114,7 @@ export default function DiscoveryResult() {
           data = await researcherAPI.researcher('search',excelSize,1,keyword,similarity,sort,filterObj,searchParam);
         } else if (se1 == 'discovery') {
           if (se2 == 'keyword') {
+            similarity = common.procSimilarity(selectKeyword);
             data = await researcherAPI.researcher('discovery',excelSize,1,keyword,similarity,sort,filterObj,searchParam);
           } else if (se2 == 'file') {
             data = await researcherAPI.researcher('discovery',excelSize,1,keyword,similarity,sort,filterObj,searchParam);
@@ -140,7 +142,7 @@ export default function DiscoveryResult() {
       }
       await common.excelExport('down', ['ICT 자료명', '출처', '본문', '발행일'], procData);
     })();
-  }, [sort, se, filterActive]);
+  }, [keyword, sort, se, filterActive]);
 
   const getDetail = useCallback(async () => {
     if (researcherActive.id === -1) return null;
@@ -216,7 +218,7 @@ export default function DiscoveryResult() {
 
   useEffect(() => {
     getList();
-  }, [page, size, sort, filterActive]);
+  }, [keyword, page, size, sort, filterActive]);
 
   useEffect(() => {
     if (searchButtonClick) {

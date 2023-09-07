@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import * as mainAPI from 'Domain/Home/Main/API/Call';
 import { useDispatch } from 'react-redux';
-import { setSearchKeyword } from 'Domain/Home/Common/Status/CommonSlice';
+import { setTmpSearchKeyword } from 'Domain/Home/Common/Status/CommonSlice';
 
 export default function RecommandKeyword() {
 
@@ -20,7 +20,7 @@ export default function RecommandKeyword() {
 
   const handleClick = keyword => {
     // console.log(keyword);
-    dispatch(setSearchKeyword(keyword));  
+    dispatch(setTmpSearchKeyword(keyword));  
   };
 
   if (isFetching) {
