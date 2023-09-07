@@ -40,7 +40,7 @@ export default function ProjectWrap(props) {
         </div>
       </div>
       {(!fold)
-        ? <div className='search_detail_wrap pt-4 mt-4 border-top'>
+        ? <div className='search_detail_wrap pt-4 mt-4 border-top-placeholder'>
           <dl>
             <dt>과제명</dt>
             <dd>

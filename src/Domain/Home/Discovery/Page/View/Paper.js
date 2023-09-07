@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import ViewLayout from 'Domain/Home/Discovery/Layout/ViewLayout';
-import ViewTable from 'Domain/Home/Discovery/Component/View/ViewTable';
+import ViewTable from 'Domain/Home/Common/Componet/ViewTable';
 
 export default function View() {
   const tempData = [

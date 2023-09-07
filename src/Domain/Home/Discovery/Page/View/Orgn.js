@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import ViewLayout from 'Domain/Home/Discovery/Layout/ViewLayout';
 import Button from 'Domain/Home/Common/Componet/Button';
 import ListItem from 'Domain/Home/Common/Componet/ListItem';
-import ViewTable from 'Domain/Home/Discovery/Component/View/ViewTable';
+import ViewTable from 'Domain/Home/Common/Componet/ViewTable';
 import ToggleListItem from 'Domain/Home/Common/Componet/ToggleListItem';
 import WordClouds from 'Domain/Home/Common/Componet/Features/WordClouds';
 import ViewChart1 from 'Domain/Home/Discovery/Component/View/ViewChart1';
