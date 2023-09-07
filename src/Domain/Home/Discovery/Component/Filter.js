@@ -8,13 +8,15 @@ import { items } from 'Domain/Home/Discovery/Data/FilterItems';
 import SelectedFilterArea from 'Domain/Home/Discovery/Component/SelectedFilterArea';
 
 export default function Filter(props) {
-  const {filterItem, filterKey, setSearchButtonClick} = props;
+  const {filterItem, filterKey} = props;
 
   const dispatch = useDispatch();
   const filterActive = useSelector(getFilterActive);
   const [tabActive, setTabActive] = useState(-1);
   const [selectItem, setSelectItem] = useState([]);
   const [selectItemActive, setSelectItemActive] = useState(filterActive);
+
+  // console.log('selectItemActive[filterKey].selected:', selectItemActive[filterKey].selected);
 
   const handleSelectItem = useCallback((e) => {
     if (selectItemActive[filterKey]?.selected[tabActive] === undefined) return null;
@@ -35,7 +37,6 @@ export default function Filter(props) {
   const applyFilter = useCallback(() => {
     // console.log(selectItemActive);
     dispatch(setFilterActive(selectItemActive));
-    if (setSearchButtonClick !== undefined) setSearchButtonClick(true);
   }, [selectItemActive]);
 
   useEffect(() => {

@@ -134,7 +134,7 @@ export const excelExport = async (excelFileName, titleArr, data) => {
   };
   const excelButter = write(wb, { bookType: 'xlsx', type: 'array' });
   const excelFile = new Blob([excelButter], { type: excelFileType });
-  await new Promise((resolve) => setTimeout(resolve, 1000));
+  // await new Promise((resolve) => setTimeout(resolve, 1000));
   saveAs(excelFile, excelFileName + excelFileExtension);
 };
 export const maskingName = (name) => {

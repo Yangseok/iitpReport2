@@ -1,11 +1,17 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import common from 'Utill';
+import { useDispatch } from 'react-redux';
+import { setFilterActive } from 'Domain/Home/Common/Status/CommonSlice';
+import { items } from 'Domain/Home/Discovery/Data/FilterItems';
 
 export default function Observer() {
+  const dispatch = useDispatch();
+
+  const se = common.getSegment();
+  const filterRefresh = (se[1] ?? '') + '/' + se[2] ?? '';
 
   const navigate = useNavigate();
-
   useEffect(() => {
     const se = common.getSegment();
     const se1 = se[1] ?? '';
@@ -32,6 +38,10 @@ export default function Observer() {
       }
     }
   }, []);
+
+  useEffect(() => {
+    dispatch(setFilterActive(items));
+  }, [filterRefresh]);
   
   return (
     <></>

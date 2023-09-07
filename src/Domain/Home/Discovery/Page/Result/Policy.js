@@ -7,14 +7,15 @@ import Button from 'Domain/Home/Common/Componet/Button';
 import Pagination from 'Domain/Home/Common/Componet/Pagination';
 import ListItem from 'Domain/Home/Common/Componet/ListItem';
 import common from 'Utill';
-import { useSelector } from 'react-redux';
-import { getSearchKeyword, getSelectKeyword, getFilterActive } from 'Domain/Home/Common/Status/CommonSlice';
+import { useSelector, useDispatch } from 'react-redux';
+import { getSearchKeyword, getSelectKeyword, getFilterActive, setLoading } from 'Domain/Home/Common/Status/CommonSlice';
 import * as discoveryAPI from 'Domain/Home/Discovery/API/Call';
 import * as policyAPI from 'Domain/Home/Discovery/API/PolicyCall';
 import Filter from 'Domain/Home/Discovery/Component/Filter';
 import parse from 'html-react-parser';
 
 export default function Result() {
+  const dispatch = useDispatch();
   const se = common.getSegment();
   const selectKeyword = useSelector(getSelectKeyword);
   const keyword = useSelector(getSearchKeyword);
@@ -35,7 +36,7 @@ export default function Result() {
   const getList = useCallback(async () => {
     const se1 = se[1] ?? '';
     const se2 = se[2] ?? '';
-    (async () => {
+    await (async () => {
       const similarity = common.procSimilarity(selectKeyword);
       let filterObj = {
         year: (filterActive[filterKey]?.selected?.resultYear ?? []).join('|'),
@@ -46,17 +47,26 @@ export default function Result() {
       let searchParam = {};
       let etcParam = { aggs: true };
       let data = [];
-      if (se1 == 'search') {
-        data = await policyAPI.policy('search',size,page,keyword,similarity,sort,filterObj,searchParam,etcParam);
-      } else if (se1 == 'discovery') {
-        if (se2 == 'keyword') {
-          data = await policyAPI.policy('discovery',size,page,keyword,similarity,sort,filterObj,searchParam,etcParam);
-        } else if (se2 == 'file') {
-          data = await policyAPI.policy('discovery',size,page,keyword,similarity,sort,filterObj,searchParam,etcParam);
-        } else if (se2 == 'project') {
-          data = await policyAPI.policy('discovery',size,page,keyword,similarity,sort,filterObj,searchParam,etcParam);
+
+      try {
+        dispatch(setLoading(true));
+        if (se1 == 'search') {
+          data = await policyAPI.policy('search',size,page,keyword,similarity,sort,filterObj,searchParam,etcParam);
+        } else if (se1 == 'discovery') {
+          if (se2 == 'keyword') {
+            data = await policyAPI.policy('discovery',size,page,keyword,similarity,sort,filterObj,searchParam,etcParam);
+          } else if (se2 == 'file') {
+            data = await policyAPI.policy('discovery',size,page,keyword,similarity,sort,filterObj,searchParam,etcParam);
+          } else if (se2 == 'project') {
+            data = await policyAPI.policy('discovery',size,page,keyword,similarity,sort,filterObj,searchParam,etcParam);
+          }
         }
+      } catch (e) {
+        console.warn(e);
+      } finally {
+        dispatch(setLoading(false));  
       }
+
       console.log(data?.data?.result);
       setTotalCount(data?.data?.result?.totalCount ?? 0);
       let procData = [];
@@ -85,7 +95,7 @@ export default function Result() {
     const se1 = se[1] ?? '';
     const se2 = se[2] ?? '';
     const excelSize = 1000;
-    (async () => {
+    await (async () => {
       const similarity = common.procSimilarity(selectKeyword);
       let filterObj = {
         year: (filterActive[filterKey]?.selected?.resultYear ?? []).join('|'),
@@ -94,17 +104,26 @@ export default function Result() {
       };
       let searchParam = {};
       let data = [];
-      if (se1 == 'search') {
-        data = await policyAPI.policy('search',excelSize,1,keyword,similarity,sort,filterObj,searchParam);
-      } else if (se1 == 'discovery') {
-        if (se2 == 'keyword') {
-          data = await policyAPI.policy('discovery',excelSize,1,keyword,similarity,sort,filterObj,searchParam);
-        } else if (se2 == 'file') {
-          data = await policyAPI.policy('discovery',excelSize,1,keyword,similarity,sort,filterObj,searchParam);
-        } else if (se2 == 'project') {
-          data = await policyAPI.policy('discovery',excelSize,1,keyword,similarity,sort,filterObj,searchParam);
+
+      try {
+        dispatch(setLoading(true));
+        if (se1 == 'search') {
+          data = await policyAPI.policy('search',excelSize,1,keyword,similarity,sort,filterObj,searchParam);
+        } else if (se1 == 'discovery') {
+          if (se2 == 'keyword') {
+            data = await policyAPI.policy('discovery',excelSize,1,keyword,similarity,sort,filterObj,searchParam);
+          } else if (se2 == 'file') {
+            data = await policyAPI.policy('discovery',excelSize,1,keyword,similarity,sort,filterObj,searchParam);
+          } else if (se2 == 'project') {
+            data = await policyAPI.policy('discovery',excelSize,1,keyword,similarity,sort,filterObj,searchParam);
+          }
         }
+      } catch (e) {
+        console.warn(e);
+      } finally {
+        dispatch(setLoading(false));  
       }
+    
       console.log(data?.data?.result);
       let procData = [];
       for (let i in data?.data?.result?.dataList ?? []) {
@@ -119,13 +138,13 @@ export default function Result() {
         ];
         procData.push(pushData);
       }
-      common.excelExport('down', ['정부 정책 자료명', '출처', '작성일', '본문'], procData);
+      await common.excelExport('down', ['정부 정책 자료명', '출처', '작성일', '본문'], procData);
     })();
   }, [sort, se, filterActive]);
 
   useEffect(() => {
     getList();
-  }, [page, size, sort]);
+  }, [page, size, sort, filterActive]);
 
   useEffect(() => {
     if (searchButtonClick) {
@@ -164,7 +183,7 @@ export default function Result() {
   // ];
 
   return (
-    <DiscoveryResultLayout totalCount={tabCount?.all} tabCount={tabCount} keyword={keyword} setSearchButtonClick={setSearchButtonClick} >
+    <DiscoveryResultLayout totalCount={tabCount?.all} tabCount={tabCount} keyword={keyword} >
       <section className='mt-6'>
         <div className='container'>
           <div className='flex items-center justify-between'>

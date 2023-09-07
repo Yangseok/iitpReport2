@@ -8,14 +8,15 @@ import Pagination from 'Domain/Home/Common/Componet/Pagination';
 import NewsWordClouds from 'Domain/Home/Discovery/Component/NewsWordClouds';
 import $ from 'jquery';
 import common from 'Utill';
-import { useSelector } from 'react-redux';
-import { getSearchKeyword, getSelectKeyword, getFilterActive } from 'Domain/Home/Common/Status/CommonSlice';
+import { useSelector, useDispatch } from 'react-redux';
+import { getSearchKeyword, getSelectKeyword, getFilterActive, setLoading } from 'Domain/Home/Common/Status/CommonSlice';
 import * as discoveryAPI from 'Domain/Home/Discovery/API/Call';
 import * as newsAPI from 'Domain/Home/Discovery/API/NewsCall';
 import Filter from 'Domain/Home/Discovery/Component/Filter';
 import parse from 'html-react-parser';
 
 export default function DiscoveryResult() {
+  const dispatch = useDispatch();
   const se = common.getSegment();
   const selectKeyword = useSelector(getSelectKeyword);
   const keyword = useSelector(getSearchKeyword);
@@ -36,7 +37,7 @@ export default function DiscoveryResult() {
   const getList = useCallback(async () => {
     const se1 = se[1] ?? '';
     const se2 = se[2] ?? '';
-    (async () => {
+    await (async () => {
       const similarity = common.procSimilarity(selectKeyword);
       let filterObj = {
         year: (filterActive[filterKey]?.selected?.resultYear ?? []).join('|'),
@@ -47,17 +48,26 @@ export default function DiscoveryResult() {
       let searchParam = {};
       let etcParam = { aggs: true };
       let data = [];
-      if (se1 == 'search') {
-        data = await newsAPI.news('search',size,page,keyword,similarity,sort,filterObj,searchParam,etcParam);
-      } else if (se1 == 'discovery') {
-        if (se2 == 'keyword') {
-          data = await newsAPI.news('discovery',size,page,keyword,similarity,sort,filterObj,searchParam,etcParam);
-        } else if (se2 == 'file') {
-          data = await newsAPI.news('discovery',size,page,keyword,similarity,sort,filterObj,searchParam,etcParam);
-        } else if (se2 == 'project') {
-          data = await newsAPI.news('discovery',size,page,keyword,similarity,sort,filterObj,searchParam,etcParam);
+
+      try {
+        dispatch(setLoading(true));
+        if (se1 == 'search') {
+          data = await newsAPI.news('search',size,page,keyword,similarity,sort,filterObj,searchParam,etcParam);
+        } else if (se1 == 'discovery') {
+          if (se2 == 'keyword') {
+            data = await newsAPI.news('discovery',size,page,keyword,similarity,sort,filterObj,searchParam,etcParam);
+          } else if (se2 == 'file') {
+            data = await newsAPI.news('discovery',size,page,keyword,similarity,sort,filterObj,searchParam,etcParam);
+          } else if (se2 == 'project') {
+            data = await newsAPI.news('discovery',size,page,keyword,similarity,sort,filterObj,searchParam,etcParam);
+          }
         }
+      } catch (e) {
+        console.warn(e);
+      } finally {
+        dispatch(setLoading(false));  
       }
+    
       console.log(data?.data?.result);
       setTotalCount(data?.data?.result?.totalCount ?? 0);
       let procData = [];
@@ -87,7 +97,7 @@ export default function DiscoveryResult() {
     const se1 = se[1] ?? '';
     const se2 = se[2] ?? '';
     const excelSize = 1000;
-    (async () => {
+    await (async () => {
       const similarity = common.procSimilarity(selectKeyword);
       let filterObj = {
         year: (filterActive[filterKey]?.selected?.resultYear ?? []).join('|'),
@@ -96,17 +106,25 @@ export default function DiscoveryResult() {
       };
       let searchParam = {};
       let data = [];
-      if (se1 == 'search') {
-        data = await newsAPI.news('search',excelSize,1,keyword,similarity,sort,filterObj,searchParam);
-      } else if (se1 == 'discovery') {
-        if (se2 == 'keyword') {
-          data = await newsAPI.news('discovery',excelSize,1,keyword,similarity,sort,filterObj,searchParam);
-        } else if (se2 == 'file') {
-          data = await newsAPI.news('discovery',excelSize,1,keyword,similarity,sort,filterObj,searchParam);
-        } else if (se2 == 'project') {
-          data = await newsAPI.news('discovery',excelSize,1,keyword,similarity,sort,filterObj,searchParam);
-        }
+      
+      try {
+        dispatch(setLoading(true));
+        if (se1 == 'search') {
+          data = await newsAPI.news('search',excelSize,1,keyword,similarity,sort,filterObj,searchParam);
+        } else if (se1 == 'discovery') {
+          if (se2 == 'keyword') {
+            data = await newsAPI.news('discovery',excelSize,1,keyword,similarity,sort,filterObj,searchParam);
+          } else if (se2 == 'file') {
+            data = await newsAPI.news('discovery',excelSize,1,keyword,similarity,sort,filterObj,searchParam);
+          } else if (se2 == 'project') {
+            data = await newsAPI.news('discovery',excelSize,1,keyword,similarity,sort,filterObj,searchParam);
+          }
+        }} catch (e) {
+        console.warn(e);
+      } finally {
+        dispatch(setLoading(false));  
       }
+
       console.log(data?.data?.result);
       let procData = [];
       for (let i in data?.data?.result?.dataList ?? []) {
@@ -121,13 +139,13 @@ export default function DiscoveryResult() {
         ];
         procData.push(pushData);
       }
-      common.excelExport('down', ['뉴스 제목', '내용', '출처', '출처일'], procData);
+      await common.excelExport('down', ['뉴스 제목', '내용', '출처', '출처일'], procData);
     })();
   }, [sort, se, filterActive]);
 
   useEffect(() => {
     getList();
-  }, [page, size, sort]);
+  }, [page, size, sort, filterActive]);
 
   useEffect(() => {
     if (searchButtonClick) {
@@ -226,7 +244,7 @@ export default function DiscoveryResult() {
             </div>
           </div>
 
-          {filterShow && <Filter filterItem={filterItem} filterKey={filterKey} setSearchButtonClick={setSearchButtonClick} />}
+          {filterShow && <Filter filterItem={filterItem} filterKey={filterKey} />}
 
           <div className='list_style03 mt-2' id='newsList'>
             <ul>

@@ -16,14 +16,15 @@ import Button from 'Domain/Home/Common/Componet/Button';
 import Pagination from 'Domain/Home/Common/Componet/Pagination';
 import ListItem from 'Domain/Home/Common/Componet/ListItem';
 import common from 'Utill';
-import { useSelector } from 'react-redux';
-import { getSearchKeyword, getSelectKeyword, getFilterActive } from 'Domain/Home/Common/Status/CommonSlice';
+import { useSelector, useDispatch } from 'react-redux';
+import { getSearchKeyword, getSelectKeyword, getFilterActive, setLoading } from 'Domain/Home/Common/Status/CommonSlice';
 import * as discoveryAPI from 'Domain/Home/Discovery/API/Call';
 import * as orgnAPI from 'Domain/Home/Discovery/API/OrgnCall';
 import Filter from 'Domain/Home/Discovery/Component/Filter';
 import parse from 'html-react-parser';
 
 export default function DiscoveryResult() {
+  const dispatch = useDispatch();
   const se = common.getSegment();
   const selectKeyword = useSelector(getSelectKeyword);
   const keyword = useSelector(getSearchKeyword);
@@ -49,7 +50,7 @@ export default function DiscoveryResult() {
   const getList = useCallback(async () => {
     const se1 = se[1] ?? '';
     const se2 = se[2] ?? '';
-    (async () => {
+    await (async () => {
       const similarity = common.procSimilarity(selectKeyword);
       let filterObj = {
         orgnType: (filterActive[filterKey]?.selected?.orgnType ?? []).join('|'),
@@ -60,17 +61,26 @@ export default function DiscoveryResult() {
       let searchParam = {};
       let etcParam = { aggs: true };
       let data = [];
-      if (se1 == 'search') {
-        data = await orgnAPI.orgn('search',size,page,keyword,similarity,sort,filterObj,searchParam,etcParam);
-      } else if (se1 == 'discovery') {
-        if (se2 == 'keyword') {
-          data = await orgnAPI.orgn('discovery',size,page,keyword,similarity,sort,filterObj,searchParam,etcParam);
-        } else if (se2 == 'file') {
-          data = await orgnAPI.orgn('discovery',size,page,keyword,similarity,sort,filterObj,searchParam,etcParam);
-        } else if (se2 == 'project') {
-          data = await orgnAPI.orgn('discovery',size,page,keyword,similarity,sort,filterObj,searchParam,etcParam);
+
+      try {
+        dispatch(setLoading(true));
+        if (se1 == 'search') {
+          data = await orgnAPI.orgn('search',size,page,keyword,similarity,sort,filterObj,searchParam,etcParam);
+        } else if (se1 == 'discovery') {
+          if (se2 == 'keyword') {
+            data = await orgnAPI.orgn('discovery',size,page,keyword,similarity,sort,filterObj,searchParam,etcParam);
+          } else if (se2 == 'file') {
+            data = await orgnAPI.orgn('discovery',size,page,keyword,similarity,sort,filterObj,searchParam,etcParam);
+          } else if (se2 == 'project') {
+            data = await orgnAPI.orgn('discovery',size,page,keyword,similarity,sort,filterObj,searchParam,etcParam);
+          }
         }
+      } catch (e) {
+        console.warn(e);
+      } finally {
+        dispatch(setLoading(false));  
       }
+    
       console.log(data?.data?.result);
       setTotalCount(data?.data?.result?.totalCount ?? 0);
       let procData = [];
@@ -101,7 +111,7 @@ export default function DiscoveryResult() {
     const se1 = se[1] ?? '';
     const se2 = se[2] ?? '';
     const excelSize = 1000;
-    (async () => {
+    await (async () => {
       const similarity = common.procSimilarity(selectKeyword);
       let filterObj = {
         orgnType: (filterActive[filterKey]?.selected?.orgnType ?? []).join('|'),
@@ -110,17 +120,26 @@ export default function DiscoveryResult() {
       };
       let searchParam = {};
       let data = [];
-      if (se1 == 'search') {
-        data = await orgnAPI.orgn('search',excelSize,1,keyword,similarity,sort,filterObj,searchParam);
-      } else if (se1 == 'discovery') {
-        if (se2 == 'keyword') {
-          data = await orgnAPI.orgn('discovery',excelSize,1,keyword,similarity,sort,filterObj,searchParam);
-        } else if (se2 == 'file') {
-          data = await orgnAPI.orgn('discovery',excelSize,1,keyword,similarity,sort,filterObj,searchParam);
-        } else if (se2 == 'project') {
-          data = await orgnAPI.orgn('discovery',excelSize,1,keyword,similarity,sort,filterObj,searchParam);
+      
+      try {
+        dispatch(setLoading(true));
+        if (se1 == 'search') {
+          data = await orgnAPI.orgn('search',excelSize,1,keyword,similarity,sort,filterObj,searchParam);
+        } else if (se1 == 'discovery') {
+          if (se2 == 'keyword') {
+            data = await orgnAPI.orgn('discovery',excelSize,1,keyword,similarity,sort,filterObj,searchParam);
+          } else if (se2 == 'file') {
+            data = await orgnAPI.orgn('discovery',excelSize,1,keyword,similarity,sort,filterObj,searchParam);
+          } else if (se2 == 'project') {
+            data = await orgnAPI.orgn('discovery',excelSize,1,keyword,similarity,sort,filterObj,searchParam);
+          }
         }
+      } catch (e) {
+        console.warn(e);
+      } finally {
+        dispatch(setLoading(false));  
       }
+
       console.log(data?.data?.result);
       let procData = [];
       for (let i in data?.data?.result?.dataList ?? []) {
@@ -134,7 +153,7 @@ export default function DiscoveryResult() {
         ];
         procData.push(pushData);
       }
-      common.excelExport('down', ['기관명', '과제갯수', '특허갯수', '사후관리대상기업', '매출상위(%)'], procData);
+      await common.excelExport('down', ['기관명', '과제갯수', '특허갯수', '사후관리대상기업', '매출상위(%)'], procData);
     })();
   }, [sort, se, filterActive]);
 
@@ -142,19 +161,28 @@ export default function DiscoveryResult() {
     if (orgnActive.id === -1) return null;
     const se1 = se[1] ?? '';
     const se2 = se[2] ?? '';
-    (async () => {
+    await (async () => {
       let data = [];
-      if (se1 == 'search') {
-        data = await orgnAPI.orgnDetail(orgnActive.id);
-      } else if (se1 == 'discovery') {
-        if (se2 == 'keyword') {
+
+      try {
+        dispatch(setLoading(true));
+        if (se1 == 'search') {
           data = await orgnAPI.orgnDetail(orgnActive.id);
-        } else if (se2 == 'file') {
-          data = await orgnAPI.orgnDetail(orgnActive.id);
-        } else if (se2 == 'project') {
-          data = await orgnAPI.orgnDetail(orgnActive.id);
+        } else if (se1 == 'discovery') {
+          if (se2 == 'keyword') {
+            data = await orgnAPI.orgnDetail(orgnActive.id);
+          } else if (se2 == 'file') {
+            data = await orgnAPI.orgnDetail(orgnActive.id);
+          } else if (se2 == 'project') {
+            data = await orgnAPI.orgnDetail(orgnActive.id);
+          }
         }
+      } catch (e) {
+        console.warn(e);
+      } finally {
+        dispatch(setLoading(false));  
       }
+    
       // const data = await orgnAPI.orgnDetail('0008634982');
       console.log(data?.data?.result);
       let simialityOrgn = [];
@@ -225,7 +253,7 @@ export default function DiscoveryResult() {
 
   useEffect(() => {
     getList();
-  }, [page, size, sort]);
+  }, [page, size, sort, filterActive]);
 
   useEffect(() => {
     if (searchButtonClick) {
@@ -382,7 +410,7 @@ export default function DiscoveryResult() {
             </div>
           </div>
 
-          {filterShow && <Filter filterItem={filterItem} filterKey={filterKey} setSearchButtonClick={setSearchButtonClick} />}
+          {filterShow && <Filter filterItem={filterItem} filterKey={filterKey} />}
           
           <div className='flex items-start gap-6 mt-2'>
             <div className='w-120'>

@@ -7,14 +7,15 @@ import Button from 'Domain/Home/Common/Componet/Button';
 import Pagination from 'Domain/Home/Common/Componet/Pagination';
 import ListItem from 'Domain/Home/Common/Componet/ListItem';
 import common from 'Utill';
-import { useSelector } from 'react-redux';
-import { getSearchKeyword, getSelectKeyword, getFilterActive } from 'Domain/Home/Common/Status/CommonSlice';
+import { useSelector, useDispatch } from 'react-redux';
+import { getSearchKeyword, getSelectKeyword, getFilterActive, setLoading } from 'Domain/Home/Common/Status/CommonSlice';
 import * as discoveryAPI from 'Domain/Home/Discovery/API/Call';
 import * as projectAPI from 'Domain/Home/Discovery/API/ProjectCall';
 import Filter from 'Domain/Home/Discovery/Component/Filter';
 import parse from 'html-react-parser';
 
 export default function Result() {
+  const dispatch = useDispatch();
   const se = common.getSegment();
   const selectKeyword = useSelector(getSelectKeyword);
   const keyword = useSelector(getSearchKeyword);
@@ -35,7 +36,7 @@ export default function Result() {
   const getList = useCallback(async () => {
     const se1 = se[1] ?? '';
     const se2 = se[2] ?? '';
-    (async () => {
+    await (async () => {
       const similarity = common.procSimilarity(selectKeyword);
       let filterObj = {
         year: (filterActive[filterKey]?.selected?.resultYear ?? []).join('|'),
@@ -48,16 +49,24 @@ export default function Result() {
       let searchParam = {};
       let etcParam = { aggs: true };
       let data = [];
-      if (se1 == 'search') {
-        data = await projectAPI.projectIn('search',size,page,keyword,similarity,sort,filterObj,searchParam,etcParam);
-      } else if (se1 == 'discovery') {
-        if (se2 == 'keyword') {
-          data = await projectAPI.projectIn('discovery',size,page,keyword,similarity,sort,filterObj,searchParam,etcParam);
-        } else if (se2 == 'file') {
-          data = await projectAPI.projectIn('discovery',size,page,keyword,similarity,sort,filterObj,searchParam,etcParam);
-        } else if (se2 == 'project') {
-          data = await projectAPI.projectIn('discovery',size,page,keyword,similarity,sort,filterObj,searchParam,etcParam);
+
+      try {
+        dispatch(setLoading(true));
+        if (se1 == 'search') {
+          data = await projectAPI.projectIn('search',size,page,keyword,similarity,sort,filterObj,searchParam,etcParam);
+        } else if (se1 == 'discovery') {
+          if (se2 == 'keyword') {
+            data = await projectAPI.projectIn('discovery',size,page,keyword,similarity,sort,filterObj,searchParam,etcParam);
+          } else if (se2 == 'file') {
+            data = await projectAPI.projectIn('discovery',size,page,keyword,similarity,sort,filterObj,searchParam,etcParam);
+          } else if (se2 == 'project') {
+            data = await projectAPI.projectIn('discovery',size,page,keyword,similarity,sort,filterObj,searchParam,etcParam);
+          }
         }
+      } catch (e) {
+        console.warn(e);
+      } finally {
+        dispatch(setLoading(false));  
       }
       
       console.log(data?.data?.result);
@@ -92,7 +101,7 @@ export default function Result() {
     const se1 = se[1] ?? '';
     const se2 = se[2] ?? '';
     const excelSize = 1000;
-    (async () => {
+    await (async () => {
       const similarity = common.procSimilarity(selectKeyword);
       let filterObj = {
         year: (filterActive[filterKey]?.selected?.resultYear ?? []).join('|'),
@@ -102,18 +111,25 @@ export default function Result() {
         technicalClassification: (filterActive[filterKey]?.selected?.technicalClassification ?? []).join('|'),
       };
       let searchParam = {};
-
       let data = [];
-      if (se1 == 'search') {
-        data = await projectAPI.projectIn('search',excelSize,1,keyword,similarity,sort,filterObj,searchParam);
-      } else if (se1 == 'discovery') {
-        if (se2 == 'keyword') {
-          data = await projectAPI.projectIn('discovery',excelSize,1,keyword,similarity,sort,filterObj,searchParam);
-        } else if (se2 == 'file') {
-          data = await projectAPI.projectIn('discovery',excelSize,1,keyword,similarity,sort,filterObj,searchParam);
-        } else if (se2 == 'project') {
-          data = await projectAPI.projectIn('discovery',excelSize,1,keyword,similarity,sort,filterObj,searchParam);
+
+      try {
+        dispatch(setLoading(true));
+        if (se1 == 'search') {
+          data = await projectAPI.projectIn('search',excelSize,1,keyword,similarity,sort,filterObj,searchParam);
+        } else if (se1 == 'discovery') {
+          if (se2 == 'keyword') {
+            data = await projectAPI.projectIn('discovery',excelSize,1,keyword,similarity,sort,filterObj,searchParam);
+          } else if (se2 == 'file') {
+            data = await projectAPI.projectIn('discovery',excelSize,1,keyword,similarity,sort,filterObj,searchParam);
+          } else if (se2 == 'project') {
+            data = await projectAPI.projectIn('discovery',excelSize,1,keyword,similarity,sort,filterObj,searchParam);
+          }
         }
+      } catch (e) {
+        console.warn(e);
+      } finally {
+        dispatch(setLoading(false));  
       }
       
       console.log(data?.data?.result);
@@ -133,7 +149,7 @@ export default function Result() {
         ];
         procData.push(pushData);
       }
-      common.excelExport('down', ['과제명', '연구 개발비', '연구 개발기간', '연구 개발기관', '연구 책임자', 'ICT 기술 분류', '한글 키워드'], procData);
+      await common.excelExport('down', ['과제명', '연구 개발비', '연구 개발기간', '연구 개발기관', '연구 책임자', 'ICT 기술 분류', '한글 키워드'], procData);
     })();
   }, [sort, se, filterActive]);
 
@@ -144,7 +160,7 @@ export default function Result() {
 
   useEffect(() => {
     getList();
-  }, [page, size, sort]);
+  }, [page, size, sort, filterActive]);
 
   useEffect(() => {
     if (searchButtonClick) {
@@ -201,7 +217,7 @@ export default function Result() {
             </div>
           </div>
 
-          {filterShow && <Filter filterItem={filterItem} filterKey={filterKey} setSearchButtonClick={setSearchButtonClick} />}
+          {filterShow && <Filter filterItem={filterItem} filterKey={filterKey} />}
 
           <div className='list_style01 mt-2'>
             <ul>
