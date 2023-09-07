@@ -10,7 +10,8 @@ export default function CategoryWrap(props) {
   const { tabCount } = props;
   const locations = useLocation();
   const pathName = locations.pathname;
-  const lctSearch = decodeURI(locations.search);
+  // const lctSearch = decodeURI(locations.search);
+  const lctSearch = '';
   const [tabButtons1, setTabButtons1] = useState([]);
   const [tabButtons2, setTabButtons2] = useState([]);
   const [tabActive1, setTabActive1] = useState(0);

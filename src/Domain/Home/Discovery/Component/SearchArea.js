@@ -5,32 +5,17 @@ import arrDrop from 'Assets/Images/arr_drop.png';
 import AutoCompleteSearch from 'Domain/Home/Common/Componet/AutoCompleteSearch';
 import * as mainAPI from 'Domain/Home/Main/API/Call';
 import { useSelector, useDispatch } from 'react-redux';
-import { getSearchKeyword, setSearchKeywordReset } from 'Domain/Home/Common/Status/CommonSlice';
+import { setSearchKeywordReset, getTmpSearchKeyword } from 'Domain/Home/Common/Status/CommonSlice';
 import Button from 'Domain/Home/Common/Componet/Button';
 import TabButtons from 'Domain/Home/Common/Componet/TabButtons';
 import InputTextXBtn from 'Domain/Home/Discovery/Component/InputTextXBtn';
 import { useNavigate } from 'react-router-dom';
 import { setMsg,setShow } from 'Domain/Home/Common/Status/MsgSlice';
+import common from 'Utill';
 
 export default function Search() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
-  const handleSearch = () => {
-    if (keyword.trim() === '') {
-      dispatch(setMsg({
-        title: '알림',
-        msg: '키워드를 입력해주세요.',
-        btnCss: ['inline-block rounded bg-primary-100 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-primary-700 transition duration-150 ease-in-out hover:bg-primary-accent-100 focus:bg-primary-accent-100 focus:outline-none focus:ring-0 active:bg-primary-accent-200'],
-        btnTxt: ['확인'],
-        btnEvent: ['close']
-      }));
-      dispatch(setShow(true));
-      return null;
-    }
-    dispatch(setSearchKeywordReset(true));
-    navigate('/search/result/all?keyword=' + keyword);
-  };
 
   const tabButtons = [
     { id: 0, name: '과제', onClick: () => setTabActive(0) },
@@ -43,20 +28,38 @@ export default function Search() {
     { id: 7, name: '뉴스', onClick: () => setTabActive(7) },
   ];
 
-  const keyword = useSelector(getSearchKeyword);
+  const tmpSearchKeyword = useSelector(getTmpSearchKeyword);
   const [dataSearch, setDataSearch] = useState([]);
 
   const [fold, setFold] = useState(true);
   const [tabActive, setTabActive] = useState(0);
 
+  const handleSearch = () => {
+    if (tmpSearchKeyword.trim() === '') {
+      dispatch(setMsg({
+        title: '알림',
+        msg: '키워드를 입력해주세요.',
+        btnCss: ['inline-block rounded bg-primary-100 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-primary-700 transition duration-150 ease-in-out hover:bg-primary-accent-100 focus:bg-primary-accent-100 focus:outline-none focus:ring-0 active:bg-primary-accent-200'],
+        btnTxt: ['확인'],
+        btnEvent: ['close']
+      }));
+      dispatch(setShow(true));
+      return null;
+    }
+    dispatch(setSearchKeywordReset(true));
+    // navigate('/search/result/all?keyword=' + tmpSearchKeyword);
+    const se = common.getSegment();
+    navigate('/search/result/'+(se[3]??'all'));
+  };
+
   useEffect(() => {
     (async () => {
-      if(keyword.trim() !== '') {
-        const data = await mainAPI.autocomplete(keyword);
+      if(tmpSearchKeyword.trim() !== '') {
+        const data = await mainAPI.autocomplete(tmpSearchKeyword);
         setDataSearch(data?.data?.result);
       }
     })();
-  }, [keyword]);
+  }, [tmpSearchKeyword]);
 
   return (
     <>

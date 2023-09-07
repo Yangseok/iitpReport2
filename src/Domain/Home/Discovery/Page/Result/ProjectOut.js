@@ -39,7 +39,7 @@ export default function Result() {
     const se2 = se[2] ?? '';
 
     await (async () => {
-      const similarity = common.procSimilarity(selectKeyword);
+      let similarity = [];
       let filterObj = {
         year: (filterActive[filterKey]?.selected?.resultYear ?? []).join('|'),
         fund: (filterActive[filterKey]?.selected?.fund ?? []).join('|'),
@@ -58,6 +58,7 @@ export default function Result() {
           data = await projectAPI.projectOut('search',size,page,keyword,similarity,sort,filterObj,searchParam,etcParam);
         } else if (se1 == 'discovery') {
           if (se2 == 'keyword') {
+            similarity = common.procSimilarity(selectKeyword);
             data = await projectAPI.projectOut('discovery',size,page,keyword,similarity,sort,filterObj,searchParam,etcParam);
           } else if (se2 == 'file') {
             data = await projectAPI.projectOut('discovery',size,page,keyword,similarity,sort,filterObj,searchParam,etcParam);
@@ -101,14 +102,14 @@ export default function Result() {
       setSearchButtonClick(false);
     })();
 
-  }, [searchButtonClick, page, size, sort, se, filterActive]);
+  }, [keyword, searchButtonClick, page, size, sort, se, filterActive]);
 
   const downExcel = useCallback(async () => {
     const se1 = se[1] ?? '';
     const se2 = se[2] ?? '';
     const excelSize = 1000;
     await (async () => {
-      const similarity = common.procSimilarity(selectKeyword);
+      let similarity = [];
       let filterObj = {
         year: (filterActive[filterKey]?.selected?.resultYear ?? []).join('|'),
         fund: (filterActive[filterKey]?.selected?.fund ?? []).join('|'),
@@ -125,6 +126,7 @@ export default function Result() {
           data = await projectAPI.projectOut('search',excelSize,1,keyword,similarity,sort,filterObj,searchParam);
         } else if (se1 == 'discovery') {
           if (se2 == 'keyword') {
+            similarity = common.procSimilarity(selectKeyword);
             data = await projectAPI.projectOut('discovery',excelSize,1,keyword,similarity,sort,filterObj,searchParam);
           } else if (se2 == 'file') {
             data = await projectAPI.projectOut('discovery',excelSize,1,keyword,similarity,sort,filterObj,searchParam);
@@ -160,11 +162,11 @@ export default function Result() {
       }
       await common.excelExport('down', ['과제명', '연구 개발비', '연구 개발기간', '연구 개발기관', '연구 책임자', '부처명', '연구 개발성과', '국가과학기술표준분류', '한글 키워드'], procData);
     })();
-  }, [sort, se, filterActive]);
+  }, [keyword, sort, se, filterActive]);
 
   useEffect(() => {
     getList();
-  }, [page, size, sort, filterActive]);
+  }, [keyword, page, size, sort, filterActive]);
 
   useEffect(() => {
     if (searchButtonClick) {

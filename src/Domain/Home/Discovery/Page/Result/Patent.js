@@ -38,7 +38,7 @@ export default function Result() {
     const se1 = se[1] ?? '';
     const se2 = se[2] ?? '';
     await (async () => {
-      const similarity = common.procSimilarity(selectKeyword);
+      let similarity = [];
       let filterObj = {
         year: (filterActive[filterKey]?.selected?.resultYear ?? []).join('|'),
         regType: (filterActive[filterKey]?.selected?.registerType ?? []).join('|'),
@@ -56,6 +56,7 @@ export default function Result() {
           data = await patentAPI.patent('search',size,page,keyword,similarity,sort,filterObj,searchParam,etcParam);
         } else if (se1 == 'discovery') {
           if (se2 == 'keyword') {
+            similarity = common.procSimilarity(selectKeyword);
             data = await patentAPI.patent('discovery',size,page,keyword,similarity,sort,filterObj,searchParam,etcParam);
           } else if (se2 == 'file') {
             data = await patentAPI.patent('discovery',size,page,keyword,similarity,sort,filterObj,searchParam,etcParam);
@@ -94,14 +95,14 @@ export default function Result() {
       setProjectData(procData);
       setSearchButtonClick(false);
     })();
-  }, [searchButtonClick, page, size, sort, se, filterActive]);
+  }, [keyword, searchButtonClick, page, size, sort, se, filterActive]);
 
   const downExcel = useCallback(async () => {
     const se1 = se[1] ?? '';
     const se2 = se[2] ?? '';
     const excelSize = 1000;
     await (async () => {
-      const similarity = common.procSimilarity(selectKeyword);
+      let similarity = [];
       let filterObj = {
         year: (filterActive[filterKey]?.selected?.resultYear ?? []).join('|'),
         regType: (filterActive[filterKey]?.selected?.registerType ?? []).join('|'),
@@ -117,6 +118,7 @@ export default function Result() {
           data = await patentAPI.patent('search',excelSize,1,keyword,similarity,sort,filterObj,searchParam);
         } else if (se1 == 'discovery') {
           if (se2 == 'keyword') {
+            similarity = common.procSimilarity(selectKeyword);
             data = await patentAPI.patent('discovery',excelSize,1,keyword,similarity,sort,filterObj,searchParam);
           } else if (se2 == 'file') {
             data = await patentAPI.patent('discovery',excelSize,1,keyword,similarity,sort,filterObj,searchParam);
@@ -150,11 +152,11 @@ export default function Result() {
       }
       await common.excelExport('down', ['과제명', '유발 과제', '출원등록구분', '출원(등록)번호', '출원(등록)일', '출원(등록)인', '발명자'], procData);
     })();
-  }, [sort, se, filterActive]);
+  }, [keyword, sort, se, filterActive]);
 
   useEffect(() => {
     getList();
-  }, [page, size, sort, filterActive]);
+  }, [keyword, page, size, sort, filterActive]);
 
   useEffect(() => {
     if (searchButtonClick) {
