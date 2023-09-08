@@ -28,7 +28,7 @@ export default function ProjectWrap(props) {
       <div className='flex items-center justify-between px-4'>
         <h3 className='text-xl font-bold text-color-dark'>과제 정보</h3>
         <div className='flex items-center gap-6'>
-          <button type='button' className='text-sm font-medium text-color-placeholder' onClick={() => setPopup(state => !state)}>
+          <button type='button' className='text-sm font-medium text-color-placeholder project_excel_btn' onClick={() => setPopup(state => !state)}>
             엑셀로 입력
             <img src={icFile} alt='엑셀 등록' className='w-6' />
           </button>
@@ -88,7 +88,7 @@ export default function ProjectWrap(props) {
         </>
         : ''
       }
-      {(popup) ? <ExcelPopup setPopup={setPopup} /> : ''}
+      {(popup) ? <ExcelPopup popup={popup} setPopup={setPopup} /> : ''}
     </>
   );
 }

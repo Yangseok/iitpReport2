@@ -1,23 +1,72 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import InputFile from 'Domain/Home/Discovery/Component/InputFile';
 import excelFile from 'Assets/Images/Sample/sample_excel.xlsx';
 import $ from 'jquery';
 
 export default function ExcelPopup(props) {
-  const { setPopup } = props;
+  const { popup, setPopup } = props;
+  const popupRef = useRef(null);
 
   useEffect(() => {
-    $('.popup_bg').on('click', function(e) {
-      const modal = $(e.target).parents('.popup_bg');
-      if (!modal.hasClass('popup_bg')) {
-        setPopup(false);
-      }
-    });
+    if(popup) {
+      popupRef.current.focus();
+    }
+  }, [popup]);
+
+  useEffect(() => {
+    const eventSettings = () => {
+      // Shift 눌렀는지 확인
+      let _shift = false;
+      $(document).on('keydown',function(e){
+        if(e.key === 'Shift') _shift = true;
+      });
+      $(document).on('keyup',function(e){
+        if(e.key === 'Shift') _shift = false;
+      });
+      
+      // 모달 배경 클릭으로 모달 닫기
+      $('.popup_bg').on('click', function(e) {
+        const modal = $(e.target).parents('.popup_bg');
+        if (!modal.hasClass('popup_bg')) {
+          setPopup(false);
+        }
+      });
+
+      // ESC 키로 모달 닫기
+      $('.popup_bg').on('keydown', function(e) {
+        if (e.key === 'Escape') {
+          setPopup(false);
+          $('.project_excel_btn').focus();
+        }
+      });
+
+      // 포커스 트랩: 모달 내에서 포커스가 빠져나가지 못하도록 설정
+      $('.popup_bg button').last().on('keydown', function(e) {
+        if(e.key === 'Tab' && !_shift) {
+          popupRef.current.focus();
+          return false;
+        }
+      });
+      $('.popup_bg a').first().on('keydown', function(e) {
+        if(e.key === 'Tab' && _shift) {
+          $('.popup_bg button').last().focus();
+          return false;
+        }
+      });
+    };
+
+    return () => {
+      eventSettings();
+    };
   }, []);
 
   return (
     <>
-      <div className="popup_bg">
+      <div
+        className="popup_bg"
+        ref={popupRef}
+        tabIndex={-1}
+      >
         <div className="popup_wrap text-center">
           <p className='text-xl font-bold text-color-dark mb-6'>
             <strong>엑셀 파일로 과제 정보 입력</strong>
@@ -29,7 +78,7 @@ export default function ExcelPopup(props) {
             <a href={excelFile} download='' className='inline-block text-sm font-bold text-color-main underline ml-1'>엑셀양식 다운로드↓</a>
           </p>
           <InputFile />
-          <button type='button' className='py-2 px-10 mt-6 mx-auto rounded-3xl btn_style03' onClick={() => setPopup(false)}>저장</button>
+          <button type='button' className='py-2 px-10 mt-6 mx-auto rounded-3xl btn_style03' onClick={() => {setPopup(false); $('.project_excel_btn').focus();}}>저장</button>
         </div>
       </div>
     </>
