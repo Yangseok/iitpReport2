@@ -4,6 +4,10 @@ import API, { multipartHeader } from 'Utill/API';
 export const searchAll = async (keyword='', size=4) => {
   return await API.get('/search/all', {params: {keyword: keyword, size: size}});
 };
+//서브 검색 갯수
+export const searchCount = async (type='search', keyword='', category='all') => {
+  return await API.get('/search/count', {params: {type: type, keyword: keyword, category: category}});
+};
 //디스커버리 키워드 분석
 export const discoveryKeyword = async (keyword='', selectKeyword='') => {
   let params = {keyword: keyword};
