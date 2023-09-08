@@ -8,6 +8,7 @@ import arrDrop from 'Assets/Images/arr_drop.png';
 import InputTextXBtn from 'Domain/Home/Discovery/Component/InputTextXBtn';
 import Button from 'Domain/Home/Common/Componet/Button';
 import ExcelPopup from './ExcelPopup';
+import { useNavigate } from 'react-router-dom';
 
 export default function ProjectWrap(props) {
   const { folded } = props;
@@ -15,6 +16,8 @@ export default function ProjectWrap(props) {
   const [resetDisabled, setResetDisabled] = useState(true);
   const [fold, setFold] = useState(folded ?? false);
   const [popup, setPopup] = useState(false);
+
+  const navigate = useNavigate();
 
   const onReset = () => {
     setResetDisabled(false);
@@ -81,7 +84,7 @@ export default function ProjectWrap(props) {
               </dd>
             </dl>
           </div>
-          <Button name="과제 정보 분석" icon={icSearch} className="gap-2 mt-6 mx-auto py-3 px-6.5 rounded-3xl text-base font-bold btn_style03" />
+          <Button name="과제 정보 분석" icon={icSearch} onClick={() => navigate('/discovery/project/result/projectout')} className="gap-2 mt-6 mx-auto py-3 px-6.5 rounded-3xl text-base font-bold btn_style03" />
         </>
         : ''
       }

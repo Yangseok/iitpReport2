@@ -103,7 +103,7 @@ export default function PageSearchArea(props) {
           ? <>
             <div className='container-800 p-0'>
               <InputFile />
-              <Button name="파일 분석" icon={icSearch} className="gap-2 mt-6 mx-auto py-3 px-6.5 rounded-3xl text-base font-bold btn_style03" />
+              <Button name="파일 분석" icon={icSearch} onClick={() => navigate('/discovery/file/result/projectout')} className="gap-2 mt-6 mx-auto py-3 px-6.5 rounded-3xl text-base font-bold btn_style03" />
             </div>
           </>
           :  (menu === 2)

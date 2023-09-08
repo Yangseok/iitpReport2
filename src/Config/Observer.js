@@ -9,7 +9,7 @@ export default function Observer() {
   const dispatch = useDispatch();
 
   const se = common.getSegment();
-  const filterRefresh = (se[1] ?? '') + '/' + se[2] ?? '';
+  const pageMove = (se[1] ?? '') + '/' + se[2] ?? '';
 
   const navigate = useNavigate();
   useEffect(() => {
@@ -40,8 +40,9 @@ export default function Observer() {
   }, []);
 
   useEffect(() => {
+    //필터 데이터 초기화
     dispatch(setFilterActive(items));
-  }, [filterRefresh]);
+  }, [pageMove]);
   
   return (
     <></>
