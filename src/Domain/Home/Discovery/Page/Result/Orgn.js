@@ -193,7 +193,7 @@ export default function DiscoveryResult() {
         const simialityPushData = {
           id: i,
           name: data?.data?.result?.simialityOrgnList?.[i]?.orgnName ?? '',
-          relation: common.colorSet(data?.data?.result?.simialityOrgnList?.[i]?.weight ?? 0)
+          relation: (i !== '0') ? common.colorSet(data?.data?.result?.simialityOrgnList?.[i]?.weight ?? 0) : 0
         };
         simialityOrgn.push(simialityPushData);
       }
