@@ -17,7 +17,7 @@ import Pagination from 'Domain/Home/Common/Componet/Pagination';
 import ListItem from 'Domain/Home/Common/Componet/ListItem';
 import common from 'Utill';
 import { useSelector, useDispatch } from 'react-redux';
-import { getSearchKeyword, getSelectKeyword, getFilterActive, setLoading, getSearchDetailData } from 'Domain/Home/Common/Status/CommonSlice';
+import { getSearchKeyword, getSelectKeyword, getFilterActive, setLoading, getSearchDetailData, getFileKeywordList } from 'Domain/Home/Common/Status/CommonSlice';
 import * as discoveryAPI from 'Domain/Home/Discovery/API/Call';
 import * as orgnAPI from 'Domain/Home/Discovery/API/OrgnCall';
 import Filter from 'Domain/Home/Discovery/Component/Filter';
@@ -53,6 +53,8 @@ export default function DiscoveryResult() {
   const globalSearchDetailData = useSelector(getSearchDetailData);
   const searchDetailKey = 6;
 
+  const fileKeywordList = useSelector(getFileKeywordList);
+
   const getList = useCallback(async () => {
     await (async () => {
       let similarity = [];
@@ -76,7 +78,8 @@ export default function DiscoveryResult() {
             similarity = common.procSimilarity(selectKeyword);
             data = await orgnAPI.orgn('discovery',size,page,keyword,similarity,sort,filterObj,searchParam,etcParam);
           } else if (se2 == 'file') {
-            data = await orgnAPI.orgn('discovery',size,page,keyword,similarity,sort,filterObj,searchParam,etcParam);
+            similarity = fileKeywordList;
+            data = await orgnAPI.orgn('discovery',size,page,'',similarity,sort,filterObj,searchParam,etcParam);
           } else if (se2 == 'project') {
             data = await orgnAPI.orgn('discovery',size,page,keyword,similarity,sort,filterObj,searchParam,etcParam);
           }
@@ -110,7 +113,7 @@ export default function DiscoveryResult() {
       setSearchButtonClick(false);
       setOrgnActive({ id: data?.data?.result?.dataList?.[0]?.id ?? -1, name: common.deHighlight(data?.data?.result?.dataList?.[0]?.orgnName ?? '') });
     })();
-  }, [keyword, searchButtonClick, page, size, sort, se1, se2, filterActive, globalSearchDetailData]);
+  }, [keyword, searchButtonClick, page, size, sort, se1, se2, filterActive, globalSearchDetailData, fileKeywordList]);
 
   const downExcel = useCallback(async () => {
     const excelSize = 1000;
@@ -134,7 +137,8 @@ export default function DiscoveryResult() {
             similarity = common.procSimilarity(selectKeyword);
             data = await orgnAPI.orgn('discovery',excelSize,1,keyword,similarity,sort,filterObj,searchParam);
           } else if (se2 == 'file') {
-            data = await orgnAPI.orgn('discovery',excelSize,1,keyword,similarity,sort,filterObj,searchParam);
+            similarity = fileKeywordList;
+            data = await orgnAPI.orgn('discovery',excelSize,1,'',similarity,sort,filterObj,searchParam);
           } else if (se2 == 'project') {
             data = await orgnAPI.orgn('discovery',excelSize,1,keyword,similarity,sort,filterObj,searchParam);
           }
@@ -160,7 +164,7 @@ export default function DiscoveryResult() {
       }
       await common.excelExport('down', ['기관명', '과제갯수', '특허갯수', '사후관리대상기업', '매출상위(%)'], procData);
     })();
-  }, [keyword, sort, se1, se2, filterActive, globalSearchDetailData]);
+  }, [keyword, sort, se1, se2, filterActive, globalSearchDetailData, fileKeywordList]);
 
   const getDetail = useCallback(async () => {
     if (orgnActive.id === -1) return null;
@@ -258,7 +262,7 @@ export default function DiscoveryResult() {
 
   useEffect(() => {
     getList();
-  }, [keyword, page, size, sort, filterActive, globalSearchDetailData]);
+  }, [keyword, page, size, sort, filterActive, globalSearchDetailData, fileKeywordList]);
 
   useEffect(() => {
     if (searchButtonClick) {

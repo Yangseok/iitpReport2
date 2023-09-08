@@ -8,7 +8,7 @@ import Pagination from 'Domain/Home/Common/Componet/Pagination';
 import ListItem from 'Domain/Home/Common/Componet/ListItem';
 import common from 'Utill';
 import { useSelector, useDispatch } from 'react-redux';
-import { getSearchKeyword, getSelectKeyword, getFilterActive, setLoading, getSearchDetailData } from 'Domain/Home/Common/Status/CommonSlice';
+import { getSearchKeyword, getSelectKeyword, getFilterActive, setLoading, getSearchDetailData, getFileKeywordList } from 'Domain/Home/Common/Status/CommonSlice';
 import * as discoveryAPI from 'Domain/Home/Discovery/API/Call';
 import * as patentAPI from 'Domain/Home/Discovery/API/PatentCall';
 import Filter from 'Domain/Home/Discovery/Component/Filter';
@@ -39,6 +39,8 @@ export default function Result() {
   const globalSearchDetailData = useSelector(getSearchDetailData);
   const searchDetailKey = 1;
 
+  const fileKeywordList = useSelector(getFileKeywordList);
+
   const getList = useCallback(async () => {
     await (async () => {
       let similarity = [];
@@ -63,7 +65,8 @@ export default function Result() {
             similarity = common.procSimilarity(selectKeyword);
             data = await patentAPI.patent('discovery',size,page,keyword,similarity,sort,filterObj,searchParam,etcParam);
           } else if (se2 == 'file') {
-            data = await patentAPI.patent('discovery',size,page,keyword,similarity,sort,filterObj,searchParam,etcParam);
+            similarity = fileKeywordList;
+            data = await patentAPI.patent('discovery',size,page,'',similarity,sort,filterObj,searchParam,etcParam);
           } else if (se2 == 'project') {
             data = await patentAPI.patent('discovery',size,page,keyword,similarity,sort,filterObj,searchParam,etcParam);
           }
@@ -99,7 +102,7 @@ export default function Result() {
       setProjectData(procData);
       setSearchButtonClick(false);
     })();
-  }, [keyword, searchButtonClick, page, size, sort, se1, se2, filterActive, globalSearchDetailData]);
+  }, [keyword, searchButtonClick, page, size, sort, se1, se2, filterActive, globalSearchDetailData, fileKeywordList]);
 
   const downExcel = useCallback(async () => {
     const excelSize = 1000;
@@ -124,7 +127,8 @@ export default function Result() {
             similarity = common.procSimilarity(selectKeyword);
             data = await patentAPI.patent('discovery',excelSize,1,keyword,similarity,sort,filterObj,searchParam);
           } else if (se2 == 'file') {
-            data = await patentAPI.patent('discovery',excelSize,1,keyword,similarity,sort,filterObj,searchParam);
+            similarity = fileKeywordList;
+            data = await patentAPI.patent('discovery',excelSize,1,'',similarity,sort,filterObj,searchParam);
           } else if (se2 == 'project') {
             data = await patentAPI.patent('discovery',excelSize,1,keyword,similarity,sort,filterObj,searchParam);
           }
@@ -155,11 +159,11 @@ export default function Result() {
       }
       await common.excelExport('down', ['과제명', '유발 과제', '출원등록구분', '출원(등록)번호', '출원(등록)일', '출원(등록)인', '발명자'], procData);
     })();
-  }, [keyword, sort, se1, se2, filterActive, globalSearchDetailData]);
+  }, [keyword, sort, se1, se2, filterActive, globalSearchDetailData, fileKeywordList]);
 
   useEffect(() => {
     getList();
-  }, [keyword, page, size, sort, filterActive, globalSearchDetailData]);
+  }, [keyword, page, size, sort, filterActive, globalSearchDetailData, fileKeywordList]);
 
   useEffect(() => {
     if (searchButtonClick) {

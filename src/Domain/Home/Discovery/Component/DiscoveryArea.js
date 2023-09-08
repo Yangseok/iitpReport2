@@ -1,17 +1,18 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import icAnalysis from 'Assets/Images/ic_analysis.png';
 import icSearch from 'Assets/Images/ic_search.png';
 import AutoCompleteSearch from 'Domain/Home/Common/Componet/AutoCompleteSearch';
 import KeywordWrap from 'Domain/Home/Discovery/Component/Keyword/KeywordWrap';
 import * as mainAPI from 'Domain/Home/Main/API/Call';
 import { useSelector, useDispatch } from 'react-redux';
-import { getSearchKeyword, setSearchKeywordReset, getTmpSearchKeyword } from 'Domain/Home/Common/Status/CommonSlice';
+import { getSearchKeyword, setSearchKeywordReset, getTmpSearchKeyword, setFileKeywordList, getFileName, setFileName } from 'Domain/Home/Common/Status/CommonSlice';
 import common from 'Utill';
 import { useParams, useNavigate } from 'react-router-dom';
 import { setMsg,setShow } from 'Domain/Home/Common/Status/MsgSlice';
 import InputFile from 'Domain/Home/Discovery/Component/InputFile';
 import Button from 'Domain/Home/Common/Componet/Button';
 import ProjectWrap from 'Domain/Home/Discovery/Component/Project/ProjectWrap';
+import * as discoveryAPI from 'Domain/Home/Discovery/API/Call';
 
 export default function PageSearchArea(props) {
   const dispatch = useDispatch();
@@ -29,6 +30,9 @@ export default function PageSearchArea(props) {
 
   const navigate = useNavigate();
   const se = common.getSegment();
+
+  const [selectedFile, setSelectedFile] = useState(null);
+  const fileName = useSelector(getFileName);
 
   const handleSearch = () => {
     if (tmpSearchKeyword.trim() === '') {
@@ -58,6 +62,36 @@ export default function PageSearchArea(props) {
     }
     navigate('/discovery/' + paramSe2 + '/result/' + defaultSe4);
   };
+
+  const setSelectedFileName = (name) => {
+    dispatch(setFileName(name));
+  };
+
+  const handleFileUpload = useCallback(async (e) => {
+    e.preventDefault();
+
+    if (selectedFile === null && fileName === null) {
+      dispatch(setMsg({
+        title: '알림',
+        msg: '파일을 업로드해주세요.',
+        btnCss: ['inline-block rounded bg-primary-100 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-primary-700 transition duration-150 ease-in-out hover:bg-primary-accent-100 focus:bg-primary-accent-100 focus:outline-none focus:ring-0 active:bg-primary-accent-200'],
+        btnTxt: ['확인'],
+        btnEvent: ['close']
+      }));
+      dispatch(setShow(true));
+      return null;
+    }
+
+    if (selectedFile !== null) {
+      const formData = new FormData();
+      formData.append('uploadFiles', selectedFile);
+      const data = await discoveryAPI.discoveryFile(formData);
+      console.log(data?.data?.result);
+      dispatch(setFileKeywordList(data?.data?.result?.textAnalyticsKeywordList ?? []));
+    }
+
+    navigate('/discovery/file/result/projectout');
+  }, [selectedFile]);
 
   useEffect(() => {
     setKeywordResult(false);
@@ -102,8 +136,8 @@ export default function PageSearchArea(props) {
         : (menu === 1)
           ? <>
             <div className='container-800 p-0'>
-              <InputFile />
-              <Button name="파일 분석" icon={icSearch} onClick={() => navigate('/discovery/file/result/projectout')} className="gap-2 mt-6 mx-auto py-3 px-6.5 rounded-3xl text-base font-bold btn_style03" />
+              <InputFile setSelectedFile={setSelectedFile} setSelectedFileName={setSelectedFileName} fileName={fileName} />
+              <Button name="파일 분석" icon={icSearch} onClick={handleFileUpload} className="gap-2 mt-6 mx-auto py-3 px-6.5 rounded-3xl text-base font-bold btn_style03" />
             </div>
           </>
           :  (menu === 2)

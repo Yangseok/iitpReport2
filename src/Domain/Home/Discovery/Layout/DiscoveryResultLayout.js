@@ -4,11 +4,15 @@ import DiscoveryArea from 'Domain/Home/Discovery/Component/DiscoveryArea';
 import SearchArea from 'Domain/Home/Discovery/Component/SearchArea';
 import CategoryWrap from 'Domain/Home/Discovery/Component/CategoryWrap';
 import common from 'Utill';
-import WordClouds from 'Domain/Home/Common/Componet/Features/WordClouds';
+import { getFileKeywordList } from 'Domain/Home/Common/Status/CommonSlice';
+import { useSelector } from 'react-redux';
+import WordClouds from 'Domain/Home/Discovery/Component/WordClouds';
 
 export default function DiscoveryResultLayout({children, totalCount, tabCount, keyword, setSearchButtonClick}) {
   const [page1, setPage1] = useState('');
   const [page2, setPage2] = useState('');
+
+  const fileKeywordList = useSelector(getFileKeywordList);
 
   useEffect(() => {
     const se = common.getSegment();
@@ -47,7 +51,7 @@ export default function DiscoveryResultLayout({children, totalCount, tabCount, k
           </h3>
           {(page2 === 'file') 
             ? <div className='mt-5'>
-              <WordClouds />
+              <WordClouds wordCloudData={fileKeywordList} />
             </div> 
             : ''}
           <div className='mt-10'>

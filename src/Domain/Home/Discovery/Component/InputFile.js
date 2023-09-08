@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import icFile from 'Assets/Images/ic_file.png';
 
-export default function InputFile() {
-  const [fileName, setFileName]  = useState(null);
+export default function InputFile(props) {
+  const [fileName, setFileName]  = useState(props.fileName ?? null);
   const [fileValue, setFileValue]  = useState(null);
 
   const onFileChange = (e) => {
@@ -11,10 +11,16 @@ export default function InputFile() {
 
     setFileName(name);
     setFileValue(e.target.files);
+
+    if (props.setSelectedFileName !== undefined) props.setSelectedFileName(name);
+    if (props.setSelectedFile !== undefined) props.setSelectedFile(e.target.files[0]);
   };
   const onFileDelete = () => {
     setFileName(null);
     setFileValue(null);
+    
+    if (props.setSelectedFileName !== undefined) props.setSelectedFileName(null);
+    if (props.setSelectedFile !== undefined) props.setSelectedFile(null);
   };
 
   return (
@@ -37,10 +43,11 @@ export default function InputFile() {
           <label htmlFor='uploadFile' className='hidden_text'>파일 등록</label>
           <input 
             type='file' 
-            name='uploadFile' 
+            name='uploadFile'
             id='uploadFile' 
-            value={fileValue}
+            value={fileValue ?? ''}
             onChange={onFileChange}
+            accept='.xls,.xlsx,.ppt,.pptx,.doc,docx,.hwp,.hwpx,.pdf,.txt'
           />
         </div>
         : ''

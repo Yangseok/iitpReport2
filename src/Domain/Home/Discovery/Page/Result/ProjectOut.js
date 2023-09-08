@@ -8,7 +8,7 @@ import Pagination from 'Domain/Home/Common/Componet/Pagination';
 import ListItem from 'Domain/Home/Common/Componet/ListItem';
 import common from 'Utill';
 import { useSelector, useDispatch } from 'react-redux';
-import { getSearchKeyword, getSelectKeyword, getFilterActive, setLoading, getSearchDetailData } from 'Domain/Home/Common/Status/CommonSlice';
+import { getSearchKeyword, getSelectKeyword, getFilterActive, setLoading, getSearchDetailData, getFileKeywordList } from 'Domain/Home/Common/Status/CommonSlice';
 import * as projectAPI from 'Domain/Home/Discovery/API/ProjectCall';
 import * as discoveryAPI from 'Domain/Home/Discovery/API/Call';
 import Filter from 'Domain/Home/Discovery/Component/Filter';
@@ -39,6 +39,8 @@ export default function Result() {
   const globalSearchDetailData = useSelector(getSearchDetailData);
   const searchDetailKey = 0;
 
+  const fileKeywordList = useSelector(getFileKeywordList);
+
   const getList = useCallback(async () => {
     await (async () => {
       let similarity = [];
@@ -64,7 +66,8 @@ export default function Result() {
             similarity = common.procSimilarity(selectKeyword);
             data = await projectAPI.projectOut('discovery',size,page,keyword,similarity,sort,filterObj,searchParam,etcParam);
           } else if (se2 == 'file') {
-            data = await projectAPI.projectOut('discovery',size,page,keyword,similarity,sort,filterObj,searchParam,etcParam);
+            similarity = fileKeywordList;
+            data = await projectAPI.projectOut('discovery',size,page,'',similarity,sort,filterObj,searchParam,etcParam);
           } else if (se2 == 'project') {
             data = await projectAPI.projectOut('discovery',size,page,keyword,similarity,sort,filterObj,searchParam,etcParam);
           }
@@ -105,7 +108,7 @@ export default function Result() {
       setSearchButtonClick(false);
     })();
 
-  }, [keyword, searchButtonClick, page, size, sort, se1, se2, filterActive, globalSearchDetailData]);
+  }, [keyword, searchButtonClick, page, size, sort, se1, se2, filterActive, globalSearchDetailData, fileKeywordList]);
 
   const downExcel = useCallback(async () => {
     const excelSize = 1000;
@@ -131,7 +134,8 @@ export default function Result() {
             similarity = common.procSimilarity(selectKeyword);
             data = await projectAPI.projectOut('discovery',excelSize,1,keyword,similarity,sort,filterObj,searchParam);
           } else if (se2 == 'file') {
-            data = await projectAPI.projectOut('discovery',excelSize,1,keyword,similarity,sort,filterObj,searchParam);
+            similarity = fileKeywordList;
+            data = await projectAPI.projectOut('discovery',excelSize,1,'',similarity,sort,filterObj,searchParam);
           } else if (se2 == 'project') {
             data = await projectAPI.projectOut('discovery',excelSize,1,keyword,similarity,sort,filterObj,searchParam);
           }
@@ -164,11 +168,11 @@ export default function Result() {
       }
       await common.excelExport('down', ['과제명', '연구 개발비', '연구 개발기간', '연구 개발기관', '연구 책임자', '부처명', '연구 개발성과', '국가과학기술표준분류', '한글 키워드'], procData);
     })();
-  }, [keyword, sort, se1, se2, filterActive, globalSearchDetailData]);
+  }, [keyword, sort, se1, se2, filterActive, globalSearchDetailData, fileKeywordList]);
 
   useEffect(() => {
     getList();
-  }, [keyword, page, size, sort, filterActive, globalSearchDetailData]);
+  }, [keyword, page, size, sort, filterActive, globalSearchDetailData, fileKeywordList]);
 
   useEffect(() => {
     if (searchButtonClick) {
