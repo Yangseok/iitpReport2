@@ -14,6 +14,7 @@ export default function CheckListItem(props) {
         tabIndex={0}
         className={className}
         onClick={onClick}
+        onKeyUp={(event) => (event.key === 'Enter') && onClick()}
       >
         <div className='flex items-center gap-2 mb-4'>
           {(status === 1)
