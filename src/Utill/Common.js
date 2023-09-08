@@ -179,3 +179,7 @@ export const maskingEmail = (email) => {
 export const deHighlight = (text) => {
   return text.replaceAll('<span class="highlight">', '').replaceAll('<span class=\'highlight\'>', '').replaceAll('</span>', '');
 };
+export const ymdFormat = (ymd) => {
+  if (ymd == '') return '';
+  return ymd.substr(0,4) + '-' + ymd.substr(4,2) + '-' + ymd.substr(6,2);
+};

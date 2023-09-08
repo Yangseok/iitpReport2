@@ -8,7 +8,7 @@ import Pagination from 'Domain/Home/Common/Componet/Pagination';
 import ListItem from 'Domain/Home/Common/Componet/ListItem';
 import common from 'Utill';
 import { useSelector, useDispatch } from 'react-redux';
-import { getSearchKeyword, getSelectKeyword, getFilterActive, setLoading } from 'Domain/Home/Common/Status/CommonSlice';
+import { getSearchKeyword, getSelectKeyword, getFilterActive, setLoading, getSearchDetailData } from 'Domain/Home/Common/Status/CommonSlice';
 import * as discoveryAPI from 'Domain/Home/Discovery/API/Call';
 import * as ictAPI from 'Domain/Home/Discovery/API/IctCall';
 import Filter from 'Domain/Home/Discovery/Component/Filter';
@@ -35,6 +35,9 @@ export default function Result() {
   const filterActive = useSelector(getFilterActive);
   const filterKey = 'search/ict';
 
+  const globalSearchDetailData = useSelector(getSearchDetailData);
+  const searchDetailKey = 3;
+
   const getList = useCallback(async () => {
     await (async () => {
       let similarity = [];
@@ -49,6 +52,7 @@ export default function Result() {
       try {
         dispatch(setLoading(true));
         if (se1 == 'search') {
+          searchParam = globalSearchDetailData[searchDetailKey];
           data = await ictAPI.ict('search',size,page,keyword,similarity,sort,filterObj,searchParam,etcParam);
         } else if (se1 == 'discovery') {
           if (se2 == 'keyword') {
@@ -87,7 +91,7 @@ export default function Result() {
       setProjectData(procData);
       setSearchButtonClick(false);
     })();
-  }, [keyword, searchButtonClick, page, size, sort, se1, se2, filterActive]);
+  }, [keyword, searchButtonClick, page, size, sort, se1, se2, filterActive, globalSearchDetailData]);
 
   const downExcel = useCallback(async () => {
     const excelSize = 1000;
@@ -102,6 +106,7 @@ export default function Result() {
       try {
         dispatch(setLoading(true));
         if (se1 == 'search') {
+          searchParam = globalSearchDetailData[searchDetailKey];
           data = await ictAPI.ict('search',excelSize,1,keyword,similarity,sort,filterObj,searchParam);
         } else if (se1 == 'discovery') {
           if (se2 == 'keyword') {
@@ -132,11 +137,11 @@ export default function Result() {
       }
       await common.excelExport('down', ['ICT 자료명', '출처', '본문', '발행일'], procData);
     })();
-  }, [keyword, sort, se1, se2, filterActive]);
+  }, [keyword, sort, se1, se2, filterActive, globalSearchDetailData]);
 
   useEffect(() => {
     getList();
-  }, [keyword, page, size, sort, filterActive]);
+  }, [keyword, page, size, sort, filterActive, globalSearchDetailData]);
 
   useEffect(() => {
     if (searchButtonClick) {

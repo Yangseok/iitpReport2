@@ -10,9 +10,10 @@ export default function InputTextXBtn(props) {
     onChange(e);
     setInputValue(e.target.value);
   };
-  const onInputDelete = () => {
+  const onInputDelete = (e) => {
     setInputValue('');
     textareaRef.current.focus();
+    onChange(e);
   };
   const heightResize = () => {
     textareaRef.current.style.height = 'auto';

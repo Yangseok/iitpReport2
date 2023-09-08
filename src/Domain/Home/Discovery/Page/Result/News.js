@@ -8,7 +8,7 @@ import Pagination from 'Domain/Home/Common/Componet/Pagination';
 import NewsWordClouds from 'Domain/Home/Discovery/Component/NewsWordClouds';
 import common from 'Utill';
 import { useSelector, useDispatch } from 'react-redux';
-import { getSearchKeyword, getSelectKeyword, getFilterActive, setLoading } from 'Domain/Home/Common/Status/CommonSlice';
+import { getSearchKeyword, getSelectKeyword, getFilterActive, setLoading, getSearchDetailData } from 'Domain/Home/Common/Status/CommonSlice';
 import * as discoveryAPI from 'Domain/Home/Discovery/API/Call';
 import * as newsAPI from 'Domain/Home/Discovery/API/NewsCall';
 import Filter from 'Domain/Home/Discovery/Component/Filter';
@@ -36,6 +36,9 @@ export default function DiscoveryResult() {
   const filterActive = useSelector(getFilterActive);
   const filterKey = 'search/news';
 
+  const globalSearchDetailData = useSelector(getSearchDetailData);
+  const searchDetailKey = 7;
+
   const getList = useCallback(async () => {
     await (async () => {
       let similarity = [];
@@ -52,6 +55,7 @@ export default function DiscoveryResult() {
       try {
         dispatch(setLoading(true));
         if (se1 == 'search') {
+          searchParam = globalSearchDetailData[searchDetailKey];
           data = await newsAPI.news('search',size,page,keyword,similarity,sort,filterObj,searchParam,etcParam);
         } else if (se1 == 'discovery') {
           if (se2 == 'keyword') {
@@ -92,7 +96,7 @@ export default function DiscoveryResult() {
       setProjectData(procData);
       setSearchButtonClick(false);
     })();
-  }, [keyword, searchButtonClick, page, size, sort, se1, se2, filterActive]);
+  }, [keyword, searchButtonClick, page, size, sort, se1, se2, filterActive, globalSearchDetailData]);
 
   const downExcel = useCallback(async () => {
     const excelSize = 1000;
@@ -109,6 +113,7 @@ export default function DiscoveryResult() {
       try {
         dispatch(setLoading(true));
         if (se1 == 'search') {
+          searchParam = globalSearchDetailData[searchDetailKey];
           data = await newsAPI.news('search',excelSize,1,keyword,similarity,sort,filterObj,searchParam);
         } else if (se1 == 'discovery') {
           if (se2 == 'keyword') {
@@ -141,11 +146,11 @@ export default function DiscoveryResult() {
       }
       await common.excelExport('down', ['뉴스 제목', '내용', '출처', '출처일'], procData);
     })();
-  }, [keyword, sort, se1, se2, filterActive]);
+  }, [keyword, sort, se1, se2, filterActive, globalSearchDetailData]);
 
   useEffect(() => {
     getList();
-  }, [keyword, page, size, sort, filterActive]);
+  }, [keyword, page, size, sort, filterActive, globalSearchDetailData]);
 
   useEffect(() => {
     if (searchButtonClick) {

@@ -5,15 +5,16 @@ import arrDrop from 'Assets/Images/arr_drop.png';
 import AutoCompleteSearch from 'Domain/Home/Common/Componet/AutoCompleteSearch';
 import * as mainAPI from 'Domain/Home/Main/API/Call';
 import { useSelector, useDispatch } from 'react-redux';
-import { setSearchKeywordReset, getTmpSearchKeyword } from 'Domain/Home/Common/Status/CommonSlice';
+import { setSearchKeywordReset, getTmpSearchKeyword, getSearchDetailData, setSearchDetailData as setGlobalSearchDetailData } from 'Domain/Home/Common/Status/CommonSlice';
 import Button from 'Domain/Home/Common/Componet/Button';
 import TabButtons from 'Domain/Home/Common/Componet/TabButtons';
 import InputTextXBtn from 'Domain/Home/Discovery/Component/InputTextXBtn';
 import { useNavigate } from 'react-router-dom';
 import { setMsg,setShow } from 'Domain/Home/Common/Status/MsgSlice';
 import common from 'Utill';
+import moment from 'moment';
 
-export default function Search() {
+export default function Search(props) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -33,6 +34,93 @@ export default function Search() {
 
   const [fold, setFold] = useState(true);
   const [tabActive, setTabActive] = useState(0);
+
+  const globalSearchDetailData = useSelector(getSearchDetailData);
+  const [selectYear, setSelectYear] = useState([]);
+  const [searchDetailData, setSearchDetailData] = useState(globalSearchDetailData ?? {});
+
+  const handChangeData = (key, value) => {
+    value = value.trim();
+    // console.log('key:',key,'value:',value);
+    let newState = JSON.parse(JSON.stringify(searchDetailData));
+    if (newState[tabActive] === undefined) newState[tabActive] = {};
+    newState[tabActive][key] = value;
+    if (value === '') delete newState[tabActive][key];
+    let check = true;
+    let msg = '';
+    let start = searchDetailData?.[tabActive]?.yearStart ?? '';
+    let end = searchDetailData?.[tabActive]?.yearEnd ?? '';
+    let dateStart = searchDetailData?.[tabActive]?.dateStart ?? '';
+    let dateEnd = searchDetailData?.[tabActive]?.dateEnd ?? '';
+    if (key === 'yearEnd') {
+      end = value;
+      if (start !== '' && end !== '' && (Number(end) < Number(start))) {
+        msg = '종료연도가 시작연도보다 적을 수는 없습니다';
+        check = false;
+      }
+    } else if (key === 'yearStart') {
+      start = value;
+      if (start !== '' && end !== '' && (Number(end) < Number(start))) {
+        msg = '시작연도가 종료연도보다 클 수는 없습니다.';
+        check = false;
+      }
+    } else if (key === 'dateStart') {
+      if (dateStart != '') {
+        dateStart = moment(value);
+        newState[tabActive][key] = dateStart.format('YYYYMMDD');
+      }
+      if (dateEnd != '') {
+        dateEnd = moment(common.ymdFormat(dateEnd));
+      }
+      
+      if (dateStart !== '' && dateEnd !== '' && (Number(dateEnd) < Number(dateStart))) {
+        msg = '시작일이 종료일보다 클 수는 없습니다.';
+        check = false;
+      }
+    } else if (key === 'dateEnd') {
+      if (dateStart != '') {
+        dateStart = moment(common.ymdFormat(dateStart));
+      }
+      if (dateEnd != '') {
+        dateEnd = moment(value);
+        newState[tabActive][key] = dateEnd.format('YYYYMMDD');
+      }
+
+      if (dateStart !== '' && dateEnd !== '' && (Number(dateEnd) < Number(dateStart))) {
+        msg = '종료일 시작일보다 적을 수는 없습니다';
+        check = false;
+      }
+    }
+    
+    if (!check) {
+      dispatch(setMsg({
+        title: '알림',
+        msg: msg,
+        btnCss: ['inline-block rounded bg-primary-100 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-primary-700 transition duration-150 ease-in-out hover:bg-primary-accent-100 focus:bg-primary-accent-100 focus:outline-none focus:ring-0 active:bg-primary-accent-200'],
+        btnTxt: ['확인'],
+        btnEvent: ['close']
+      }));
+      dispatch(setShow(true));
+      return null;
+    }
+    setSearchDetailData(newState);
+  };
+
+  const initSearch = () => {
+    let newState = JSON.parse(JSON.stringify(searchDetailData));
+    delete newState[tabActive];
+    setSearchDetailData(newState);
+  };
+
+  const handleDtailSearch = () => {
+    console.log(searchDetailData[tabActive]);
+    dispatch(setGlobalSearchDetailData(searchDetailData));
+    const setSearchButtonClick = props?.setSearchButtonClick;
+    if (setSearchButtonClick !== undefined) {
+      setSearchButtonClick(true);
+    }
+    handleSearch();
+  };
 
   const handleSearch = () => {
     if (tmpSearchKeyword.trim() === '') {
@@ -60,6 +148,15 @@ export default function Search() {
       }
     })();
   }, [tmpSearchKeyword]);
+
+  
+  useEffect(() => {
+    let yearArr = [];
+    for(let year=2023; year>=1986; year--) {
+      yearArr.push(year);
+    }
+    setSelectYear(yearArr);
+  }, []);
 
   return (
     <>
@@ -93,54 +190,56 @@ export default function Search() {
                       <dt>기준연도</dt>
                       <dd>
                         <label htmlFor='startYear' className='hidden_text'>기준연도 범위 - 시작 연도</label>
-                        <select name='startYear' id='startYear'>
+                        <select name='startYear' id='startYear' value={searchDetailData?.[tabActive]?.yearStart ?? ''} onChange={(e) => handChangeData('yearStart', e.target.value)}>
                           <option value=''>선택</option>
-                          <option value=''>2023</option>
-                          <option value=''>2022</option>
+                          {selectYear.map((e,i) => {
+                            return <option key={i} value={e}>{e}</option>;
+                          })}
                         </select>
                         <span className='text-base font-medium text-color-dark mx-3'> - </span>
                         <label htmlFor='endYear' className='hidden_text'>기준연도 범위 - 끝 연도</label>
-                        <select name='endYear' id='endYear'>
+                        <select name='endYear' id='endYear' value={searchDetailData?.[tabActive]?.yearEnd ?? ''} onChange={(e) => handChangeData('yearEnd', e.target.value)}>
                           <option value=''>선택</option>
-                          <option value=''>2023</option>
-                          <option value=''>2022</option>
+                          {selectYear.map((e,i) => {
+                            return <option key={i} value={e}>{e}</option>;
+                          })}
                         </select>
                       </dd>
                       <dt>과제명</dt>
                       <dd>
-                        <InputTextXBtn id={'project'} title={'과제명'} value={''} onChange={() => {}} />
+                        <InputTextXBtn id={'project'} title={'과제명'} value={searchDetailData?.[tabActive]?.title ?? ''} onChange={(e) => handChangeData('title', e.target.value)} />
                       </dd>
                       <dt>과제수행기관</dt>
                       <dd>
-                        <InputTextXBtn id={'agency'} title={'과제수행기관'} value={''} onChange={() => {}} />
+                        <InputTextXBtn id={'agency'} title={'과제수행기관'} value={searchDetailData?.[tabActive]?.researchAgencyName ?? ''} onChange={(e) => handChangeData('researchAgencyName', e.target.value)} />
                       </dd>
                       <dt>과제 책임자</dt>
                       <dd>
-                        <InputTextXBtn id={'name'} title={'과제 책임자'} value={''} onChange={() => {}} />
+                        <InputTextXBtn id={'name'} title={'과제 책임자'} value={searchDetailData?.[tabActive]?.researchManagerName ?? ''} onChange={(e) => handChangeData('researchManagerName', e.target.value)} />
                       </dd>
                       <dt>세부과제번호</dt>
                       <dd>
-                        <InputTextXBtn id={'detailNum'} title={'세부과제번호'} value={''} onChange={() => {}} />
+                        <InputTextXBtn id={'detailNum'} title={'세부과제번호'} value={searchDetailData?.[tabActive]?.detailProjectNumber ?? ''} onChange={(e) => handChangeData('detailProjectNumber', e.target.value)} />
                       </dd>
                       <dt>과제고유번호</dt>
                       <dd>
-                        <InputTextXBtn id={'projectNum'} title={'과제고유번호'} value={''} onChange={() => {}} />
+                        <InputTextXBtn id={'projectNum'} title={'과제고유번호'} value={searchDetailData?.[tabActive]?.projectNumber ?? ''} onChange={(e) => handChangeData('projectNumber', e.target.value)} />
                       </dd>
                       <dt>부처명</dt>
                       <dd>
-                        <InputTextXBtn id={'department'} title={'부처명'} value={''} onChange={() => {}} />
+                        <InputTextXBtn id={'department'} title={'부처명'} value={searchDetailData?.[tabActive]?.ministryName ?? ''} onChange={(e) => handChangeData('ministryName', e.target.value)} />
                       </dd>
                       <dt>연구 목표</dt>
                       <dd>
-                        <InputTextXBtn id={'subject'} title={'연구 목표'} value={''} onChange={() => {}} />
+                        <InputTextXBtn id={'subject'} title={'연구 목표'} value={searchDetailData?.[tabActive]?.researchGoal ?? ''} onChange={(e) => handChangeData('researchGoal', e.target.value)} />
                       </dd>
                       <dt>연구 내용</dt>
                       <dd>
-                        <InputTextXBtn id={'content'} title={'연구 내용'} value={''} onChange={() => {}} />
+                        <InputTextXBtn id={'content'} title={'연구 내용'} value={searchDetailData?.[tabActive]?.researchDescription ?? ''} onChange={(e) => handChangeData('researchDescription', e.target.value)} />
                       </dd>
                       <dt>기대 효과</dt>
                       <dd>
-                        <InputTextXBtn id={'benefit'} title={'기대 효과'} value={''} onChange={() => {}} />
+                        <InputTextXBtn id={'benefit'} title={'기대 효과'} value={searchDetailData?.[tabActive]?.expectationEffectiveness ?? ''} onChange={(e) => handChangeData('expectationEffectiveness', e.target.value)} />
                       </dd>
                       <dt className='flex items-center gap-1'>
                         키워드(한글)
@@ -150,7 +249,7 @@ export default function Search() {
                         </div>
                       </dt>
                       <dd>
-                        <InputTextXBtn id={'keywordsKo'} title={'한글 키워드'} value={''} onChange={() => {}} />
+                        <InputTextXBtn id={'keywordsKo'} title={'한글 키워드'} value={searchDetailData?.[tabActive]?.keywordKorean ?? ''} onChange={(e) => handChangeData('keywordKorean', e.target.value)} />
                       </dd>
                       <dt className='flex items-center gap-1'>
                         키워드(영문)
@@ -160,7 +259,7 @@ export default function Search() {
                         </div>
                       </dt>
                       <dd>
-                        <InputTextXBtn id={'keywordsEn'} title={'영문 키워드'} value={''} onChange={() => {}} />
+                        <InputTextXBtn id={'keywordsEn'} title={'영문 키워드'} value={searchDetailData?.[tabActive]?.keywordEnglish ?? ''} onChange={(e) => handChangeData('keywordEnglish', e.target.value)} />
                       </dd>
                     </dl>}
                   {(tabActive === 1)
@@ -168,34 +267,36 @@ export default function Search() {
                       <dt>성과연도</dt>
                       <dd>
                         <label htmlFor='startYear' className='hidden_text'>성과연도 범위 - 시작 연도</label>
-                        <select name='startYear' id='startYear'>
+                        <select name='startYear' id='startYear' value={searchDetailData?.[tabActive]?.yearStart ?? ''} onChange={(e) => handChangeData('yearStart', e.target.value)}>
                           <option value=''>선택</option>
-                          <option value=''>2023</option>
-                          <option value=''>2022</option>
+                          {selectYear.map((e,i) => {
+                            return <option key={i} value={e}>{e}</option>;
+                          })}
                         </select>
                         <span className='text-base font-medium text-color-dark mx-3'> - </span>
                         <label htmlFor='endYear' className='hidden_text'>성과연도 범위 - 끝 연도</label>
-                        <select name='endYear' id='endYear'>
+                        <select name='endYear' id='endYear' value={searchDetailData?.[tabActive]?.yearEnd ?? ''} onChange={(e) => handChangeData('yearEnd', e.target.value)}>
                           <option value=''>선택</option>
-                          <option value=''>2023</option>
-                          <option value=''>2022</option>
+                          {selectYear.map((e,i) => {
+                            return <option key={i} value={e}>{e}</option>;
+                          })}
                         </select>
                       </dd>
                       <dt>특허명</dt>
                       <dd>
-                        <InputTextXBtn id={'project'} title={'특허명'} value={''} onChange={() => {}} />
+                        <InputTextXBtn id={'project'} title={'특허명'} value={searchDetailData?.[tabActive]?.title ?? ''} onChange={(e) => handChangeData('title', e.target.value)} />
                       </dd>
                       <dt>출원번호</dt>
                       <dd>
-                        <InputTextXBtn id={'number'} title={'출원번호'} value={''} onChange={() => {}} />
+                        <InputTextXBtn id={'number'} title={'출원번호'} value={searchDetailData?.[tabActive]?.applNumber ?? ''} onChange={(e) => handChangeData('applNumber', e.target.value)} />
                       </dd>
                       <dt>출원인</dt>
                       <dd>
-                        <InputTextXBtn id={'applicant'} title={'출원인'} value={''} onChange={() => {}} />
+                        <InputTextXBtn id={'applicant'} title={'출원인'} value={searchDetailData?.[tabActive]?.applicantName ?? ''} onChange={(e) => handChangeData('applicantName', e.target.value)} />
                       </dd>
                       <dt>발명자</dt>
                       <dd>
-                        <InputTextXBtn id={'inventor'} title={'발명자'} value={''} onChange={() => {}} />
+                        <InputTextXBtn id={'inventor'} title={'발명자'} value={searchDetailData?.[tabActive]?.inventorName ?? ''} onChange={(e) => handChangeData('inventorName', e.target.value)} />
                       </dd>
                     </dl>}
                   {(tabActive === 2)
@@ -203,38 +304,40 @@ export default function Search() {
                       <dt>성과연도</dt>
                       <dd>
                         <label htmlFor='startYear' className='hidden_text'>성과연도 범위 - 시작 연도</label>
-                        <select name='startYear' id='startYear'>
+                        <select name='startYear' id='startYear' value={searchDetailData?.[tabActive]?.yearStart ?? ''} onChange={(e) => handChangeData('yearStart', e.target.value)}>
                           <option value=''>선택</option>
-                          <option value=''>2023</option>
-                          <option value=''>2022</option>
+                          {selectYear.map((e,i) => {
+                            return <option key={i} value={e}>{e}</option>;
+                          })}
                         </select>
                         <span className='text-base font-medium text-color-dark mx-3'> - </span>
                         <label htmlFor='endYear' className='hidden_text'>성과연도 범위 - 끝 연도</label>
-                        <select name='endYear' id='endYear'>
+                        <select name='endYear' id='endYear' value={searchDetailData?.[tabActive]?.yearEnd ?? ''} onChange={(e) => handChangeData('yearEnd', e.target.value)}>
                           <option value=''>선택</option>
-                          <option value=''>2023</option>
-                          <option value=''>2022</option>
+                          {selectYear.map((e,i) => {
+                            return <option key={i} value={e}>{e}</option>;
+                          })}
                         </select>
                       </dd>
                       <dt>논문명</dt>
                       <dd>
-                        <InputTextXBtn id={'paper'} title={'논문명'} value={''} onChange={() => {}} />
+                        <InputTextXBtn id={'paper'} title={'논문명'} value={searchDetailData?.[tabActive]?.title ?? ''} onChange={(e) => handChangeData('title', e.target.value)} />
                       </dd>
                       <dt>학술지/학술대회명</dt>
                       <dd>
-                        <InputTextXBtn id={'journal'} title={'학술지/학술대회명'} value={''} onChange={() => {}} />
+                        <InputTextXBtn id={'journal'} title={'학술지/학술대회명'} value={searchDetailData?.[tabActive]?.journalTitle ?? ''} onChange={(e) => handChangeData('journalTitle', e.target.value)} />
                       </dd>
                       <dt>ISSN</dt>
                       <dd>
-                        <InputTextXBtn id={'issn'} title={'ISSN'} value={''} onChange={() => {}} />
+                        <InputTextXBtn id={'issn'} title={'ISSN'} value={searchDetailData?.[tabActive]?.issn ?? ''} onChange={(e) => handChangeData('issn', e.target.value)} />
                       </dd>
                       <dt>저자명</dt>
                       <dd>
-                        <InputTextXBtn id={'author'} title={'저자명'} value={''} onChange={() => {}} />
+                        <InputTextXBtn id={'author'} title={'저자명'} value={searchDetailData?.[tabActive]?.author ?? ''} onChange={(e) => handChangeData('author', e.target.value)} />
                       </dd>
                       <dt>초록</dt>
                       <dd>
-                        <InputTextXBtn id={'abstract'} title={'초록'} value={''} onChange={() => {}} />
+                        <InputTextXBtn id={'abstract'} title={'초록'} value={searchDetailData?.[tabActive]?.abstract ?? ''} onChange={(e) => handChangeData('abstract', e.target.value)} />
                       </dd>
                     </dl>}
                   {(tabActive === 3)
@@ -242,71 +345,75 @@ export default function Search() {
                       <dt>발행연도</dt>
                       <dd>
                         <label htmlFor='startYear' className='hidden_text'>발행연도 범위 - 시작 연도</label>
-                        <select name='startYear' id='startYear'>
+                        <select name='startYear' id='startYear' value={searchDetailData?.[tabActive]?.yearStart ?? ''} onChange={(e) => handChangeData('yearStart', e.target.value)}>
                           <option value=''>선택</option>
-                          <option value=''>2023</option>
-                          <option value=''>2022</option>
+                          {selectYear.map((e,i) => {
+                            return <option key={i} value={e}>{e}</option>;
+                          })}
                         </select>
                         <span className='text-base font-medium text-color-dark mx-3'> - </span>
                         <label htmlFor='endYear' className='hidden_text'>발행연도 범위 - 끝 연도</label>
-                        <select name='endYear' id='endYear'>
+                        <select name='endYear' id='endYear' value={searchDetailData?.[tabActive]?.yearEnd ?? ''} onChange={(e) => handChangeData('yearEnd', e.target.value)}>
                           <option value=''>선택</option>
-                          <option value=''>2023</option>
-                          <option value=''>2022</option>
+                          {selectYear.map((e,i) => {
+                            return <option key={i} value={e}>{e}</option>;
+                          })}
                         </select>
                       </dd>
                       <dt>발행기관명</dt>
                       <dd>
-                        <InputTextXBtn id={'agency'} title={'발행기관명'} value={''} onChange={() => {}} />
+                        <InputTextXBtn id={'agency'} title={'발행기관명'} value={searchDetailData?.[tabActive]?.title ?? ''} onChange={(e) => handChangeData('title', e.target.value)} />
                       </dd>
                       <dt>ICT 자료명</dt>
                       <dd>
-                        <InputTextXBtn id={'ict'} title={'ICT 자료명'} value={''} onChange={() => {}} />
+                        <InputTextXBtn id={'ict'} title={'ICT 자료명'} value={searchDetailData?.[tabActive]?.sourceName ?? ''} onChange={(e) => handChangeData('sourceName', e.target.value)} />
                       </dd>
                     </dl>}
                   {(tabActive === 4)
                     && <dl>
                       <dt>발행연도</dt>
                       <dd>
-                        <label htmlFor='startYear' className='hidden_text'>기준연도 범위 - 시작 연도</label>
-                        <select name='startYear' id='startYear'>
+                        <label htmlFor='startYear' className='hidden_text'>발행연도 범위 - 시작 연도</label>
+                        <select name='startYear' id='startYear' value={searchDetailData?.[tabActive]?.yearStart ?? ''} onChange={(e) => handChangeData('yearStart', e.target.value)}>
                           <option value=''>선택</option>
-                          <option value=''>2023</option>
-                          <option value=''>2022</option>
+                          {selectYear.map((e,i) => {
+                            return <option key={i} value={e}>{e}</option>;
+                          })}
                         </select>
                         <span className='text-base font-medium text-color-dark mx-3'> - </span>
-                        <label htmlFor='endYear' className='hidden_text'>기준연도 범위 - 끝 연도</label>
-                        <select name='endYear' id='endYear'>
+                        <label htmlFor='endYear' className='hidden_text'>발행연도 범위 - 끝 연도</label>
+                        <select name='endYear' id='endYear' value={searchDetailData?.[tabActive]?.yearEnd ?? ''} onChange={(e) => handChangeData('yearEnd', e.target.value)}>
                           <option value=''>선택</option>
-                          <option value=''>2023</option>
-                          <option value=''>2022</option>
+                          {selectYear.map((e,i) => {
+                            return <option key={i} value={e}>{e}</option>;
+                          })}
                         </select>
                       </dd>
                       <dt>부처명</dt>
                       <dd>
-                        <InputTextXBtn id={'department'} title={'부처명'} value={''} onChange={() => {}} />
+                        <InputTextXBtn id={'department'} title={'부처명'} value={searchDetailData?.[tabActive]?.title ?? ''} onChange={(e) => handChangeData('title', e.target.value)} />
                       </dd>
                       <dt>ICT 자료명</dt>
                       <dd>
-                        <InputTextXBtn id={'ict'} title={'ICT 자료명'} value={''} onChange={() => {}} />
+                        <InputTextXBtn id={'ict'} title={'ICT 자료명'} value={searchDetailData?.[tabActive]?.ministryName ?? ''} onChange={(e) => handChangeData('ministryName', e.target.value)} />
                       </dd>
                     </dl>}
                   {(tabActive === 5)
                     && <dl>
                       <dt>성명</dt>
                       <dd>
-                        <InputTextXBtn id={'name'} title={'성명'} value={''} onChange={() => {}} />
+                        <InputTextXBtn id={'name'} title={'성명'} value={searchDetailData?.[tabActive]?.name ?? ''} onChange={(e) => handChangeData('name', e.target.value)} />
                       </dd>
                       <dt>재직기관명</dt>
                       <dd>
-                        <InputTextXBtn id={'agency'} title={'재직기관명'} value={''} onChange={() => {}} />
+                        <InputTextXBtn id={'agency'} title={'재직기관명'} value={searchDetailData?.[tabActive]?.orgnName ?? ''} onChange={(e) => handChangeData('orgnName', e.target.value)} />
                       </dd>
                     </dl>}
                   {(tabActive === 6)
                     && <dl>
                       <dt>기관명</dt>
                       <dd>
-                        <InputTextXBtn id={'agency'} title={'기관명'} value={''} onChange={() => {}} />
+                        <InputTextXBtn id={'agency'} title={'기관명'} value={searchDetailData?.[tabActive]?.title ?? ''} onChange={(e) => handChangeData('title', e.target.value)} />
                       </dd>
                     </dl>}
                   {(tabActive === 7)
@@ -314,18 +421,18 @@ export default function Search() {
                       <dt>기간</dt>
                       <dd>
                         <label htmlFor='startDate' className='hidden_text'>기간 범위 - 시작 연도</label>
-                        <input type='date' name='startDate' id='startDate' />
+                        <input type='date' name='startDate' id='startDate' value={common.ymdFormat(searchDetailData?.[tabActive]?.dateStart ?? '')} onChange={(e) => handChangeData('dateStart', e.target.value)} />
                         <span className='text-base font-medium text-color-dark mx-3'> - </span>
                         <label htmlFor='endDate' className='hidden_text'>기간 범위 - 끝 연도</label>
-                        <input type='date' name='endDate' id='endDate' />
+                        <input type='date' name='endDate' id='endDate' value={common.ymdFormat(searchDetailData?.[tabActive]?.dateEnd ?? '')} onChange={(e) => handChangeData('dateEnd', e.target.value)} />
                       </dd>
                       <dt>출처명</dt>
                       <dd>
-                        <InputTextXBtn id={'source'} title={'출처명'} value={''} onChange={() => {}} />
+                        <InputTextXBtn id={'source'} title={'출처명'} value={searchDetailData?.[tabActive]?.sourceName ?? ''} onChange={(e) => handChangeData('sourceName', e.target.value)} />
                       </dd>
                       <dt>키워드</dt>
                       <dd>
-                        <InputTextXBtn id={'keywords'} title={'키워드'} value={''} onChange={() => {}} />
+                        <InputTextXBtn id={'keywords'} title={'키워드'} value={searchDetailData?.[tabActive]?.keywords ?? ''} onChange={(e) => handChangeData('keywords', e.target.value)} />
                       </dd>
                     </dl>}
                 </div>
@@ -333,8 +440,8 @@ export default function Search() {
             </div>
             <div className='flex items-center justify-center gap-6 mt-6'>
               {/* Input에 입력된 값이 하나라도 있을 경우, disabled false 값 */}
-              <Button className='py-2.75 px-6.5 rounded-3xl text-base font-bold btn_style02' name='초기화' onClick={() => {}} disabled={true} />
-              <Button className='gap-2 py-3 px-6.5 rounded-3xl text-base font-bold btn_style03' name='상세 검색' icon={icSearch} onClick={() => {}} />
+              <Button className='py-2.75 px-6.5 rounded-3xl text-base font-bold btn_style02' name='초기화' onClick={() => initSearch()} />
+              <Button className='gap-2 py-3 px-6.5 rounded-3xl text-base font-bold btn_style03' name='상세 검색' icon={icSearch} onClick={() => handleDtailSearch()} />
             </div>
           </>
         }

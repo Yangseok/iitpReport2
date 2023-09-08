@@ -8,7 +8,7 @@ import Pagination from 'Domain/Home/Common/Componet/Pagination';
 import ListItem from 'Domain/Home/Common/Componet/ListItem';
 import common from 'Utill';
 import { useSelector, useDispatch } from 'react-redux';
-import { getSearchKeyword, getSelectKeyword, getFilterActive, setLoading } from 'Domain/Home/Common/Status/CommonSlice';
+import { getSearchKeyword, getSelectKeyword, getFilterActive, setLoading, getSearchDetailData } from 'Domain/Home/Common/Status/CommonSlice';
 import * as discoveryAPI from 'Domain/Home/Discovery/API/Call';
 import * as projectAPI from 'Domain/Home/Discovery/API/ProjectCall';
 import Filter from 'Domain/Home/Discovery/Component/Filter';
@@ -36,6 +36,9 @@ export default function Result() {
   const filterActive = useSelector(getFilterActive);
   const filterKey = 'search/projectIn';
 
+  const globalSearchDetailData = useSelector(getSearchDetailData);
+  const searchDetailKey = 0;
+
   const getList = useCallback(async () => {
     await (async () => {
       let similarity = [];
@@ -54,6 +57,7 @@ export default function Result() {
       try {
         dispatch(setLoading(true));
         if (se1 == 'search') {
+          searchParam = globalSearchDetailData[searchDetailKey];
           data = await projectAPI.projectIn('search',size,page,keyword,similarity,sort,filterObj,searchParam,etcParam);
         } else if (se1 == 'discovery') {
           if (se2 == 'keyword') {
@@ -97,7 +101,7 @@ export default function Result() {
       setProjectData(procData);
       setSearchButtonClick(false);
     })();
-  }, [keyword, searchButtonClick, page, size, sort, se1, se2, filterActive]);
+  }, [keyword, searchButtonClick, page, size, sort, se1, se2, filterActive, globalSearchDetailData]);
 
   const downExcel = useCallback(async () => {
     const excelSize = 1000;
@@ -117,6 +121,7 @@ export default function Result() {
       try {
         dispatch(setLoading(true));
         if (se1 == 'search') {
+          searchParam = globalSearchDetailData[searchDetailKey];
           data = await projectAPI.projectIn('search',excelSize,1,keyword,similarity,sort,filterObj,searchParam);
         } else if (se1 == 'discovery') {
           if (se2 == 'keyword') {
@@ -153,7 +158,7 @@ export default function Result() {
       }
       await common.excelExport('down', ['과제명', '연구 개발비', '연구 개발기간', '연구 개발기관', '연구 책임자', 'ICT 기술 분류', '한글 키워드'], procData);
     })();
-  }, [keyword, sort, se1, se2, filterActive]);
+  }, [keyword, sort, se1, se2, filterActive, globalSearchDetailData]);
 
   // useEffect(() => {
   //   console.log('page 이동 필터값 변경', se);
@@ -162,7 +167,7 @@ export default function Result() {
 
   useEffect(() => {
     getList();
-  }, [keyword, page, size, sort, filterActive]);
+  }, [keyword, page, size, sort, filterActive, globalSearchDetailData]);
 
   useEffect(() => {
     if (searchButtonClick) {
@@ -195,7 +200,7 @@ export default function Result() {
         dispatch(setLoading(false));  
       }
       // console.log('count:', data?.data?.result);
-      
+
       setTabCount({
         'all': data?.data?.result?.countInfo?.all ?? 0,
         1: data?.data?.result?.countInfo?.project ?? 0,

@@ -9,6 +9,7 @@ const initialState = {
   searchKeywordResult: {},
   searchKeywordReset: false,
   filterActive: items,
+  searchDetailData: {},
 };
 
 export const commonSlice = createSlice({
@@ -35,11 +36,14 @@ export const commonSlice = createSlice({
     },
     setFilterActive:  (state, action) => {
       state.filterActive = action.payload;
-    }
+    },
+    setSearchDetailData:  (state, action) => {
+      state.searchDetailData = action.payload;
+    },
   },
 });
 
-export const { setLoading, setSearchKeyword, setSelectKeyword, setSearchKeywordResult, setSearchKeywordReset, setTmpSearchKeyword, setFilterActive } = commonSlice.actions;
+export const { setLoading, setSearchKeyword, setSelectKeyword, setSearchKeywordResult, setSearchKeywordReset, setTmpSearchKeyword, setFilterActive, setSearchDetailData } = commonSlice.actions;
 export const getLoading = (state) => state.common.loading;
 export const getSearchKeyword = (state) => state.common.searchKeyword;
 export const getTmpSearchKeyword = (state) => state.common.tmpSearchKeyword;
@@ -47,4 +51,5 @@ export const getSelectKeyword = (state) => state.common.selectKeyword;
 export const getSearchKeywordResult = (state) => state.common.searchKeywordResult;
 export const getSearchKeywordReset = (state) => state.common.searchKeywordReset;
 export const getFilterActive = (state) => state.common.filterActive;
+export const getSearchDetailData = (state) => state.common.searchDetailData;
 export default commonSlice.reducer;

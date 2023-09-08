@@ -8,7 +8,7 @@ import Pagination from 'Domain/Home/Common/Componet/Pagination';
 import ListItem from 'Domain/Home/Common/Componet/ListItem';
 import common from 'Utill';
 import { useSelector, useDispatch } from 'react-redux';
-import { getSearchKeyword, getSelectKeyword, getFilterActive, setLoading } from 'Domain/Home/Common/Status/CommonSlice';
+import { getSearchKeyword, getSelectKeyword, getFilterActive, setLoading, getSearchDetailData } from 'Domain/Home/Common/Status/CommonSlice';
 import * as discoveryAPI from 'Domain/Home/Discovery/API/Call';
 import * as patentAPI from 'Domain/Home/Discovery/API/PatentCall';
 import Filter from 'Domain/Home/Discovery/Component/Filter';
@@ -36,6 +36,9 @@ export default function Result() {
   const filterActive = useSelector(getFilterActive);
   const filterKey = 'search/patent';
 
+  const globalSearchDetailData = useSelector(getSearchDetailData);
+  const searchDetailKey = 1;
+
   const getList = useCallback(async () => {
     await (async () => {
       let similarity = [];
@@ -53,6 +56,7 @@ export default function Result() {
       try {
         dispatch(setLoading(true));
         if (se1 == 'search') {
+          searchParam = globalSearchDetailData[searchDetailKey];
           data = await patentAPI.patent('search',size,page,keyword,similarity,sort,filterObj,searchParam,etcParam);
         } else if (se1 == 'discovery') {
           if (se2 == 'keyword') {
@@ -95,7 +99,7 @@ export default function Result() {
       setProjectData(procData);
       setSearchButtonClick(false);
     })();
-  }, [keyword, searchButtonClick, page, size, sort, se1, se2, filterActive]);
+  }, [keyword, searchButtonClick, page, size, sort, se1, se2, filterActive, globalSearchDetailData]);
 
   const downExcel = useCallback(async () => {
     const excelSize = 1000;
@@ -113,6 +117,7 @@ export default function Result() {
       try {
         dispatch(setLoading(true));
         if (se1 == 'search') {
+          searchParam = globalSearchDetailData[searchDetailKey];
           data = await patentAPI.patent('search',excelSize,1,keyword,similarity,sort,filterObj,searchParam);
         } else if (se1 == 'discovery') {
           if (se2 == 'keyword') {
@@ -150,11 +155,11 @@ export default function Result() {
       }
       await common.excelExport('down', ['과제명', '유발 과제', '출원등록구분', '출원(등록)번호', '출원(등록)일', '출원(등록)인', '발명자'], procData);
     })();
-  }, [keyword, sort, se1, se2, filterActive]);
+  }, [keyword, sort, se1, se2, filterActive, globalSearchDetailData]);
 
   useEffect(() => {
     getList();
-  }, [keyword, page, size, sort, filterActive]);
+  }, [keyword, page, size, sort, filterActive, globalSearchDetailData]);
 
   useEffect(() => {
     if (searchButtonClick) {
