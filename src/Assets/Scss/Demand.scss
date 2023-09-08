@@ -1,0 +1,51 @@
+@import "./Common/_colors", "./Common/_mixins";
+
+/* ==================================================
+  DEMAND BANKING
+================================================== */
+/* Reception */
+.reception_wrap {
+  position: absolute;
+  right: calc(100% + 20px);
+  top: 0;
+  width: 200px;
+  padding: 16px;
+  border: 1px solid $color_line;
+  background-color: $color_m_bg;
+}
+
+.sorting_wrap {
+  @include flexLayout(center, flex-start, 16px 40px);
+  flex-wrap: wrap;
+  position: relative;
+
+  dl {
+    @include flexLayout(center, flex-start, 16px);
+    position: relative;
+
+    dt {
+      font-size: 16px;
+      color: $color_regular;
+      font-weight: 700;
+    }
+    dd input[type=text] {
+      border: 0;
+      border-bottom: 1px solid $color_line;
+    }
+  }
+
+  .sorting_ict {
+    @include flexLayout(center, center, 16px);
+    flex: 1;
+    & > * {
+      width: calc((100% - 48px) / 4);
+
+      select { width: 100%; }
+    }
+  }
+}
+.sorting_reset_btn {
+  position: absolute;
+  bottom: 14px;
+  right: 0;
+}

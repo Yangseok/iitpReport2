@@ -9,22 +9,23 @@ export default function ToggleListItem(props) {
   const onItemSlide = (e, id) => {
     if(e.currentTarget.nodeName !== 'BUTTON') {
       const pd = 20;
-      const liEl = e.currentTarget.parentNode;
-      const contsEl = e.currentTarget.parentNode.children[1];
+      const liEl = $(e.currentTarget).parents('li');
+      const contsEl = liEl.find('.conts_box');
 
       setNewsActive(id);
-      $(liEl).siblings().removeClass('on');
-      $(liEl).siblings().find('.conts_box').css('height', 0);
-      $(liEl).siblings().find('.conts_box').css('paddingBottom', 0);
+      liEl.siblings().removeClass('on');
+      liEl.siblings().find('.conts_box').css({ 'height': 0, 'paddingBottom': 0 });
 
-      if(!liEl.classList.contains('on')) {
-        liEl.classList.add('on');
-        contsEl.style.height = `${contsEl.scrollHeight + pd}px`;
-        contsEl.style.paddingBottom = `${pd}px`;
+      if(!liEl.hasClass('on')) {
+        liEl.addClass('on');
+        contsEl.css({ 
+          'height': `${contsEl.prop('scrollHeight') + pd}px`, 
+          'paddingBottom': `${pd}px`
+        });
       } else {
-        liEl.classList.remove('on');
-        contsEl.style.height = 0;
-        contsEl.style.paddingBottom = 0;
+        liEl.removeClass('on');
+        contsEl.css({ 'height': 0, 'paddingBottom': 0 });
+        setNewsActive(null);
       }
     }
   };

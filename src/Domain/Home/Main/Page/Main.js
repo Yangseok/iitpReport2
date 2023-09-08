@@ -66,55 +66,55 @@ export default function Main() {
 
       // Shift 눌렀는지 확인
       let _shift = false;
-      $(document).on('keydown',function(event){
-        if(event.keyCode === 16) _shift = true;
+      $(document).on('keydown',function(e){
+        if(e.key === 'Shift') _shift = true;
       });
-      $(document).on('keyup',function(event){
-        if(event.keyCode === 16) _shift = false;
+      $(document).on('keyup',function(e){
+        if(e.key === 'Shift') _shift = false;
       });
 
       // Tab, Shift + Tab 키 관련 스크립트
       $('[class*=\'section\']').attr('tabindex', '0');
 
-      $('#header .right_menu a').last().on('keydown', (event) => {
-        if(event.keyCode === 9 && !_shift) {
+      $('#header .right_menu a').last().on('keydown', (e) => {
+        if(e.key === 'Tab' && !_shift) {
           $('#section1').focus();
           return false;
         }
       });
-      $(document).on('keydown', '#section1 .keywords_box button:last-of-type', (event) => {
-        if(event.keyCode === 9 && !_shift){
+      $(document).on('keydown', '#section1 .keywords_box button:last-of-type', (e) => {
+        if(e.key === 'Tab' && !_shift){
           $('.fp-nav-custom button:eq(2)').focus();
           return false;
         }
       });
-      $('#section2 a').last().on('keydown', (event) => {
-        if(event.keyCode === 9 && !_shift){
+      $('#section2 a').last().on('keydown', (e) => {
+        if(e.key === 'Tab' && !_shift){
           $('.fp-nav-custom button:eq(3)').focus();
           return false;
         }
       });
-      $('#section2 a').first().on('keydown', (event) => {
-        if(event.keyCode == 9 && _shift) {
+      $('#section2 a').first().on('keydown', (e) => {
+        if(e.key == 'Tab' && _shift) {
           // $('#section2').focus();
           fullpageRef.current.scrollToSlide(0);
           $('#section1').focus();
           return false;
         }
       });
-      $('#section3').on('keydown', (event) => {
-        if(event.keyCode == 9 && !_shift) {
+      $('#section3').on('keydown', (e) => {
+        if(e.key == 'Tab' && !_shift) {
           fullpageRef.current.scrollToSlide(3);
           $('#section4').focus();
           return false;
-        } else if(event.keyCode == 9 && _shift) {
+        } else if(e.key == 'Tab' && _shift) {
           fullpageRef.current.scrollToSlide(1);
           $('#section2').focus();
           return false;
         }
       });
-      $('#section4 a').first().on('keydown', (event) => {
-        if(event.keyCode == 9 && _shift) {
+      $('#section4 a').first().on('keydown', (e) => {
+        if(e.key == 'Tab' && _shift) {
           // $('#section4').focus();
           fullpageRef.current.scrollToSlide(2);
           $('#section3').focus();

@@ -8,6 +8,7 @@ import Router from 'Config/Router';
 import 'tw-elements-react/dist/css/tw-elements-react.min.css';
 import 'Assets/Css/Tailwind.css';
 import 'Assets/Css/App.css';
+import 'Assets/Css/RcSlider.css';
 
 const container = document.getElementById('root');
 const root = createRoot(container);

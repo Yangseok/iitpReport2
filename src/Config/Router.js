@@ -20,6 +20,9 @@ import ViewPatent from 'Domain/Home/Discovery/Page/View/Patent';
 import ViewPaper from 'Domain/Home/Discovery/Page/View/Paper';
 import ViewOrgn from 'Domain/Home/Discovery/Page/View/Orgn';
 import DemandBanking from 'Domain/Home/DemandBanking/Page/Main';
+import DemandBankingResult from 'Domain/Home/DemandBanking/Page/Result';
+import DemandBankingView from 'Domain/Home/DemandBanking/Page/View';
+import DemandBankingMerge from 'Domain/Home/DemandBanking/Page/Merge';
 import ICTTrend from 'Domain/Home/ICTTrend/Page/Main';
 import PageNotFound from 'Domain/Home/Common/ErrorPage/404';
 import Counter from 'Domain/Home/Sample/Page/Counter';
@@ -81,6 +84,9 @@ export default function Router() {
         <Route path='/view/paper/:id' element={<ViewPaper />} />
         <Route path='/view/orgn/:id' element={<ViewOrgn />} />
         <Route path='/demandbanking' element={<DemandBanking />} />
+        <Route path='/demandbanking/result' element={<DemandBankingResult />} />
+        <Route path='/demandbanking/view/:id' element={<DemandBankingView />} />
+        <Route path='/demandbanking/merge/:id' element={<DemandBankingMerge />} />
         <Route path='/icttrend' element={<ICTTrend />} />
         <Route path='/sample/redux' element={<Counter />} />
         <Route path='/sample/modal1' element={<Modal1 />} />

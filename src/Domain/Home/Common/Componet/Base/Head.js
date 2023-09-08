@@ -73,12 +73,12 @@ export default function Head(props) {
               <NavLink to='/login'>Guest Login</NavLink>
             </li>
             <li>
-              <button type='button' onClick={() => setSitemapShow(true)}>Menu</button>
+              <button type='button' className='menu_btn' onClick={() => setSitemapShow(true)}>Menu</button>
             </li>
           </ul>
         </div>
       </div>
-      {(sitemapShow) ? <SiteMap nav={nav} setShow={setSitemapShow} /> : ''}
+      {(sitemapShow) ? <SiteMap nav={nav} show={sitemapShow} setShow={setSitemapShow} /> : ''}
     </header>
   );
 }

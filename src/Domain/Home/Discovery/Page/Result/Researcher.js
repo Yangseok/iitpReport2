@@ -179,7 +179,7 @@ export default function DiscoveryResult() {
         const simialityPushData = {
           id: i,
           name: data?.data?.result?.simialityIndvList?.[i]?.orgnName ?? '',
-          relation: common.colorSet(data?.data?.result?.simialityIndvList?.[i]?.weight ?? 0)
+          relation: (i !== '0') ? common.colorSet(data?.data?.result?.simialityIndvList?.[i]?.weight ?? 0) : 0
         };
         simiality.push(simialityPushData);
       }
