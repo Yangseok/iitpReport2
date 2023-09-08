@@ -18,6 +18,13 @@ export default function Search(props) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  const mappingTabActiveToPage = ['projectout','patent','paper','ict','policy','researcher','orgn','news'];
+
+  const se = common.getSegment();
+  const se1 = se[1] ?? '';
+  const se2 = se[2] ?? '';
+  const se3 = se[3] ?? '';
+
   const tabButtons = [
     { id: 0, name: '과제', onClick: () => setTabActive(0) },
     { id: 1, name: '특허', onClick: () => setTabActive(1) },
@@ -137,7 +144,11 @@ export default function Search(props) {
     dispatch(setSearchKeywordReset(true));
     // navigate('/search/result/all?keyword=' + tmpSearchKeyword);
     const se = common.getSegment();
-    navigate('/search/result/'+(se[3]??'all'));
+    if (fold) {
+      navigate('/search/result/'+(se[3]??'all'));
+    } else {
+      navigate('/search/result/'+(mappingTabActiveToPage[tabActive]??'all'));
+    }
   };
 
   useEffect(() => {
@@ -148,7 +159,6 @@ export default function Search(props) {
       }
     })();
   }, [tmpSearchKeyword]);
-
   
   useEffect(() => {
     let yearArr = [];
@@ -157,6 +167,14 @@ export default function Search(props) {
     }
     setSelectYear(yearArr);
   }, []);
+
+  useEffect(() => {
+    if (se1 === 'search' && se2 === 'result') {
+      let se3ToActive = mappingTabActiveToPage.indexOf(se3);
+      if (se3ToActive === -1) se3ToActive = 0;
+      setTabActive(se3ToActive);
+    }
+  }, [se1, se2, se3]);
 
   return (
     <>
