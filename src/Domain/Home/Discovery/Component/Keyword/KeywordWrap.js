@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import icReset from 'Assets/Images/ic_reset.png';
 import icReset02 from 'Assets/Images/ic_reset02.png';
 import icSearch from 'Assets/Images/ic_search.png';
@@ -9,12 +9,14 @@ import * as discoveryAPI from 'Domain/Home/Discovery/API/Call';
 import common from 'Utill';
 
 import { useSelector, useDispatch } from 'react-redux';
-import { setSelectKeyword, setSearchKeywordResult, getSearchKeywordResult, setSearchKeywordReset, getSearchKeywordReset } from 'Domain/Home/Common/Status/CommonSlice';
+import { getSelectKeyword, setSelectKeyword, setSearchKeywordResult, getSearchKeywordResult, setSearchKeywordReset, getSearchKeywordReset } from 'Domain/Home/Common/Status/CommonSlice';
 
 export default function KeywordWrap(props) {
   const dispatch = useDispatch();
 
   const searchKeywordResult = useSelector(getSearchKeywordResult) ?? {};
+  const selectKeyword = useSelector(getSelectKeyword) ?? {};
+  
   const searchKeywordReset = useSelector(getSearchKeywordReset);
 
   const { folded, chfold, setChFold } = props;
@@ -22,16 +24,26 @@ export default function KeywordWrap(props) {
   const [resetDisabled, setResetDisabled] = useState(true);
   const [fullFold, setFullFold] = useState(folded ?? false);
 
+  const [tmpSearchKeywordResult, setTmpSearchKeywordResult] = useState(searchKeywordResult);
+  const [tmpSelectKeyword, setTmpSelectKeyword] = useState(selectKeyword);
+
+  //디스커버리 검색 이벤트
+  const discoverySearchBttonClick = useCallback(async () => {
+    dispatch(setSelectKeyword(tmpSelectKeyword));
+    dispatch(setSearchKeywordResult(tmpSearchKeywordResult));
+    props.discoverySearchBttonClick();
+  }, [tmpSelectKeyword, tmpSearchKeywordResult]);
+
   // 키워드 클릭 이벤트
   const handleKeywordClick = (event, dep) => {
     const idx = +event.target.dataset.idx;
 
-    const dataLength = Object.keys(searchKeywordResult).length;
+    const dataLength = Object.keys(tmpSearchKeywordResult).length;
     const newState = {
-      ...searchKeywordResult,
+      ...tmpSearchKeywordResult,
       [dep]: {
-        ...searchKeywordResult[dep],
-        list: searchKeywordResult[dep]?.list?.map((e) => {
+        ...tmpSearchKeywordResult[dep],
+        list: tmpSearchKeywordResult[dep]?.list?.map((e) => {
           if (e.id === idx) {
             return {...e, active: !e.active};
           }
@@ -42,7 +54,8 @@ export default function KeywordWrap(props) {
     for (let i = dep + 1; i <= dataLength; i++) {
       delete newState[i];
     }
-    dispatch(setSearchKeywordResult(newState));
+    setTmpSearchKeywordResult(newState);
+    // dispatch(setSearchKeywordResult(newState));
   };
 
   // 키워드 확장 버튼 클릭 이벤트
@@ -52,12 +65,13 @@ export default function KeywordWrap(props) {
     const keywordData = common.procKeywordData(data?.data?.result ?? []);
 
     let newState = {};
-    for (const key in searchKeywordResult) {
-      newState[key] = { ...searchKeywordResult[key], fold: true };
+    for (const key in tmpSearchKeywordResult) {
+      newState[key] = { ...tmpSearchKeywordResult[key], fold: true };
     }
     newState = { ...newState, [dep]: { fold: false, list: keywordData } };
     
-    dispatch(setSearchKeywordResult(newState));
+    setTmpSearchKeywordResult(newState);
+    // dispatch(setSearchKeywordResult(newState));
   };
 
   // 키워드 선택 초기화
@@ -66,7 +80,8 @@ export default function KeywordWrap(props) {
     const keywordData = common.procKeywordData(data?.data?.result ?? []);
     // console.log(keywordData);
     // 1depth 키워드 데이터 노출
-    dispatch(setSearchKeywordResult({ 1: { fold: false, list: keywordData } }));
+    setTmpSearchKeywordResult({ 1: { fold: false, list: keywordData } });
+    // dispatch(setSearchKeywordResult({ 1: { fold: false, list: keywordData } }));
     setSelectedData({});
   };
 
@@ -81,13 +96,13 @@ export default function KeywordWrap(props) {
   useEffect(() => {
     let newObj = {};
 
-    Object.keys(searchKeywordResult).map((key) => {
-      const arr = searchKeywordResult[key]?.list.filter((e) => (e.active));
-      newObj[key] = { ...searchKeywordResult[key], list: arr };
+    Object.keys(tmpSearchKeywordResult).map((key) => {
+      const arr = tmpSearchKeywordResult[key]?.list.filter((e) => (e.active));
+      newObj[key] = { ...tmpSearchKeywordResult[key], list: arr };
       setSelectedData(newObj);
     });
     // console.log('TOTAL DATA : ', searchKeywordResult);
-  }, [searchKeywordResult]);
+  }, [tmpSearchKeywordResult]);
 
   useEffect(() => {
     if(selectedData[1]?.list?.length > 0) {
@@ -96,7 +111,8 @@ export default function KeywordWrap(props) {
       setResetDisabled(true);
     }
     // console.log('SELECT DATA : ', selectedData);
-    dispatch(setSelectKeyword(selectedData));
+    setTmpSelectKeyword(selectedData);
+    // dispatch(setSelectKeyword(selectedData));
   }, [selectedData]);
 
   useEffect(() => {
@@ -123,18 +139,18 @@ export default function KeywordWrap(props) {
       </div>
       {(!fullFold)
         ? <>
-          {Object.keys(searchKeywordResult).map((key, idx) => (
+          {Object.keys(tmpSearchKeywordResult).map((key, idx) => (
             <KeywordDepth 
               key={idx}
               idx={idx + 1}
-              isFold={searchKeywordResult[key]?.fold}
-              data={searchKeywordResult[key]?.list}
+              isFold={tmpSearchKeywordResult[key]?.fold}
+              data={tmpSearchKeywordResult[key]?.list}
               selectedData={selectedData[key]?.list}
               onKeywordClick={handleKeywordClick}
               onExpendClick={handleExpendClick}
             />
           ))}
-          <Button className='gap-2 mt-6 mx-auto py-3 px-6.5 rounded-3xl text-base font-bold btn_style03' name='디스커버리' icon={icSearch} onClick={props.discoverySearchBttonClick} />
+          <Button className='gap-2 mt-6 mx-auto py-3 px-6.5 rounded-3xl text-base font-bold btn_style03' name='디스커버리' icon={icSearch} onClick={() => discoverySearchBttonClick()} />
         </>
         : null
       }
