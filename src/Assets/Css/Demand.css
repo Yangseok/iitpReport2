@@ -1,0 +1,57 @@
+/* ==================================================
+  DEMAND BANKING
+================================================== */
+/* Reception */
+.reception_wrap {
+  position: absolute;
+  right: calc(100% + 20px);
+  top: 0;
+  width: 200px;
+  padding: 16px;
+  border: 1px solid #E2E8F0;
+  background-color: #F9FBFF;
+}
+
+.sorting_wrap {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 16px 40px;
+  flex-wrap: wrap;
+  position: relative;
+}
+.sorting_wrap dl {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 16px;
+  position: relative;
+}
+.sorting_wrap dl dt {
+  font-size: 16px;
+  color: #334155;
+  font-weight: 700;
+}
+.sorting_wrap dl dd input[type=text] {
+  border: 0;
+  border-bottom: 1px solid #E2E8F0;
+}
+.sorting_wrap .sorting_ict {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  flex: 1;
+}
+.sorting_wrap .sorting_ict > * {
+  width: calc((100% - 48px) / 4);
+}
+.sorting_wrap .sorting_ict > * select {
+  width: 100%;
+}
+
+.sorting_reset_btn {
+  position: absolute;
+  bottom: 14px;
+  right: 0;
+}
