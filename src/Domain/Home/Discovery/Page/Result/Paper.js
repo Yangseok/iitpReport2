@@ -18,6 +18,8 @@ import { NavLink } from 'react-router-dom';
 export default function Result() {
   const dispatch = useDispatch();
   const se = common.getSegment();
+  const se1 = se[1] ?? '';
+  const se2 = se[2] ?? '';
   const selectKeyword = useSelector(getSelectKeyword);
   const keyword = useSelector(getSearchKeyword);
   const [tabCount, setTabCount] = useState({});
@@ -35,8 +37,6 @@ export default function Result() {
   const filterKey = 'search/paper';
 
   const getList = useCallback(async () => {
-    const se1 = se[1] ?? '';
-    const se2 = se[2] ?? '';
     await (async () => {
       let similarity = [];
       let filterObj = {
@@ -92,11 +92,9 @@ export default function Result() {
       setProjectData(procData);
       setSearchButtonClick(false);
     })();
-  }, [keyword, searchButtonClick, page, size, sort, se, filterActive]);
+  }, [keyword, searchButtonClick, page, size, sort, se1, se2, filterActive]);
 
   const downExcel = useCallback(async () => {
-    const se1 = se[1] ?? '';
-    const se2 = se[2] ?? '';
     const excelSize = 1000;
     await (async () => {
       let similarity = [];
@@ -143,7 +141,7 @@ export default function Result() {
       }
       await common.excelExport('down', ['논문명', '발행년도', '논문 구분', '소속기관', '주 저자', '학술지/학술대회명'], procData);
     })();
-  }, [keyword, sort, se, filterActive]);
+  }, [keyword, sort, se1, se2, filterActive]);
 
   useEffect(() => {
     getList();
@@ -158,7 +156,29 @@ export default function Result() {
 
   useEffect(() => {
     (async () => {
-      const data = await discoveryAPI.searchAll(keyword,1);
+      let data = [];
+      try {
+        dispatch(setLoading(true));
+        if (se1 == 'search') {
+          data = await discoveryAPI.searchCount('search',keyword);
+        } else if (se1 == 'discovery') {
+          if (se2 == 'keyword') {
+            const procKeyword = common.procCountKeyword(keyword, selectKeyword);
+            // console.log('procKeyword:', procKeyword);
+            data = await discoveryAPI.searchCount('discovery',procKeyword.join('|'));
+          } else if (se2 == 'file') {
+            data = await discoveryAPI.searchCount('discovery',keyword);
+          } else if (se2 == 'project') {
+            data = await discoveryAPI.searchCount('discovery',keyword);
+          }
+        }
+      } catch (e) {
+        console.warn(e);
+      } finally {
+        dispatch(setLoading(false));  
+      }
+      // console.log('count:', data?.data?.result);
+
       setTabCount({
         'all': data?.data?.result?.countInfo?.all ?? 0,
         1: data?.data?.result?.countInfo?.project ?? 0,
@@ -171,7 +191,7 @@ export default function Result() {
         8: data?.data?.result?.countInfo?.news ?? 0,
       });
     })();
-  }, [keyword]);
+  }, [keyword, se1, se2, selectKeyword]);
 
   // const tempData = [
   //   {

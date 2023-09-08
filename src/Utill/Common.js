@@ -115,6 +115,21 @@ export const procSimilarity = (selectedData) => {
   }
   return selectKeyword;
 };
+export const procCountKeyword = (keyword, selectedData) => {
+  let selectKeyword = [];
+  selectKeyword.push(keyword);
+  try {
+    for (const k in selectedData) {
+      const list = selectedData[k].list;
+      for (const kk in list) {
+        selectKeyword.push(list[kk].term);
+      }
+    }
+  } catch (e) {
+    console.warn(e);
+  }
+  return selectKeyword;
+};
 export const excelExport = async (excelFileName, titleArr, data) => {
   const excelFileType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
   const excelFileExtension = '.xlsx';

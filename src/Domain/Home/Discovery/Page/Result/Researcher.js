@@ -23,6 +23,8 @@ import { NavLink } from 'react-router-dom';
 export default function DiscoveryResult() {
   const dispatch = useDispatch();
   const se = common.getSegment();
+  const se1 = se[1] ?? '';
+  const se2 = se[2] ?? '';
   const selectKeyword = useSelector(getSelectKeyword);
   const keyword = useSelector(getSearchKeyword);
   const [tabCount, setTabCount] = useState({});
@@ -43,8 +45,6 @@ export default function DiscoveryResult() {
   const filterKey = 'search/indv';
 
   const getList = useCallback(async () => {
-    const se1 = se[1] ?? '';
-    const se2 = se[2] ?? '';
     await (async () => {
       let similarity = [];
       let filterObj = {
@@ -95,11 +95,9 @@ export default function DiscoveryResult() {
       setSearchButtonClick(false);
       setResearcherActive({ id: data?.data?.result?.dataList?.[0]?.id ?? -1, name: data?.data?.result?.dataList?.[0]?.indvName ?? '' });
     })();
-  }, [keyword, searchButtonClick, page, size, sort, se, filterActive]);
+  }, [keyword, searchButtonClick, page, size, sort, se1, se2, filterActive]);
 
   const downExcel = useCallback(async () => {
-    const se1 = se[1] ?? '';
-    const se2 = se[2] ?? '';
     const excelSize = 1000;
     await (async () => {
       let similarity = [];
@@ -142,12 +140,10 @@ export default function DiscoveryResult() {
       }
       await common.excelExport('down', ['ICT 자료명', '출처', '본문', '발행일'], procData);
     })();
-  }, [keyword, sort, se, filterActive]);
+  }, [keyword, sort, se1, se2, filterActive]);
 
   const getDetail = useCallback(async () => {
     if (researcherActive.id === -1) return null;
-    const se1 = se[1] ?? '';
-    const se2 = se[2] ?? '';
     await (async () => {
       let data = [];
       
@@ -207,7 +203,7 @@ export default function DiscoveryResult() {
       }
       setSubList(subList);
     })();
-  }, [researcherActive, se]);
+  }, [researcherActive, se1, se2]);
 
   // 연구자 선택 시
   const onResearcherSelect = (e, id, name) => {
@@ -228,8 +224,34 @@ export default function DiscoveryResult() {
   }, [searchButtonClick]);
 
   useEffect(() => {
+    getDetail();
+  }, [researcherActive]);
+
+  useEffect(() => {
     (async () => {
-      const data = await discoveryAPI.searchAll(keyword,1);
+      let data = [];
+      try {
+        dispatch(setLoading(true));
+        if (se1 == 'search') {
+          data = await discoveryAPI.searchCount('search',keyword);
+        } else if (se1 == 'discovery') {
+          if (se2 == 'keyword') {
+            const procKeyword = common.procCountKeyword(keyword, selectKeyword);
+            // console.log('procKeyword:', procKeyword);
+            data = await discoveryAPI.searchCount('discovery',procKeyword.join('|'));
+          } else if (se2 == 'file') {
+            data = await discoveryAPI.searchCount('discovery',keyword);
+          } else if (se2 == 'project') {
+            data = await discoveryAPI.searchCount('discovery',keyword);
+          }
+        }
+      } catch (e) {
+        console.warn(e);
+      } finally {
+        dispatch(setLoading(false));  
+      }
+      // console.log('count:', data?.data?.result);
+
       setTabCount({
         'all': data?.data?.result?.countInfo?.all ?? 0,
         1: data?.data?.result?.countInfo?.project ?? 0,
@@ -243,10 +265,6 @@ export default function DiscoveryResult() {
       });
     })();
   }, [keyword]);
-
-  useEffect(() => {
-    getDetail();
-  }, [researcherActive]);
 
   // const tempData1 = [
   //   {
