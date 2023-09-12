@@ -29,6 +29,10 @@ export default function InputTextXBtn(props) {
     heightResize();
   }, [inputValue]);
 
+  useEffect(() => {
+    setInputValue(value);
+  }, [value]);
+
   return (
     <div className="input_x_wrap">
       <label htmlFor={id} className='hidden_text'>{title}</label>
