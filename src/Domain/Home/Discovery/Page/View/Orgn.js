@@ -225,7 +225,7 @@ export default function View() {
                   })}
                 </ul>
               </div>
-              <a href='#' className='h-5 px-1.5 rounded-sm text-xs font-medium text-color-white bg-color-footer' target='_blank' rel='noreferrer' title={`새창이동, ${''} 원문 페이지`}>근거규정 보기↗</a>
+              <a href='#' className='h-5 px-1.5 rounded-sm text-xs font-medium text-color-white bg-color-footer' target='_blank' rel='noreferrer' title={'새창이동, 관련 규정 페이지'}>근거규정 보기↗</a>
             </div>
             {(tabActive2 === 0)
               ? <>
@@ -279,7 +279,8 @@ export default function View() {
                 <div className='mt-14'>
                   <h3 className='text-base font-bold text-color-dark'>자본잠식여부</h3>
                   <div className='table_style01 w_type02 mt-5'>
-                    <table summary='(주) 마인즈랩(MINDS LAB., INC.) 사후관리 재무 정보 - 자본잠식여부'>
+                    <table>
+                      <caption className='hidden_text'>(주) 마인즈랩(MINDS LAB., INC.) 사후관리 재무 정보 - 자본잠식여부</caption>
                       <colgroup>
                         <col />
                         <col />
@@ -469,7 +470,7 @@ export default function View() {
                           </>}
                           btns={<>
                             <a href={`${e.id}`} className='h-5 px-1.5 rounded-sm text-xs font-medium text-color-white bg-color-light1'>자세히 보기↗</a>
-                            <a href={e.link} className='h-5 px-1.5 rounded-sm text-xs font-medium text-color-white bg-color-footer' target='_blank' rel='noreferrer' title={`새창이동, ${e.title} 원문 페이지`}>원문 보기↗</a>
+                            {(e.link && e.link !== '') ? <a href={e.link} className='h-5 px-1.5 rounded-sm text-xs font-medium text-color-white bg-color-footer' target='_blank' rel='noreferrer' title={`새창이동, ${e.title} 원문 페이지`}>원문 보기↗</a> : null}
                           </>}
                         />);
                       })
@@ -508,7 +509,8 @@ export default function View() {
                         />
                       </div>
                       <div className='mt-6 text-center'>
-                        <select name='' id=''>
+                        <label htmlFor='year' className='hidden_text'>연도별 보기</label>
+                        <select name='year' id='year'>
                           <option value='2022'>2022</option>
                         </select>
                       </div>
@@ -583,9 +585,9 @@ export default function View() {
                                   <p className='text-sm text-color-regular'>출처일: <span className='font-medium text-color-main'>{e.date}</span></p>
                                 </div>
                               </>}
-                              btn={<>
+                              btn={(e.link && e.link !== '') ? <>
                                 <a href={e.link} className='h-5 px-1.5 rounded-sm text-xs font-medium text-color-white bg-color-footer' target='_blank' rel='noreferrer' title={`새창이동, ${e.title} 원문 페이지`}>원문 보기↗</a>
-                              </>}
+                              </> : null}
                               contents={<>
                                 <WordClouds />
                               </>}
