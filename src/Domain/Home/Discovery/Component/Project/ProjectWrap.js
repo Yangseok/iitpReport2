@@ -26,7 +26,7 @@ export default function ProjectWrap(props) {
   return (
     <>
       <div className='flex items-center justify-between px-4'>
-        <h3 className='text-xl font-bold text-color-dark'>과제 정보</h3>
+        <h2 className='text-xl font-bold text-color-dark'>과제 정보</h2>
         <div className='flex items-center gap-6'>
           <button type='button' className='text-sm font-medium text-color-placeholder project_excel_btn' onClick={() => setPopup(state => !state)}>
             엑셀로 입력

@@ -180,6 +180,7 @@ export default function Search(props) {
     <>
       <section>
         <div className='container'>
+          <h2 className='hidden_text'>통합 검색</h2>
           <AutoCompleteSearch 
             handleSearch={handleSearch}
             data={dataSearch}
@@ -187,7 +188,7 @@ export default function Search(props) {
           />
         </div>
       </section>
-      <section>
+      <div className='section'>
         <div className='container-800'>
           <div className='flex justify-end mt-6'>
             {/* Input에 입력된 값이 하나라도 있을 경우, className 'on' 추가 */}
@@ -463,7 +464,7 @@ export default function Search(props) {
             </div>
           </>
         }
-      </section>
+      </div>
     </>
   );
 }

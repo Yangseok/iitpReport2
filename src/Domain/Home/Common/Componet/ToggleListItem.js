@@ -31,7 +31,7 @@ export default function ToggleListItem(props) {
   };
 
   return (
-    <li className={(id === newsActive) ? 'on' : ''}>
+    <li className={`${(id === newsActive) ? 'on' : ''} ${(btn) ? 'is_btn' : ''}`}>
       <div className='relative'>
         <div
           className='tit_box flex items-center justify-between gap-4'
@@ -42,9 +42,9 @@ export default function ToggleListItem(props) {
         >
           {title}
         </div>
-        <div className='btns_box'>
+        {(btn && btn !== '') ? <div className='btns_box'>
           {btn}
-        </div>
+        </div> : null}
       </div>
       <div className='conts_box'>
         {contents}

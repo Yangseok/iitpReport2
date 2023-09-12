@@ -4,13 +4,14 @@ export default function ViewTable(props) {
   const { summary, bodyData } = props;
 
   return (
-    <div className='table_style01'>
-      <table summary={summary}>
+    <div className='table_style01 w_type01'>
+      <table>
+        <caption className='hidden_text'>{summary}</caption>
         <colgroup>
-          <col width='13%' />
-          <col width='37%' />
-          <col width='13%' />
-          <col width='37%' />
+          <col />
+          <col />
+          <col />
+          <col />
         </colgroup>
         <tbody>
           {bodyData?.map((e, i) => (

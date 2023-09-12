@@ -11,7 +11,7 @@ export default function View(props) {
         <div className='container'>
           {tags}
           <div className='flex items-center mt-2'>
-            <h3 className='text-xl font-bold text-color-dark'>{title}</h3>
+            <h2 className='text-xl font-bold text-color-dark'>{title}</h2>
             {subTitle}
           </div>
           <p className='text-sm font-medium text-color-dark mt-2'>{desc}</p>
@@ -44,12 +44,12 @@ export default function View(props) {
           }
         </div>
       </section>
-      <section className='mt-8'>
+      <div className='section mt-8'>
         <div className='container'>
           <TabButtons style={tabStyle ?? '4-2'} tabs={tabs} active={active} />
           {children}
         </div>
-      </section>
+      </div>
     </Layout>
   );
 }

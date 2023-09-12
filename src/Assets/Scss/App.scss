@@ -1111,6 +1111,11 @@ textarea {
       }
     }
   }
+  &.w_type01 table colgroup col {
+    &:nth-of-type(odd) { width: 13%; }
+    &:nth-of-type(even) { width: 37%; }
+  }
+  &.w_type02 table colgroup col { width: 25%; }
 }
 
 /* List Styles */
@@ -1182,7 +1187,11 @@ textarea {
       transform: translateY(-50%);
     }
 
-    &.nodata { padding: 20px 16px; }
+    &.nodata { 
+      padding: 20px 16px;
+      border: 1px solid #94A3B8;
+      border-radius: 8px;
+    }
     &.on >.conts_box {
       padding: 19px 15px;
       border: 2px solid $color_main;
@@ -1200,7 +1209,7 @@ textarea {
     border-radius: 8px;
     overflow: hidden;
 
-    .tit_box { padding: 17px 96px 17px 16px; }
+    .tit_box { padding: 17px 16px; }
     .btns_box {
       position: absolute;
       top: 50%;
@@ -1214,6 +1223,7 @@ textarea {
       transition: all 0.3s;
     }
 
+    &.is_btn .tit_box { padding: 17px 96px 17px 16px; }
     &.nodata { padding: 17px 16px; }
     &.on {
       border-color: $color_main;
@@ -1223,7 +1233,6 @@ textarea {
         padding: 0 16px 20px;
       }
     }
-
     &.fold .title button { transform: rotate(-180deg); }
   }
 }

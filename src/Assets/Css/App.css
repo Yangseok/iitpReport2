@@ -1529,6 +1529,15 @@ textarea::placeholder {
   color: #FFFFFF;
   background-color: #00A545;
 }
+.table_style01.w_type01 table colgroup col:nth-of-type(odd) {
+  width: 13%;
+}
+.table_style01.w_type01 table colgroup col:nth-of-type(even) {
+  width: 37%;
+}
+.table_style01.w_type02 table colgroup col {
+  width: 25%;
+}
 
 /* List Styles */
 .list_style01 > ul {
@@ -1607,6 +1616,8 @@ textarea::placeholder {
 }
 .list_style02 ul li.nodata {
   padding: 20px 16px;
+  border: 1px solid #94A3B8;
+  border-radius: 8px;
 }
 .list_style02 ul li.on > .conts_box {
   padding: 19px 15px;
@@ -1630,7 +1641,7 @@ textarea::placeholder {
   overflow: hidden;
 }
 .list_style03 ul li .tit_box {
-  padding: 17px 96px 17px 16px;
+  padding: 17px 16px;
 }
 .list_style03 ul li .btns_box {
   position: absolute;
@@ -1643,6 +1654,9 @@ textarea::placeholder {
   padding: 0 16px;
   overflow: hidden;
   transition: all 0.3s;
+}
+.list_style03 ul li.is_btn .tit_box {
+  padding: 17px 96px 17px 16px;
 }
 .list_style03 ul li.nodata {
   padding: 17px 16px;

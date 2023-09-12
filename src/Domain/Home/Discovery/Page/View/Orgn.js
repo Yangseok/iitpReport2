@@ -278,13 +278,13 @@ export default function View() {
                 </div>
                 <div className='mt-14'>
                   <h3 className='text-base font-bold text-color-dark'>자본잠식여부</h3>
-                  <div className='table_style01 mt-5'>
+                  <div className='table_style01 w_type02 mt-5'>
                     <table summary='(주) 마인즈랩(MINDS LAB., INC.) 사후관리 재무 정보 - 자본잠식여부'>
                       <colgroup>
-                        <col width="25%" />
-                        <col width="25%" />
-                        <col width="25%" />
-                        <col width="25%" />
+                        <col />
+                        <col />
+                        <col />
+                        <col />
                       </colgroup>
                       <thead>
                         <tr>

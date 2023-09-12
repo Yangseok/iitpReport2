@@ -60,7 +60,7 @@ export default function Filter(props) {
   }, [filterItem, tabActive]);
   
   return (
-    <section className='mb-10'>
+    <div className='section mb-10'>
       <div className='tab_btns tab_style04 grid_auto'>
         <ul>
           {Object.entries(items[filterKey].filter).map((e, i) => {
@@ -98,6 +98,6 @@ export default function Filter(props) {
       {(JSON.stringify(selectItemActive[filterKey]) === JSON.stringify(items[filterKey]))?
         <></>: <SelectedFilterArea selectItemActive={selectItemActive} setSelectItemActive={setSelectItemActive} filterKey={filterKey} />}
       <Button className='gap-2 mt-6 mx-auto py-3 px-6.5 rounded-3xl text-base font-bold btn_style03' name='필터 적용' icon={icSearch} onClick={applyFilter} />
-    </section>
+    </div>
   );
 }

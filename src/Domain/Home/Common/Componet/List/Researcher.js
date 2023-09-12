@@ -40,9 +40,9 @@ export default function Researcher(props) {
                         </div>
                       </div>
                     </div>
-                    <div className='btns_box'>
+                    {(e.link && e.link !== '') ? <div className='btns_box'>
                       <a href={e.link} className='h-5 px-1.5 rounded-sm text-xs font-medium text-color-white bg-color-light1' target='_blank' rel='noreferrer' title={`새창이동, ${e.name} 연구자 페이지`}>연구자 보기↗</a>
-                    </div>
+                    </div> : null}
                   </li>
                 ))
                 : <li>
