@@ -578,13 +578,13 @@ export default function View() {
                               id={e.id}
                               title={<>
                                 <p className='flex-1 text-base font-bold text-color-dark'>{e.title}</p>
-                                <div className='text_style01 flex items-center gap-4'>
-                                  <div>
-                                    <p className='text-sm text-color-regular'>출처: <span className='font-medium text-color-main'>{e.source}</span></p>
-                                    <p className='text-sm text-color-regular'>출처일: <span className='font-medium text-color-main'>{e.date}</span></p>
-                                  </div>
-                                  <a href={e.link} className='h-5 px-1.5 rounded-sm text-xs font-medium text-color-white bg-color-footer' target='_blank' rel='noreferrer' title={`새창이동, ${e.title} 원문 페이지`}>원문 보기↗</a>
+                                <div className='text_style01'>
+                                  <p className='text-sm text-color-regular'>출처: <span className='font-medium text-color-main'>{e.source}</span></p>
+                                  <p className='text-sm text-color-regular'>출처일: <span className='font-medium text-color-main'>{e.date}</span></p>
                                 </div>
+                              </>}
+                              btn={<>
+                                <a href={e.link} className='h-5 px-1.5 rounded-sm text-xs font-medium text-color-white bg-color-footer' target='_blank' rel='noreferrer' title={`새창이동, ${e.title} 원문 페이지`}>원문 보기↗</a>
                               </>}
                               contents={<>
                                 <WordClouds />

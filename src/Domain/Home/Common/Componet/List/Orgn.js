@@ -27,13 +27,23 @@ export default function Orgn(props) {
                   return (
                     <li 
                       key={e.id} 
-                      className={`flex items-center gap-4${(e.id === orgnActive.id) ? ' on' : ''}`}
-                      onClick={(event) => onOrgnSelect(event, e.id, e.name)} 
-                      onKeyUp={(event) => (event.key === 'Enter') && onOrgnSelect(event, e.id, e.name)} 
-                      role={'button'}
-                      tabIndex={0}
+                      className={(e.id === orgnActive.id) ? ' on' : ''}
                     >
-                      <div className='tooltip_wrap' tabIndex={0}>
+                      <div 
+                        className='conts_box type02'
+                        onClick={(event) => onOrgnSelect(event, e.id, e.name)} 
+                        onKeyUp={(event) => (event.key === 'Enter') && onOrgnSelect(event, e.id, e.name)} 
+                        role={'button'}
+                        tabIndex={0}
+                      >
+                        <p className='text-base font-bold text-color-main line1_text pr-40'>{e.name}</p>
+                        <div className='text_style01'>
+                          <p className='text-sm text-color-regular'>과제: <span className='font-medium text-color-main'>{e.assign}건</span></p>
+                          <p className='text-sm text-color-regular'>특허: <span className='font-medium text-color-main'>{e.patent}건</span></p>
+                          {(e?.institue) && <p className='text-sm text-color-regular'>부설연구소: <span className='font-medium text-color-main'>{e.institue}</span></p>}
+                        </div>
+                      </div>
+                      <div className='orgn_img tooltip_wrap' tabIndex={0}>
                         {(e.safety === 0) 
                           ? <>
                             <img src={imgBuilding01} alt='기관 재무안전성: 위험 이미지' className='w-11' />
@@ -49,35 +59,25 @@ export default function Orgn(props) {
                               <div className='tooltip_style03 min-w-23'>재무안전성: 안정</div>
                             </>}
                       </div>
-                      <div className='conts_box'>
-                        <div className='flex items-center justify-between gap-2'>
-                          <p className='text-base font-bold text-color-main line1_text flex-1'>{e.name}</p>
-                          <div className='flex items-center gap-2'>
-                            <div className='tooltip_wrap' tabIndex={0}>
-                              {e.sales !== '' ? <span className="tag_style03">{e.sales}</span> : null}
-                              <div className='tooltip_style04 min-w-30'>해당 산업 매출상위(%)</div>
-                            </div>
-                            {(e.followup)
-                                && (
-                                  <div className='tooltip_wrap' tabIndex={0}>
-                                    <span className="tag_style04">사후</span>
-                                    <div className='tooltip_style04 min-w-25'>사후관리 대상 기업</div>
-                                  </div>
-                                )
-                            }
+                      <div className='btns_box flex items-center gap-2'>
+                        {(e.sales !== '') 
+                          ? <div className='tooltip_wrap' tabIndex={0}>
+                            <span className="tag_style03">{e.sales}</span>
+                            <div className='tooltip_style04 min-w-30'>해당 산업 매출상위(%)</div>
+                          </div> 
+                          : null}
+                        {(e.followup)
+                          ? <div className='tooltip_wrap' tabIndex={0}>
+                            <span className="tag_style04">사후</span>
+                            <div className='tooltip_style04 min-w-25'>사후관리 대상 기업</div>
                           </div>
-                          <NavLink to={`/view/orgn/${e.id}`} className='h-5 px-1.5 rounded-sm text-xs font-medium text-color-white bg-color-light1 min-w-17'>기관 보기↗</NavLink>
-                        </div>
-                        <div className='text_style01'>
-                          <p className='text-sm text-color-regular'>과제: <span className='font-medium text-color-main'>{e.assign}건</span></p>
-                          <p className='text-sm text-color-regular'>특허: <span className='font-medium text-color-main'>{e.patent}건</span></p>
-                          {(e?.institue) && <p className='text-sm text-color-regular'>부설연구소: <span className='font-medium text-color-main'>{e.institue}</span></p>}
-                        </div>
+                          : null}
+                        <NavLink to={`/view/orgn/${e.id}`} className='h-5 px-1.5 rounded-sm text-xs font-medium text-color-white bg-color-light1 min-w-17'>기관 보기↗</NavLink>
                       </div>
                     </li>
                   );
                 })
-                : <li>
+                : <li className='nodata'>
                   <p className='text-base text-color-placeholder'>데이터가 없습니다.</p>
                 </li>
               }

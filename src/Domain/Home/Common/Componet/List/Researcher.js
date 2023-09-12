@@ -22,22 +22,26 @@ export default function Researcher(props) {
                 ? projectData?.map((e) => (
                   <li 
                     key={e.id} 
-                    className={`flex items-center gap-4${(e.id === researcherActive.id) ? ' on' : ''}`}
-                    onClick={(event) => onResearcherSelect(event, e.id, e.name)} 
-                    onKeyUp={(event) => (event.key === 'Enter') && onResearcherSelect(event, e.id, e.name)} 
-                    role={'button'}
-                    tabIndex={0}
+                    className={(e.id === researcherActive.id) ? ' on' : ''}
                   >
-                    <img src={imgResearcher01} alt='연구자 프로필 이미지' className='w-11' />
-                    <div className='flex-1'>
-                      <div className='flex items-center justify-between gap-2'>
+                    <div
+                      className='conts_box flex items-center gap-4'
+                      onClick={(event) => onResearcherSelect(event, e.id, e.name)} 
+                      onKeyUp={(event) => (event.key === 'Enter') && onResearcherSelect(event, e.id, e.name)} 
+                      role={'button'}
+                      tabIndex={0}
+                    >
+                      <img src={imgResearcher01} alt='연구자 프로필 이미지' className='w-11' />
+                      <div className='flex-1'>
                         <p className='text-base font-bold text-color-main'>{e.name}</p>
-                        <a href={e.link} className='h-5 px-1.5 rounded-sm text-xs font-medium text-color-white bg-color-light1' target='_blank' rel='noreferrer' title={`새창이동, ${e.name} 연구자 페이지`}>연구자 보기↗</a>
+                        <div className='text_style01'>
+                          <p className='text-sm text-color-regular'>소속기관: <span className='font-medium text-color-main'>{e.agency}</span></p>
+                          <p className='text-sm text-color-regular'>과제: <span className='font-medium text-color-main'>{e.assign}건</span></p>
+                        </div>
                       </div>
-                      <div className='text_style01'>
-                        <p className='text-sm text-color-regular'>소속기관: <span className='font-medium text-color-main'>{e.agency}</span></p>
-                        <p className='text-sm text-color-regular'>과제: <span className='font-medium text-color-main'>{e.assign}건</span></p>
-                      </div>
+                    </div>
+                    <div className='btns_box'>
+                      <a href={e.link} className='h-5 px-1.5 rounded-sm text-xs font-medium text-color-white bg-color-light1' target='_blank' rel='noreferrer' title={`새창이동, ${e.name} 연구자 페이지`}>연구자 보기↗</a>
                     </div>
                   </li>
                 ))

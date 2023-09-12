@@ -1582,19 +1582,39 @@ textarea::placeholder {
   flex-direction: column;
 }
 .list_style02 ul li {
+  position: relative;
+}
+.list_style02 ul li .conts_box {
   padding: 20px 16px;
   border: 1px solid #94A3B8;
   border-radius: 8px;
   background-color: #F9FBFF;
   cursor: pointer;
 }
-.list_style02 ul li .conts_box {
-  width: calc(100% - 60px);
+.list_style02 ul li .conts_box.type02 {
+  padding: 20px 16px 20px 76px;
 }
-.list_style02 ul li.on {
+.list_style02 ul li .btns_box {
+  position: absolute;
+  top: 19px;
+  right: 15px;
+}
+.list_style02 ul li .orgn_img {
+  position: absolute;
+  top: 50%;
+  left: 15px;
+  transform: translateY(-50%);
+}
+.list_style02 ul li.nodata {
+  padding: 20px 16px;
+}
+.list_style02 ul li.on > .conts_box {
   padding: 19px 15px;
   border: 2px solid #0056B8;
   background-color: #FFFFFF;
+}
+.list_style02 ul li.on > .conts_box.type02 {
+  padding: 19px 15px 19px 75px;
 }
 
 .list_style03 ul {
@@ -1610,7 +1630,13 @@ textarea::placeholder {
   overflow: hidden;
 }
 .list_style03 ul li .tit_box {
-  padding: 17px 16px;
+  padding: 17px 96px 17px 16px;
+}
+.list_style03 ul li .btns_box {
+  position: absolute;
+  top: 50%;
+  right: 16px;
+  transform: translateY(-50%);
 }
 .list_style03 ul li .conts_box {
   height: 0;

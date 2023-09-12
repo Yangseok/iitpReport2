@@ -1160,18 +1160,34 @@ textarea {
   flex-direction: column;
 
   li {
-    padding: 20px 16px;
-    border: 1px solid $color_placeholder;
-    border-radius: 8px;
-    background-color: $color_m_bg;
-    cursor: pointer;
+    position: relative;
 
-    .conts_box { width: calc(100% - 60px); }
+    .conts_box {
+      padding: 20px 16px;
+      border: 1px solid $color_placeholder;
+      border-radius: 8px;
+      background-color: $color_m_bg;
+      cursor: pointer;
+      &.type02 { padding: 20px 16px 20px 76px; }
+    }
+    .btns_box {
+      position: absolute;
+      top: 19px;
+      right: 15px;
+    }
+    .orgn_img {
+      position: absolute;
+      top: 50%;
+      left: 15px;
+      transform: translateY(-50%);
+    }
 
-    &.on {
+    &.nodata { padding: 20px 16px; }
+    &.on >.conts_box {
       padding: 19px 15px;
       border: 2px solid $color_main;
       background-color: $color_white;
+      &.type02 { padding: 19px 15px 19px 75px; }
     }
   }
 }
@@ -1184,7 +1200,13 @@ textarea {
     border-radius: 8px;
     overflow: hidden;
 
-    .tit_box { padding: 17px 16px; }
+    .tit_box { padding: 17px 96px 17px 16px; }
+    .btns_box {
+      position: absolute;
+      top: 50%;
+      right: 16px;
+      transform: translateY(-50%);
+    }
     .conts_box {
       height: 0;
       padding: 0 16px;
