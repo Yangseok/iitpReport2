@@ -106,7 +106,7 @@ export default function Router() {
         <Route path='/discovery/:se2' element={<Discovery />} />
         <Route path='/discovery/:se2/result' element={<Discovery />} />
         {list.map((e,i) => {
-          return <Route key={i} path={'/discovery/:se2/result/' + e.path} element={<ListWrap filterKey={e.filterKey} />} searchDetailKey={e.searchDetailKey} />;
+          return <Route key={i} path={'/discovery/:se2/result/' + e.path} element={<ListWrap filterKey={e.filterKey} searchDetailKey={e.searchDetailKey} />} />;
         })}
         {/* <Route path='/discovery/:se2/result/projectout' element={<DiscoveryResultProjectOut />} />
         <Route path='/discovery/:se2/result/projectin' element={<DiscoveryResultProjectIn />} />
@@ -120,7 +120,7 @@ export default function Router() {
         <Route path='/search' element={<Search />} />
         <Route path='/search/result/all' element={<DiscoveryResultAll />} />
         {list.map((e,i) => {
-          return <Route key={i} path={'/search/result/' + e.path} element={<ListWrap filterKey={e.filterKey} />} searchDetailKey={e.searchDetailKey} />;
+          return <Route key={i} path={'/search/result/' + e.path} element={<ListWrap filterKey={e.filterKey} searchDetailKey={e.searchDetailKey} />} />;
         })}
         {/* <Route path='/search/result/projectout' element={<DiscoveryResultProjectOut />} />
         <Route path='/search/result/projectin' element={<DiscoveryResultProjectIn />} />
