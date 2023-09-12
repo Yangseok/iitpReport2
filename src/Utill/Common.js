@@ -183,3 +183,21 @@ export const ymdFormat = (ymd) => {
   if (ymd == '') return '';
   return ymd.substr(0,4) + '-' + ymd.substr(4,2) + '-' + ymd.substr(6,2);
 };
+export const getViewResultInfoType = (key) => {
+  let str = '';
+  switch (key) {
+  case 'projectout':
+    str = 'rnd_project';
+    break;
+  case 'projectin':
+    str = 'iitp_project';
+    break;
+  case 'patent':
+    str = 'patent';
+    break;
+  case 'orgn':
+    str = 'orgn';
+    break;
+  }
+  return str;
+};

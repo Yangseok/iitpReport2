@@ -14,7 +14,7 @@ export default function View(props) {
             <h2 className='text-xl font-bold text-color-dark'>{title}</h2>
             {subTitle}
           </div>
-          <p className='text-sm font-medium text-color-dark mt-2'>{desc}</p>
+          {(desc !== '')?<p className='text-sm font-medium text-color-dark mt-2'>{desc}</p> : null}
           {
             (keywords?.ko?.length > 0 || keywords?.en?.length > 0)
               ? <>
