@@ -47,7 +47,7 @@ export default function InputFile(props) {
             id='uploadFile' 
             value={fileValue ?? ''}
             onChange={onFileChange}
-            accept='.xls,.xlsx,.ppt,.pptx,.doc,docx,.hwp,.hwpx,.pdf,.txt'
+            accept='.xls,.xlsx,.ppt,.pptx,.doc,.docx,.hwp,.hwpx,.pdf,.txt'
           />
         </div>
         : ''

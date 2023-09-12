@@ -49,7 +49,7 @@ export default function DiscoveryLayout({children}) {
 
   return (
     <Layout>
-      <section>
+      <div className='section'>
         <div className='container'>
           <div className='flex items-center justify-between mb-10'>
             <div className='flex items-center gap-20'>
@@ -65,7 +65,7 @@ export default function DiscoveryLayout({children}) {
             </button>
           </div>
         </div>
-      </section>
+      </div>
       {children}
     </Layout>
   );

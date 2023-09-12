@@ -341,7 +341,7 @@ button, a {
     background-color: $color_white;
     &.on {
       color: $color_white;
-      border-color: $color_main;
+      border-color: transparent;
       background-color: $color_main;
     }
   }
@@ -355,7 +355,7 @@ button, a {
     background-color: $color_f_bg;
     &.on {
       color: $color_white;
-      border-color: $color_light1;
+      border-color: transparent;
       background-color: $color_light1;
     }
   }
@@ -368,13 +368,7 @@ button, a {
     img { transition: all 0.3s; }
   
     &.fold {
-      img {
-        transform: rotate(-180deg);
-        -webkit-transform: rotate(-180deg);
-        -moz-transform: rotate(-180deg);
-        -ms-transform: rotate(-180deg);
-        -o-transform: rotate(-180deg);
-      }
+      img { transform: rotate(-180deg); }
     }
   }
 
@@ -404,21 +398,17 @@ button, a {
 
       &.on {
         color: $color_white;
+        border-color: transparent;
 
         @if ($i == 1) {
-          border-color: $color_keyword1;
           background-color: $color_keyword1;
         } @else if ($i == 2) {
-          border-color: $color_keyword2;
           background-color: $color_keyword2;
         } @else if ($i == 3) {
-          border-color: $color_keyword3;
           background-color: $color_keyword3;
         } @else if ($i == 4) {
-          border-color: $color_keyword4;
           background-color: $color_keyword4;
         } @else {
-          border-color: $color_keyword5;
           background-color: $color_keyword5;
         }
       }
@@ -629,10 +619,6 @@ select {
   font-size: 14px;
   color: $color_regular;
   appearance: none;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  -ms-appearance: none;
-  -o-appearance: none;
 
   &::-ms-expand { display: none; }
 }
@@ -890,10 +876,6 @@ textarea {
     object-fit: cover;
     object-position: center;
     transform: translate(-50%, -50%);
-    -webkit-transform: translate(-50%, -50%);
-    -moz-transform: translate(-50%, -50%);
-    -ms-transform: translate(-50%, -50%);
-    -o-transform: translate(-50%, -50%);
   }
 }
 
@@ -1220,15 +1202,7 @@ textarea {
       }
     }
 
-  &.fold {
-    .title button {
-      transform: rotate(-180deg);
-      -webkit-transform: rotate(-180deg);
-      -moz-transform: rotate(-180deg);
-      -ms-transform: rotate(-180deg);
-      -o-transform: rotate(-180deg);
-    }
-  }
+    &.fold .title button { transform: rotate(-180deg); }
   }
 }
 .list_style04 ul li {
@@ -1317,20 +1291,8 @@ textarea {
 $bg_percents: (1: -7%,  2: 7%, 3: -7%);
 @each $k, $v in $bg_percents {
   @keyframes bgMoving0#{$k} {
-    0% {
-      transform: translateX(0);
-      -webkit-transform: translateX(0);
-      -moz-transform: translateX(0);
-      -ms-transform: translateX(0);
-      -o-transform: translateX(0);
-    }
-    50% {
-      transform: translateX(#{$v});
-      -webkit-transform: translateX(#{$v});
-      -moz-transform: translateX(#{$v});
-      -ms-transform: translateX(#{$v});
-      -o-transform: translateX(#{$v});
-    }
+    0% { transform: translateX(0); }
+    50% { transform: translateX(#{$v}); }
   }
 }
 

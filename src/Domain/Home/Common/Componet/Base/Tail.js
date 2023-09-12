@@ -20,7 +20,8 @@ export default function Tail() {
         </div>
         <div className='link_box'>
           <div className='top_link_box'>
-            <select name='' id='' title='새창이동, 내부사이트 바로가기'>
+            <label htmlFor='linkto' className='hidden_text'>내부사이트 바로가기</label>
+            <select name='linkto' id='linkto' title='새창이동, 내부사이트 바로가기'>
               <option value=''>내부사이트 바로가기</option>
               <option value=''>정보통신기획평가원</option>
               <option value=''>정보통신연차보고서</option>

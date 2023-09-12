@@ -116,15 +116,7 @@
     margin-top: 16px;
   }
 
-  &.fold {
-    .title button {
-      transform: rotate(-180deg);
-      -webkit-transform: rotate(-180deg);
-      -moz-transform: rotate(-180deg);
-      -ms-transform: rotate(-180deg);
-      -o-transform: rotate(-180deg);
-    }
-  }
+  &.fold .title button { transform: rotate(-180deg); }
 }
 .keywords_btn button {
   gap: 4px;
@@ -159,15 +151,7 @@
 
   img { transition: all 0.3s; }
 
-  &.fold {
-    img {
-      transform: rotate(-180deg);
-      -webkit-transform: rotate(-180deg);
-      -moz-transform: rotate(-180deg);
-      -ms-transform: rotate(-180deg);
-      -o-transform: rotate(-180deg);
-    }
-  }
+  &.fold img { transform: rotate(-180deg); } 
 }
 
 /* Search Result */

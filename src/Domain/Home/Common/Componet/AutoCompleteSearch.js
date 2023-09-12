@@ -8,7 +8,7 @@ import $ from 'jquery';
 import parse from 'html-react-parser';
 
 export default function AutoCompleteSearch(props) {
-  const { data, style } = props;
+  const { data, style, labelText } = props;
   const [listData, setListData] = useState([]);
   const [searchFocus, setSearchFocus] = useState(false);
   const dispatch = useDispatch();
@@ -94,7 +94,7 @@ export default function AutoCompleteSearch(props) {
   return (
     <div className={`auto_search_wrap${(searchFocus) ? ' focus' : ''}`}>
       <div className={`search_wrap${(style?.type === 1 || style?.type === 3) ? ' type01' : (style?.type === 2) ? ' type02' : ''}`}>
-        <label htmlFor='search_text'>검색어로 검색</label>
+        <label htmlFor='search_text'>{labelText ?? '검색어로 검색'}</label>
         <input 
           type='text'
           name='search_text'

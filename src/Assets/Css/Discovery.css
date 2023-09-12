@@ -142,10 +142,6 @@
 }
 .keywords_wrap.fold .title button {
   transform: rotate(-180deg);
-  -webkit-transform: rotate(-180deg);
-  -moz-transform: rotate(-180deg);
-  -ms-transform: rotate(-180deg);
-  -o-transform: rotate(-180deg);
 }
 
 .keywords_btn button {
@@ -185,10 +181,6 @@
 }
 .discovery_fold_btn.fold img {
   transform: rotate(-180deg);
-  -webkit-transform: rotate(-180deg);
-  -moz-transform: rotate(-180deg);
-  -ms-transform: rotate(-180deg);
-  -o-transform: rotate(-180deg);
 }
 
 /* Search Result */

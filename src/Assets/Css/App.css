@@ -539,7 +539,7 @@ button.btn_style05, a.btn_style05 {
 }
 button.btn_style05.on, a.btn_style05.on {
   color: #FFFFFF;
-  border-color: #0056B8;
+  border-color: transparent;
   background-color: #0056B8;
 }
 button.btn_style06, a.btn_style06 {
@@ -553,7 +553,7 @@ button.btn_style07, a.btn_style07 {
 }
 button.btn_style07.on, a.btn_style07.on {
   color: #FFFFFF;
-  border-color: #52A3FF;
+  border-color: transparent;
   background-color: #52A3FF;
 }
 button.btn_fold, a.btn_fold {
@@ -566,10 +566,6 @@ button.btn_fold img, a.btn_fold img {
 }
 button.btn_fold.fold img, a.btn_fold.fold img {
   transform: rotate(-180deg);
-  -webkit-transform: rotate(-180deg);
-  -moz-transform: rotate(-180deg);
-  -ms-transform: rotate(-180deg);
-  -o-transform: rotate(-180deg);
 }
 button.btn_check_text, a.btn_check_text {
   padding-left: 28px;
@@ -588,7 +584,7 @@ button.btn_keyword01, a.btn_keyword01 {
 }
 button.btn_keyword01.on, a.btn_keyword01.on {
   color: #FFFFFF;
-  border-color: #7D3C84;
+  border-color: transparent;
   background-color: #7D3C84;
 }
 button.btn_keyword02, a.btn_keyword02 {
@@ -598,7 +594,7 @@ button.btn_keyword02, a.btn_keyword02 {
 }
 button.btn_keyword02.on, a.btn_keyword02.on {
   color: #FFFFFF;
-  border-color: #BF3662;
+  border-color: transparent;
   background-color: #BF3662;
 }
 button.btn_keyword03, a.btn_keyword03 {
@@ -608,7 +604,7 @@ button.btn_keyword03, a.btn_keyword03 {
 }
 button.btn_keyword03.on, a.btn_keyword03.on {
   color: #FFFFFF;
-  border-color: #F4636A;
+  border-color: transparent;
   background-color: #F4636A;
 }
 button.btn_keyword04, a.btn_keyword04 {
@@ -618,7 +614,7 @@ button.btn_keyword04, a.btn_keyword04 {
 }
 button.btn_keyword04.on, a.btn_keyword04.on {
   color: #FFFFFF;
-  border-color: #F3894F;
+  border-color: transparent;
   background-color: #F3894F;
 }
 button.btn_keyword05, a.btn_keyword05 {
@@ -628,7 +624,7 @@ button.btn_keyword05, a.btn_keyword05 {
 }
 button.btn_keyword05.on, a.btn_keyword05.on {
   color: #FFFFFF;
-  border-color: #F5B76E;
+  border-color: transparent;
   background-color: #F5B76E;
 }
 
@@ -857,10 +853,6 @@ select {
   font-size: 14px;
   color: #334155;
   appearance: none;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  -ms-appearance: none;
-  -o-appearance: none;
 }
 select::-ms-expand {
   display: none;
@@ -1133,10 +1125,6 @@ textarea::placeholder {
   object-fit: cover;
   object-position: center;
   transform: translate(-50%, -50%);
-  -webkit-transform: translate(-50%, -50%);
-  -moz-transform: translate(-50%, -50%);
-  -ms-transform: translate(-50%, -50%);
-  -o-transform: translate(-50%, -50%);
 }
 
 /* Tags */
@@ -1642,10 +1630,6 @@ textarea::placeholder {
 }
 .list_style03 ul li.fold .title button {
   transform: rotate(-180deg);
-  -webkit-transform: rotate(-180deg);
-  -moz-transform: rotate(-180deg);
-  -ms-transform: rotate(-180deg);
-  -o-transform: rotate(-180deg);
 }
 
 .list_style04 ul li {
@@ -1767,49 +1751,25 @@ textarea::placeholder {
 @keyframes bgMoving01 {
   0% {
     transform: translateX(0);
-    -webkit-transform: translateX(0);
-    -moz-transform: translateX(0);
-    -ms-transform: translateX(0);
-    -o-transform: translateX(0);
   }
   50% {
     transform: translateX(-7%);
-    -webkit-transform: translateX(-7%);
-    -moz-transform: translateX(-7%);
-    -ms-transform: translateX(-7%);
-    -o-transform: translateX(-7%);
   }
 }
 @keyframes bgMoving02 {
   0% {
     transform: translateX(0);
-    -webkit-transform: translateX(0);
-    -moz-transform: translateX(0);
-    -ms-transform: translateX(0);
-    -o-transform: translateX(0);
   }
   50% {
     transform: translateX(7%);
-    -webkit-transform: translateX(7%);
-    -moz-transform: translateX(7%);
-    -ms-transform: translateX(7%);
-    -o-transform: translateX(7%);
   }
 }
 @keyframes bgMoving03 {
   0% {
     transform: translateX(0);
-    -webkit-transform: translateX(0);
-    -moz-transform: translateX(0);
-    -ms-transform: translateX(0);
-    -o-transform: translateX(0);
   }
   50% {
     transform: translateX(-7%);
-    -webkit-transform: translateX(-7%);
-    -moz-transform: translateX(-7%);
-    -ms-transform: translateX(-7%);
-    -o-transform: translateX(-7%);
   }
 }
 /* ==================================================

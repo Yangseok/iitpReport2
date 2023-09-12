@@ -41,7 +41,7 @@ export default function KeywordDepth(props) {
           {(showData?.length > 0) 
             ? showData?.map((e) => {
               return <li key={e.id}>
-                <Button idx={e.id} name={e.term} className={`py-1.75 px-2.5 rounded text-base font-bold btn_keyword0${e.weight}${(e.active) ? ' on' : ''}`} onClick={(event) => onKeywordClick(event, idx)} />
+                <Button idx={e.id} name={e.term} className={`h-10 px-2.5 rounded text-base font-bold btn_keyword0${e.weight}${(e.active) ? ' on' : ''}`} onClick={(event) => onKeywordClick(event, idx)} />
               </li>;
             })
             : <li>

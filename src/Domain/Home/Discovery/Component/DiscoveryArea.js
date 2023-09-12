@@ -125,16 +125,19 @@ export default function PageSearchArea(props) {
       {(menu === 0) 
         ? <>
           {/* 키워드 분석 */}
+          <h2 className='hidden_text'>디스커버리 검색 - 키워드 분석</h2>
           <AutoCompleteSearch 
             handleSearch={handleSearch}
             data={dataSearch}
             style={{ type: 2, name: '키워드 찾기', icon: icAnalysis }}
+            labelText={'키워드 검색'}
           />
           {(keywordResult) 
             && <KeywordWrap discoverySearchBttonClick={discoverySearchBttonClick} keyword={keyword} chfold={chfold} setChFold={setChFold} folded={(page === 'resultPage') ? true : ''} />}
         </>
         : (menu === 1)
           ? <>
+            <h2 className='hidden_text'>디스커버리 검색 - 파일 분석</h2>
             <div className='container-800 p-0'>
               <InputFile setSelectedFile={setSelectedFile} setSelectedFileName={setSelectedFileName} fileName={fileName} />
               <Button name="파일 분석" icon={icSearch} onClick={handleFileUpload} className="gap-2 mt-6 mx-auto py-3 px-6.5 rounded-3xl text-base font-bold btn_style03" />

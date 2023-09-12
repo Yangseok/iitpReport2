@@ -159,10 +159,12 @@ export default function Main() {
         <Slide>
           <section className='section main_sec01' id='section1'>
             <div className='container'>
+              <h2 className='hidden_text'>통합검색</h2>
               <AutoCompleteSearch
                 handleSearch={handleSearch}
                 data={dataSearch}
                 style={{ type: 1, name: 'ICT 키워드 검색', icon: icSearch }}
+                labelText={'검색어 혹은 추천 키워드를 이용한 검색'}
               />
               <div className='keywords_box mt-3'>
                 <p>추천 키워드</p>
@@ -281,9 +283,9 @@ export default function Main() {
           </section>
         </Slide>
         <Slide className='fp-auto-height'>
-          <section className='section' id='section4'>
+          <div className='section' id='section4'>
             <Tail />
-          </section>
+          </div>
         </Slide>
       </FullPage>
     </Layout>
