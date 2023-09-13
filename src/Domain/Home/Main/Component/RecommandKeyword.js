@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import * as mainAPI from 'Domain/Home/Main/API/Call';
 import { useDispatch } from 'react-redux';
-import { setTmpSearchKeyword } from 'Domain/Home/Common/Status/CommonSlice';
+import { setTmpSearchKeyword, setSearchKeyword } from 'Domain/Home/Common/Status/CommonSlice';
 
-export default function RecommandKeyword() {
+export default function RecommandKeyword(props) {
 
   const dispatch = useDispatch();
 
@@ -20,7 +20,10 @@ export default function RecommandKeyword() {
 
   const handleClick = keyword => {
     // console.log(keyword);
-    dispatch(setTmpSearchKeyword(keyword));  
+    dispatch(setTmpSearchKeyword(keyword));
+    dispatch(setSearchKeyword(keyword));
+    const handleSearch = props?.handleSearch;
+    if (handleSearch !== undefined) handleSearch();
   };
 
   if (isFetching) {

@@ -168,7 +168,7 @@ export default function Main() {
               />
               <div className='keywords_box mt-3'>
                 <p>추천 키워드</p>
-                <RecommandKeyword />
+                <RecommandKeyword handleSearch={handleSearch} />
               </div>
               <div className='scroll_deco'>
                 <img src={icScroll} alt='스크롤해서 보세요.' />
