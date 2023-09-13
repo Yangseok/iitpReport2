@@ -67,7 +67,11 @@ export default function AutoCompleteSearch(props) {
   const onListClick = (text) => {
     setListData([]);
     dispatch(setTmpSearchKeyword(text));
+    dispatch(setSearchKeyword(text));
     setSearchFocus(false);
+
+    const handleSearch = props?.handleSearch;
+    if (handleSearch !== undefined) handleSearch();
   };
 
   useEffect(() => {
@@ -77,7 +81,7 @@ export default function AutoCompleteSearch(props) {
     searchInputEl.on('keydown', (e) => {
       const searchListLiEl = $('.auto_search_wrap .search_list ul li');
       const length = searchListLiEl.length;
-      
+
       if(e.key === 'ArrowDown') {
         e.preventDefault();
         searchListLiEl.eq(0).find('button').focus();

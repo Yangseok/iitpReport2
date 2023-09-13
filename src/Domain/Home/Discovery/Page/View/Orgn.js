@@ -212,27 +212,27 @@ export default function View() {
         setTAbContents([
           [
             { content: '설립일', scope: 'row' },
-            { content: '' },
+            { content: (data?.data?.result?.employeeDate ?? '').replace(/^(\d{4})(\d{2})(\d{2})$/, '$1.$2.$3') },
             { content: '사업자등록번호', scope: 'row' },
-            { content: '' },
+            { content: common.bizNoHyphen(data?.data?.result?.bizno ?? '') },
           ],
           [
             { content: '대표자명', scope: 'row' },
-            { content: '' },
+            { content: common.joinArrNStr(data?.data?.result?.representativeName, ', ', '') },
             { content: '업종명', scope: 'row' },
-            { content: '' },
+            { content: common.joinArrNStr(data?.data?.result?.industryName, ', ', '') },
           ],
           [
             { content: '사업장 전화번호', scope: 'row' },
-            { content: '' },
+            { content: data?.data?.result?.phoneNumber ?? '' },
             { content: '홈페이지', scope: 'row' },
-            { content: '' },
+            { content: data?.data?.result?.homepage ?? '' },
           ],
           [
             { content: '재직 인원', scope: 'row' },
-            { content: '' },
+            { content: data?.data?.result?.employee ?? '' },
             { content: '주생산품', scope: 'row' },
-            { content: '' },
+            { content: data?.data?.result?.product ?? '' },
           ],
         ]);
       } catch (e) {
@@ -247,21 +247,26 @@ export default function View() {
     getView();
   }, [se2, se3]);
   
+
+  // const year = Number(moment(date).subtract(2, 'years').format('YYYY'));
+
   return (
     <ViewLayout 
       tabs={tabButtons1}
       active={tabActive1}
-      title={'(주) 마인즈랩(MINDS LAB., INC.)' + (viewData.title ?? '')}
-      subTitle={<>
-        <span className='text-xl text-color-line mx-3'>|</span>
-        <p className='text-xl font-medium text-color-regular'>OOO부설연구소</p>
-      </>}
-      desc={'(34112) 대전 유성구 대덕대로 593, 9층 901-2호 (도룡동,대덕테크비즈센터)'}
+      title={viewData.name ?? ''}
+      subTitle=
+        {(viewData.researchInstitute !== undefined) ?
+          <>
+            <span className='text-xl text-color-line mx-3'>|</span>
+            <p className='text-xl font-medium text-color-regular'>{viewData.researchInstitute ?? ''}</p>
+          </> : null}
+      desc={viewData.address ?? ''}
       tags={<>
         <div className="text_style01">
-          <p className='text-sm text-color-regular'>2014년 설립(10년차)</p>
-          <p className='text-sm text-color-regular'>중소기업</p>
-          <p className='text-sm text-color-regular'>대전</p>
+          <p className='text-sm text-color-regular'>{viewData.establishmentYear ?? ''}년 설립({Number(moment().format('YYYY')) - Number(viewData.establishmentYear ?? moment().format('YYYY')) + 1}년차)</p>
+          <p className='text-sm text-color-regular'>{viewData.scale ?? ''}</p>
+          <p className='text-sm text-color-regular'>{viewData.area ?? ''}</p>
         </div>
       </>}
     >
