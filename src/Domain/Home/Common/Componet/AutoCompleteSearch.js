@@ -29,7 +29,7 @@ export default function AutoCompleteSearch(props) {
       searchEvent();
     }
     const value = e.target.value;
-    const hangulValue = Hangul.disassemble(value).join(''); // ㄺ=>ㄹㄱ
+    // const hangulValue = Hangul.disassemble(value).join(''); // ㄺ=>ㄹㄱ
     const tempArr = [];
     setSearchFocus(true);
     
@@ -50,15 +50,17 @@ export default function AutoCompleteSearch(props) {
     });
     
     // 문자열 검색 || 초성검색
-    resData.filter((item) => {
-      return item.originData.includes(value) || item.diassembled.includes(hangulValue);
-    }).map((item) => {
-      const obj = {};
-      obj.text = parse(item.data);
-      obj.onClick = () => onListClick(item.originData);
-      obj.agency = (item.type !== 'keyword');
-      tempArr.push(obj);
-    });
+    resData
+      // .filter((item) => {
+      //   return item.originData.includes(value) || item.diassembled.includes(hangulValue);
+      // })
+      .map((item) => {
+        const obj = {};
+        obj.text = parse(item.data);
+        obj.onClick = () => onListClick(item.originData);
+        obj.agency = (item.type !== 'keyword');
+        tempArr.push(obj);
+      });
     setListData(tempArr);
   };
 
