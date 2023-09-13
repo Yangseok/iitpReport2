@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { NavLink } from 'react-router-dom';
 import arrDrop from 'Assets/Images/arr_drop.png';
 import icArrow from 'Assets/Images/ic_arrow02.png';
 import icFilter from 'Assets/Images/ic_filter.png';
@@ -258,7 +257,7 @@ export default function DemandResult() {
                   return <DemandListItem 
                     key={e.id}
                     className={(e.id === demandActive) ? 'on' : ''}
-                    title={'초실감 콘텐츠 제작용 버츄얼 스튜디오 기술 개발'}
+                    title={e.title}
                     contents={<>
                       <div className='text_style01'>
                         <p className='text-sm text-color-regular'>기관명: <span className='font-medium text-color-main'>{e.agency}</span></p>
@@ -273,10 +272,10 @@ export default function DemandResult() {
                     btns={<>
                       <div className='flex items-start gap-4'>
                         {/* 파일이 존재하면 파일 분석 버튼 생성 */}
-                        <NavLink to={`/demandbanking/file/result/${e.id}`} className='h-5 px-1.5 rounded-sm text-xs font-medium btn_style05'>파일 분석</NavLink>
+                        <a href={'/demandbanking/file/result/projectout'} className='h-5 px-1.5 rounded-sm text-xs font-medium btn_style05' target="_blank" rel='noreferrer' title={`새창이동, ${e.title} 파일분석 페이지`}>파일 분석</a>
                         <div className='flex flex-col gap-2.5'>
-                          <NavLink to={`/demandbanking/view/${e.id}`} className='h-5 px-1.5 rounded-sm text-xs font-medium text-color-white bg-color-light1'>자세히 보기↗</NavLink>
-                          <NavLink to={`/demandbanking/merge/${e.id}`} className='h-5 px-1.5 rounded-sm text-xs font-medium btn_style05'>병합수요↗</NavLink>
+                          <a href={`/demandbanking/view/${e.id}`} className='h-5 px-1.5 rounded-sm text-xs font-medium text-color-white bg-color-light1' target="_blank" rel='noreferrer' title={`새창이동, ${e.title} 상세 페이지`}>자세히 보기↗</a>
+                          <a href={`/demandbanking/merge/${e.id}`} className='h-5 px-1.5 rounded-sm text-xs font-medium btn_style05' target="_blank" rel='noreferrer' title={`새창이동, ${e.title} 병합수요 페이지`}>병합수요↗</a>
                           <button type='button' className={`h-5 px-1.5 rounded-sm text-xs font-medium btn_style05${(e.id === demandActive) ? ' on' : ''}`} onClick={(event) => onItemSlide(event, e.id)}>유사기술조사서</button>
                         </div>
                       </div>
