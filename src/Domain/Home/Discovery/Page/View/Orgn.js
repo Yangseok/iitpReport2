@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import ViewLayout from 'Domain/Home/Discovery/Layout/ViewLayout';
 import Button from 'Domain/Home/Common/Componet/Button';
 import ListItem from 'Domain/Home/Common/Componet/ListItem';
@@ -11,34 +11,47 @@ import ViewChart3 from 'Domain/Home/Discovery/Component/View/ViewChart3';
 import ViewChart4 from 'Domain/Home/Discovery/Component/View/ViewChart4';
 import ViewChart5 from 'Domain/Home/Discovery/Component/View/ViewChart5';
 import moment from 'moment';
+import * as orgnAPI from 'Domain/Home/Discovery/API/OrgnCall';
+// import * as discoveryAPI from 'Domain/Home/Discovery/API/Call';
+import { useDispatch } from 'react-redux';
+import { setLoading } from 'Domain/Home/Common/Status/CommonSlice';
+import common from 'Utill';
 
 export default function View() {
-  const tempData1 = [
+  const dispatch = useDispatch();
+  const se = common.getSegment();
+  const se2 = se[2] ?? '';
+  const se3 = se[3] ?? '';
+
+  const [viewData, setViewData] = useState({});
+
+  const [tabContents, setTAbContents] = useState([
     [
       { content: '설립일', scope: 'row' },
-      { content: '2014.01.08' },
+      { content: '' },
       { content: '사업자등록번호', scope: 'row' },
-      { content: '314-86-554466' },
+      { content: '' },
     ],
     [
       { content: '대표자명', scope: 'row' },
-      { content: '홍길동' },
+      { content: '' },
       { content: '업종명', scope: 'row' },
-      { content: '(J58) 출판업' },
+      { content: '' },
     ],
     [
       { content: '사업장 전화번호', scope: 'row' },
-      { content: '031-625-4340' },
+      { content: '' },
       { content: '홈페이지', scope: 'row' },
-      { content: '-' },
+      { content: '' },
     ],
     [
       { content: '재직 인원', scope: 'row' },
-      { content: '115명 (2020.06.22 기준)' },
+      { content: '' },
       { content: '주생산품', scope: 'row' },
-      { content: '인공지능플랫폼 외' },
+      { content: '' },
     ],
-  ];
+  ]);
+  
   // 데이터 5개씩 뿌려줌
   const tempData2 = [
     {
@@ -187,12 +200,58 @@ export default function View() {
   const labels2 = getLabels(10);
   const labels3 = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12'];
   const labels4 = ['','Project A','Project B','Project C','Project D','Project E','Project F','Project G','Project H',''];
+
+  const getView = useCallback(async () => {
+    await (async () => {
+      try {
+        dispatch(setLoading(true));
+        const data = await orgnAPI.orgnView(se3);
+        console.log('viewData:', data?.data?.result);
+
+        setViewData(data?.data?.result ?? {});
+        setTAbContents([
+          [
+            { content: '설립일', scope: 'row' },
+            { content: '' },
+            { content: '사업자등록번호', scope: 'row' },
+            { content: '' },
+          ],
+          [
+            { content: '대표자명', scope: 'row' },
+            { content: '' },
+            { content: '업종명', scope: 'row' },
+            { content: '' },
+          ],
+          [
+            { content: '사업장 전화번호', scope: 'row' },
+            { content: '' },
+            { content: '홈페이지', scope: 'row' },
+            { content: '' },
+          ],
+          [
+            { content: '재직 인원', scope: 'row' },
+            { content: '' },
+            { content: '주생산품', scope: 'row' },
+            { content: '' },
+          ],
+        ]);
+      } catch (e) {
+        console.warn(e);
+      } finally {
+        dispatch(setLoading(false));  
+      }
+    })();
+  }, [se2, se3]);
+
+  useEffect(() => {
+    getView();
+  }, [se2, se3]);
   
   return (
     <ViewLayout 
       tabs={tabButtons1}
       active={tabActive1}
-      title={'(주) 마인즈랩(MINDS LAB., INC.)'}
+      title={'(주) 마인즈랩(MINDS LAB., INC.)' + (viewData.title ?? '')}
       subTitle={<>
         <span className='text-xl text-color-line mx-3'>|</span>
         <p className='text-xl font-medium text-color-regular'>OOO부설연구소</p>
@@ -210,7 +269,7 @@ export default function View() {
         ? // 기본 정보
         <ViewTable
           summary={'(주) 마인즈랩(MINDS LAB., INC.) 기본 정보'}
-          bodyData={tempData1}
+          bodyData={tabContents}
         />
         : (tabActive1 === 1)
           ? // 재무 정보 (사후관리정보, 재무현황)
