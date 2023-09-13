@@ -84,13 +84,8 @@ export default function View() {
     await (async () => {
       try {
         dispatch(setLoading(true));
-        let data;
-        if (se2 === 'projectout') {
-          data = await projectAPI.projectOutView(se3);
-        } else if (se2 === 'projectin') {
-          data = await projectAPI.projectInView(se3);
-        }
-        console.log(data?.data?.result);
+        const data = await projectAPI.projectOutView(se3);
+        console.log('viewData:', data?.data?.result);
 
         setViewData(data?.data?.result ?? {});
         setKeywords({
@@ -128,7 +123,7 @@ export default function View() {
           ],
           [
             { content: '국가과학기술표준분류', scope: 'row' },
-            { content: (data?.data?.result?.technicalClassification ?? []).join('/') },
+            { content: common.joinArrNStr(data?.data?.result?.technicalClassification, ' / ', '') },
             { content: '6T 관련 기술', scope: 'row' },
             { content: data?.data?.result?.sixTechnology ?? '' },
           ],
@@ -171,9 +166,8 @@ export default function View() {
               year: data?.data?.result?.dataInfo?.paper?.[i]?.year ?? '',
               division: data?.data?.result?.dataInfo?.paper?.[i]?.type ?? '',
               agency: data?.data?.result?.dataInfo?.paper?.[i]?.affiliation ?? '',
-              name: (data?.data?.result?.dataInfo?.paper?.[i]?.author ?? []).join(', '),
+              name: common.joinArrNStr(data?.data?.result?.dataInfo?.paper?.[i]?.author, ', ', ''),
               journal: data?.data?.result?.dataInfo?.paper?.[i]?.journalTitle ?? '',
-              link: data?.data?.result?.dataInfo?.paper?.[i]?.link ?? ''
             });
           }
           if (tabSubPage === 1) {
@@ -191,9 +185,9 @@ export default function View() {
               division: data?.data?.result?.dataInfo?.patent?.[i]?.type ?? '',
               num: data?.data?.result?.dataInfo?.patent?.[i]?.applNumber ?? '',
               date: (data?.data?.result?.dataInfo?.patent?.[i]?.applDate ?? '').replace(/^(\d{4})(\d{2})(\d{2})$/, '$1.$2.$3'),
-              agency: (data?.data?.result?.dataInfo?.patent?.[i]?.applicantName ?? []).join(', '),
-              name: (data?.data?.result?.dataInfo?.patent?.[i]?.inventorName ?? []).join(', '),
-              link: data?.data?.result?.dataInfo?.patent?.[i]?.link ?? ''
+              agency: common.joinArrNStr(data?.data?.result?.dataInfo?.patent?.[i]?.applicantName, ', ', ''),
+              name: common.joinArrNStr(data?.data?.result?.dataInfo?.patent?.[i]?.inventorName, ', ', ''),
+              link: '',
             });
           }
           if (tabSubPage === 1) {
@@ -249,28 +243,28 @@ export default function View() {
       {(tabActive1 === 0)
         ? // 기본 정보
         <ViewTable
-          summary={'인공지능 학습 및 디지털 트윈을 위한 3차원 데이터 수집·전처리 및 가공 플랫폼 개발 기본 정보'}
+          summary={viewData.projectTitle ?? ''}
           bodyData={tabContents}
         />
         : (tabActive1 === 1)
           ? // 연구 목표
           <div className='p-6'>
-            <p className='text-sm font-medium text-color-dark leading-loose break-keep'>
-              {(viewData.researchGoal ?? '').replaceAll(/\n/g, '<br />')}
+            <p className='text-sm font-medium text-color-dark leading-loose break-keep whitespace-pre-line'>
+              {(viewData.researchGoal ?? '')}
             </p>
           </div>
           : (tabActive1 === 2)
             ?  // 연구 내용 
             <div className='p-6'>
-              <p className='text-sm font-medium text-color-dark leading-loose break-keep'>
-                {(viewData.researchDescription ?? '').replaceAll(/\n/g, '<br />')}
+              <p className='text-sm font-medium text-color-dark leading-loose break-keep whitespace-pre-line'>
+                {(viewData.researchDescription ?? '')}
               </p>
             </div>
             : (tabActive1 === 3)
               ? // 기대 효과
               <div className='p-6'>
-                <p className='text-sm font-medium text-color-dark leading-loose break-keep'>
-                  {(viewData.expectationEffectiveness ?? '').replaceAll(/\n/g, '<br />')}
+                <p className='text-sm font-medium text-color-dark leading-loose break-keep whitespace-pre-line'>
+                  {(viewData.expectationEffectiveness ?? '')}
                 </p>
               </div>
               : // 성과 정보 (논문, 특허)
@@ -300,7 +294,7 @@ export default function View() {
                               <p className='text-sm text-color-regular'>학술지/학술대회명: <span className='font-medium text-color-main'>{e.journal}</span></p>
                             </>}
                             btns={<>
-                              <a href={`${e.link}`} target='_blank' className='h-5 px-1.5 rounded-sm text-xs font-medium text-color-white bg-color-light1' rel="noreferrer">자세히 보기↗</a>
+                              <a href={`/view/paper/${e.id}`} target='_blank' className='h-5 px-1.5 rounded-sm text-xs font-medium text-color-white bg-color-light1' rel="noreferrer">자세히 보기↗</a>
                             </>}
                           />);
                         })
@@ -320,7 +314,7 @@ export default function View() {
                               <p className='text-sm text-color-regular'>발명자: <span className='font-medium text-color-main'>{e.name}</span></p>
                             </>}
                             btns={<>
-                              <a href={`${e.id}`} target='_blank' className='h-5 px-1.5 rounded-sm text-xs font-medium text-color-white bg-color-light1' rel="noreferrer">자세히 보기↗</a>
+                              <a href={`/view/patent/${e.id}`} target='_blank' className='h-5 px-1.5 rounded-sm text-xs font-medium text-color-white bg-color-light1' rel="noreferrer">자세히 보기↗</a>
                               <a href={e.link} className='h-5 px-1.5 rounded-sm text-xs font-medium text-color-white bg-color-footer' target='_blank' rel='noreferrer' title={`새창이동, ${e.title} 원문 페이지`}>원문 보기↗</a>
                             </>}
                           />);

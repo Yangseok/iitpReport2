@@ -72,7 +72,7 @@ export default function Orgn(props) {
                             <div className='tooltip_style04 min-w-25'>사후관리 대상 기업</div>
                           </div>
                           : null}
-                        <NavLink to={`/view/orgn/${e.id}`} className='h-5 px-1.5 rounded-sm text-xs font-medium text-color-white bg-color-light1 min-w-17'>기관 보기↗</NavLink>
+                        <NavLink to={`/view/orgn/${e.id}`} target='_blank' className='h-5 px-1.5 rounded-sm text-xs font-medium text-color-white bg-color-light1 min-w-17'>기관 보기↗</NavLink>
                       </div>
                     </li>
                   );

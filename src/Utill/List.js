@@ -308,7 +308,7 @@ export const getProcData = (filterKey, dataList) => {
       const agency = dataList?.[i]?.affiliation ?? [];
       const name = dataList?.[i]?.author ?? [];
       const pushData = {
-        id: dataList?.[i]?.applNumber ?? i,
+        id: dataList?.[i]?.id ?? i,
         title: parse(dataList?.[i]?.title ?? ''),
         year: dataList?.[i]?.year ?? '',
         division: dataList?.[i]?.type ?? '',
