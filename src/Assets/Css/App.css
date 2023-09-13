@@ -559,6 +559,16 @@ button.btn_style07.on, a.btn_style07.on {
   border-color: transparent;
   background-color: #52A3FF;
 }
+button.btn_style08, a.btn_style08 {
+  color: #334155;
+  border: 1px solid #0056B8;
+  background-color: #FFFFFF;
+}
+button.btn_style08:hover, button.btn_style08:focus, a.btn_style08:hover, a.btn_style08:focus {
+  color: #FFFFFF;
+  border-color: transparent;
+  background-color: #52A3FF;
+}
 button.btn_fold, a.btn_fold {
   font-size: 14px;
   color: #334155;
@@ -1040,6 +1050,9 @@ textarea::placeholder {
   font-style: normal;
   color: #52A3FF;
 }
+.auto_search_wrap .search_list ul li button:hover, .auto_search_wrap .search_list ul li button:focus, .auto_search_wrap .search_list ul li a:hover, .auto_search_wrap .search_list ul li a:focus {
+  background-color: #F1F5F9;
+}
 .auto_search_wrap .search_list ul li.no_data {
   color: #94A3B8;
 }
@@ -1061,6 +1074,9 @@ textarea::placeholder {
 }
 
 /* Rc Slider Custom */
+.rc_custom {
+  padding-bottom: 24px;
+}
 .rc_custom .rc-slider-rail {
   background-color: #F1F5F9;
 }

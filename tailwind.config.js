@@ -25,6 +25,9 @@ module.exports = {
       maxWidth: {
         '4.5xl': '60rem', 
       },
+      margin: {
+        15: '3.75rem',
+      },
       padding: {
         1.75: '0.4375rem',
         2.5: '0.625rem',

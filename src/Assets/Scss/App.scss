@@ -361,6 +361,16 @@ button, a {
       background-color: $color_light1;
     }
   }
+  &.btn_style08 {
+    color: $color_regular;
+    border: 1px solid $color_main;
+    background-color: $color_white;
+    &:hover, &:focus {
+      color: $color_white;
+      border-color: transparent;
+      background-color: $color_light1;
+    }
+  }
 
   &.btn_fold {
     font-size: 14px;
@@ -788,6 +798,9 @@ textarea {
             color: $color_light1;
           }
         }
+        button, a {
+          &:hover, &:focus { background-color: $color_f_bg; }
+        }
         &.no_data { color: $color_placeholder; }
       }
     }
@@ -813,6 +826,8 @@ textarea {
 
 /* Rc Slider Custom */
 .rc_custom {
+  padding-bottom: 24px;
+
   .rc-slider-rail { background-color: $color_f_bg; }
   .rc-slider-track { 
     background-color: $color_light1;
