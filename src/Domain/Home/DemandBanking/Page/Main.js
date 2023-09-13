@@ -130,9 +130,9 @@ export default function Main() {
           </div>
 
           <div className='flex items-center gap-10'>
-            <h3 className='py-3 px-10 rounded-3xl text-base font-bold text-color-white bg-color-main'>
+            <h2 className='py-3 px-10 rounded-3xl text-base font-bold text-color-white bg-color-main'>
               공고별 보기
-            </h3>
+            </h2>
             <div className='rc_custom flex-1'>
               <RcSlider
                 range
@@ -222,7 +222,7 @@ export default function Main() {
           }
         </div>
       </section>
-      <section className='mt-6'>
+      <div className='section mt-6'>
         <div className='container'>
           <div className='flex items-center justify-between'>
             <button type='button' className={`btn_check_text${checkAll ? ' check' : ''}`} onClick={onAllItemClick}>
@@ -237,7 +237,7 @@ export default function Main() {
             <Pagination total={50} page={1} onClick={(i) => console.log(i)} />
           </div>
         </div>
-      </section>
+      </div>
     </Layout>
   );
 }

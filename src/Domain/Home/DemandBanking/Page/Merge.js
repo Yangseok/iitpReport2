@@ -39,7 +39,7 @@ export default function DemandMerge() {
     <Layout>
       <section>
         <div className='container'>
-          <h3 className='text-base font-bold text-color-dark mb-4'>기술수요조사서 <span className='text-color-main'>병합수요 정보</span></h3>
+          <h2 className='text-base font-bold text-color-dark mb-4'>기술수요조사서 <span className='text-color-main'>병합수요 정보</span></h2>
           <div className='list_style01 first_active'>
             <ul>
               {(tempData?.length > 0)

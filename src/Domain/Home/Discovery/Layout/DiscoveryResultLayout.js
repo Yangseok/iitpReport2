@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import DiscoveryLayout from 'Domain/Home/Discovery/Layout/DiscoveryLayout';
 import DiscoveryArea from 'Domain/Home/Discovery/Component/DiscoveryArea';
 import SearchArea from 'Domain/Home/Discovery/Component/SearchArea';
-import CategoryWrap from 'Domain/Home/Discovery/Component/CategoryWrap';
+import CategoryWrap from 'Domain/Home/Common/Componet/CategoryWrap';
 import common from 'Utill';
 import { getFileKeywordList } from 'Domain/Home/Common/Status/CommonSlice';
 import { useSelector } from 'react-redux';
@@ -11,6 +11,7 @@ import WordClouds from 'Domain/Home/Discovery/Component/WordClouds';
 export default function DiscoveryResultLayout({children, totalCount, tabCount, keyword, setSearchButtonClick}) {
   const [page1, setPage1] = useState('');
   const [page2, setPage2] = useState('');
+  const [path, setPath] = useState('');
 
   const fileKeywordList = useSelector(getFileKeywordList);
 
@@ -21,6 +22,12 @@ export default function DiscoveryResultLayout({children, totalCount, tabCount, k
 
     setPage1(paramSe1);
     setPage2(paramSe2);
+
+    if(paramSe1 === 'discovery') {
+      setPath(`/discovery/${paramSe2}/result`);
+    } else if(paramSe1 === 'search') {
+      setPath('/search/result');
+    }
   }, []);
 
   return (
@@ -55,7 +62,7 @@ export default function DiscoveryResultLayout({children, totalCount, tabCount, k
             </div> 
             : ''}
           <div className='mt-10'>
-            <CategoryWrap tabCount={tabCount} />
+            <CategoryWrap tabCount={tabCount} path={path} />
           </div>
         </div>
       </section>

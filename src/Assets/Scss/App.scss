@@ -39,9 +39,11 @@
 body {
   font-size: 16px;
   font-family: 'Pretendard';
-  // min-width: 1320px;
-  min-width: 1760px;
+  min-width: 1320px;
   overflow-x: auto;
+  &.min_w_1760 {
+    min-width: 1760px;
+  }
 }
 hr { color: $color_line; }
 

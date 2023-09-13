@@ -20,11 +20,11 @@ export default function Head(props) {
       ],
     },
     {
-      to: '/icttrend', name: 'ICT 트렌드',
+      to: '/icttrend/keyword', name: 'ICT 트렌드',
       depth2: [
-        {to: '/icttrend', name: 'ICT 뉴스 트렌드'},
-        {to: '/icttrend', name: 'ICT 기술분류 트렌드'},
-        {to: '/icttrend', name: 'ICT 10대 이슈'},
+        {to: '/icttrend/keyword', name: 'ICT 뉴스 트렌드'},
+        {to: '/icttrend/technology', name: 'ICT 기술분류 트렌드'},
+        {to: '/icttrend/issue', name: 'ICT 10대 이슈'},
       ],
     },
     {
@@ -48,9 +48,9 @@ export default function Head(props) {
           <nav>
             <ul>
               {nav.map((e, i) => {
-                let classOn = '';
+                let classOn = false;
                 e.depth2.map((e2) => 
-                  (e2.to.split('/')[1] === se1) ? classOn = true : '');
+                  (e2.to.split('/')[1] === se1) ? classOn = true : false);
                 
                 if(i !== (nav.length - 1)) {
                   return <li 

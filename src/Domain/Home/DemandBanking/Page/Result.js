@@ -161,7 +161,7 @@ export default function DemandResult() {
       <section>
         <div className='container'>
           <div className='flex items-center justify-between'>
-            <h4 className='test-base font-bold text-color-dark'>선택한 공고</h4>
+            <h2 className='test-base font-bold text-color-dark'>선택한 공고</h2>
             <button type='button' className={`btn_fold${(fold) ? ' fold' : ''}`} onClick={() => setFold(state => !state)}>
               {(fold) ? '펼치기' : '접기'} 
               <img src={arrDrop} alt='화살표' className='w-6' />
@@ -177,9 +177,9 @@ export default function DemandResult() {
       <section className='mt-10'>
         <div className='container'>
           <div className='flex items-center justify-between'>
-            <h4 className='text-base font-bold text-color-dark'>
+            <h3 className='text-base font-bold text-color-dark'>
               기술수요조사서 <span className='text-color-main'>4,200건</span>
-            </h4>
+            </h3>
             <div className='flex gap-4'>
               <Button className='gap-2 h-12 px-4 rounded text-sm font-bold btn_style04 mr-2' name='목록 다운로드' icon={icArrow} onClick={() => {}} />
               <Button className={`gap-2 h-12 px-4 rounded text-sm font-bold btn_style01${filterShow ? ' on' : ''}`} name='필터' icon={filterShow ? icFilter02 : icFilter} onClick={() => setFilterShow(state => !state)} />

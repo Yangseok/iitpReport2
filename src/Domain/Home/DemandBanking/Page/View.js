@@ -37,7 +37,7 @@ export default function DemandView() {
             <p className="tag_style06">정기</p>
             <p className="text-sm text-color-regular">정보통신방송 연구개발사업 기술수요조사서 (2023.01.05 ~ 2023.03.30)</p>
           </div>
-          <h3 className='text-xl font-bold text-color-dark mt-2'>초실감 콘텐츠 제작용 버츄얼 스튜디오 기술 개발</h3>
+          <h2 className='text-xl font-bold text-color-dark mt-2'>초실감 콘텐츠 제작용 버츄얼 스튜디오 기술 개발</h2>
           <div className='text_style01 mt-2'>
             <p className="text-sm text-color-regular">기관명: <span className="font-medium text-color-main">한국표준과학연구원</span></p>
             <p className="text-sm text-color-regular">신청인: <span className="font-medium text-color-main">홍길동</span></p>
@@ -46,7 +46,7 @@ export default function DemandView() {
           </div>
         </div>
       </section>
-      <section className='mt-8'>
+      <div className='section mt-8'>
         <div className='container'>
           <TabButtons style='4-3' tabs={tabButtons} active={tabActive} />
           {(tabActive === 0)
@@ -75,7 +75,7 @@ export default function DemandView() {
               </p>
             </div>}
         </div>
-      </section>
+      </div>
     </Layout>
   );
 }

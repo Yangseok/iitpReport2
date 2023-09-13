@@ -2,7 +2,8 @@ import React, { useEffect, useState, useCallback } from 'react';
 import icArrow from 'Assets/Images/ic_arrow02.png';
 import icFilter from 'Assets/Images/ic_filter.png';
 import icFilter02 from 'Assets/Images/ic_filter02.png';
-import DiscoveryResultLayout from 'Domain/Home/Discovery/Layout/DiscoveryResultLayout';
+// import DiscoveryResultLayout from 'Domain/Home/Discovery/Layout/DiscoveryResultLayout';
+import ResultListLayout from 'Domain/Home/Common/Layout/ResultListLayout';
 import Button from 'Domain/Home/Common/Componet/Button';
 import common from 'Utill';
 import { useSelector, useDispatch } from 'react-redux';
@@ -356,7 +357,7 @@ export default function ListWrap(props) {
   };
 
   return (
-    <DiscoveryResultLayout totalCount={tabCount?.all} tabCount={tabCount} keyword={keyword} setSearchButtonClick={setSearchButtonClick} >
+    <ResultListLayout totalCount={tabCount?.all} tabCount={tabCount} keyword={keyword} setSearchButtonClick={setSearchButtonClick} >
       <section className='mt-6'>
         <div className='container'>
           <div className='flex items-center justify-between'>
@@ -390,6 +391,6 @@ export default function ListWrap(props) {
           {getListComponet(filterKey)}
         </div>
       </section>
-    </DiscoveryResultLayout>
+    </ResultListLayout>
   );
 }
