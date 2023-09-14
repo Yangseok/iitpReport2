@@ -4,7 +4,7 @@ import common from 'Utill';
 
 // 막대 + 선 그래프
 export default function ViewChart(props) {
-  const { labels, lineFill, lineData, barData } = props;
+  const { labels, lineFill, lineData, barData, unit } = props;
 
   const graphRangeData = barData;
   const data = {
@@ -45,7 +45,7 @@ export default function ViewChart(props) {
           label: function(context) {
             let label = '';
             if (context.parsed.y !== null) {
-              label += common.setPriceInput(context.parsed.y);
+              label += common.setPriceInput(context.parsed.y) + (unit ?? '');
             }
             return label;
           }

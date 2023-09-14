@@ -3,7 +3,7 @@ import Chart from 'Domain/Home/Common/Componet/Chart';
 import common from 'Utill';
 
 export default function ViewChart(props) {
-  const { title, labels, data1, data2, data3 } = props;
+  const { title, labels, data1, data2, data3, unit, type, scaleYUnit } = props;
 
   const data = {
     labels,
@@ -30,6 +30,7 @@ export default function ViewChart(props) {
         borderColor: 'white',
         borderWidth: 2,
         yAxisID: 'y',
+        maxBarThickness: 38,
       },
       {
         type: 'bar',
@@ -37,6 +38,7 @@ export default function ViewChart(props) {
         backgroundColor: 'rgb(251, 109, 33)',
         data: data3,
         yAxisID: 'y',
+        maxBarThickness: 38,
       },
     ],
   };
@@ -58,7 +60,10 @@ export default function ViewChart(props) {
           label: function(context) {
             let label = '';
             if (context.parsed.y !== null) {
-              label += common.setPriceInput(context.parsed.y) + '건';
+              if (type === undefined)
+                label += common.setPriceInput(context.parsed.y) + (unit ?? '');
+              else if (type === 1)
+                label += context.parsed.y + (unit ?? '');
             }
             return label;
           }
@@ -66,7 +71,10 @@ export default function ViewChart(props) {
       },
       datalabels: {
         formatter: function (value) {
-          return common.setPriceInput(value) + '건';
+          if (type === undefined)
+            return common.setPriceInput(value) + (unit ?? '');
+          else if (type === 1)
+            return value + (unit ?? '');
         },
         display: false,
         color: '#000',
@@ -81,7 +89,7 @@ export default function ViewChart(props) {
         position: 'left',
         title: {
           display: true,
-          text: '금액(천억원) ',
+          text: scaleYUnit ?? '금액(천억원) ',
           color: '#334155',
           font: {
             size: 14,

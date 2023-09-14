@@ -4,7 +4,7 @@ import common from 'Utill';
 
 // 막대 그래프
 export default function ViewChart(props) {
-  const { labels, datas, title, color, height } = props;
+  const { labels, datas, title, color, height, unit, type } = props;
 
   const data = {
     labels,
@@ -14,6 +14,7 @@ export default function ViewChart(props) {
         data: datas,
         backgroundColor: (color) ?? 'rgb(82, 163, 255)',
         hoverBackgroundColor: 'rgb(82, 163, 255)',
+        maxBarThickness: 38,
       },
     ],
   };
@@ -32,7 +33,10 @@ export default function ViewChart(props) {
           label: function(context) {
             let label = '';
             if (context.parsed.y !== null) {
-              label += common.setPriceInput(context.parsed.y) + '건';
+              if (type === undefined)
+                label += common.setPriceInput(context.parsed.y) + (unit ?? '');
+              else if (type === 1)
+                label += context.parsed.y + (unit ?? '');
             }
             return label;
           }
@@ -40,7 +44,10 @@ export default function ViewChart(props) {
       },
       datalabels: {
         formatter: function (value) {
-          return common.setPriceInput(value) + '건';
+          if (type === undefined)
+            return common.setPriceInput(value) + (unit ?? '');
+          else if (type === 1)
+            return value + (unit ?? '');
         },
         display: false,
         color: '#0F172A',

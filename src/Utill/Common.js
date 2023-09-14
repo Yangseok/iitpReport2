@@ -1,5 +1,7 @@
 import { utils, write } from 'xlsx';
 import { saveAs } from 'file-saver';
+import moment from 'moment';
+
 export const setTenRound = (n) => {
   n = Math.round(Number(n)/10) * 10;
   return n;
@@ -230,4 +232,19 @@ export const bizNoHyphen = (str) => {
   }
 
   return str;
+};
+// label 생성
+export const getLabels = (length, gap) => {
+  let arr = [];
+  const date = new Date();
+  const year1 = Number(moment(date).format('YYYY'));
+  const year2 = Number(moment(date).subtract(length, 'years').format('YYYY'));
+
+  (gap) && arr.push('');
+  for (let i=year2; i<year1; i++) {
+    arr.push(i);
+  }
+  (gap) && arr.push('');
+
+  return arr;
 };

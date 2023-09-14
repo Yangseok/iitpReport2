@@ -3,7 +3,7 @@ import Chart from 'Domain/Home/Common/Componet/Chart';
 import common from 'Utill';
 
 export default function Viewchart(props) {
-  const { labels, data1, data2 } = props;
+  const { labels, data1, data2, unit, type } = props;
 
   const data = {
     labels,
@@ -54,7 +54,10 @@ export default function Viewchart(props) {
           label: function(context) {
             let label = '';
             if (context.parsed.y !== null) {
-              label += common.setPriceInput(context.parsed.y) + '건';
+              if (type === undefined)
+                label += common.setPriceInput(context.parsed.y) + unit;
+              else if (type === 1)
+                label += context.parsed.y + unit;
             }
             return label;
           }
@@ -62,7 +65,10 @@ export default function Viewchart(props) {
       },
       datalabels: {
         formatter: function (value) {
-          return common.setPriceInput(value) + '건';
+          if (type === undefined)
+            return common.setPriceInput(value) + unit;
+          else if (type === 1)
+            return value + unit;
         },
         display: false,
         color: '#0F172A',

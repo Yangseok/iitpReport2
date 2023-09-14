@@ -12,10 +12,11 @@ import ViewChart4 from 'Domain/Home/Discovery/Component/View/ViewChart4';
 import ViewChart5 from 'Domain/Home/Discovery/Component/View/ViewChart5';
 import moment from 'moment';
 import * as orgnAPI from 'Domain/Home/Discovery/API/OrgnCall';
-// import * as discoveryAPI from 'Domain/Home/Discovery/API/Call';
+import * as discoveryAPI from 'Domain/Home/Discovery/API/Call';
 import { useDispatch } from 'react-redux';
 import { setLoading } from 'Domain/Home/Common/Status/CommonSlice';
 import common from 'Utill';
+import parse from 'html-react-parser';
 
 export default function View() {
   const dispatch = useDispatch();
@@ -67,60 +68,44 @@ export default function View() {
       keyword: '3D 데이터, 디지털 트윈, 지능형 데이터 가공 플랫폼, 깊이 추정',
     },
   ];
-  const tempData3 = [
-    {
-      id: 0,
-      title: '드론을 이용한 인공지능 기반 재난 피해정보 탐지 방법 및 시스템',
-      division: '출원',
-      num: '1020200077142',
-      date: '2021.01.08',
-      agency: '행정안전부국립재난안전연구원',
-      name: '홍길동',
-      link: '#',
-    },
-  ];
-  const tempData4 = [
-    {
-      id: 0,
-      title: 'AGI 예고한 ‘챗GPT 아버지’… “내가 인간인지 증명해야 할 시대 올 것”',
-      link: '#',
-      source: '서울신문',
-      date: '2023.06.08',
-    },
-    {
-      id: 1,
-      title: 'AGI 예고한 ‘챗GPT 아버지’… “내가 인간인지 증명해야 할 시대 올 것”',
-      link: '#',
-      source: '서울신문',
-      date: '2023.06.08',
-    },
-    {
-      id: 2,
-      title: 'AGI 예고한 ‘챗GPT 아버지’… “내가 인간인지 증명해야 할 시대 올 것”',
-      link: '#',
-      source: '서울신문',
-      date: '2023.06.08',
-    },
-  ];
-  const tempChartData1 = [0, 6, 28, 13, 0];
-  const tempChartData2 = [0, 1241, 350, 428, 0];
-  const tempChartData3 = [0, 3, -5, 17, 0];
-  const tempChartData4 = [0, -255, -628, -153, 0];
-  const tempChartData5 = [2.8, 2.9, 3, 3.1, 3.9, 3.5, 3.5, 3.45, 4, 2.9];
-  const tempChartData6_1 = [3, 3, 3, 3, 6, -5, -2, 1, 3, 20];
-  const tempChartData6_2 = [0, 0, -2, 3, 0, 0, 0, 0, 0, 20];
-  const tempChartData7_1 = [29, 30, 29, 33, 28, 21, 23, 28, 35, 32];
-  const tempChartData7_2 = [3.15, 3.3, 3.5, 3.6, 4.2, 3.9, 4.1, 3.9, 3.8];
-  const tempChartData7_3 = [0.9, 1, 1, 1.2, 1.1, 0.9, 1, 1.1, 1.3, 0.1];
-  const tempChartData8_1 = [90, 90, 82, 80, 85, 84, 84, 84, 84, 92];
-  const tempChartData8_2 = [0.8, 0.9, 0.8, 0.9, 1.1, 0.7, 0.8, 0.9, 1.2];
-  const tempChartData8_3 = [0.6, 0.7, 0.7, 0.8, 0.7, 0.6, 0.7, 0.8, 0.8, 0.1];
-  const tempChartData9_1 = [90, 90, 82, 80, 85, 84, 84, 84, 84, 92];
-  const tempChartData9_2 = [0.8, 0.9, 0.8, 0.9, 1.1, 0.7, 0.8, 0.9, 1.2];
-  const tempChartData9_3 = [0.6, 0.7, 0.7, 0.8, 0.7, 0.6, 0.7, 0.8, 0.8, 0.1];
-  const tempChartData10_1 = [90, 90, 82, 80, 85, 84, 84, 84, 84, 92];
-  const tempChartData10_2 = [0.8, 0.9, 0.8, 0.9, 1.1, 0.7, 0.8, 0.9, 1.2];
-  const tempChartData10_3 = [0.6, 0.7, 0.7, 0.8, 0.7, 0.6, 0.7, 0.8, 0.8, 0.1];
+
+  const [labels1, setLabels1] = useState([]); 
+  const [labels2, setLabels2] = useState([]);
+  const labels3 = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12'];
+  const labels4 = ['','Project A','Project B','Project C','Project D','Project E','Project F','Project G','Project H',''];
+
+  //사후관리 정보
+  const [tempChartData1, setTempChartData1] = useState([]);
+  const [tempChartData2, setTempChartData2] = useState([]);
+  const [tempChartData3, setTempChartData3] = useState([]);
+  const [tempChartData4, setTempChartData4] = useState([]);
+  const [tempTableData1, setTempTableData1] = useState([]);
+
+  //재무현황
+  const [tempChartData5, setTempChartData5] = useState([]);
+  const [tempChartData6_1, setTempChartData6_1] = useState([]);
+  const [tempChartData6_2, setTempChartData6_2] = useState([]);
+
+  //부채비율
+  const [tempChartData7_1, setTempChartData7_1] = useState([]);
+  const [tempChartData7_2, setTempChartData7_2] = useState([]);
+  const [tempChartData7_3, setTempChartData7_3] = useState([]);
+  
+  //유동비율
+  const [tempChartData8_1, setTempChartData8_1] = useState([]);
+  const [tempChartData8_2, setTempChartData8_2] = useState([]);
+  const [tempChartData8_3, setTempChartData8_3] = useState([]);
+  
+  //이자보상비율
+  const [tempChartData9_1, setTempChartData9_1] = useState([]);
+  const [tempChartData9_2, setTempChartData9_2] = useState([]);
+  const [tempChartData9_3, setTempChartData9_3] = useState([]);
+  
+  //자기자본비율
+  const [tempChartData10_1, setTempChartData10_1] = useState([]);
+  const [tempChartData10_2, setTempChartData10_2] = useState([]);
+  const [tempChartData10_3, setTempChartData10_3] = useState([]);
+  
   const tempChartData11 = [2.8, 2.9, 3, 3.1, 3.9, 3.5, 3.5, 3.5, 4, 2.9];
   const tempChartData12 = [38, 50, 42, 68, 70, 18, 32, 29, 58, 58, 58, 58];
   const tempChartData13 = [
@@ -173,33 +158,20 @@ export default function View() {
     { id: 5, name: '뉴스', onClick: () => setTabActive1(5) },
   ];
   const tabButtons2 = [
-    { id: 0, name: '사후관리 정보', cnt: 8, onClick: () => setTabActive2(0) },
-    { id: 1, name: '재무현황', cnt: 5, onClick: () => setTabActive2(1) },
+    { id: 0, name: '사후관리 정보', onClick: () => setTabActive2(0) },
+    { id: 1, name: '재무현황', onClick: () => setTabActive2(1) },
   ];
 
-  const [tabActive1, setTabActive1] = useState(0);
+  const [tabActive1, setTabActive1] = useState(4);
   const [tabActive2, setTabActive2] = useState(0);
 
-  // label 생성
-  const getLabels = (length, gap) => {
-    let arr = [];
-    const date = new Date();
-    const year1 = Number(moment(date).format('YYYY'));
-    const year2 = Number(moment(date).subtract(length, 'years').format('YYYY'));
-
-    (gap) && arr.push('');
-    for (let i=year2; i<year1; i++) {
-      arr.push(i);
-    }
-    (gap) && arr.push('');
-
-    return arr;
-  };
-
-  const labels1 = getLabels(3, true);
-  const labels2 = getLabels(10);
-  const labels3 = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12'];
-  const labels4 = ['','Project A','Project B','Project C','Project D','Project E','Project F','Project G','Project H',''];
+  const [tabSubCnt, setTabSubCnt] = useState([0]);
+  const [tabSubPage, setTabSubPage] = useState(1);
+  const listSize = 5;
+  const [tabProjectList, setTabProjectList] = useState([]);
+  const [tabPatentList, setTabPatentList] = useState([]);
+  // const [employeeProjectList, setEmployeeProjectList] = useState([]);
+  const [tabNewsList, setTabNewsList] = useState([]);
 
   const getView = useCallback(async () => {
     await (async () => {
@@ -212,7 +184,7 @@ export default function View() {
         setTAbContents([
           [
             { content: '설립일', scope: 'row' },
-            { content: (data?.data?.result?.employeeDate ?? '').replace(/^(\d{4})(\d{2})(\d{2})$/, '$1.$2.$3') },
+            { content: (data?.data?.result?.establishmentDate ?? '').replace(/^(\d{4})(\d{2})(\d{2})$/, '$1.$2.$3') },
             { content: '사업자등록번호', scope: 'row' },
             { content: common.bizNoHyphen(data?.data?.result?.bizno ?? '') },
           ],
@@ -230,11 +202,108 @@ export default function View() {
           ],
           [
             { content: '재직 인원', scope: 'row' },
-            { content: data?.data?.result?.employee ?? '' },
+            { content: common.setPriceInput(data?.data?.result?.employee ?? 0) + '명' },
             { content: '주생산품', scope: 'row' },
             { content: data?.data?.result?.product ?? '' },
           ],
         ]);
+
+        //재무정보 > 사후관리 정보
+        let tmpLable1 = [];
+        let tmpChartData1 = []; //부채비율
+        let tmpChartData2 = []; //유동비율
+        let tmpChartData3 = []; //이자보상비율
+        let tmpChartData4 = []; //영업이익
+        let tmpTableData1 = []; //자본총계, 자본금, 자본잠식여부
+
+        //재무정보 > 재무현황
+        let tmpLable2 = [];
+        let tmpChartData5 = []; //매출액
+        let tmpChartData6_1 = []; //영업이익률
+        let tmpChartData6_2 = []; //단기순이익률
+        
+        let tmpChartData7_1 = []; //부채비율
+        let tmpChartData7_2 = []; //자본총계
+        let tmpChartData7_3 = []; //부채총계
+
+        let tmpChartData8_1 = []; //유동비율
+        let tmpChartData8_2 = []; //유동자산
+        let tmpChartData8_3 = []; //유동부채
+
+        let tmpChartData9_1 = []; //이자보상비율
+        let tmpChartData9_2 = []; //영업이익
+        let tmpChartData9_3 = []; //지급이자
+
+        let tmpChartData10_1 = []; //자기자본비율
+        let tmpChartData10_2 = []; //자산총계
+        let tmpChartData10_3 = []; //자기자본
+
+        for (let i in data?.data?.result?.financialList ?? []) {
+          if (data?.data?.result?.financialList?.[i].year !== undefined) {
+            tmpLable1.push(data?.data?.result?.financialList?.[i].year);
+            tmpChartData1.push((Math.floor((data?.data?.result?.financialList?.[i].liabilitiesRatio ?? 0) * 100)));
+            tmpChartData2.push((Math.floor((data?.data?.result?.financialList?.[i].currentRatio ?? 0) * 100)));
+            tmpChartData3.push((Math.floor((data?.data?.result?.financialList?.[i].interestCoverageRatio ?? 0) * 100)));
+            tmpChartData4.push(data?.data?.result?.financialList?.[i].operatingIncome ?? 0);
+            tmpTableData1.push([data?.data?.result?.financialList?.[i].equity ?? 0, data?.data?.result?.financialList?.[i].capitalStock ?? 0, data?.data?.result?.financialList?.[i].capitalImpairment ?? '']);
+
+            tmpChartData5.push(((data?.data?.result?.financialList?.[i].sales ?? 0) / 100000000000).toFixed(2));
+            tmpChartData6_1.push(((data?.data?.result?.financialList?.[i].operatingIncomeRatio ?? 0) * 100).toFixed(2));
+            tmpChartData6_2.push(((data?.data?.result?.financialList?.[i].netIncomeRatio ?? 0) * 100).toFixed(2));
+            
+            tmpChartData7_1.push((Math.floor((data?.data?.result?.financialList?.[i].liabilitiesRatio ?? 0) * 100)));
+            tmpChartData7_2.push(((data?.data?.result?.financialList?.[i].equity ?? 0) / 100000000000).toFixed(2));
+            tmpChartData7_3.push(((data?.data?.result?.financialList?.[i].liabilities ?? 0) / 100000000000).toFixed(2));
+            
+            tmpChartData8_1.push((Math.floor((data?.data?.result?.financialList?.[i].currentRatio ?? 0) * 100)));
+            tmpChartData8_2.push(((data?.data?.result?.financialList?.[i].currentAssets ?? 0) / 100000000000).toFixed(2));
+            tmpChartData8_3.push(((data?.data?.result?.financialList?.[i].currentLiabilities ?? 0) / 100000000000).toFixed(2));
+            
+            tmpChartData9_1.push((Math.floor((data?.data?.result?.financialList?.[i].interestCoverageRatio ?? 0) * 100)));
+            tmpChartData9_2.push(((data?.data?.result?.financialList?.[i].operatingIncome ?? 0) / 100000000).toFixed(2));
+            tmpChartData9_3.push(((data?.data?.result?.financialList?.[i].interestExpenses ?? 0) / 100000000).toFixed(2));
+            
+            tmpChartData10_1.push((Math.floor((data?.data?.result?.financialList?.[i].capitalAdequacyRatio ?? 0) * 100)));
+            tmpChartData10_2.push(((data?.data?.result?.financialList?.[i].assets ?? 0) / 100000000000).toFixed(2));
+            tmpChartData10_3.push(((data?.data?.result?.financialList?.[i].equity ?? 0) / 100000000000).toFixed(2));
+          }
+        }
+        tmpLable2 = tmpLable1;
+        if (tmpLable1.length > 0) tmpLable1 = ['',...tmpLable1,''];
+        if (tmpChartData1.length > 0) tmpChartData1 = [0,...tmpChartData1,0];
+        if (tmpChartData2.length > 0) tmpChartData2 = [0,...tmpChartData2,0];
+        if (tmpChartData3.length > 0) tmpChartData3 = [0,...tmpChartData3,0];
+        if (tmpChartData4.length > 0) tmpChartData4 = [0,...tmpChartData4,0];
+        if (tmpTableData1.length > 0) tmpTableData1 = [0,...tmpTableData1,0];
+
+        setLabels1(tmpLable1);
+        setTempChartData1(tmpChartData1);
+        setTempChartData2(tmpChartData2);
+        setTempChartData3(tmpChartData3);
+        setTempChartData4(tmpChartData4);
+        setTempTableData1(tmpTableData1);
+
+        setLabels2(tmpLable2);
+        setTempChartData5(tmpChartData5);
+        setTempChartData6_1(tmpChartData6_1);
+        setTempChartData6_2(tmpChartData6_2);
+
+        setTempChartData7_1(tmpChartData7_1);
+        setTempChartData7_2(tmpChartData7_2);
+        setTempChartData7_3(tmpChartData7_3);
+
+        setTempChartData8_1(tmpChartData8_1);
+        setTempChartData8_2(tmpChartData8_2);
+        setTempChartData8_3(tmpChartData8_3);
+
+        setTempChartData9_1(tmpChartData9_1);
+        setTempChartData9_2(tmpChartData9_2);
+        setTempChartData9_3(tmpChartData9_3);
+
+        setTempChartData10_1(tmpChartData10_1);
+        setTempChartData10_2(tmpChartData10_2);
+        setTempChartData10_3(tmpChartData10_3);
+
       } catch (e) {
         console.warn(e);
       } finally {
@@ -243,12 +312,131 @@ export default function View() {
     })();
   }, [se2, se3]);
 
+  const getTabProjectList = useCallback(async () => {
+    await (async () => {
+      try {
+        dispatch(setLoading(true));
+        let data;
+        data = await discoveryAPI.resultInfoView(se3, common.getViewResultInfoType(se2), 'rnd_project', listSize, tabSubPage);
+        let procData = [];
+        for (let i in data?.data?.result?.dataInfo?.projectOut ?? []) {
+          procData.push({
+            id: data?.data?.result?.dataInfo?.projectOut?.[i]?.projectNumber ?? i,
+            title: data?.data?.result?.dataInfo?.projectOut?.[i]?.projectTitle ?? '',
+            price: common.setPriceInput(data?.data?.result?.dataInfo?.projectOut?.[i]?.fund ?? 0) + '원',
+            period: (data?.data?.result?.dataInfo?.projectOut?.[i]?.period ?? '').replaceAll('-','.'),
+            agency: data?.data?.result?.dataInfo?.projectOut?.[i]?.researchAgencyName ?? '',
+            name: data?.data?.result?.dataInfo?.projectOut?.[i]?.researchManagerName ?? '',
+            department: data?.data?.result?.dataInfo?.projectOut?.[i]?.orderAgencyName,
+            division: common.joinArrNStr(data?.data?.result?.dataInfo?.projectOut?.[i]?.technicalClassification, ' / ', ''),
+            keyword: common.joinArrNStr(data?.data?.result?.dataInfo?.projectOut?.[i]?.keywordKor, ', ', ''),
+            tag: ((data?.data?.result?.dataInfo?.projectOut?.[i]?.projectStatus ?? '') === '') ? 3 : ((data?.data?.result?.dataInfo?.projectOut?.[i]?.projectStatus ?? '') === '종료') ? 2 : 1
+          });
+        }
+        if (tabSubPage === 1) {
+          setTabProjectList(procData);
+        } else {
+          setTabProjectList([...tabProjectList, ...procData]);
+        }
+        setTabSubCnt([data?.data?.result?.countInfo?.projectOut ?? 0]);
+        console.log('tabProjectList', data?.data?.result);
+      } catch (e) {
+        console.warn(e);
+      } finally {
+        dispatch(setLoading(false));  
+      }
+    })();
+  }, [se2, se3, tabActive1, tabSubPage]);
+
+  const getTabPatentList = useCallback(async () => {
+    await (async () => {
+      try {
+        dispatch(setLoading(true));
+        let data;
+        data = await discoveryAPI.resultInfoView(se3, common.getViewResultInfoType(se2), 'patent', listSize, tabSubPage);
+        let procData = [];
+        for (let i in data?.data?.result?.dataInfo?.projectOut ?? []) {
+          procData.push({
+            id: data?.data?.result?.dataInfo?.patent?.[i]?.applNumber ?? i,
+            title: data?.data?.result?.dataInfo?.patent?.[i]?.title ?? '',
+            division: data?.data?.result?.dataInfo?.patent?.[i]?.type ?? '',
+            num: data?.data?.result?.dataInfo?.patent?.[i]?.applNumber ?? '',
+            date: (data?.data?.result?.dataInfo?.patent?.[i]?.applDate ?? '').replace(/^(\d{4})(\d{2})(\d{2})$/, '$1.$2.$3'),
+            agency: common.joinArrNStr(data?.data?.result?.dataInfo?.patent?.[i]?.applicantName, ', ', ''),
+            name: common.joinArrNStr(data?.data?.result?.dataInfo?.patent?.[i]?.inventorName, ', ', ''),
+            link: '',
+          });
+        }
+        if (tabSubPage === 1) {
+          setTabPatentList(procData);
+        } else {
+          setTabPatentList([...tabProjectList, ...procData]);
+        }
+        setTabSubCnt([data?.data?.result?.countInfo?.patent ?? 0]);
+        console.log('tabPatentList', data?.data?.result);
+      } catch (e) {
+        console.warn(e);
+      } finally {
+        dispatch(setLoading(false));  
+      }
+    })();
+  }, [se2, se3, tabActive1, tabSubPage]);
+
+  const getTabNewsList = useCallback(async () => {
+    await (async () => {
+      try {
+        dispatch(setLoading(true));
+        let data;
+        data = await orgnAPI.orgnNews(viewData.name ?? '', listSize, tabSubPage);
+        let procData = [];
+        for (let i in data?.data?.result?.dataList ?? []) {
+          const date = data?.data?.result?.dataList?.[i]?.publishedDate ?? '';
+          const dateArr = date.split(' ');
+          procData.push({
+            id: i,
+            title: parse(data?.data?.result?.dataList?.[i]?.title ?? ''),
+            content: data?.data?.result?.dataList?.[i]?.contents ?? '',
+            source: parse(data?.data?.result?.dataList?.[i]?.source ?? ''),
+            date: (dateArr[0] ?? '').replaceAll('-','.'),
+            link: data?.data?.result?.dataList?.[i]?.link ?? '',
+            wordCloud: data?.data?.result?.dataList?.[i]?.similarity ?? [],
+          });
+        }
+        if (tabSubPage === 1) {
+          setTabNewsList(procData);
+        } else {
+          setTabNewsList([...tabNewsList, ...procData]);
+        }
+        setTabSubCnt([data?.data?.result?.totalCount ?? 0]);
+        console.log('getTabNewsList', data?.data?.result);
+      } catch (e) {
+        console.warn(e);
+      } finally {
+        dispatch(setLoading(false));  
+      }
+    })();
+  }, [se2, se3, tabActive1, tabSubPage]);
+
   useEffect(() => {
     getView();
   }, [se2, se3]);
-  
 
-  // const year = Number(moment(date).subtract(2, 'years').format('YYYY'));
+  useEffect(() => {
+    if (tabActive1 === 2) {
+      getTabProjectList();
+    } else if (tabActive1 === 3) {
+      getTabPatentList();
+    } else if (tabActive1 === 4) {
+      console.log('고용정보관련');
+    } else if (tabActive1 === 5) {
+      getTabNewsList();
+    }
+  }, [se2, se3, tabActive1, tabSubPage]);
+
+  useEffect(() => {
+    setTabSubPage(1);
+  }, [tabActive1]);
+  
 
   return (
     <ViewLayout 
@@ -273,7 +461,7 @@ export default function View() {
       {(tabActive1 === 0)
         ? // 기본 정보
         <ViewTable
-          summary={'(주) 마인즈랩(MINDS LAB., INC.) 기본 정보'}
+          summary={viewData.name ?? ''}
           bodyData={tabContents}
         />
         : (tabActive1 === 1)
@@ -284,7 +472,7 @@ export default function View() {
                 <ul>
                   {tabButtons2?.map((e) => {
                     return <li key={e.id} className={(e.id === tabActive2) ? 'on' : ''}>
-                      <button type='button' onClick={e.onClick}>{e.name}({e.cnt})</button>
+                      <button type='button' onClick={e.onClick}>{e.name}</button>
                     </li>;
                   })}
                 </ul>
@@ -360,24 +548,16 @@ export default function View() {
                         </tr>
                       </thead>
                       <tbody>
-                        <tr>
-                          <td className='text-center'>2020</td>
-                          <td className='text-center'>532,000</td>
-                          <td className='text-center'>131,000</td>
-                          <td className='text-center bg03'>정상</td>
-                        </tr>
-                        <tr>
-                          <td className='text-center'>2021</td>
-                          <td className='text-center'>25,000</td>
-                          <td className='text-center'>131,000</td>
-                          <td className='text-center bg02'>부분자본잠식</td>
-                        </tr>
-                        <tr>
-                          <td className='text-center'>2022</td>
-                          <td className='text-center'>-50,000</td>
-                          <td className='text-center'>1,000</td>
-                          <td className='text-center bg01'>완전자본잠식</td>
-                        </tr>
+                        {labels1.map((e, i) => {
+                          if (e == '') return null;
+                          return (
+                            <tr key={i}>
+                              <td className='text-center'>{e}</td>
+                              <td className='text-center'>{common.setPriceInput(tempTableData1?.[i]?.[0] ?? 0)}</td>
+                              <td className='text-center'>{common.setPriceInput(tempTableData1?.[i]?.[1] ?? 0)}</td>
+                              <td className={'text-center '+((tempTableData1?.[i]?.[2] ?? '') === '정상' ? 'bg03' : (tempTableData1?.[i]?.[2] ?? '') === '부분자본잠식' ? 'bg02' : (tempTableData1?.[i]?.[2] ?? '') === '완전자본잠식' ? 'bg01' : '')}>{tempTableData1?.[i]?.[2] ?? ''}</td>
+                            </tr>);
+                        })}
                       </tbody>
                     </table>
                     <p className='text-xs font-medium text-color-footer mt-4'>
@@ -396,6 +576,8 @@ export default function View() {
                           y: '매출액(천억원)',
                           label: '매출액',
                         }} 
+                        unit=''
+                        type={1}
                         labels={labels2} 
                         datas={tempChartData5} 
                       />
@@ -404,7 +586,7 @@ export default function View() {
                   <div>
                     <h4 className='text-base font-bold text-color-dark px-2'>영업이익률, 당기순이익률</h4>
                     <div className='chart_wrap mt-4'>
-                      <ViewChart3 labels={labels2} data1={tempChartData6_1} data2={tempChartData6_2} />
+                      <ViewChart3 labels={labels2} data1={tempChartData6_1} data2={tempChartData6_2} unit='%' type={1} />
                     </div>
                   </div>
                   <div>
@@ -412,9 +594,11 @@ export default function View() {
                     <div className='chart_wrap mt-4'>
                       <ViewChart4 
                         title={{
-                          y: '부자비율(%)',
+                          y: '부채비율(%)',
                           label: { 1: '부채비율', 2: '자본총계', 3: '부채총계' }
                         }}
+                        unit=''
+                        type={1}
                         labels={labels2} 
                         data1={tempChartData7_1} 
                         data2={tempChartData7_2} 
@@ -430,6 +614,8 @@ export default function View() {
                           y: '유동비율(%)',
                           label: { 1: '유동비율', 2: '유동자산', 3: '유동부채' }
                         }}
+                        unit=''
+                        type={1}
                         labels={labels2} 
                         data1={tempChartData8_1} 
                         data2={tempChartData8_2} 
@@ -445,6 +631,9 @@ export default function View() {
                           y: '이자보상비율(%)',
                           label: { 1: '이자보상비율', 2: '영업이익', 3: '지급이자' }
                         }}
+                        unit=''
+                        type={1}
+                        scaleYUnit='금액(억원) '
                         labels={labels2} 
                         data1={tempChartData9_1} 
                         data2={tempChartData9_2} 
@@ -460,6 +649,8 @@ export default function View() {
                           y: '자기자본비율(%)',
                           label: { 1: '자기자본비율', 2: '자산총계', 3: '자기자본' }
                         }}
+                        unit=''
+                        type={1}
                         labels={labels2} 
                         data1={tempChartData10_1} 
                         data2={tempChartData10_2} 
@@ -474,12 +665,12 @@ export default function View() {
             ? // 과제 정보
             <>
               <div className='pt-6 px-4'>
-                <p className='text-base font-bold text-color-main'>과제(10)</p>
+                <p className='text-base font-bold text-color-main'>과제({common.setPriceInput(tabSubCnt[0] ?? 0)})</p>
               </div>
               <div className='list_style01 mt-4'>
                 <ul>
-                  {(tempData2?.length > 0) 
-                    ? tempData2?.map((e) => {
+                  {(tabProjectList?.length > 0) 
+                    ? tabProjectList?.map((e) => {
                       {/* tag - 진행중 : 1 | 종료 : 2 */}
                       return (<ListItem 
                         key={e.id}
@@ -499,7 +690,7 @@ export default function View() {
                           </div>
                         </>}
                         btns={<>
-                          <a href={`${e.id}`} className='h-5 px-1.5 rounded-sm text-xs font-medium text-color-white bg-color-light1'>자세히 보기↗</a>
+                          <a href={`/view/projectout/${e.id}`} target='_blank' className='h-5 px-1.5 rounded-sm text-xs font-medium text-color-white bg-color-light1' rel="noreferrer">자세히 보기↗</a>
                         </>}
                       />);
                     })
@@ -510,18 +701,18 @@ export default function View() {
                   }
                 </ul>
               </div>
-              <Button name='더보기 +' className='h-10 px-4 mt-4 mx-auto rounded text-base font-bold btn_style05' onClick={() => {}} />
+              {(tabSubCnt[0] <= (tabSubPage * listSize)) ? null : <Button name='더보기 +' className='h-10 px-4 mt-4 mx-auto rounded text-base font-bold btn_style05' onClick={() => { setTabSubPage(tabSubPage + 1); }} />}
             </>
             : (tabActive1 === 3)
               ? // 성과 정보
               <>
                 <div className='pt-6 px-4'>
-                  <p className='text-base font-bold text-color-main'>특허(10)</p>
+                  <p className='text-base font-bold text-color-main'>특허({common.setPriceInput(tabSubCnt[0] ?? 0)})</p>
                 </div>
                 <div className='list_style01 mt-4'>
                   <ul>
-                    {(tempData3?.length > 0) 
-                      ? tempData3?.map((e) => {
+                    {(tabPatentList?.length > 0) 
+                      ? tabPatentList?.map((e) => {
                         return (<ListItem 
                           key={e.id}
                           title={e.title}
@@ -533,7 +724,7 @@ export default function View() {
                             <p className='text-sm text-color-regular'>발명자: <span className='font-medium text-color-main'>{e.name}</span></p>
                           </>}
                           btns={<>
-                            <a href={`${e.id}`} className='h-5 px-1.5 rounded-sm text-xs font-medium text-color-white bg-color-light1'>자세히 보기↗</a>
+                            <a href={`/view/patent/${e.id}`} target='_blank' className='h-5 px-1.5 rounded-sm text-xs font-medium text-color-white bg-color-light1' rel="noreferrer">자세히 보기↗</a>
                             {(e.link && e.link !== '') ? <a href={e.link} className='h-5 px-1.5 rounded-sm text-xs font-medium text-color-white bg-color-footer' target='_blank' rel='noreferrer' title={`새창이동, ${e.title} 원문 페이지`}>원문 보기↗</a> : null}
                           </>}
                         />);
@@ -543,7 +734,7 @@ export default function View() {
                       </li>}
                   </ul>
                 </div>
-                <Button name='더보기 +' className='h-10 px-4 mt-4 mx-auto rounded text-base font-bold btn_style05' onClick={() => {}} />
+                {(tabSubCnt[0] <= (tabSubPage * listSize)) ? null : <Button name='더보기 +' className='h-10 px-4 mt-4 mx-auto rounded text-base font-bold btn_style05' onClick={() => { setTabSubPage(tabSubPage + 1); }} />}
               </>
               : (tabActive1 === 4)
                 ? // 고용 정보
@@ -636,8 +827,8 @@ export default function View() {
                 <>
                   <div className='list_style03 mt-5'>
                     <ul>
-                      {(tempData4?.length > 0)
-                        ? tempData4?.map((e) => {
+                      {(tabNewsList?.length > 0)
+                        ? tabNewsList?.map((e) => {
                           return (
                             <ToggleListItem 
                               key={e.id}
@@ -664,7 +855,7 @@ export default function View() {
                       }
                     </ul>
                   </div>
-                  <Button name='더보기 +' className='h-10 px-4 mt-4 mx-auto rounded text-base font-bold btn_style05' onClick={() => {}} />
+                  {(tabSubCnt[0] <= (tabSubPage * listSize)) ? null : <Button name='더보기 +' className='h-10 px-4 mt-4 mx-auto rounded text-base font-bold btn_style05' onClick={() => { setTabSubPage(tabSubPage + 1); }} />}
                 </>
       }
     </ViewLayout>

@@ -51,3 +51,7 @@ export const orgnDetail = async (id) => {
 export const orgnView = async (id) => {
   return await API.get('/view/orgn/' + id);
 };
+//기관 뉴스리스트
+export const orgnNews = async (orgnName, size=5, page=1) => {
+  return await API.get('/view/orgnNews', {params: {orgnName: orgnName, size: size, page: page}});
+};
