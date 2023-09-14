@@ -244,7 +244,7 @@ export default function View() {
             tmpChartData1.push((Math.floor((data?.data?.result?.financialList?.[i].liabilitiesRatio ?? 0) * 100)));
             tmpChartData2.push((Math.floor((data?.data?.result?.financialList?.[i].currentRatio ?? 0) * 100)));
             tmpChartData3.push((Math.floor((data?.data?.result?.financialList?.[i].interestCoverageRatio ?? 0) * 100)));
-            tmpChartData4.push(data?.data?.result?.financialList?.[i].operatingIncome ?? 0);
+            tmpChartData4.push(Math.floor((data?.data?.result?.financialList?.[i].operatingIncome ?? 0) / 1000));
             tmpTableData1.push([data?.data?.result?.financialList?.[i].equity ?? 0, data?.data?.result?.financialList?.[i].capitalStock ?? 0, data?.data?.result?.financialList?.[i].capitalImpairment ?? '']);
 
             tmpChartData5.push(((data?.data?.result?.financialList?.[i].sales ?? 0) / 100000000000).toFixed(2));
