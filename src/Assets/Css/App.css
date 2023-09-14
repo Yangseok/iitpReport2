@@ -647,6 +647,7 @@ button.btn_keyword05.on, a.btn_keyword05.on {
   align-items: center;
   justify-content: flex-start;
   gap: 0;
+  z-index: 2;
 }
 .tab_btns ul li button, .tab_btns ul li a {
   height: 48px;
@@ -1106,23 +1107,14 @@ textarea::placeholder {
   color: #334155;
 }
 
-/* Text Line */
-.line1_text {
-  max-width: 100%;
-  display: block;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.line2_text {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  display: -webkit-box !important;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
-  line-height: 1.4rem;
-  max-height: 2.8rem;
+/* Chart */
+.chart_wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  width: 100%;
+  min-height: 350px;
 }
 
 /* Image */
@@ -1144,6 +1136,31 @@ textarea::placeholder {
   object-fit: cover;
   object-position: center;
   transform: translate(-50%, -50%);
+}
+
+/* Text Line */
+.line1_text {
+  max-width: 100%;
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.line2_text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box !important;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-height: 1.4rem;
+  max-height: 2.8rem;
+}
+
+/* HightLight Style */
+.highlight {
+  color: #52A3FF !important;
+  font-weight: 700;
 }
 
 /* Tags */
@@ -1489,20 +1506,33 @@ textarea::placeholder {
   display: flex;
 }
 
-/* Chart */
-.chart_wrap {
+/* Popup */
+.popup_bg {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 0;
+  position: fixed;
+  top: 0;
+  left: 0;
   width: 100%;
-  min-height: 350px;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 5000;
 }
 
-/* HightLight Style */
-.highlight {
-  color: #52A3FF !important;
-  font-weight: 700;
+.popup_wrap {
+  max-width: 98%;
+  background-color: #FFFFFF;
+}
+.popup_wrap .popup_close_btn {
+  font-size: 0;
+  line-height: 0;
+  text-indent: -9999px;
+  overflow: hidden;
+  width: 24px;
+  height: 24px;
+  background: url("Assets/Images/ic_x.png") no-repeat center/contain;
 }
 
 /* Table Styles */
@@ -1695,10 +1725,10 @@ textarea::placeholder {
   border-bottom: 1px solid #E2E8F0;
 }
 .list_style04 ul li.nodata {
-  padding: 14px 24px;
+  padding: 14px 16px;
 }
-.list_style04 ul li a {
-  padding: 14px 24px;
+.list_style04 ul li a, .list_style04 ul li button {
+  padding: 14px 16px;
 }
 
 .list_style05 > ul {
@@ -1729,6 +1759,13 @@ textarea::placeholder {
   height: 100%;
   background-color: rgba(15, 23, 42, 0.15);
   z-index: 2;
+}
+
+.list_style06 ul li {
+  padding: 12px 16px;
+}
+.list_style06 ul li:nth-of-type(even) {
+  background-color: #F9FBFF;
 }
 
 .list_wrap_style01 {

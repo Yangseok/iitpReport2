@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import arrRight from 'Assets/Images/arr_right.png';
 import icSearch from 'Assets/Images/ic_search.png';
 import icArrow from 'Assets/Images/ic_arrow02.png';
 import IctLayout from 'Domain/Home/ICTTrend/Layout/IctLayout';
 import Button from 'Domain/Home/Common/Componet/Button';
 import TabButtons from 'Domain/Home/Common/Componet/TabButtons';
-import KeywordWordClouds from 'Domain/Home/ICTTrend/Component/KeywordWordClouds';
-import TechnologyTreeMap from 'Domain/Home/ICTTrend/Component/TechnologyTreemap';
+import IctWordClouds from 'Domain/Home/ICTTrend/Component/IctWordClouds';
+import IctTreeMap from 'Domain/Home/ICTTrend/Component/IctTreeMap';
+import IctChart1 from 'Domain/Home/ICTTrend/Component/IctChart1';
 import RcSlider from 'rc-slider';
 import common from 'Utill';
 
@@ -237,7 +238,33 @@ export default function Main() {
       'parents': ['', '전체', '물리학', '물리학', '관리용', '전체', '생활필수품', '전체', '전체', '처리조작', '전체', '전체' ]
     }
   ];
+  const tempIssueKeyword = [
+    {id: 0, text: '인공지능'},
+    {id: 1, text: '디지털안전'},
+    {id: 2, text: '네트워크'},
+    {id: 3, text: '메타버스'},
+    {id: 4, text: '반도체'},
+    {id: 5, text: '우주'},
+    {id: 6, text: '패권경쟁'},
+    {id: 7, text: '디지털안보'},
+    {id: 8, text: '모빌리티'},
+    {id: 9, text: '로봇'},
+  ];
+  const tempChartData1 = [
+    { x: 48, y: -90 },
+    { x: 40, y: 510 },
+    { x: 65, y: 490 },
+    { x: 2, y: 210 },
+    { x: 64, y: 410 },
+    { x: 49, y: 390 },
+    { x: 4, y: 150 },
+    { x: 82, y: 380 },
+    { x: 54, y: 50 },
+    { x: 51, y: 120 },
+  ];
+  const labels1 = ['플랫폼','learning','빅데이터','딥러닝','모니터링','네트워크','솔루션','고도','모델링','소프트웨어'];
   
+  const navigate = useNavigate();
   const locations = useLocation();
   const [tabButtons1, setTabButtons1] = useState([]);
   const [tabButtons2, setTabButtons2] = useState([]);
@@ -250,17 +277,18 @@ export default function Main() {
   const se = common.getSegment();
   const paramSe2 = se[2] ?? '';
 
-  let keywordRangeMarks = {}, issueRangeMarks = {};
-  const keywordRangeMin = 2012;
-  const keywordRangeMax = 2023;
-  const issueRangeMin = 2011;
-  const issueRangeMax = 2023;
-  for(let i = keywordRangeMin; i <= keywordRangeMax; i++) {
-    keywordRangeMarks[i] = i;
-  }
-  for(let i = issueRangeMin; i <= issueRangeMax; i++) {
-    issueRangeMarks[i] = i;
-  }
+  // rc-slider 범위 지정
+  const getRanges = (min, max) => {
+    let marks = {};    
+    for(let i = min; i <= max; i++) {
+      marks[i] = i;
+    }
+
+    return { min, max, marks };
+  };
+
+  const ranges1 = getRanges(2014, 2023);
+  const ranges2 = getRanges(2013, 2022);
 
   useEffect(() => {
     let tab1 = [], tab2 = [];
@@ -328,7 +356,7 @@ export default function Main() {
   return (
     <IctLayout>
       {(page === 'keyword' || page === 'technology')
-        ? <section>
+        ? <div className='section'>
           <div className='container'>
             <TabButtons style='4-2' tabs={tabButtons1} active={tabActive1} />
             {(tabActive1 === 1) 
@@ -337,31 +365,31 @@ export default function Main() {
           </div>
             }
           </div>
-        </section>
+        </div>
         : ''
       }
       {(page === 'keyword')
         ? // ICT 키워드 트렌드
-        <section className='mt-4'>
+        <div className='section mt-4'>
           <div className='container'>
-            <KeywordWordClouds data={tempWordCloudData} height={600} />
+            <IctWordClouds data={tempWordCloudData} height={600} />
             <div className='rc_custom max-w-4.5xl mt-4 mx-auto'>
               <RcSlider
                 range
-                min={keywordRangeMin}
-                max={keywordRangeMax}
-                marks={keywordRangeMarks}
+                min={ranges1.min}
+                max={ranges1.max}
+                marks={ranges1.marks}
                 value={keywordRangeValue}
                 onChange={(e) => setKeywordRangeValue(e)}
               />
             </div>
           </div>
-        </section>
+        </div>
         : (page === 'technology')
           ? // ICT 기술분류 트렌드
-          <section className='mt-10'>
+          <div className='section mt-10'>
             <div className='container'>
-              <TechnologyTreeMap data={tempTreeMapData} />
+              <IctTreeMap data={tempTreeMapData} />
 
               <div className='flex items-center justify-between'>
                 {/* 
@@ -378,27 +406,56 @@ export default function Main() {
                 <Button name="결과 보기" icon={icSearch} className="gap-2 py-3 px-6.5 rounded-3xl text-base font-bold btn_style03" />
               </div>
             </div>
-          </section>
+          </div>
           : // ICT 10대 이슈
-          <section className='mt-6'>
-            <div className='container'>
-              <div className='flex'>
-                <div className='flex-1 px-11'>
-                  <div className='rc_custom type02'>
-                    <RcSlider
-                      included={false}
-                      min={issueRangeMin}
-                      max={issueRangeMax}
-                      marks={issueRangeMarks}
-                      value={issueRangeValue}
-                      onChange={(e) => setIssueRangeValue(e)}
-                    />
+          <>
+            <div className='section mt-6'>
+              <div className='container'>
+                <div className='flex items-center'>
+                  <div className='flex-1 px-11'>
+                    <div className='rc_custom type02'>
+                      <RcSlider
+                        included={false}
+                        min={ranges2.min}
+                        max={ranges2.max}
+                        marks={ranges2.marks}
+                        value={issueRangeValue}
+                        onChange={(e) => setIssueRangeValue(e)}
+                      />
+                    </div>
                   </div>
+                  <Button name='보고서 다운로드' icon={icArrow} className='gap-2 h-12 px-4 rounded text-sm font-bold btn_style04' />
                 </div>
-                <Button name='보고서 다운로드' icon={icArrow} className='gap-2 h-12 px-4 rounded text-sm font-bold btn_style04' />
               </div>
             </div>
-          </section>
+            <section className='mt-10'>
+              <div className='container'>
+                <h2 className='text-base font-bold text-color-dark text-center'>
+                  <span className='text-color-main'>2023년</span> ICT 10대 이슈 키워드
+                </h2>
+                <div className='flex items-center justify-center gap-6 mt-6'>
+                  {tempIssueKeyword?.map((e) => {
+                    return <button 
+                      key={e.id}
+                      onClick={() => navigate('/icttrend/issue/result/projectout')} 
+                      className='h-10 px-4 rounded text-base font-bold btn_style08'
+                    >
+                      {e.text}
+                    </button>;
+                  })}
+                </div>
+              </div>
+            </section>
+            <section className='mt-15'>
+              <div className='container'>
+                <h2 className='text-base font-bold text-color-dark'>이슈 키워드 추이</h2>
+                <div className='mt-4'>
+                  <IctChart1 labels={labels1} datas={tempChartData1} height={320} />
+                </div>
+                <p className='text-sm text-color-regular text-center mt-2'>누적 출현 수(건)</p>
+              </div>
+            </section>
+          </>
       }
     </IctLayout>
   );

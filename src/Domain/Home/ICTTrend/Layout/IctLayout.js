@@ -32,7 +32,7 @@ export default function IctLayout({children}) {
   
   return (
     <Layout>
-      <section className='mb-6'>
+      <div className='section mb-6'>
         <div className='container'>
           <div className='flex items-center justify-between'>
             <TabButtons style='1' tabs={tabButtons} active={tabActive} />
@@ -42,7 +42,7 @@ export default function IctLayout({children}) {
             </button>
           </div>
         </div>
-      </section>
+      </div>
       {children}
     </Layout>
   );
