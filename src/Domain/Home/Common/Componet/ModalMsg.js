@@ -47,9 +47,9 @@ export default function ModalMsg(props) {
         <TEModalContent>
           <TEModalHeader>
             {/* <!--Modal title--> */}
-            <h5 className="text-xl font-medium leading-normal text-neutral-800 dark:text-neutral-200">
-              {title ?? '알림'}
-            </h5>
+            <p className="text-xl font-medium leading-normal text-neutral-800 dark:text-neutral-200">
+              <strong>{title ?? '알림'}</strong>
+            </p>
             {/* <!--Close button--> */}
             <button
               type="button"

@@ -9,7 +9,9 @@ module.exports = {
     extend: {
       width: {
         15: '3.75rem',
-        120: '30rem'
+        120: '30rem',
+        180: '45rem',
+        340: '85rem',
       },
       minWidth: {
         10: '2.5rem',
@@ -25,6 +27,9 @@ module.exports = {
       maxWidth: {
         '4.5xl': '60rem', 
       },
+      minHeight: {
+        177: '44.25rem',
+      },
       margin: {
         15: '3.75rem',
       },
@@ -34,6 +39,7 @@ module.exports = {
         2.75: '0.6875rem',
         4.5: '1.125rem',
         6.5: '1.625rem',
+        15: '3.75rem',
       },
     },
   },

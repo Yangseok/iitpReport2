@@ -4,8 +4,8 @@ import { select } from 'd3-selection';
 
 // import data from 'Domain/Home/Sample/Data/WordCloud.json';
 
-export default function KeywordWordClouds(props) {
-  const { data, height } = props;
+export default function NewsWordClouds(props) {
+  const { data } = props;
   const [newData] = useState(data);
 
   // useEffect(() => {
@@ -44,7 +44,7 @@ export default function KeywordWordClouds(props) {
   return (
     <WordCloud
       width={1000}
-      height={height}
+      height={300}
       data={newData}
       font={'Pretendard'}
       fontSizeMapper={fontSizeMapper}

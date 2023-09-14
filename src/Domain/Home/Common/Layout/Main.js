@@ -8,7 +8,7 @@ export default function Main({children}) {
 
   useEffect(() => {
     window.addEventListener('scroll', () => {
-      if(window.scrollY > 10) {
+      if(window.scrollY > 50) {
         setHeaderClass('hd_style02');
       } else {
         setHeaderClass('');

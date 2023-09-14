@@ -5,7 +5,7 @@ import Plot from 'react-plotly.js';
 // https://plotly.com/javascript/treemaps/
 // https://github.com/plotly/react-plotly.js
 
-export default function TechnologyTreeMap(props) {
+export default function IctTreeMap(props) {
   const { data } = props;
   
   const layout = {
@@ -32,7 +32,7 @@ export default function TechnologyTreeMap(props) {
         data={data}
         layout={layout}
         config={treeConfig}
-        style={{position: 'relative', display: 'block'}}
+        style={{position: 'relative', display: 'block', minHeight: '450px'}}
       />
     </>
   );
