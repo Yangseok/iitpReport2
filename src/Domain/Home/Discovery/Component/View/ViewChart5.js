@@ -3,10 +3,14 @@ import Chart from 'Domain/Home/Common/Componet/Chart';
 import moment from 'moment';
 
 export default function ViewChart(props) {
-  const { labels, lineStartData, lineEndData, barData } = props;
+  const { labels, lineStartData, lineEndData, barData, fullLabels } = props;
 
   const projectData = barData;
-  const minUnix = moment(projectData.map(o => o.min).reduce((min, curr) => min > curr ? curr : min)).subtract(1, 'month').unix();
+  let minUnix = moment().subtract(1, 'year').unix();
+  if (projectData.length > 0) {
+    minUnix = moment(projectData.filter(o => o.min !== undefined).map(o => o.min).reduce((min, curr) => min > curr ? curr : min)).subtract(1, 'month').unix();
+  }
+
   const dataUnixMinMax = labels.map((v,i) => {
     let min = moment(projectData[i].min).unix();
     let max = moment(projectData[i].max).unix();
@@ -57,6 +61,13 @@ export default function ViewChart(props) {
         enabled: true,
         position: 'nearest',
         callbacks: {
+          title: function(context) {
+            console.log('context:', context);
+            console.log('fullLabels:', fullLabels);
+            console.log('fullLabels[context.datasetIndex]:', fullLabels[context[0].dataIndex]);
+            // labels
+            return fullLabels[context[0].dataIndex] ?? '';
+          },
           label: function(context) {
             let label = '';
             if (context?.parsed?._custom?.min !== null) {

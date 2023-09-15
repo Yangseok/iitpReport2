@@ -4,7 +4,6 @@ import moment from 'moment';
 let labels = ['','Project A','Project B','Project C','Project D','Project E','Project F','Project G','Project H',''];
 let projectData = [
   {
-    min: '2021-02-10',
   },
   {
     min: '2021-02-10',
@@ -39,10 +38,12 @@ let projectData = [
     max: '2023-05-20'
   },
   {
-    min: '2021-02-10',
   },
 ];
-const minUnix = moment(projectData.map(o => o.min).reduce((min, curr) => min > curr ? curr : min)).subtract(1, 'month').unix();
+let minUnix = moment().subtract(2, 'year').unix();
+if (projectData.length > 0) {
+  minUnix = moment(projectData.filter(o => o.min !== undefined).map(o => o.min).reduce((min, curr) => min > curr ? curr : min)).subtract(1, 'month').unix();
+}
 const dataUnixMinMax = labels.map((v,i) => {
   let min = moment(projectData[i].min).unix();
   let max = moment(projectData[i].max).unix();

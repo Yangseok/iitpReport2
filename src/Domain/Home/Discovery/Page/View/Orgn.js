@@ -54,8 +54,6 @@ export default function View() {
 
   const [labels1, setLabels1] = useState([]);
   const [labels2, setLabels2] = useState([]);
-  // const employeeMonthData = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12'];
-  const labels5 = ['','Project A','Project B','Project C','Project D','Project E','Project F','Project G','Project H',''];
 
   const [employeeYearData, setEmployeeYearData] = useState([]);
   const [employeeMonthData, setEmployeeMonthData] = useState([]);
@@ -92,47 +90,10 @@ export default function View() {
   const [tempChartData10_1, setTempChartData10_1] = useState([]);
   const [tempChartData10_2, setTempChartData10_2] = useState([]);
   const [tempChartData10_3, setTempChartData10_3] = useState([]);
-  
-  const tempChartData13 = [
-    {
-      min: '2021-02-10',
-    },
-    {
-      min: '2021-02-10',
-      max: '2022-03-10'
-    },
-    {
-      min: '2021-06-10',
-      max: '2022-07-10'
-    },
-    {
-      min: '2021-09-10',
-      max: '2022-02-10'
-    },
-    {
-      min: '2021-12-20',
-      max: '2023-03-10'
-    },
-    {
-      min: '2021-12-10',
-      max: '2023-05-10'
-    },
-    {
-      min: '2022-11-10',
-      max: '2023-07-10'
-    },
-    {
-      min: '2022-11-08',
-      max: '2023-09-20'
-    },
-    {
-      min: '2022-11-08',
-      max: '2023-05-20'
-    },
-    {
-      min: '2021-02-10',
-    },
-  ];
+
+  const [periodProjectLabel, setPeriodProjectLabel] = useState([]);
+  const [periodProjectFullLabel, setPeriodProjectFullLabel] = useState([]);
+  const [periodProjectData, setPeriodProjectData] = useState([]);
 
   const tabButtons1 = [
     { id: 0, name: '기본 정보', onClick: () => setTabActive1(0) },
@@ -347,7 +308,7 @@ export default function View() {
       try {
         dispatch(setLoading(true));
         let data;
-        data = await discoveryAPI.resultInfoView(se3, common.getViewResultInfoType(se2), 'rnd_project', listSize, tabSubPage);
+        data = await discoveryAPI.resultInfoView(viewData?.bizno ?? '', common.getViewResultInfoType(se2), 'rnd_project', listSize, tabSubPage);
         let procData = [];
         for (let i in data?.data?.result?.dataInfo?.projectOut ?? []) {
           procData.push({
@@ -376,16 +337,16 @@ export default function View() {
         dispatch(setLoading(false));  
       }
     })();
-  }, [se2, se3, tabActive1, tabSubPage]);
+  }, [se2, se3, tabActive1, tabSubPage, viewData]);
 
   const getTabPatentList = useCallback(async () => {
     await (async () => {
       try {
         dispatch(setLoading(true));
         let data;
-        data = await discoveryAPI.resultInfoView(se3, common.getViewResultInfoType(se2), 'patent', listSize, tabSubPage);
+        data = await discoveryAPI.resultInfoView(viewData?.bizno ?? '', common.getViewResultInfoType(se2), 'patent', listSize, tabSubPage);
         let procData = [];
-        for (let i in data?.data?.result?.dataInfo?.projectOut ?? []) {
+        for (let i in data?.data?.result?.dataInfo?.patent ?? []) {
           procData.push({
             id: data?.data?.result?.dataInfo?.patent?.[i]?.applNumber ?? i,
             title: data?.data?.result?.dataInfo?.patent?.[i]?.title ?? '',
@@ -410,7 +371,7 @@ export default function View() {
         dispatch(setLoading(false));  
       }
     })();
-  }, [se2, se3, tabActive1, tabSubPage]);
+  }, [se2, se3, tabActive1, tabSubPage, viewData]);
 
   const getTabNewsList = useCallback(async () => {
     await (async () => {
@@ -452,9 +413,23 @@ export default function View() {
       try {
         dispatch(setLoading(true));
         let data;
-        data = await discoveryAPI.resultInfoView(se3, common.getViewResultInfoType(se2), 'rnd_project', listSize, tabSubPage, employeeYear);
+        data = await discoveryAPI.resultInfoView(viewData?.bizno ?? '', common.getViewResultInfoType(se2), 'rnd_project', listSize, tabSubPage, employeeYear);
+        console.log('getEmployeeProjectList', data?.data?.result);
+
         let procData = [];
-        for (let i in data?.data?.result?.dataList ?? []) {
+        let tmpPeriodProjectLabel = [];
+        let tmpPeriodProjectFullLabel = [];
+        let tmpPeriodProjectData = [];
+        for (let i in data?.data?.result?.dataInfo?.projectOut ?? []) {
+          const period = data?.data?.result?.dataInfo?.projectOut?.[i]?.period ?? '';
+          const periodArr = period.split('~');
+          tmpPeriodProjectLabel.push((data?.data?.result?.dataInfo?.projectOut?.[i]?.projectTitle ?? '').substr(0,7).trim());
+          tmpPeriodProjectFullLabel.push((data?.data?.result?.dataInfo?.projectOut?.[i]?.projectTitle ?? ''));
+          tmpPeriodProjectData.push({
+            min: (periodArr[0]??'').trim(),
+            max: (periodArr[1]??'').trim(),
+          });
+
           procData.push({
             id: data?.data?.result?.dataInfo?.projectOut?.[i]?.projectNumber ?? i,
             title: data?.data?.result?.dataInfo?.projectOut?.[i]?.projectTitle ?? '',
@@ -474,14 +449,64 @@ export default function View() {
           setEmployeeProjectList([...employeeProjectList, ...procData]);
         }
         setTabSubCnt([data?.data?.result?.countInfo?.projectOut ?? 0]);
-        console.log('getEmployeeProjectList', data?.data?.result);
+
+        if (tmpPeriodProjectLabel.length > 0 ) tmpPeriodProjectLabel = ['',...tmpPeriodProjectLabel,''];
+        if (tmpPeriodProjectFullLabel.length > 0 ) tmpPeriodProjectFullLabel = ['',...tmpPeriodProjectFullLabel,''];
+        if (tmpPeriodProjectData.length > 0 ) tmpPeriodProjectData = [{},...tmpPeriodProjectData,{}];
+
+        setPeriodProjectLabel(tmpPeriodProjectLabel);
+        setPeriodProjectFullLabel(tmpPeriodProjectFullLabel);
+        setPeriodProjectData(tmpPeriodProjectData);
+
+        // setPeriodProjectLabel(['','Project A','Project B','Project C','Project D','Project E','Project F','Project G','Project H','']);
+        // setPeriodProjectData([
+        //   {
+        //     // min: '2021-02-10',
+        //   },
+        //   {
+        //     min: '2021-02-10',
+        //     max: '2022-03-10'
+        //   },
+        //   {
+        //     min: '2021-06-10',
+        //     max: '2022-07-10'
+        //   },
+        //   {
+        //     min: '2021-09-10',
+        //     max: '2022-02-10'
+        //   },
+        //   {
+        //     min: '2021-12-20',
+        //     max: '2023-03-10'
+        //   },
+        //   {
+        //     min: '2021-12-10',
+        //     max: '2023-05-10'
+        //   },
+        //   {
+        //     min: '2022-11-10',
+        //     max: '2023-07-10'
+        //   },
+        //   {
+        //     min: '2022-11-08',
+        //     max: '2023-09-20'
+        //   },
+        //   {
+        //     min: '2022-11-08',
+        //     max: '2023-05-20'
+        //   },
+        //   {
+        //     // min: '2021-02-10',
+        //   },
+        // ]);
+        
       } catch (e) {
         console.warn(e);
       } finally {
         dispatch(setLoading(false));  
       }
     })();
-  }, [se2, se3, tabActive1, tabSubPage, employeeYear]);
+  }, [se2, se3, tabActive1, tabSubPage, employeeYear, viewData]);
 
   useEffect(() => {
     getView();
@@ -495,14 +520,14 @@ export default function View() {
     } else if (tabActive1 === 5) {
       getTabNewsList();
     }
-  }, [se2, se3, tabActive1, tabSubPage]);
+  }, [se2, se3, tabActive1, tabSubPage, viewData]);
 
   useEffect(() => {
     //과제수행현황 리스트
     if (tabActive1 === 4) {
       getEmployeeProjectList();
     }
-  }, [se2, se3, tabActive1, tabSubPage, employeeYear]);
+  }, [se2, se3, tabActive1, tabSubPage, employeeYear, viewData]);
 
   useEffect(() => {
     setTabSubPage(1);
@@ -850,10 +875,11 @@ export default function View() {
                       <h4 className='text-base font-bold text-color-dark'>기간별 과제 수행정보</h4>
                       <div className='chart_wrap mt-4'>
                         <ViewChart5 
-                          labels={labels5} 
-                          lineStartData={'2022-01-01'}
-                          lineEndData={'2022-12-31'}
-                          barData={tempChartData13} 
+                          labels={periodProjectLabel}
+                          fullLabels={periodProjectFullLabel} 
+                          lineStartData={(employeeYear !== '') ? employeeYear + '-01-01' : ''}
+                          lineEndData={(employeeYear !== '') ? employeeYear + '-12-31' : ''}
+                          barData={periodProjectData}
                         />
                       </div>
                     </div>
