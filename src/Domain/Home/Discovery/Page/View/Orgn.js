@@ -874,13 +874,14 @@ export default function View() {
                     <div>
                       <h4 className='text-base font-bold text-color-dark'>기간별 과제 수행정보</h4>
                       <div className='chart_wrap mt-4'>
-                        <ViewChart5 
+                        {(periodProjectLabel.length > 0) ? <ViewChart5 
                           labels={periodProjectLabel}
                           fullLabels={periodProjectFullLabel} 
                           lineStartData={(employeeYear !== '') ? employeeYear + '-01-01' : ''}
                           lineEndData={(employeeYear !== '') ? employeeYear + '-12-31' : ''}
                           barData={periodProjectData}
-                        />
+                          defaultYear={employeeYear}
+                        /> : <p className='text-base text-color-placeholder'>데이터가 없습니다.</p>}
                       </div>
                     </div>
                   </div>
