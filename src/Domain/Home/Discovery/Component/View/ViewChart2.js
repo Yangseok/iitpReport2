@@ -4,7 +4,7 @@ import common from 'Utill';
 
 // 막대 그래프
 export default function ViewChart(props) {
-  const { labels, datas, title, color, height, unit, type } = props;
+  const { labels, datas, title, color, height, unit, type, onClick } = props;
 
   const data = {
     labels,
@@ -87,6 +87,6 @@ export default function ViewChart(props) {
   };
 
   return (
-    <Chart data={data} options={options} width={560} height={height ?? 400} />
+    <Chart data={data} onClick={onClick} options={options} width={560} height={height ?? 400} />
   );
 }

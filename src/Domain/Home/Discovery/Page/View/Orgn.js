@@ -25,7 +25,6 @@ export default function View() {
   const se3 = se[3] ?? '';
 
   const [viewData, setViewData] = useState({});
-
   const [tabContents, setTAbContents] = useState([
     [
       { content: '설립일', scope: 'row' },
@@ -52,27 +51,15 @@ export default function View() {
       { content: '' },
     ],
   ]);
-  
-  // 데이터 5개씩 뿌려줌
-  const tempData2 = [
-    {
-      id: 0,
-      progress: '진행중',
-      title: '인공지능 학습 및 디지털 트윈을 위한 3차원 데이터 수집·전처리 및 가공 플랫폼 개발',
-      price: '10억',
-      period: '2023.04.01 ~ 2024.04.30',
-      agency: '주식회사 오름',
-      name: '홍길동',
-      department: '중소벤처기업부',
-      division: '정보 / 통신 / 소프트웨어 / S/W솔루션 ',
-      keyword: '3D 데이터, 디지털 트윈, 지능형 데이터 가공 플랫폼, 깊이 추정',
-    },
-  ];
 
-  const [labels1, setLabels1] = useState([]); 
+  const [labels1, setLabels1] = useState([]);
   const [labels2, setLabels2] = useState([]);
-  const labels3 = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12'];
-  const labels4 = ['','Project A','Project B','Project C','Project D','Project E','Project F','Project G','Project H',''];
+  // const employeeMonthData = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12'];
+  const labels5 = ['','Project A','Project B','Project C','Project D','Project E','Project F','Project G','Project H',''];
+
+  const [employeeYearData, setEmployeeYearData] = useState([]);
+  const [employeeMonthData, setEmployeeMonthData] = useState([]);
+  const [employeeYear, setEmployeeYear] = useState('');
 
   //사후관리 정보
   const [tempChartData1, setTempChartData1] = useState([]);
@@ -106,8 +93,6 @@ export default function View() {
   const [tempChartData10_2, setTempChartData10_2] = useState([]);
   const [tempChartData10_3, setTempChartData10_3] = useState([]);
   
-  const tempChartData11 = [2.8, 2.9, 3, 3.1, 3.9, 3.5, 3.5, 3.5, 4, 2.9];
-  const tempChartData12 = [38, 50, 42, 68, 70, 18, 32, 29, 58, 58, 58, 58];
   const tempChartData13 = [
     {
       min: '2021-02-10',
@@ -162,7 +147,7 @@ export default function View() {
     { id: 1, name: '재무현황', onClick: () => setTabActive2(1) },
   ];
 
-  const [tabActive1, setTabActive1] = useState(4);
+  const [tabActive1, setTabActive1] = useState(0);
   const [tabActive2, setTabActive2] = useState(0);
 
   const [tabSubCnt, setTabSubCnt] = useState([0]);
@@ -170,7 +155,8 @@ export default function View() {
   const listSize = 5;
   const [tabProjectList, setTabProjectList] = useState([]);
   const [tabPatentList, setTabPatentList] = useState([]);
-  // const [employeeProjectList, setEmployeeProjectList] = useState([]);
+
+  const [employeeProjectList, setEmployeeProjectList] = useState([]);
   const [tabNewsList, setTabNewsList] = useState([]);
 
   const getView = useCallback(async () => {
@@ -239,33 +225,33 @@ export default function View() {
         let tmpChartData10_3 = []; //자기자본
 
         for (let i in data?.data?.result?.financialList ?? []) {
-          if (data?.data?.result?.financialList?.[i].year !== undefined) {
-            tmpLable1.push(data?.data?.result?.financialList?.[i].year);
-            tmpChartData1.push((Math.floor((data?.data?.result?.financialList?.[i].liabilitiesRatio ?? 0) * 100)));
-            tmpChartData2.push((Math.floor((data?.data?.result?.financialList?.[i].currentRatio ?? 0) * 100)));
-            tmpChartData3.push((Math.floor((data?.data?.result?.financialList?.[i].interestCoverageRatio ?? 0) * 100)));
-            tmpChartData4.push(Math.floor((data?.data?.result?.financialList?.[i].operatingIncome ?? 0) / 1000));
-            tmpTableData1.push([data?.data?.result?.financialList?.[i].equity ?? 0, data?.data?.result?.financialList?.[i].capitalStock ?? 0, data?.data?.result?.financialList?.[i].capitalImpairment ?? '']);
+          if (data?.data?.result?.financialList?.[i]?.year !== undefined) {
+            tmpLable1.push(data?.data?.result?.financialList?.[i]?.year);
+            tmpChartData1.push((Math.floor((data?.data?.result?.financialList?.[i]?.liabilitiesRatio ?? 0) * 100)));
+            tmpChartData2.push((Math.floor((data?.data?.result?.financialList?.[i]?.currentRatio ?? 0) * 100)));
+            tmpChartData3.push((Math.floor((data?.data?.result?.financialList?.[i]?.interestCoverageRatio ?? 0) * 100)));
+            tmpChartData4.push(Math.floor((data?.data?.result?.financialList?.[i]?.operatingIncome ?? 0) / 1000));
+            tmpTableData1.push([data?.data?.result?.financialList?.[i]?.equity ?? 0, data?.data?.result?.financialList?.[i]?.capitalStock ?? 0, data?.data?.result?.financialList?.[i]?.capitalImpairment ?? '']);
 
-            tmpChartData5.push(((data?.data?.result?.financialList?.[i].sales ?? 0) / 100000000000).toFixed(2));
-            tmpChartData6_1.push(((data?.data?.result?.financialList?.[i].operatingIncomeRatio ?? 0) * 100).toFixed(2));
-            tmpChartData6_2.push(((data?.data?.result?.financialList?.[i].netIncomeRatio ?? 0) * 100).toFixed(2));
+            tmpChartData5.push(((data?.data?.result?.financialList?.[i]?.sales ?? 0) / 100000000000).toFixed(2));
+            tmpChartData6_1.push(((data?.data?.result?.financialList?.[i]?.operatingIncomeRatio ?? 0) * 100).toFixed(2));
+            tmpChartData6_2.push(((data?.data?.result?.financialList?.[i]?.netIncomeRatio ?? 0) * 100).toFixed(2));
             
-            tmpChartData7_1.push((Math.floor((data?.data?.result?.financialList?.[i].liabilitiesRatio ?? 0) * 100)));
-            tmpChartData7_2.push(((data?.data?.result?.financialList?.[i].equity ?? 0) / 100000000000).toFixed(2));
-            tmpChartData7_3.push(((data?.data?.result?.financialList?.[i].liabilities ?? 0) / 100000000000).toFixed(2));
+            tmpChartData7_1.push((Math.floor((data?.data?.result?.financialList?.[i]?.liabilitiesRatio ?? 0) * 100)));
+            tmpChartData7_2.push(((data?.data?.result?.financialList?.[i]?.equity ?? 0) / 100000000000).toFixed(2));
+            tmpChartData7_3.push(((data?.data?.result?.financialList?.[i]?.liabilities ?? 0) / 100000000000).toFixed(2));
             
-            tmpChartData8_1.push((Math.floor((data?.data?.result?.financialList?.[i].currentRatio ?? 0) * 100)));
-            tmpChartData8_2.push(((data?.data?.result?.financialList?.[i].currentAssets ?? 0) / 100000000000).toFixed(2));
-            tmpChartData8_3.push(((data?.data?.result?.financialList?.[i].currentLiabilities ?? 0) / 100000000000).toFixed(2));
+            tmpChartData8_1.push((Math.floor((data?.data?.result?.financialList?.[i]?.currentRatio ?? 0) * 100)));
+            tmpChartData8_2.push(((data?.data?.result?.financialList?.[i]?.currentAssets ?? 0) / 100000000000).toFixed(2));
+            tmpChartData8_3.push(((data?.data?.result?.financialList?.[i]?.currentLiabilities ?? 0) / 100000000000).toFixed(2));
             
-            tmpChartData9_1.push((Math.floor((data?.data?.result?.financialList?.[i].interestCoverageRatio ?? 0) * 100)));
-            tmpChartData9_2.push(((data?.data?.result?.financialList?.[i].operatingIncome ?? 0) / 100000000).toFixed(2));
-            tmpChartData9_3.push(((data?.data?.result?.financialList?.[i].interestExpenses ?? 0) / 100000000).toFixed(2));
+            tmpChartData9_1.push((Math.floor((data?.data?.result?.financialList?.[i]?.interestCoverageRatio ?? 0) * 100)));
+            tmpChartData9_2.push(((data?.data?.result?.financialList?.[i]?.operatingIncome ?? 0) / 100000000).toFixed(2));
+            tmpChartData9_3.push(((data?.data?.result?.financialList?.[i]?.interestExpenses ?? 0) / 100000000).toFixed(2));
             
-            tmpChartData10_1.push((Math.floor((data?.data?.result?.financialList?.[i].capitalAdequacyRatio ?? 0) * 100)));
-            tmpChartData10_2.push(((data?.data?.result?.financialList?.[i].assets ?? 0) / 100000000000).toFixed(2));
-            tmpChartData10_3.push(((data?.data?.result?.financialList?.[i].equity ?? 0) / 100000000000).toFixed(2));
+            tmpChartData10_1.push((Math.floor((data?.data?.result?.financialList?.[i]?.capitalAdequacyRatio ?? 0) * 100)));
+            tmpChartData10_2.push(((data?.data?.result?.financialList?.[i]?.assets ?? 0) / 100000000000).toFixed(2));
+            tmpChartData10_3.push(((data?.data?.result?.financialList?.[i]?.equity ?? 0) / 100000000000).toFixed(2));
           }
         }
         tmpLable2 = tmpLable1;
@@ -275,6 +261,46 @@ export default function View() {
         if (tmpChartData3.length > 0) tmpChartData3 = [0,...tmpChartData3,0];
         if (tmpChartData4.length > 0) tmpChartData4 = [0,...tmpChartData4,0];
         if (tmpTableData1.length > 0) tmpTableData1 = [0,...tmpTableData1,0];
+
+        //고용정보
+        let tmpEmployeeYearData = [];
+        let tmpEmployeeMonthData = [];
+        let rastYear = '';
+        let employList = data?.data?.result?.employList ?? [];
+        for (let i in employList ?? []) {
+          if (employList?.[i]?.date !== undefined) {
+            let date = (employList?.[i]?.date ?? '');
+            let year = date.substr(0, 4) + '';
+            let month = date.substr(4, 2) + '';
+            let obj = {
+              year: year,
+              month: month,
+              value: employList?.[i]?.totalEmployed ?? 0,
+            };
+
+            if (tmpEmployeeYearData.filter(e => e.year === year).length > 0) {
+              let tmpEmployeeYearData2 = [];
+              for (let e in tmpEmployeeYearData ?? []) {
+                if (tmpEmployeeYearData?.[e]?.year === year) {
+                  tmpEmployeeYearData2.push(obj);
+                } else {
+                  tmpEmployeeYearData2.push(tmpEmployeeYearData[e]);
+                }
+              }
+              tmpEmployeeYearData = tmpEmployeeYearData2;
+            } else {
+              tmpEmployeeYearData.push(obj);
+            }
+
+            tmpEmployeeMonthData.push(obj);
+            rastYear = year;
+          }
+        }
+
+        // console.log('tmpEmployeeYearData:', tmpEmployeeYearData);
+        // console.log('tmpEmployeeMonthData:', tmpEmployeeMonthData);
+        // console.log('rastYear:', rastYear);
+        // console.log('yearLabels', tmpEmployeeYearData.map(e => e.year));
 
         setLabels1(tmpLable1);
         setTempChartData1(tmpChartData1);
@@ -303,6 +329,10 @@ export default function View() {
         setTempChartData10_1(tmpChartData10_1);
         setTempChartData10_2(tmpChartData10_2);
         setTempChartData10_3(tmpChartData10_3);
+
+        setEmployeeYearData(tmpEmployeeYearData);
+        setEmployeeMonthData(tmpEmployeeMonthData);
+        setEmployeeYear(rastYear);
 
       } catch (e) {
         console.warn(e);
@@ -417,6 +447,42 @@ export default function View() {
     })();
   }, [se2, se3, tabActive1, tabSubPage]);
 
+  const getEmployeeProjectList = useCallback(async () => {
+    await (async () => {
+      try {
+        dispatch(setLoading(true));
+        let data;
+        data = await discoveryAPI.resultInfoView(se3, common.getViewResultInfoType(se2), 'rnd_project', listSize, tabSubPage, employeeYear);
+        let procData = [];
+        for (let i in data?.data?.result?.dataList ?? []) {
+          procData.push({
+            id: data?.data?.result?.dataInfo?.projectOut?.[i]?.projectNumber ?? i,
+            title: data?.data?.result?.dataInfo?.projectOut?.[i]?.projectTitle ?? '',
+            price: common.setPriceInput(data?.data?.result?.dataInfo?.projectOut?.[i]?.fund ?? 0) + '원',
+            period: (data?.data?.result?.dataInfo?.projectOut?.[i]?.period ?? '').replaceAll('-','.'),
+            agency: data?.data?.result?.dataInfo?.projectOut?.[i]?.researchAgencyName ?? '',
+            name: data?.data?.result?.dataInfo?.projectOut?.[i]?.researchManagerName ?? '',
+            department: data?.data?.result?.dataInfo?.projectOut?.[i]?.orderAgencyName,
+            division: common.joinArrNStr(data?.data?.result?.dataInfo?.projectOut?.[i]?.technicalClassification, ' / ', ''),
+            keyword: common.joinArrNStr(data?.data?.result?.dataInfo?.projectOut?.[i]?.keywordKor, ', ', ''),
+            tag: ((data?.data?.result?.dataInfo?.projectOut?.[i]?.projectStatus ?? '') === '') ? 3 : ((data?.data?.result?.dataInfo?.projectOut?.[i]?.projectStatus ?? '') === '종료') ? 2 : 1
+          });
+        }
+        if (tabSubPage === 1) {
+          setEmployeeProjectList(procData);
+        } else {
+          setEmployeeProjectList([...employeeProjectList, ...procData]);
+        }
+        setTabSubCnt([data?.data?.result?.countInfo?.projectOut ?? 0]);
+        console.log('getEmployeeProjectList', data?.data?.result);
+      } catch (e) {
+        console.warn(e);
+      } finally {
+        dispatch(setLoading(false));  
+      }
+    })();
+  }, [se2, se3, tabActive1, tabSubPage, employeeYear]);
+
   useEffect(() => {
     getView();
   }, [se2, se3]);
@@ -426,17 +492,21 @@ export default function View() {
       getTabProjectList();
     } else if (tabActive1 === 3) {
       getTabPatentList();
-    } else if (tabActive1 === 4) {
-      console.log('고용정보관련');
     } else if (tabActive1 === 5) {
       getTabNewsList();
     }
   }, [se2, se3, tabActive1, tabSubPage]);
 
   useEffect(() => {
+    //과제수행현황 리스트
+    if (tabActive1 === 4) {
+      getEmployeeProjectList();
+    }
+  }, [se2, se3, tabActive1, tabSubPage, employeeYear]);
+
+  useEffect(() => {
     setTabSubPage(1);
-  }, [tabActive1]);
-  
+  }, [tabActive1, employeeYear]);
 
   return (
     <ViewLayout 
@@ -670,10 +740,10 @@ export default function View() {
               <div className='list_style01 mt-4'>
                 <ul>
                   {(tabProjectList?.length > 0) 
-                    ? tabProjectList?.map((e) => {
+                    ? tabProjectList?.map((e, i) => {
                       {/* tag - 진행중 : 1 | 종료 : 2 */}
                       return (<ListItem 
-                        key={e.id}
+                        key={i}
                         tag={1}
                         title={e.title}
                         contents={<>
@@ -712,9 +782,9 @@ export default function View() {
                 <div className='list_style01 mt-4'>
                   <ul>
                     {(tabPatentList?.length > 0) 
-                      ? tabPatentList?.map((e) => {
+                      ? tabPatentList?.map((e, i) => {
                         return (<ListItem 
-                          key={e.id}
+                          key={i}
                           title={e.title}
                           contents={<>
                             <p className='text-sm text-color-regular'>출원등록구분: <span className='font-medium text-color-main'>{e.division}</span></p>
@@ -749,8 +819,10 @@ export default function View() {
                             label: '종업원 수',
                           }}
                           color={'#0056B8'}
-                          labels={labels2} 
-                          datas={tempChartData11}
+                          // labels={employeeYearData?.map((e) => {return e.}) ?? []} 
+                          labels={employeeYearData?.map(e => e.year) ?? []}
+                          datas={employeeYearData?.map(e => e.value) ?? []}
+                          onClick={(label)=> setEmployeeYear(label)}
                         />
                       </div>
                     </div>
@@ -759,16 +831,18 @@ export default function View() {
                       <div className='chart_wrap mt-4'>
                         <ViewChart2 
                           height={300}
-                          labels={labels3} 
-                          datas={tempChartData12}
+                          labels={employeeMonthData?.filter(e => e.year === employeeYear)?.map(e => e.month) ?? []}
+                          datas={employeeMonthData?.filter(e => e.year === employeeYear)?.map(e => e.value) ?? []}
                         />
                       </div>
-                      <div className='mt-6 text-center'>
+                      {((employeeYearData ?? []).length > 0) ? <div className='mt-6 text-center'>
                         <label htmlFor='year' className='hidden_text'>연도별 보기</label>
-                        <select name='year' id='year'>
-                          <option value='2022'>2022</option>
+                        <select name='year' id='year' value={employeeYear} onChange={(e) => setEmployeeYear(e.target.value)}>
+                          {(employeeYearData ?? []).map((e,i) => {
+                            return <option key={i} value={e.year ?? ''}>{e.year ?? ''}</option>;
+                          })}
                         </select>
-                      </div>
+                      </div> : null}
                     </div>
                   </div>
                   <div className='list_wrap_style02 mt-10'>
@@ -776,7 +850,7 @@ export default function View() {
                       <h4 className='text-base font-bold text-color-dark'>기간별 과제 수행정보</h4>
                       <div className='chart_wrap mt-4'>
                         <ViewChart5 
-                          labels={labels4} 
+                          labels={labels5} 
                           lineStartData={'2022-01-01'}
                           lineEndData={'2022-12-31'}
                           barData={tempChartData13} 
@@ -785,15 +859,15 @@ export default function View() {
                     </div>
                   </div>
                   <div className='mt-10'>
-                    <h4 className="text-base font-bold text-color-dark">과제수행현황: <span className="text-color-main">2020년</span></h4>
+                    <h4 className="text-base font-bold text-color-dark">과제수행현황: <span className="text-color-main">{employeeYear}년</span></h4>
                   </div>
                   <div className='list_style01 mt-4'>
                     <ul>
-                      {(tempData2?.length > 0) 
-                        ? tempData2?.map((e) => {
+                      {(employeeProjectList?.length > 0) 
+                        ? employeeProjectList?.map((e, i) => {
                           {/* tag - 진행중 : 1 | 종료 : 2 */}
                           return (<ListItem 
-                            key={e.id}
+                            key={i}
                             tag={1}
                             title={e.title}
                             contents={<>
@@ -821,17 +895,17 @@ export default function View() {
                       }
                     </ul>
                   </div>
-                  <Button name='더보기 +' className='h-10 px-4 mt-4 mx-auto rounded text-base font-bold btn_style05' onClick={() => {}} />
+                  {(tabSubCnt[0] <= (tabSubPage * listSize)) ? null : <Button name='더보기 +' className='h-10 px-4 mt-4 mx-auto rounded text-base font-bold btn_style05' onClick={() => { setTabSubPage(tabSubPage + 1); }} />}
                 </>
                 : // 뉴스
                 <>
                   <div className='list_style03 mt-5'>
                     <ul>
                       {(tabNewsList?.length > 0)
-                        ? tabNewsList?.map((e) => {
+                        ? tabNewsList?.map((e, i) => {
                           return (
                             <ToggleListItem 
-                              key={e.id}
+                              key={i}
                               id={e.id}
                               title={<>
                                 <p className='flex-1 text-base font-bold text-color-dark'>{e.title}</p>

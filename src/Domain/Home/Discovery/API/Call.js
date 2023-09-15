@@ -25,8 +25,12 @@ export const discoveryKeyword = async (keyword='', selectKeyword='') => {
  * @param {int} page 
  * @returns 
  */
-export const resultInfoView = async (id, type='projectOut', category='all', size=10, page=1) => {
-  return await API.get('/view/resultInfo', {params: {type: type, id: id, category: category, size: size, page: page}});
+export const resultInfoView = async (id, type='projectOut', category='all', size=10, page=1, year='') => {
+  let params = {type: type, id: id, category: category, size: size, page: page};
+  if (year !== '') {
+    params['year'] = year;
+  }
+  return await API.get('/view/resultInfo', {params: params});
 };
 //디스커버리 파일 분석
 export const discoveryFile = async (formData) => {
