@@ -859,7 +859,8 @@ export default function View() {
                     </div>
                   </div>
                   <div className='mt-10'>
-                    <h4 className="text-base font-bold text-color-dark">과제수행현황: <span className="text-color-main">{employeeYear}년</span></h4>
+                    <h4 className="text-base font-bold text-color-dark">과제수행현황{(employeeYear !== '') ? <>: <span className="text-color-main">{employeeYear}년</span></> : null}
+                    </h4>
                   </div>
                   <div className='list_style01 mt-4'>
                     <ul>
