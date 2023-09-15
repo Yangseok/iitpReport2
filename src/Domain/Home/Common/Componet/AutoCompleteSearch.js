@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import * as Hangul from 'hangul-js';
 import Button from 'Domain/Home/Common/Componet/Button';
 import { useSelector, useDispatch } from 'react-redux';
 import { setSearchKeyword, setTmpSearchKeyword, getTmpSearchKeyword } from 'Domain/Home/Common/Status/CommonSlice';
-import $ from 'jquery';
+// import $ from 'jquery';
 // import { useSearchParams } from 'react-router-dom';
 import parse from 'html-react-parser';
 
@@ -74,63 +74,53 @@ export default function AutoCompleteSearch(props) {
     if (handleSearch !== undefined) handleSearch();
   };
 
+  const searchListButtonRef = useRef([]);
+  const searchInputRef = useRef(null);
+  const searchWrapRef = useRef(null);
+
+  const handleInputKeyDown = (e) => {
+    if(e.key === 'ArrowDown') {
+      e.preventDefault();
+      searchListButtonRef?.current?.[0]?.focus();
+    }
+    if(e.key === 'ArrowUp') {
+      e.preventDefault();
+      searchListButtonRef?.current?.[searchListButtonRef?.current?.length - 1]?.focus();
+    }
+  };
+
+  const handleListKeyDown = (e, i) => {
+    if(e.key === 'ArrowDown') {
+      e.preventDefault();
+      if ((searchListButtonRef?.current?.length - 1) === i) {
+        searchInputRef.current.focus();
+      } else {
+        searchListButtonRef?.current?.[i+1]?.focus();
+      }
+    }
+    if(e.key === 'ArrowUp') {
+      e.preventDefault();
+      if (i === 0) {
+        searchInputRef.current.focus();
+      } else {
+        searchListButtonRef?.current?.[i-1]?.focus();
+      }
+    }
+  };
+
+  const handleClickOutside = (e) => {
+    if (searchWrapRef.current && !searchWrapRef.current.contains(e.target)) {
+      setSearchFocus(false);
+    }
+  };
+
   useEffect(() => {
-    const searchInputEl = $('.auto_search_wrap .search_wrap input');
-
-    // 검색창 focus 되어있을 때 방향키 입력시, 아래 리스트로 이동
-    searchInputEl.on('keydown', (e) => {
-      const searchListLiEl = $('.auto_search_wrap .search_list ul li');
-      const length = searchListLiEl.length;
-
-      if(e.key === 'ArrowDown') {
-        e.preventDefault();
-        searchListLiEl.eq(0).find('button').focus();
-      }
-      if(e.key === 'ArrowUp') {
-        e.preventDefault();
-        searchListLiEl.eq(length - 1).find('button').focus();
-      }
-    });
-
-    // 검색 리스트 focus 되어있을 때 방향키 입력시, 리스트 내에서 방향이동
-    $(document).on('keydown', '.auto_search_wrap.focus .search_list ul li button', (e) => {
-      const searchListLiEl = $('.auto_search_wrap .search_list ul li');
-      const idx = $(e.target).parent().index();
-      const length = searchListLiEl.length;
-
-      if(e.key === 'ArrowDown') {
-        e.preventDefault();
-        if(idx === length - 1) {
-          searchListLiEl.eq(0).find('button').focus();
-        } else {
-          searchListLiEl.eq(idx + 1).find('button').focus();
-        }
-      }
-      if(e.key === 'ArrowUp') {
-        e.preventDefault();
-        if(idx === 0) {
-          searchInputEl.focus();
-        } else {
-          searchListLiEl.eq(idx - 1).find('button').focus();
-        }
-      }
-    });
-
-    // 검색영역 외의 영역 클릭 시, 검색창 꺼짐
-    $(document).on('click', function(e) {
-      const searchWrap = $(e.target).parents('.auto_search_wrap');
-      if (!searchWrap.hasClass('auto_search_wrap')) {
-        setSearchFocus(false);
-      }
-    });
-
-    // 검색영역 바깥의 버튼 focus 시, 검색창 꺼짐
-    $('*').on('focusin', (e) => {
-      const searchWrap = $(e.target).parents('.auto_search_wrap');
-      if (!searchWrap.hasClass('auto_search_wrap')) {
-        setSearchFocus(false);
-      }
-    });
+    document.addEventListener('click', handleClickOutside);
+    document.addEventListener('focusin', handleClickOutside);
+    return () => {
+      document.removeEventListener('click', handleClickOutside);
+      document.removeEventListener('focusin', handleClickOutside);
+    };
   }, []);
 
   // useEffect(() => {
@@ -139,7 +129,7 @@ export default function AutoCompleteSearch(props) {
   // }, [searchParamKeyword]);
 
   return (
-    <div className={`auto_search_wrap${(searchFocus) ? ' focus' : ''}`}>
+    <div className={`auto_search_wrap${(searchFocus) ? ' focus' : ''}`} ref={searchWrapRef} >
       <div className={`search_wrap${(style?.type === 1 || style?.type === 3) ? ' type01' : (style?.type === 2) ? ' type02' : ''}`}>
         <label htmlFor='search_text'>{labelText ?? '검색어로 검색'}</label>
         <input 
@@ -148,10 +138,12 @@ export default function AutoCompleteSearch(props) {
           id='search_text'
           onChange={(e) => dispatch(setTmpSearchKeyword(e.target.value))}
           onKeyUp={onSearchKeyUp}
+          onKeyDown={handleInputKeyDown}
           onFocus={() => setSearchFocus(true)}
           value={tmpSearchKeyword}
           placeholder='찾고 싶은 검색어를 입력해보세요.'
           autoComplete='off'
+          ref={searchInputRef}
         />
         <div className={`search_btn${(style?.type === 3) ? ' tooltip_wrap' : ''}`}>
           <Button name={style?.name} onClick={searchEvent} icon={style?.icon} />
@@ -162,8 +154,8 @@ export default function AutoCompleteSearch(props) {
         <ul>
           {(listData?.length)
             ? listData?.map((e,i) => (
-              <li key={i}>
-                <button type='button' onClick={e.onClick}>
+              <li key={i} onKeyDown={(e) => handleListKeyDown(e, i)}>
+                <button type='button' onClick={e.onClick} ref={(e) => searchListButtonRef.current[i] = e}>
                   {(e.agency) ? <span className="tag_style01 mt-0.5">기업</span> : ''}
                   <span className='text'>{e.text}</span>
                 </button>
