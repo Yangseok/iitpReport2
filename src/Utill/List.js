@@ -224,6 +224,7 @@ export const callListAPI = async (filterKey, se1, se2, globalSearchDetailData, s
   } else if (se1 == 'discovery') {
     if (se2 == 'keyword') {
       similarity = procSimilarity(selectKeyword);
+      similarity = [{keyword: keyword, weight: 1}, ...similarity];
       data = await apiMethod('discovery',size,page,keyword,similarity,sort,filterObj,searchParam,etcParam);
     } else if (se2 == 'file') {
       similarity = fileKeywordList;

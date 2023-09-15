@@ -27,6 +27,7 @@ export default function AutoCompleteSearch(props) {
   const onSearchKeyUp = async (e) => {
     if (e.keyCode == 13) {
       searchEvent();
+      return;
     }
     const value = e.target.value;
     // const hangulValue = Hangul.disassemble(value).join(''); // ㄺ=>ㄹㄱ
