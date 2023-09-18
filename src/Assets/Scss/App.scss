@@ -919,7 +919,7 @@ textarea {
 }
 
 /* Tags */
-@for $i from 1 through 7 {
+@for $i from 1 through 8 {
   .tag_style0#{$i} {
     @include flexLayout(center, center);
     height: 20px;
@@ -949,6 +949,9 @@ textarea {
     } @else if($i == 7) {
       color: $color_point1;
       background-color: $color_f_bg;
+    } @else if($i == 8) {
+      color: $color_regular;
+      background-color: $color_line;
     }
   }
 }

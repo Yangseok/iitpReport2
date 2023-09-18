@@ -1278,6 +1278,20 @@ textarea::placeholder {
   background-color: #F1F5F9;
 }
 
+.tag_style08 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  height: 20px;
+  padding: 0 6px;
+  border-radius: 2px;
+  font-size: 12px;
+  font-weight: 500;
+  color: #334155;
+  background-color: #E2E8F0;
+}
+
 /* Tooltip */
 .tooltip_wrap {
   position: relative;
