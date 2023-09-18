@@ -1766,6 +1766,7 @@ textarea::placeholder {
   align-items: flex-start;
   justify-content: flex-start;
   gap: 24px;
+  flex-wrap: wrap;
 }
 .list_style05 > ul li {
   position: relative;

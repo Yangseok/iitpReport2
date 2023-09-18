@@ -1295,6 +1295,7 @@ textarea {
 }
 .list_style05 > ul {
   @include flexLayout(flex-start, flex-start, 24px);
+  flex-wrap: wrap;
 
   li {
     position: relative;
