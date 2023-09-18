@@ -504,6 +504,12 @@ hr {
   border-bottom: 1px solid #94A3B8;
 }
 
+.float_wrap::after {
+  content: "";
+  display: block;
+  clear: both;
+}
+
 /* Button */
 button, a {
   display: flex;
@@ -851,6 +857,9 @@ input {
   font-size: 14px;
   color: #334155;
 }
+input::-moz-placeholder {
+  color: #94A3B8;
+}
 input::placeholder {
   color: #94A3B8;
 }
@@ -866,7 +875,9 @@ select {
   background: #FFFFFF url("Assets/Images/arr_select.png") no-repeat right 10px center/24px;
   font-size: 14px;
   color: #334155;
-  appearance: none;
+  -webkit-appearance: none;
+     -moz-appearance: none;
+          appearance: none;
 }
 select::-ms-expand {
   display: none;
@@ -877,6 +888,9 @@ textarea {
   resize: none;
   font-size: 14px;
   color: #334155;
+}
+textarea::-moz-placeholder {
+  color: #94A3B8;
 }
 textarea::placeholder {
   color: #94A3B8;
@@ -1133,8 +1147,10 @@ textarea::placeholder {
   left: 50%;
   max-width: 100%;
   max-height: 100%;
-  object-fit: cover;
-  object-position: center;
+  -o-object-fit: cover;
+     object-fit: cover;
+  -o-object-position: center;
+     object-position: center;
   transform: translate(-50%, -50%);
 }
 

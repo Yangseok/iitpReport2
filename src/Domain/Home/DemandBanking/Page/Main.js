@@ -141,21 +141,21 @@ export default function Main() {
             <p className='text-base font-bold text-color-dark'>
               <strong>수요조사 접수현황</strong>
             </p>
-            <div className='flex items-center justify-between mt-2'>
-              <p className='text-base font-bold text-color-dark'>전체</p>
-              <p className='text-base font-bold text-color-main'>{common.setPriceInput(countData?.totalCount ?? 0)}건</p>
+            <div className='float_wrap mt-2'>
+              <p className='text-base font-bold text-color-dark float-left'>전체</p>
+              <p className='text-base font-bold text-color-main float-right break-all text-right'>{common.setPriceInput(countData?.totalCount ?? 0)}건</p>
             </div>
-            <div className='flex items-center justify-between mt-2'>
-              <p className='text-base font-bold text-color-dark'>정기</p>
-              <p className='text-base font-bold text-color-main'>{common.setPriceInput(countData?.regularCount ?? 0)}건</p>
+            <div className='float_wrap mt-2'>
+              <p className='text-base font-bold text-color-dark float-left'>정기</p>
+              <p className='text-base font-bold text-color-main float-right break-all text-right'>{common.setPriceInput(countData?.regularCount ?? 0)}건</p>
             </div>
-            <div className='flex items-center justify-between mt-2'>
-              <p className='text-base font-bold text-color-dark'>수시</p>
-              <p className='text-base font-bold text-color-main'>{common.setPriceInput(countData?.irregularCount ?? 0)}건</p>
+            <div className='float_wrap mt-2'>
+              <p className='text-base font-bold text-color-dark float-left'>수시</p>
+              <p className='text-base font-bold text-color-main float-right break-all text-right'>{common.setPriceInput(countData?.irregularCount ?? 0)}건</p>
             </div>
-            {((countData?.noneCount ?? 0) !== 0) ? <div className='flex items-center justify-between mt-2'>
-              <p className='text-base font-bold text-color-dark'>해당없음</p>
-              <p className='text-base font-bold text-color-main'>{common.setPriceInput(countData?.noneCount ?? 0)}건</p>
+            {((countData?.noneCount ?? 0) !== 0) ? <div className='float_wrap mt-2'>
+              <p className='text-base font-bold text-color-dark float-left'>해당없음</p>
+              <p className='text-base font-bold text-color-main float-right break-all text-right'>{common.setPriceInput(countData?.noneCount ?? 0)}건</p>
             </div> : null}
           </div>
 
