@@ -5,15 +5,6 @@ import Login from 'Domain/Home/Login/Page/Main';
 import Discovery from 'Domain/Home/Discovery/Page/Main';
 import DiscoveryResultAll from 'Domain/Home/Discovery/Page/Result/All';
 import ListWrap from 'Domain/Home/Common/Componet/ListWrap';
-// import DiscoveryResultProjectOut from 'Domain/Home/Discovery/Page/Result/ProjectOut';
-// import DiscoveryResultProjectIn from 'Domain/Home/Discovery/Page/Result/ProjectIn';
-// import DiscoveryResultPatent from 'Domain/Home/Discovery/Page/Result/Patent';
-// import DiscoveryResultPaper from 'Domain/Home/Discovery/Page/Result/Paper';
-// import DiscoveryResultIct from 'Domain/Home/Discovery/Page/Result/Ict';
-// import DiscoveryResultPolicy from 'Domain/Home/Discovery/Page/Result/Policy';
-// import DiscoveryResultResearcher from 'Domain/Home/Discovery/Page/Result/Researcher';
-// import DiscoveryResultOrgn from 'Domain/Home/Discovery/Page/Result/Orgn';
-// import DiscoveryResultNews from 'Domain/Home/Discovery/Page/Result/News';
 import Search from 'Domain/Home/Discovery/Page/Search';
 import ViewProjectOut from 'Domain/Home/Discovery/Page/View/ProjectOut';
 import ViewProjectIn from 'Domain/Home/Discovery/Page/View/ProjectIn';
@@ -108,29 +99,11 @@ export default function Router() {
         {list.map((e,i) => {
           return <Route key={i} path={'/discovery/:se2/result/' + e.path} element={<ListWrap filterKey={e.filterKey} searchDetailKey={e.searchDetailKey} />} />;
         })}
-        {/* <Route path='/discovery/:se2/result/projectout' element={<DiscoveryResultProjectOut />} />
-        <Route path='/discovery/:se2/result/projectin' element={<DiscoveryResultProjectIn />} />
-        <Route path='/discovery/:se2/result/patent' element={<DiscoveryResultPatent />} />
-        <Route path='/discovery/:se2/result/paper' element={<DiscoveryResultPaper />} />
-        <Route path='/discovery/:se2/result/ict' element={<DiscoveryResultIct />} />
-        <Route path='/discovery/:se2/result/policy' element={<DiscoveryResultPolicy />} />
-        <Route path='/discovery/:se2/result/researcher' element={<DiscoveryResultResearcher />} />
-        <Route path='/discovery/:se2/result/orgn' element={<DiscoveryResultOrgn />} />
-        <Route path='/discovery/:se2/result/news' element={<DiscoveryResultNews />} /> */}
         <Route path='/search' element={<Search />} />
         <Route path='/search/result/all' element={<DiscoveryResultAll />} />
         {list.map((e,i) => {
           return <Route key={i} path={'/search/result/' + e.path} element={<ListWrap filterKey={e.filterKey} searchDetailKey={e.searchDetailKey} />} />;
         })}
-        {/* <Route path='/search/result/projectout' element={<DiscoveryResultProjectOut />} />
-        <Route path='/search/result/projectin' element={<DiscoveryResultProjectIn />} />
-        <Route path='/search/result/patent' element={<DiscoveryResultPatent />} />
-        <Route path='/search/result/paper' element={<DiscoveryResultPaper />} />
-        <Route path='/search/result/ict' element={<DiscoveryResultIct />} />
-        <Route path='/search/result/policy' element={<DiscoveryResultPolicy />} />
-        <Route path='/search/result/researcher' element={<DiscoveryResultResearcher />} />
-        <Route path='/search/result/orgn' element={<DiscoveryResultOrgn />} />
-        <Route path='/search/result/news' element={<DiscoveryResultNews />} /> */}
         <Route path='/view/projectout/:id' element={<ViewProjectOut />} />
         <Route path='/view/projectin/:id' element={<ViewProjectIn />} />
         <Route path='/view/patent/:id' element={<ViewPatent />} />

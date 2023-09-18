@@ -38,13 +38,6 @@ export default function ViewAPIButton(props) {
     };
     await props.apiCallWrap(apiFn);
   };
-  const demandSurveyViewTest = async () => {
-    const apiFn = async () => {
-      const data = await viewCallAPI.demandSurveyView();
-      console.log(data?.data?.result);
-    };
-    await props.apiCallWrap(apiFn);
-  };
 
   return (
     <>
@@ -53,7 +46,6 @@ export default function ViewAPIButton(props) {
       <li className='mb-1'><Button text="상세 페이지(수요뱅킹 조회)" onClick={company4ViewTest} /></li>
       <li className='mb-1'><Button text="상세 페이지(수요뱅킹 조회 목록 다운로드)" onClick={company5ViewTest} /></li>
       <li className='mb-1'><Button text="상세 페이지(유사기술수요조사서)" onClick={company6ViewTest} /></li>
-      <li className='mb-1'><Button text="상세 페이지(수요뱅킹 상세)" onClick={demandSurveyViewTest} /></li>
     </>
   );
 }

@@ -157,7 +157,7 @@ export default function Orgn(props) {
                             <p className='text-sm text-color-regular'>한글 키워드: <span className='font-medium text-color-main'>{e.keyword}</span></p>
                           </>}
                           desc={<>
-                            <NavLink to={`/view/projectout/${e.id}`} className='h-5 text-base font-bold text-color-footer'>더보기 ＋</NavLink>
+                            <NavLink to={`/view/projectout/${e.id}`} target='_blank' className='h-5 text-base font-bold text-color-footer'>더보기 ＋</NavLink>
                           </>}
                         />;
                       })
@@ -189,7 +189,7 @@ export default function Orgn(props) {
                             </div>
                           </>}
                           desc={<>
-                            <NavLink to={`/view/patent/${e.id}`} className='h-5 text-base font-bold text-color-footer'>더보기 ＋</NavLink>
+                            <NavLink to={`/view/patent/${e.id}`} target='_blank' className='h-5 text-base font-bold text-color-footer'>더보기 ＋</NavLink>
                           </>}
                         />;
                       })

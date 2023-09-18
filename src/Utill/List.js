@@ -383,7 +383,7 @@ export const getProcData = (filterKey, dataList) => {
     break;
   case 'search/news':
     for (let i in dataList ?? []) {
-      console.log(i, dataList?.[i]);
+      // console.log(i, dataList?.[i]);
       const date = dataList?.[i]?.publishedDate ?? '';
       const dateArr = date.split(' ');
       const pushData = {

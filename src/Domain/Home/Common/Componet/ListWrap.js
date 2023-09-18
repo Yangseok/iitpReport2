@@ -31,6 +31,8 @@ export default function ListWrap(props) {
   const se = common.getSegment();
   const se1 = se[1] ?? '';
   const se2 = se[2] ?? '';
+  const se3 = se[3] ?? '';
+  const se4 = se[4] ?? '';
   const selectKeyword = useSelector(getSelectKeyword);
   const keyword = useSelector(getSearchKeyword);
   const [tabCount, setTabCount] = useState({});
@@ -283,6 +285,10 @@ export default function ListWrap(props) {
       getList();
     }
   }, [searchButtonClick]);
+
+  useEffect(() => {
+    setPage(1);
+  }, [se2,se3,se4]);
 
   useEffect(() => {
     getResearcherDetail();
