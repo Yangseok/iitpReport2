@@ -21,6 +21,10 @@ export const company6View = async (id, id2='', type='') => {
   return await API.get('/view/company6/' + id, {params: {id: id2, type: type}});
 };
 //수요뱅킹 상세
-export const demandSurveyView = async (id, id2='') => {
-  return await API.get('/view/demandSurvey/' + id, {params: {id: id2}});
+export const surveyView = async (noticeId, surveyId) => {
+  let params = {
+    noticeId: noticeId,
+    surveyId: surveyId,
+  };
+  return await API.get('/view/survey', {params: params});
 };
