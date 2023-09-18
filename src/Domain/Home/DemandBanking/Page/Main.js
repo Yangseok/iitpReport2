@@ -12,6 +12,7 @@ import Pagination from 'Domain/Home/Common/Componet/Pagination';
 import CheckListWrap from 'Domain/Home/DemandBanking/Component/CheckListWrap';
 import RcSlider from 'rc-slider';
 import { useNavigate } from 'react-router-dom';
+import GuidePopup from 'Domain/Home/Common/Componet/GuidePopup';
 
 export default function Main() {
   const tempData = [
@@ -61,6 +62,7 @@ export default function Main() {
   const [checkAll, setCheckAll] = useState(false);
   const [btnDisabled, setBtnDisabled] = useState(true);
   const [data, setData] = useState([]);
+  const [popup, setPopup] = useState(false);
 
   let rangeMarks = {};
   const rangeMin = 2012;
@@ -143,7 +145,7 @@ export default function Main() {
                 onChange={(e) => setRangeValue(e)}
               />
             </div>
-            <button type='button' className='gap-1'>
+            <button type='button' className='guide_btn gap-1' onClick={() => setPopup(true)}>
               <img src={icGuide} alt='서비스 가이드' className='w-6' />
               서비스 가이드
             </button>
@@ -238,6 +240,15 @@ export default function Main() {
           </div>
         </div>
       </div>
+      {(popup) 
+        ? <GuidePopup 
+          popup={popup} 
+          setPopup={setPopup} 
+          title={'서비스 가이드'} 
+          contents={<p>서비스 가이드 내용</p>} 
+          focusClass={'guide_btn'}
+        /> 
+        : null}
     </Layout>
   );
 }

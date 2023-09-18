@@ -5,10 +5,13 @@ import icGuide from 'Assets/Images/ic_guide.png';
 import Layout from 'Domain/Home/Common/Layout/Sub';
 import TabButtons from 'Domain/Home/Common/Componet/TabButtons';
 import common from 'Utill';
+import GuidePopup from 'Domain/Home/Common/Componet/GuidePopup';
 
 export default function IctLayout({children}) {
   const pathName = useLocation().pathname;
   const [tabActive, setTabActive] = useState(0);
+  const [popup, setPopup] = useState(false);
+
 
   const tabButtons = [
     { id: 0, name: 'ICT 키워드 트렌드', to: '/icttrend/keyword' },
@@ -36,7 +39,7 @@ export default function IctLayout({children}) {
         <div className='container'>
           <div className='flex items-center justify-between'>
             <TabButtons style='1' tabs={tabButtons} active={tabActive} />
-            <button type='button' className='gap-1'>
+            <button type='button' className='guide_btn gap-1' onClick={() => setPopup(true)}>
               <img src={icGuide} alt='검색 가이드' className='w-6' />
               서비스 가이드
             </button>
@@ -44,6 +47,15 @@ export default function IctLayout({children}) {
         </div>
       </div>
       {children}
+      {(popup) 
+        ? <GuidePopup 
+          popup={popup} 
+          setPopup={setPopup} 
+          title={'서비스 가이드'} 
+          contents={<p>서비스 가이드 내용</p>} 
+          focusClass={'guide_btn'}
+        /> 
+        : null}
     </Layout>
   );
 }

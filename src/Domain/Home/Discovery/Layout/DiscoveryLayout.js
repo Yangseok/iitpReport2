@@ -5,11 +5,13 @@ import icGuide from 'Assets/Images/ic_guide.png';
 import Layout from 'Domain/Home/Common/Layout/Sub';
 import TabButtons from 'Domain/Home/Common/Componet/TabButtons';
 import common from 'Utill';
+import GuidePopup from 'Domain/Home/Common/Componet/GuidePopup';
 
 export default function DiscoveryLayout({children}) {
   const pathName = useLocation().pathname;
   const [tabActive1, setTabActive1] = useState(0);
   const [tabActive2, setTabActive2] = useState(0);
+  const [popup, setPopup] = useState(false);
 
   const tabButtons1 = [
     { id: 0, name: '디스커버리 검색', to:'/discovery/keyword'},
@@ -59,7 +61,7 @@ export default function DiscoveryLayout({children}) {
                 : ''
               }
             </div>
-            <button type='button' className='gap-1'>
+            <button type='button' className='guide_btn gap-1' onClick={() => setPopup(true)}>
               <img src={icGuide} alt='검색 가이드' className='w-6' />
               검색 가이드
             </button>
@@ -67,6 +69,15 @@ export default function DiscoveryLayout({children}) {
         </div>
       </div>
       {children}
+      {(popup) 
+        ? <GuidePopup 
+          popup={popup} 
+          setPopup={setPopup} 
+          title={'검색 가이드'} 
+          contents={<p>검색 가이드 내용</p>} 
+          focusClass={'guide_btn'}
+        /> 
+        : null}
     </Layout>
   );
 }
