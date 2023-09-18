@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import 'Assets/Css/Demand.css';
 import icGuide from 'Assets/Images/ic_guide.png';
 import icFilter from 'Assets/Images/ic_filter.png';
@@ -13,8 +13,15 @@ import CheckListWrap from 'Domain/Home/DemandBanking/Component/CheckListWrap';
 import RcSlider from 'rc-slider';
 import { useNavigate } from 'react-router-dom';
 import GuidePopup from 'Domain/Home/Common/Componet/GuidePopup';
+import { useDispatch } from 'react-redux';
+import { setLoading } from 'Domain/Home/Common/Status/CommonSlice';
+import common from 'Utill';
+// import * as viewCallAPI from 'Domain/Home/Discovery/API/ViewCall';
+import * as demandCallAPI from 'Domain/Home/DemandBanking/API/Call';
 
 export default function Main() {
+  const dispatch = useDispatch();
+
   const tempData = [
     {
       id: 0,
@@ -63,6 +70,7 @@ export default function Main() {
   const [btnDisabled, setBtnDisabled] = useState(true);
   const [data, setData] = useState([]);
   const [popup, setPopup] = useState(false);
+  const [countData, setCountData] = useState([]);
 
   let rangeMarks = {};
   const rangeMin = 2012;
@@ -82,7 +90,7 @@ export default function Main() {
 
   const handleItemClick = (id) => {
     const newData = data?.map(e => {
-      if(e.id === id) {
+      if (e.id === id) {
         return {...e, active: !e.active};
       }
       return e;
@@ -90,12 +98,26 @@ export default function Main() {
     setData(newData);
   };
 
+  const getSurveyCount = useCallback(async () => {
+    let data = [];
+    try {
+      dispatch(setLoading(true));
+      data = await demandCallAPI.surveyCount();
+    } catch (e) {
+      console.warn(e);
+    } finally {
+      dispatch(setLoading(false));  
+    }
+    setCountData(data?.data?.result ?? []);
+    console.log('data?.data?.result:', data?.data?.result);
+  }, []);
+
   useEffect(() => {
     const activeItems = data.filter(e => e.active === true);
-    if(activeItems.length > 0) {
+    if (activeItems.length > 0) {
       setBtnDisabled(false);
 
-      if(activeItems.length === data.length) {
+      if (activeItems.length === data.length) {
         setCheckAll(true);
       } else {
         setCheckAll(false);
@@ -107,6 +129,8 @@ export default function Main() {
 
   useEffect(() => {
     setData(tempData);
+
+    getSurveyCount();
   }, []);
 
   return (
@@ -119,16 +143,20 @@ export default function Main() {
             </p>
             <div className='flex items-center justify-between mt-2'>
               <p className='text-base font-bold text-color-dark'>전체</p>
-              <p className='text-base font-bold text-color-main'>2,155건</p>
+              <p className='text-base font-bold text-color-main'>{common.setPriceInput(countData?.totalCount ?? 0)}건</p>
             </div>
             <div className='flex items-center justify-between mt-2'>
               <p className='text-base font-bold text-color-dark'>정기</p>
-              <p className='text-base font-bold text-color-main'>991건</p>
+              <p className='text-base font-bold text-color-main'>{common.setPriceInput(countData?.regularCount ?? 0)}건</p>
             </div>
             <div className='flex items-center justify-between mt-2'>
               <p className='text-base font-bold text-color-dark'>수시</p>
-              <p className='text-base font-bold text-color-main'>1,164건</p>
+              <p className='text-base font-bold text-color-main'>{common.setPriceInput(countData?.irregularCount ?? 0)}건</p>
             </div>
+            {((countData?.noneCount ?? 0) !== 0) ? <div className='flex items-center justify-between mt-2'>
+              <p className='text-base font-bold text-color-dark'>해당없음</p>
+              <p className='text-base font-bold text-color-main'>{common.setPriceInput(countData?.noneCount ?? 0)}건</p>
+            </div> : null}
           </div>
 
           <div className='flex items-center gap-10'>
