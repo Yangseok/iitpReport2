@@ -4,7 +4,7 @@ import { NavLink } from 'react-router-dom';
 import Pagination from 'Domain/Home/Common/Componet/Pagination';
 
 export default function Paper(props) {
-  const { projectData, totalCount, page, setPage } = props;
+  const { projectData, totalCount, size, page, setPage } = props;
 
   return (
     <>
@@ -35,7 +35,7 @@ export default function Paper(props) {
         </ul>
       </div>
       <div className='mt-10'>
-        <Pagination total={totalCount} page={page} onClick={(page) => setPage(page)} />
+        <Pagination total={totalCount} size={size} page={page} onClick={(page) => setPage(page)} />
       </div>
     </>
   );

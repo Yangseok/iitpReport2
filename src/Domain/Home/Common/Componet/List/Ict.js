@@ -3,7 +3,7 @@ import ListItem from 'Domain/Home/Common/Componet/ListItem';
 import Pagination from 'Domain/Home/Common/Componet/Pagination';
 
 export default function Ict(props) {
-  const { projectData, totalCount, page, setPage } = props;
+  const { projectData, totalCount, size, page, setPage } = props;
 
   return (
     <>
@@ -36,7 +36,7 @@ export default function Ict(props) {
         </ul>
       </div>
       <div className='mt-10'>
-        <Pagination total={totalCount} page={page} onClick={(page) => setPage(page)} />
+        <Pagination total={totalCount} size={size} page={page} onClick={(page) => setPage(page)} />
       </div>
     </>
   );

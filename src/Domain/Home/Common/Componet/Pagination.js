@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
 
 export default function Pagination(props) {
-  const { total, page, onClick } = props;
+  const { total, page, size, onClick } = props;
   const [prevDisabled, setPrevDisabled] = useState(false);
   const [nextDisabled, setNextDisabled] = useState(false);
 
-  const limit = 10; // 한 번에 노출되는 리스트 갯수
+  let limit = 10; // 한 번에 노출되는 리스트 갯수
+  if (size !== undefined) limit = size;
   const pageLimit = 5; // 한 번에 노출되는 페이지 번호
   const totalPage = Math.ceil(total / limit);
   const startPage = Math.floor((page - 1) / pageLimit) * pageLimit + 1;

@@ -14,7 +14,7 @@ import Pagination from 'Domain/Home/Common/Componet/Pagination';
 import common from 'Utill';
 
 export default function Orgn(props) {
-  const { projectData, totalCount, page, setPage, orgnActive, onOrgnSelect, simialityOrgn, subListMode, setSubListMode, subProjectList, subPatentList } = props;
+  const { projectData, totalCount, size, page, setPage, orgnActive, onOrgnSelect, simialityOrgn, subListMode, setSubListMode, subProjectList, subPatentList } = props;
 
   return (
     <>
@@ -84,7 +84,7 @@ export default function Orgn(props) {
             </ul>
           </div>
           <div className='mt-10'>
-            <Pagination total={totalCount} page={page} onClick={(page) => setPage(page)} />
+            <Pagination total={totalCount} size={size} page={page} onClick={(page) => setPage(page)} />
           </div>
         </div>
         <div className='flex-1 p-4 pb-10 bg-color-f_bg'>

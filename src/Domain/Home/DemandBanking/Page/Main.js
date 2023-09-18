@@ -18,66 +18,46 @@ import { setLoading } from 'Domain/Home/Common/Status/CommonSlice';
 import common from 'Utill';
 // import * as viewCallAPI from 'Domain/Home/Discovery/API/ViewCall';
 import * as demandCallAPI from 'Domain/Home/DemandBanking/API/Call';
+import moment from 'moment';
 
 export default function Main() {
   const dispatch = useDispatch();
 
-  const tempData = [
-    {
-      id: 0,
-      status: 1,
-      type: 2,
-      period: '2023.01.05 ~ 2023.03.30',
-      title: '2023년 정보통신방송 R&D 신규사업 기획을 위한 사업요조사',
-      count: 210,
-      active: false,
-    },
-    {
-      id: 1,
-      status: 1,
-      type: 1,
-      period: '2023.01.05 ~ 2023.03.30',
-      title: '2023년 정보통신방송 R&D 신규사업 기획을 위한 사업요조사',
-      count: 210,
-      active: false,
-    },
-    {
-      id: 2,
-      status: 2,
-      type: 1,
-      period: '2023.01.05 ~ 2023.03.30',
-      title: '2023년 정보통신방송 R&D 신규사업 기획을 위한 사업요조사',
-      count: 210,
-      active: false,
-    },
-    {
-      id: 3,
-      status: 2,
-      type: 2,
-      period: '2023.01.05 ~ 2023.03.30',
-      title: '2023년 정보통신방송 R&D 신규사업 기획을 위한 사업요조사',
-      count: 0,
-      active: false,
-    },
-  ];
+  let rangeMarks = {};
+  const rangeMin = 2017;
+  const rangeMax = moment().format('YYYY');
+  for(let i = rangeMin; i <= rangeMax; i++) {
+    rangeMarks[i] = i;
+  }
 
   const navigate = useNavigate();
-  const [rangeValue, setRangeValue] = useState([2022, 2023]);
+  const [rangeValue, setRangeValue] = useState([moment().subtract(1, 'year').format('YYYY'), rangeMax]);
   const [filterShow, setFilterShow] = useState(false);
-  const [sortType, setSortType] = useState(0);
-  const [sortStatus, setSortStatus] = useState(0);
+  const [sortType, setSortType] = useState('ALL');
+  const [sortStatus, setSortStatus] = useState('ALL');
+  const [bigIct, setBigIct] = useState('');
+  const [middleIct, setMiddleIct] = useState('');
+  const [smallIct, setSmallIct] = useState('');
+  const [detailIct, setDetailIct] = useState('');
+
+  const [bigIctTmp, setBigIctTmp] = useState('');
+  const [middleIctTmp, setMiddleIctTmp] = useState('');
+  const [smallIctTmp, setSmallIctTmp] = useState('');
+  const [detailIctTmp, setDetailIctTmp] = useState('');
+
+  const [bigIctList, setBigIctList] = useState([]);
+  const [middleIctList, setMiddleIctList] = useState([]);
+  const [smallIctList, setSmallIctList] = useState([]);
+  const [detailIctList, setDetailIctList] = useState([]);
+
   const [checkAll, setCheckAll] = useState(false);
   const [btnDisabled, setBtnDisabled] = useState(true);
   const [data, setData] = useState([]);
   const [popup, setPopup] = useState(false);
   const [countData, setCountData] = useState([]);
-
-  let rangeMarks = {};
-  const rangeMin = 2012;
-  const rangeMax = 2023;
-  for(let i = rangeMin; i <= rangeMax; i++) {
-    rangeMarks[i] = i;
-  }
+  const [page, setPage] = useState(1);
+  const [size] = useState(10);
+  const [totalCount, setTotalCount] = useState(0);
 
   // 전체 선택 클릭
   const onAllItemClick = () => {
@@ -98,6 +78,34 @@ export default function Main() {
     setData(newData);
   };
 
+  const initFilterData = useCallback(async (type='BCLS') => {
+    if (['BCLS'].indexOf(type) !== -1) {
+      setBigIctTmp('');
+      setBigIctList([]);
+    }
+    if (['BCLS','LCLS'].indexOf(type) !== -1) {
+      setMiddleIctTmp('');
+      setMiddleIctList([]);
+    }
+    if (['BCLS','LCLS','MCLS'].indexOf(type) !== -1) {
+      setSmallIctTmp('');
+      setSmallIctList([]);
+    }
+    if (['BCLS','LCLS','MCLS','SCLS'].indexOf(type) !== -1) {
+      setDetailIctTmp('');
+      setDetailIctList([]);
+    }
+  }, []);
+
+  const handleFilterApply = (e) => {
+    setBigIct(bigIctTmp);
+    setMiddleIct(middleIctTmp);
+    setSmallIct(smallIctTmp);
+    setDetailIct(detailIctTmp);
+    setPage(1);
+    e.preventDefault();
+  };
+
   const getSurveyCount = useCallback(async () => {
     let data = [];
     try {
@@ -108,8 +116,74 @@ export default function Main() {
     } finally {
       dispatch(setLoading(false));  
     }
+    console.log('getSurveyCount:', data?.data?.result);
     setCountData(data?.data?.result ?? []);
-    console.log('data?.data?.result:', data?.data?.result);
+  }, []);
+
+  const getNoticeList = useCallback(async () => {
+    let data = [];
+    try {
+      dispatch(setLoading(true));
+      data = await demandCallAPI.noticeList(rangeValue[0],rangeValue[1],sortType,sortStatus,bigIct,middleIct,smallIct,detailIct,size,page);
+    } catch (e) {
+      console.warn(e);
+    } finally {
+      dispatch(setLoading(false));  
+    }
+    console.log('getNoticeList:', data?.data?.result);
+
+    const statusNumber = {
+      PROGRESS: 1,
+      END: 2,
+    };
+    const typeNumber = {
+      REGULAR: 1,
+      IRREGULAR: 2,
+      NONE: 3,
+    };
+
+    let tmpData = [];
+    for(let i in data?.data?.result?.dataList ?? []) {
+      let pushData = {
+        id: data?.data?.result?.dataList?.[i]?.noticeId ?? i,
+        status: statusNumber[data?.data?.result?.dataList?.[i]?.status ?? 'END'] ?? 2,
+        type: typeNumber[data?.data?.result?.dataList?.[i]?.typeCode ?? 'NONE'] ?? 3,
+        period: data?.data?.result?.dataList?.[i]?.period ?? '',
+        title: data?.data?.result?.dataList?.[i]?.noticeTitle ?? '',
+        count: common.setPriceInput(data?.data?.result?.dataList?.[i]?.surveyCount ?? 0),
+        active: false,
+      };
+      tmpData.push(pushData);
+    }
+    setData(tmpData);
+    setTotalCount(data?.data?.result?.totalCount ?? 0);
+  }, [rangeValue, sortType, sortStatus, bigIct, middleIct, smallIct, detailIct, size, page]);
+
+  const getFilterList = useCallback(async (type='BCLS',code='') => {
+    let data = [];
+    try {
+      dispatch(setLoading(true));
+      data = await demandCallAPI.ictClass(type,code);
+    } catch (e) {
+      console.warn(e);
+    } finally {
+      dispatch(setLoading(false));  
+    }
+    console.log('getFilterList:', data?.data?.result);
+    switch (type) {
+    case 'BCLS':
+      setBigIctList(data?.data?.result ?? []);
+      break;
+    case 'LCLS':
+      setMiddleIctList(data?.data?.result ?? []);
+      break;
+    case 'MCLS':
+      setSmallIctList(data?.data?.result ?? []);
+      break;
+    case 'SCLS':
+      setDetailIctList(data?.data?.result ?? []);
+      break;
+    }
   }, []);
 
   useEffect(() => {
@@ -126,10 +200,44 @@ export default function Main() {
       setBtnDisabled(true);
     }
   }, [data]);
+  
+  useEffect(() => {
+    getNoticeList();
+  }, [rangeValue, sortType, sortStatus, bigIct, middleIct, smallIct, detailIct, size, page]);
+
+  //필터 활성화시 대분류 리스트를 가져옴.
+  useEffect(() => {
+    initFilterData('BCLS');
+    if (filterShow) {
+      getFilterList('BCLS','');
+    }
+  }, [filterShow]);
+
+  //대뷴류 선택시 중뷴류 리스트를 가져옴.
+  useEffect(() => {
+    initFilterData('LCLS');
+    if (bigIctTmp !== '') {
+      getFilterList('LCLS',bigIctTmp);
+    }
+  }, [bigIctTmp]);
+
+  //중분류 선택시 소분류 리스트를 가져옴
+  useEffect(() => {
+    initFilterData('MCLS');
+    if (middleIctTmp !== '') {
+      getFilterList('MCLS',middleIctTmp);
+    }
+  }, [middleIctTmp]);
+
+  //소분류 선택시 세분류 리스트를 가져옴.
+  useEffect(() => {
+    initFilterData('SCLS');
+    if (smallIctTmp !== '') {
+      getFilterList('SCLS',smallIctTmp);
+    }
+  }, [smallIctTmp]);
 
   useEffect(() => {
-    setData(tempData);
-
     getSurveyCount();
   }, []);
 
@@ -184,14 +292,17 @@ export default function Main() {
                 <dt>공고유형</dt>
                 <dd className='tab_btns tab_style06'>
                   <ul>
-                    <li className={(sortType === 0) ? 'on' : ''}>
-                      <button type='button' onClick={() => setSortType(0)}>전체</button>
+                    <li className={(sortType === 'ALL') ? 'on' : ''}>
+                      <button type='button' onClick={() => setSortType('ALL')}>전체</button>
                     </li>
-                    <li className={(sortType === 1) ? 'on' : ''}>
-                      <button type='button' onClick={() => setSortType(1)}>정기</button>
+                    <li className={(sortType === 'REGULAR') ? 'on' : ''}>
+                      <button type='button' onClick={() => setSortType('REGULAR')}>정기</button>
                     </li>
-                    <li className={(sortType === 2) ? 'on' : ''}>
-                      <button type='button' onClick={() => setSortType(2)}>수시</button>
+                    <li className={(sortType === 'IRREGULAR') ? 'on' : ''}>
+                      <button type='button' onClick={() => setSortType('IRREGULAR')}>수시</button>
+                    </li>
+                    <li className={(sortType === 'NONE') ? 'on' : ''}>
+                      <button type='button' onClick={() => setSortType('NONE')}>해당없음</button>
                     </li>
                   </ul>
                 </dd>
@@ -200,11 +311,14 @@ export default function Main() {
                 <dt>공고상태</dt>
                 <dd className='tab_btns tab_style06'>
                   <ul>
-                    <li className={(sortStatus === 0) ? 'on' : ''}>
-                      <button type='button' onClick={() => setSortStatus(0)}>진행중</button>
+                    <li className={(sortStatus === 'ALL') ? 'on' : ''}>
+                      <button type='button' onClick={() => setSortStatus('ALL')}>전체</button>
                     </li>
-                    <li className={(sortStatus === 1) ? 'on' : ''}>
-                      <button type='button' onClick={() => setSortStatus(1)}>마감</button>
+                    <li className={(sortStatus === 'PROGRESS') ? 'on' : ''}>
+                      <button type='button' onClick={() => setSortStatus('PROGRESS')}>진행중</button>
+                    </li>
+                    <li className={(sortStatus === 'END') ? 'on' : ''}>
+                      <button type='button' onClick={() => setSortStatus('END')}>마감</button>
                     </li>
                   </ul>
                 </dd>
@@ -220,33 +334,45 @@ export default function Main() {
                   <dd className='sorting_ict'>
                     <div>
                       <label htmlFor='sortBig' className='hidden_text'>대분류</label>
-                      <select name='sortBig' id='sortBig'>
+                      <select name='sortBig' id='sortBig' value={bigIctTmp} onChange={(e) => setBigIctTmp(e.target.value)}>
                         <option value=''>대분류</option>
+                        {bigIctList.map((e,i) => {
+                          return <option key={i} value={e.code ?? ''}>{e.name ?? ''}</option>;
+                        })}
                       </select>
                     </div>
                     <div>
                       <label htmlFor='sortMiddle' className='hidden_text'>중분류</label>
-                      <select name='sortMiddle' id='sortMiddle'>
+                      <select name='sortMiddle' id='sortMiddle' value={middleIctTmp} onChange={(e) => setMiddleIctTmp(e.target.value)}>
                         <option value=''>중분류</option>
+                        {middleIctList.map((e,i) => {
+                          return <option key={i} value={e.code ?? ''}>{e.name ?? ''}</option>;
+                        })}
                       </select>
                     </div>
                     <div>
                       <label htmlFor='sortSmall' className='hidden_text'>소분류</label>
-                      <select name='sortSmall' id='sortSmall'>
+                      <select name='sortSmall' id='sortSmall' value={smallIctTmp} onChange={(e) => setSmallIctTmp(e.target.value)}>
                         <option value=''>소분류</option>
+                        {smallIctList.map((e,i) => {
+                          return <option key={i} value={e.code ?? ''}>{e.name ?? ''}</option>;
+                        })}
                       </select>
                     </div>
                     <div>
                       <label htmlFor='sortDetail' className='hidden_text'>세분류</label>
-                      <select name='sortDetail' id='sortDetail'>
+                      <select name='sortDetail' id='sortDetail' value={detailIctTmp} onChange={(e) => setDetailIctTmp(e.target.value)}>
                         <option value=''>세분류</option>
+                        {detailIctList.map((e,i) => {
+                          return <option key={i} value={e.code ?? ''}>{e.name ?? ''}</option>;
+                        })}
                       </select>
                     </div>
                   </dd>
                 </dl>
               </div>
               <button type='button' className='sorting_reset_btn text-sm font-medium text-color-placeholder'>선택 초기화 <img src={icReset ?? icReset02} alt='선택 초기화' className='w-6' /></button>
-              <Button name="필터 적용" icon={icSearch} className="gap-2 mt-6 mx-auto py-3 px-6.5 rounded-3xl text-base font-bold btn_style03" />
+              <Button name="필터 적용" onClick={handleFilterApply} icon={icSearch} className="gap-2 mt-6 mx-auto py-3 px-6.5 rounded-3xl text-base font-bold btn_style03" />
             </div>
             : ''
           }
@@ -264,7 +390,7 @@ export default function Main() {
             <CheckListWrap data={data} onClick={handleItemClick} />
           </div>
           <div className='mt-10'>
-            <Pagination total={50} page={1} onClick={(i) => console.log(i)} />
+            <Pagination total={totalCount} size={size} page={page} onClick={(page) => setPage(page)} />
           </div>
         </div>
       </div>

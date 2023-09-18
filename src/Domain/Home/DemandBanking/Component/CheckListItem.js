@@ -20,14 +20,16 @@ export default function CheckListItem(props) {
           {(status === 1)
             ? <span className='tag_style01'>진행중</span>
             : (status === 2)
-              ? <span className='tag_style02'>종료</span>
+              ? <span className='tag_style02'>마감</span>
               : ''
           }
           {(type === 1)
             ? <span className='tag_style06'>정기</span>
             : (type === 2)
               ? <span className='tag_style07'>수시</span>
-              : ''
+              : (type === 3)
+                ? <span className='tag_style08'>해당없음</span>
+                : ''
           }
         </div>
         <p className='text-sm text-color-regular mb-2'>{period}</p>

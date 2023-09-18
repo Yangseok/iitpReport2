@@ -340,23 +340,23 @@ export default function ListWrap(props) {
   const getListComponet = (filterKey) => {
     switch (filterKey) {
     case 'search/projectOut':
-      return <ProjectOut projectData={projectData} totalCount={totalCount} page={page} setPage={setPage} />;
+      return <ProjectOut projectData={projectData} totalCount={totalCount} size={size} page={page} setPage={setPage} />;
     case 'search/projectIn':
-      return <ProjectIn projectData={projectData} totalCount={totalCount} page={page} setPage={setPage} />;
+      return <ProjectIn projectData={projectData} totalCount={totalCount} size={size} page={page} setPage={setPage} />;
     case 'search/patent':
-      return <Patent projectData={projectData} totalCount={totalCount} page={page} setPage={setPage} />;
+      return <Patent projectData={projectData} totalCount={totalCount} size={size} page={page} setPage={setPage} />;
     case 'search/paper':
-      return <Paper projectData={projectData} totalCount={totalCount} page={page} setPage={setPage} />;
+      return <Paper projectData={projectData} totalCount={totalCount} size={size} page={page} setPage={setPage} />;
     case 'search/ict':
-      return <Ict projectData={projectData} totalCount={totalCount} page={page} setPage={setPage} />;
+      return <Ict projectData={projectData} totalCount={totalCount} size={size} page={page} setPage={setPage} />;
     case 'search/policy':
-      return <Policy projectData={projectData} totalCount={totalCount} page={page} setPage={setPage} />;
+      return <Policy projectData={projectData} totalCount={totalCount} size={size} page={page} setPage={setPage} />;
     case 'search/indv':
-      return <Researcher projectData={projectData} totalCount={totalCount} page={page} setPage={setPage} researcherActive={researcherActive} onResearcherSelect={onResearcherSelect} simialityResearcher={simialityResearcher} subList={subList} />;
+      return <Researcher projectData={projectData} totalCount={totalCount} size={size} page={page} setPage={setPage} researcherActive={researcherActive} onResearcherSelect={onResearcherSelect} simialityResearcher={simialityResearcher} subList={subList} />;
     case 'search/orgn':
-      return <Orgn projectData={projectData} totalCount={totalCount} page={page} setPage={setPage} orgnActive={orgnActive} onOrgnSelect={onOrgnSelect} simialityOrgn={simialityOrgn} subListMode={subListMode} setSubListMode={setSubListMode} subProjectList={subProjectList} subPatentList={subPatentList} />;
+      return <Orgn projectData={projectData} totalCount={totalCount} size={size} page={page} setPage={setPage} orgnActive={orgnActive} onOrgnSelect={onOrgnSelect} simialityOrgn={simialityOrgn} subListMode={subListMode} setSubListMode={setSubListMode} subProjectList={subProjectList} subPatentList={subPatentList} />;
     case 'search/news':
-      return <News projectData={projectData} totalCount={totalCount} page={page} setPage={setPage} />;
+      return <News projectData={projectData} totalCount={totalCount} size={size} page={page} setPage={setPage} />;
     default:
       return null;
     }
