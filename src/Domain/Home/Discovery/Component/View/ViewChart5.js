@@ -24,6 +24,8 @@ export default function ViewChart(props) {
   const line1 = moment(lineStartData).unix();
   const line2 = moment(lineEndData).unix();
 
+  if (minUnix > line1) minUnix = line1;
+
   const data = {
     labels,
     datasets: [
