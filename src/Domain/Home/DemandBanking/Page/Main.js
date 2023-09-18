@@ -25,13 +25,13 @@ export default function Main() {
 
   let rangeMarks = {};
   const rangeMin = 2017;
-  const rangeMax = moment().format('YYYY');
+  const rangeMax = Number(moment().format('YYYY'));
   for(let i = rangeMin; i <= rangeMax; i++) {
     rangeMarks[i] = i;
   }
 
   const navigate = useNavigate();
-  const [rangeValue, setRangeValue] = useState([moment().subtract(1, 'year').format('YYYY'), rangeMax]);
+  const [rangeValue, setRangeValue] = useState([Number(moment().subtract(1, 'year').format('YYYY')), rangeMax]);
   const [filterShow, setFilterShow] = useState(false);
   const [sortType, setSortType] = useState('ALL');
   const [sortStatus, setSortStatus] = useState('ALL');
@@ -150,7 +150,7 @@ export default function Main() {
         type: typeNumber[data?.data?.result?.dataList?.[i]?.typeCode ?? 'NONE'] ?? 3,
         period: data?.data?.result?.dataList?.[i]?.period ?? '',
         title: data?.data?.result?.dataList?.[i]?.noticeTitle ?? '',
-        count: common.setPriceInput(data?.data?.result?.dataList?.[i]?.surveyCount ?? 0),
+        count: data?.data?.result?.dataList?.[i]?.surveyCount ?? 0,
         active: false,
       };
       tmpData.push(pushData);

@@ -1,4 +1,5 @@
 import React from 'react';
+import common from 'Utill';
 
 export default function CheckListItem(props) {
   const { className, onClick, status, type, period, title, count } = props;
@@ -38,7 +39,7 @@ export default function CheckListItem(props) {
         </p>
         <div className='flex itmes-center justify-between pt-5 mt-7 border-top-line'>
           <p className='text-sm font-medium text-color-regular'>기술수요조사서</p>
-          <p className='text-base font-bold text-color-main'><b>{count}건</b></p>
+          <p className='text-base font-bold text-color-main'><b>{common.setPriceInput(count)}건</b></p>
         </div>
       </li>
     </>
