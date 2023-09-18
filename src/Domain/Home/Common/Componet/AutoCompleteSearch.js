@@ -40,6 +40,8 @@ export default function AutoCompleteSearch(props) {
 
     let resData = data;
 
+    // console.log('data:', data);
+
     // object 에 초성필드 추가 {text:"홍길동", diassembled:"ㅎㄱㄷ"}
     resData.map((item) => {
       const dis = Hangul.disassemble(item.originData, true);
@@ -58,21 +60,22 @@ export default function AutoCompleteSearch(props) {
       .map((item) => {
         const obj = {};
         obj.text = parse(item.data);
-        obj.onClick = () => onListClick(item.originData);
         obj.agency = (item.type !== 'keyword');
+        obj.onClick = () => onListClick(item.originData, obj.agency);
         tempArr.push(obj);
       });
     setListData(tempArr);
+    // console.log('listData:', listData);
   };
 
-  const onListClick = (text) => {
+  const onListClick = (text, agency=false) => {
     setListData([]);
     dispatch(setTmpSearchKeyword(text));
     dispatch(setSearchKeyword(text));
     setSearchFocus(false);
 
     const handleSearch = props?.handleSearch;
-    if (handleSearch !== undefined) handleSearch();
+    if (handleSearch !== undefined) handleSearch(agency);
   };
 
   const searchListButtonRef = useRef([]);
@@ -140,7 +143,7 @@ export default function AutoCompleteSearch(props) {
           onChange={(e) => dispatch(setTmpSearchKeyword(e.target.value))}
           onKeyUp={onSearchKeyUp}
           onKeyDown={handleInputKeyDown}
-          onFocus={() => setSearchFocus(true)}
+          onFocus={(e) => {setSearchFocus(true); onSearchKeyUp(e);}}
           value={tmpSearchKeyword}
           placeholder='찾고 싶은 검색어를 입력해보세요.'
           autoComplete='off'

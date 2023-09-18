@@ -38,7 +38,8 @@ export default function Main() {
 
   const navigate = useNavigate();
 
-  const handleSearch = () => {
+  const handleSearch = (agency=false) => {
+    // console.log('agency:', agency);
     if (tmpSearchKeyword.trim() === '') {
       dispatch(setMsg({
         title: '알림',
@@ -51,7 +52,11 @@ export default function Main() {
       return null;
     }
     dispatch(setSearchKeywordReset(true));
-    navigate('/search/result/all');
+    if (agency === true) {
+      navigate('/search/result/orgn');
+    } else {
+      navigate('/search/result/all');
+    }
   };
 
   useEffect(() => {

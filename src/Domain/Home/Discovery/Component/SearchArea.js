@@ -129,7 +129,7 @@ export default function Search(props) {
     handleSearch();
   };
 
-  const handleSearch = () => {
+  const handleSearch = (agency=false) => {
     if (tmpSearchKeyword.trim() === '') {
       dispatch(setMsg({
         title: '알림',
@@ -143,6 +143,7 @@ export default function Search(props) {
     }
     dispatch(setSearchKeywordReset(true));
     // navigate('/search/result/all?keyword=' + tmpSearchKeyword);
+    console.log('agency:', agency);
     const se = common.getSegment();
     if (fold) {
       navigate('/search/result/'+(se[3]??'all'));

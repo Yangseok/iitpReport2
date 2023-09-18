@@ -34,7 +34,7 @@ export default function PageSearchArea(props) {
   const [selectedFile, setSelectedFile] = useState(null);
   const fileName = useSelector(getFileName);
 
-  const handleSearch = () => {
+  const handleSearch = (agency=false) => {
     if (tmpSearchKeyword.trim() === '') {
       dispatch(setMsg({
         title: '알림',
@@ -47,6 +47,7 @@ export default function PageSearchArea(props) {
       return null;
     }
     dispatch(setSearchKeywordReset(true));
+    console.log('agency:', agency);
     navigate('/discovery/' + paramSe2 + '/result');
   };
 
