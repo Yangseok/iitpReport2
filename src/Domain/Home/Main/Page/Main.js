@@ -24,7 +24,7 @@ import AutoCompleteSearch from 'Domain/Home/Common/Componet/AutoCompleteSearch';
 import $ from 'jquery';
 import { FullPage, Slide } from 'react-full-page';
 import { useSelector, useDispatch } from 'react-redux';
-import { setSearchKeywordReset, getTmpSearchKeyword } from 'Domain/Home/Common/Status/CommonSlice';
+import { setSearchKeywordReset, getTmpSearchKeyword, setTmpSearchKeyword } from 'Domain/Home/Common/Status/CommonSlice';
 import { useNavigate } from 'react-router-dom';
 import { setMsg,setShow } from 'Domain/Home/Common/Status/MsgSlice';
 
@@ -38,9 +38,9 @@ export default function Main() {
 
   const navigate = useNavigate();
 
-  const handleSearch = (agency=false) => {
+  const handleSearch = (agency=false, checkKeyword=true) => {
     // console.log('agency:', agency);
-    if (tmpSearchKeyword.trim() === '') {
+    if (checkKeyword && tmpSearchKeyword.trim() === '') {
       dispatch(setMsg({
         title: '알림',
         msg: '키워드를 입력해주세요.',
@@ -144,9 +144,9 @@ export default function Main() {
       });
     };
 
-    return () => {
-      getFullPage();
-    };
+    getFullPage();
+    //검색어 초기화
+    dispatch(setTmpSearchKeyword(''));
   }, []);
 
   // useEffect(() => {
@@ -172,7 +172,7 @@ export default function Main() {
               />
               <div className='keywords_box mt-3'>
                 <p>추천 키워드</p>
-                <RecommandKeyword handleSearch={handleSearch} />
+                <RecommandKeyword handleSearch={() => handleSearch(false, false)} />
               </div>
               <div className='scroll_deco'>
                 <img src={icScroll} alt='스크롤해서 보세요.' />
