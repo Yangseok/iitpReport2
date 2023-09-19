@@ -49,3 +49,12 @@
   bottom: 14px;
   right: 0;
 }
+.discovery_reset_btn02 {
+  font-size: 14px;
+  color: $color_main;
+  font-weight: 500;
+
+  &:disabled {
+    color: $color_placeholder;
+  }
+}

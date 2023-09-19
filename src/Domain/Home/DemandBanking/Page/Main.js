@@ -420,11 +420,12 @@ export default function Main() {
             <button type='button' className={`btn_check_text${checkAll ? ' check' : ''}`} onClick={onAllItemClick}>
               전체 선택
             </button>
-
-            <button type='button' className={`btn_check_text${checkAll ? ' check' : ''}`} onClick={handleInitSelectedClick}>
-              선택초기화
-            </button>
-            <Button name='선택보기' className={`h-12 px-4 rounded text-sm font-bold btn_style07${!btnDisabled ? ' on' : ''}`} onClick={() => (!btnDisabled) && navigate('/demandbanking/result')}></Button>
+            <div className='flex items-center gap-4'>
+              <button type='button' className='discovery_reset_btn02' onClick={handleInitSelectedClick} disabled={btnDisabled ? true : false}>
+                선택 초기화 <img src={btnDisabled ? icReset : icReset02} alt='선택 초기화' className='w-6' />
+              </button>
+              <Button name='선택보기' className={`h-12 px-4 rounded text-sm font-bold btn_style07${!btnDisabled ? ' on' : ''}`} onClick={() => (!btnDisabled) && navigate('/demandbanking/result')}></Button>
+            </div>
           </div>
           <div className='mt-2'>
             <CheckListWrap data={data} onClick={handleItemClick} />

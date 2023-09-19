@@ -55,3 +55,12 @@
   bottom: 14px;
   right: 0;
 }
+
+.discovery_reset_btn02 {
+  font-size: 14px;
+  color: #0056B8;
+  font-weight: 500;
+}
+.discovery_reset_btn02:disabled {
+  color: #94A3B8;
+}
