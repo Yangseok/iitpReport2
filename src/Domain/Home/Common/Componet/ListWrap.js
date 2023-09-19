@@ -375,7 +375,7 @@ export default function ListWrap(props) {
               <div>
                 <label htmlFor='sort_order' className='hidden_text'>정렬 순서</label>
                 <select name='sort_order' id='sort_order' value={sort} onChange={(e) => {setPage(1); setSort(e.target.value);}}>
-                  {(List.getSortList(filterKey)?.list ?? []).map((e,i) => {
+                  {(List.getSortList(filterKey, se1)?.list ?? []).map((e,i) => {
                     return <option key={i} value={e.value ?? ''}>{e.text ?? ''}</option>;
                   })}
                 </select>

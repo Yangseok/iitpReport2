@@ -43,13 +43,13 @@ export const getTitle = (filterKey) => {
   return str;
 };
 
-export const getSortList = (filterKey) => {
+export const getSortList = (filterKey, se1='') => {
   let obj = {};
   let type1 = {
     default: 'score',
     list: [{
       value: 'score',
-      text: '관련도순'
+      text: (se1 === 'search') ? '정확도순' : '관련도순',
     },{
       value: 'date',
       text: '최신순'
@@ -59,7 +59,7 @@ export const getSortList = (filterKey) => {
     default: 'score',
     list: [{
       value: 'score',
-      text: '관련도순'
+      text: (se1 === 'search') ? '정확도순' : '관련도순',
     },{
       value: 'name',
       text: '이름순'
