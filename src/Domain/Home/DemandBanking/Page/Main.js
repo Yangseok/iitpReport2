@@ -13,12 +13,13 @@ import CheckListWrap from 'Domain/Home/DemandBanking/Component/CheckListWrap';
 import RcSlider from 'rc-slider';
 import { useNavigate } from 'react-router-dom';
 import GuidePopup from 'Domain/Home/Common/Componet/GuidePopup';
-import { useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { setLoading } from 'Domain/Home/Common/Status/CommonSlice';
 import common from 'Utill';
 // import * as viewCallAPI from 'Domain/Home/Discovery/API/ViewCall';
 import * as demandCallAPI from 'Domain/Home/DemandBanking/API/Call';
 import moment from 'moment';
+import { getBigIctTmp, getMiddleIctTmp, getSmallIctTmp, getDetailIctTmp, getBigIctList, getMiddleIctList, getSmallIctList, getDetailIctList, setBigIctTmp, setMiddleIctTmp, setSmallIctTmp, setDetailIctTmp, setBigIctList, setMiddleIctList, setSmallIctList, setDetailIctList, setStartYear, setEndYear, getSelectedList, setSelectedList } from 'Domain/Home/DemandBanking/Status/DemandSlice';
 
 export default function Main() {
   const dispatch = useDispatch();
@@ -35,20 +36,21 @@ export default function Main() {
   const [filterShow, setFilterShow] = useState(false);
   const [sortType, setSortType] = useState('ALL');
   const [sortStatus, setSortStatus] = useState('ALL');
+  
   const [bigIct, setBigIct] = useState('');
   const [middleIct, setMiddleIct] = useState('');
   const [smallIct, setSmallIct] = useState('');
   const [detailIct, setDetailIct] = useState('');
 
-  const [bigIctTmp, setBigIctTmp] = useState('');
-  const [middleIctTmp, setMiddleIctTmp] = useState('');
-  const [smallIctTmp, setSmallIctTmp] = useState('');
-  const [detailIctTmp, setDetailIctTmp] = useState('');
+  const bigIctTmp = useSelector(getBigIctTmp);
+  const middleIctTmp = useSelector(getMiddleIctTmp);
+  const smallIctTmp = useSelector(getSmallIctTmp);
+  const detailIctTmp = useSelector(getDetailIctTmp);
 
-  const [bigIctList, setBigIctList] = useState([]);
-  const [middleIctList, setMiddleIctList] = useState([]);
-  const [smallIctList, setSmallIctList] = useState([]);
-  const [detailIctList, setDetailIctList] = useState([]);
+  const bigIctList = useSelector(getBigIctList);
+  const middleIctList = useSelector(getMiddleIctList);
+  const smallIctList = useSelector(getSmallIctList);
+  const detailIctList = useSelector(getDetailIctList);
 
   const [checkAll, setCheckAll] = useState(false);
   const [btnDisabled, setBtnDisabled] = useState(true);
@@ -56,8 +58,10 @@ export default function Main() {
   const [popup, setPopup] = useState(false);
   const [countData, setCountData] = useState([]);
   const [page, setPage] = useState(1);
-  const [size] = useState(10);
+  const [size] = useState(20);
   const [totalCount, setTotalCount] = useState(0);
+
+  const selectedList = useSelector(getSelectedList);
 
   // 전체 선택 클릭
   const onAllItemClick = () => {
@@ -66,6 +70,23 @@ export default function Main() {
     });
     setData(newData);
     setCheckAll(state => !state);
+
+    let dataIds = [];
+    if ((data?.length ?? 0) > 0) dataIds = data.map(e => e.id);
+
+    // console.log('checkAll:', checkAll);
+    if (checkAll) {
+      dispatch(setSelectedList(selectedList.filter(e => dataIds.indexOf(e.id) === -1)));
+    } else {
+      let newSelecedList = JSON.parse(JSON.stringify(selectedList));
+      const addData = newData.filter(e => selectedList.map(s => s.id).indexOf(e.id) === -1);
+      if ((addData?.length ?? 0) > 0) {
+        for (let i in addData) {
+          newSelecedList.push(addData[i]);
+        }
+      }
+      dispatch(setSelectedList(newSelecedList));
+    }
   };
 
   const handleItemClick = (id) => {
@@ -76,24 +97,39 @@ export default function Main() {
       return e;
     });
     setData(newData);
+    if ((newData?.length ?? 0) > 0) {
+      if ((selectedList?.map(e => e.id === id)?.length ?? 0) > 0) {
+        dispatch(setSelectedList(selectedList.filter(e => e.id !== id)));
+      } else {
+        dispatch(setSelectedList([...selectedList, newData.filter(e => e.id === id)]));
+      }
+    }
+  };
+
+  const handleInitSelectedClick = () => {
+    const newData = data?.map(e => {
+      return {...e, active: false};
+    });
+    setData(newData);
+    dispatch(setSelectedList([]));
   };
 
   const initFilterData = useCallback(async (type='BCLS') => {
     if (['BCLS'].indexOf(type) !== -1) {
-      setBigIctTmp('');
-      setBigIctList([]);
+      dispatch(setBigIctTmp(''));
+      dispatch(setBigIctList([]));
     }
     if (['BCLS','LCLS'].indexOf(type) !== -1) {
-      setMiddleIctTmp('');
-      setMiddleIctList([]);
+      dispatch(setMiddleIctTmp(''));
+      dispatch(setMiddleIctList([]));
     }
     if (['BCLS','LCLS','MCLS'].indexOf(type) !== -1) {
-      setSmallIctTmp('');
-      setSmallIctList([]);
+      dispatch(setSmallIctTmp(''));
+      dispatch(setSmallIctList([]));
     }
     if (['BCLS','LCLS','MCLS','SCLS'].indexOf(type) !== -1) {
-      setDetailIctTmp('');
-      setDetailIctList([]);
+      dispatch(setDetailIctTmp(''));
+      dispatch(setDetailIctList([]));
     }
   }, []);
 
@@ -124,6 +160,8 @@ export default function Main() {
     let data = [];
     try {
       dispatch(setLoading(true));
+      dispatch(setStartYear(rangeValue[1]));
+      dispatch(setEndYear(rangeValue[1]));
       data = await demandCallAPI.noticeList(rangeValue[0],rangeValue[1],sortType,sortStatus,bigIct,middleIct,smallIct,detailIct,size,page);
     } catch (e) {
       console.warn(e);
@@ -144,14 +182,15 @@ export default function Main() {
 
     let tmpData = [];
     for(let i in data?.data?.result?.dataList ?? []) {
+      if (data?.data?.result?.dataList?.[i]?.noticeId === undefined) continue;
       let pushData = {
-        id: data?.data?.result?.dataList?.[i]?.noticeId ?? i,
+        id: data?.data?.result?.dataList?.[i]?.noticeId,
         status: statusNumber[data?.data?.result?.dataList?.[i]?.status ?? 'END'] ?? 2,
         type: typeNumber[data?.data?.result?.dataList?.[i]?.typeCode ?? 'NONE'] ?? 3,
         period: data?.data?.result?.dataList?.[i]?.period ?? '',
         title: data?.data?.result?.dataList?.[i]?.noticeTitle ?? '',
         count: data?.data?.result?.dataList?.[i]?.surveyCount ?? 0,
-        active: false,
+        active: ((selectedList?.filter(e => e.id === data?.data?.result?.dataList?.[i]?.noticeId)?.length ?? 0) === 1),
       };
       tmpData.push(pushData);
     }
@@ -167,21 +206,22 @@ export default function Main() {
     } catch (e) {
       console.warn(e);
     } finally {
-      dispatch(setLoading(false));  
+      dispatch(setLoading(false));
     }
     console.log('getFilterList:', data?.data?.result);
+    initFilterData(type);
     switch (type) {
     case 'BCLS':
-      setBigIctList(data?.data?.result ?? []);
+      dispatch(setBigIctList(data?.data?.result ?? []));
       break;
     case 'LCLS':
-      setMiddleIctList(data?.data?.result ?? []);
+      dispatch(setMiddleIctList(data?.data?.result ?? []));
       break;
     case 'MCLS':
-      setSmallIctList(data?.data?.result ?? []);
+      dispatch(setSmallIctList(data?.data?.result ?? []));
       break;
     case 'SCLS':
-      setDetailIctList(data?.data?.result ?? []);
+      dispatch(setDetailIctList(data?.data?.result ?? []));
       break;
     }
   }, []);
@@ -207,15 +247,13 @@ export default function Main() {
 
   //필터 활성화시 대분류 리스트를 가져옴.
   useEffect(() => {
-    initFilterData('BCLS');
-    if (filterShow) {
+    if (filterShow && bigIctTmp == '') {
       getFilterList('BCLS','');
     }
-  }, [filterShow]);
+  }, [filterShow, bigIctTmp]);
 
   //대뷴류 선택시 중뷴류 리스트를 가져옴.
   useEffect(() => {
-    initFilterData('LCLS');
     if (bigIctTmp !== '') {
       getFilterList('LCLS',bigIctTmp);
     }
@@ -223,7 +261,6 @@ export default function Main() {
 
   //중분류 선택시 소분류 리스트를 가져옴
   useEffect(() => {
-    initFilterData('MCLS');
     if (middleIctTmp !== '') {
       getFilterList('MCLS',middleIctTmp);
     }
@@ -231,7 +268,6 @@ export default function Main() {
 
   //소분류 선택시 세분류 리스트를 가져옴.
   useEffect(() => {
-    initFilterData('SCLS');
     if (smallIctTmp !== '') {
       getFilterList('SCLS',smallIctTmp);
     }
@@ -334,7 +370,7 @@ export default function Main() {
                   <dd className='sorting_ict'>
                     <div>
                       <label htmlFor='sortBig' className='hidden_text'>대분류</label>
-                      <select name='sortBig' id='sortBig' value={bigIctTmp} onChange={(e) => setBigIctTmp(e.target.value)}>
+                      <select name='sortBig' id='sortBig' value={bigIctTmp} onChange={(e) => dispatch(setBigIctTmp(e.target.value))}>
                         <option value=''>대분류</option>
                         {bigIctList.map((e,i) => {
                           return <option key={i} value={e.code ?? ''}>{e.name ?? ''}</option>;
@@ -343,7 +379,7 @@ export default function Main() {
                     </div>
                     <div>
                       <label htmlFor='sortMiddle' className='hidden_text'>중분류</label>
-                      <select name='sortMiddle' id='sortMiddle' value={middleIctTmp} onChange={(e) => setMiddleIctTmp(e.target.value)}>
+                      <select name='sortMiddle' id='sortMiddle' value={middleIctTmp} onChange={(e) => dispatch(setMiddleIctTmp(e.target.value))}>
                         <option value=''>중분류</option>
                         {middleIctList.map((e,i) => {
                           return <option key={i} value={e.code ?? ''}>{e.name ?? ''}</option>;
@@ -352,7 +388,7 @@ export default function Main() {
                     </div>
                     <div>
                       <label htmlFor='sortSmall' className='hidden_text'>소분류</label>
-                      <select name='sortSmall' id='sortSmall' value={smallIctTmp} onChange={(e) => setSmallIctTmp(e.target.value)}>
+                      <select name='sortSmall' id='sortSmall' value={smallIctTmp} onChange={(e) => dispatch(setSmallIctTmp(e.target.value))}>
                         <option value=''>소분류</option>
                         {smallIctList.map((e,i) => {
                           return <option key={i} value={e.code ?? ''}>{e.name ?? ''}</option>;
@@ -361,7 +397,7 @@ export default function Main() {
                     </div>
                     <div>
                       <label htmlFor='sortDetail' className='hidden_text'>세분류</label>
-                      <select name='sortDetail' id='sortDetail' value={detailIctTmp} onChange={(e) => setDetailIctTmp(e.target.value)}>
+                      <select name='sortDetail' id='sortDetail' value={detailIctTmp} onChange={(e) => dispatch(setDetailIctTmp(e.target.value))}>
                         <option value=''>세분류</option>
                         {detailIctList.map((e,i) => {
                           return <option key={i} value={e.code ?? ''}>{e.name ?? ''}</option>;
@@ -383,6 +419,10 @@ export default function Main() {
           <div className='flex items-center justify-between'>
             <button type='button' className={`btn_check_text${checkAll ? ' check' : ''}`} onClick={onAllItemClick}>
               전체 선택
+            </button>
+
+            <button type='button' className={`btn_check_text${checkAll ? ' check' : ''}`} onClick={handleInitSelectedClick}>
+              선택초기화
             </button>
             <Button name='선택보기' className={`h-12 px-4 rounded text-sm font-bold btn_style07${!btnDisabled ? ' on' : ''}`} onClick={() => (!btnDisabled) && navigate('/demandbanking/result')}></Button>
           </div>
