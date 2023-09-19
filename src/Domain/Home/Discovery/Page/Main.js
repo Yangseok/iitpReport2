@@ -3,8 +3,11 @@ import DiscoveryLayout from 'Domain/Home/Discovery/Layout/DiscoveryLayout';
 import DiscoveryArea from 'Domain/Home/Discovery/Component/DiscoveryArea';
 import { useParams } from 'react-router-dom';
 import common from 'Utill';
+import { useDispatch } from 'react-redux';
+import { setTmpSearchKeyword } from 'Domain/Home/Common/Status/CommonSlice';
 
 export default function Main() {
+  const dispatch = useDispatch();
   const se = common.getSegment();
   const params = useParams();
   const paramSe2 = params?.se2;
@@ -14,9 +17,12 @@ export default function Main() {
     setKeywordResult(false);
     const paramSe3 = se[3] ?? '';
 
-    if(paramSe2) {
-      if(paramSe2 === 'keyword' && paramSe3 === 'result') {
+    if (paramSe2) {
+      if (paramSe2 === 'keyword' && paramSe3 === 'result') {
         setKeywordResult(true);
+      }
+      if (paramSe2 === 'keyword' && paramSe3 === '') {
+        dispatch(setTmpSearchKeyword(''));
       }
     }
   }, [se, paramSe2]);
