@@ -181,6 +181,12 @@ export default function Search(props) {
     }
   }, [se1, se2, se3]);
 
+  useEffect(() => {
+    if (se3 !== '') {
+      setFold(true);
+    }
+  }, [se3]);
+
   return (
     <>
       <section>
