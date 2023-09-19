@@ -76,10 +76,12 @@ export default function Researcher(props) {
                 }
 
                 return <li key={e.id} className='w-1/6 px-1'>
-                  <div className={`img_wrap rounded-full w-15 h-15 mx-auto ${(i === 0) ? 'bg-color-light2' : 'bg-color-white'}`}>
-                    <img src={imgSrc} alt='연구자 프로필 이미지' className='w-11' />
-                  </div>
-                  <p className={`mt-1 text-sm text-center ${(i === 0) ? 'text-color-main' : 'text-color-dark'}`}>{e.name}</p>
+                  <a href={e.link} target='_blank' rel="noreferrer" >
+                    <div className={`img_wrap rounded-full w-15 h-15 mx-auto ${(i === 0) ? 'bg-color-light2' : 'bg-color-white'}`}>
+                      <img src={imgSrc} alt='연구자 프로필 이미지' className='w-11' />
+                    </div>
+                    <p className={`mt-1 text-sm text-center ${(i === 0) ? 'text-color-main' : 'text-color-dark'}`}>{e.name}</p>
+                  </a>
                 </li>;
               })}
             </ul>

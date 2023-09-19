@@ -139,11 +139,14 @@ export default function ListWrap(props) {
       console.log(data?.data?.result);
       let simiality = [];
       for (let i in data?.data?.result?.simialityIndvList ?? []) {
-        // console.log(i, data?.data?.result?.dataList?.[i]);
+        // console.log(i, data?.data?.result?.simialityIndvList?.[i]);
+        let link = data?.data?.result?.simialityIndvList?.[i]?.link ?? '#';
+        if (link !== '#') link = 'https://' + link;
         const simialityPushData = {
           id: i,
-          name: data?.data?.result?.simialityIndvList?.[i]?.orgnName ?? '',
-          relation: (i !== '0') ? common.colorSet(data?.data?.result?.simialityIndvList?.[i]?.weight ?? 0) : 0
+          name: data?.data?.result?.simialityIndvList?.[i]?.indvName ?? '',
+          relation: (i !== '0') ? common.colorSet(data?.data?.result?.simialityIndvList?.[i]?.weight ?? 0) : 0,
+          link: link,
         };
         simiality.push(simialityPushData);
       }
