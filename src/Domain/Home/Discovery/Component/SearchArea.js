@@ -145,6 +145,10 @@ export default function Search(props) {
     // navigate('/search/result/all?keyword=' + tmpSearchKeyword);
     console.log('agency:', agency);
     const se = common.getSegment();
+    if (agency) {
+      navigate('/search/result/orgn');
+      return ;
+    }
     if (fold) {
       navigate('/search/result/'+(se[3]??'all'));
     } else {
