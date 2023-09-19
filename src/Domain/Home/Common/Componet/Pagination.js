@@ -44,6 +44,15 @@ export default function Pagination(props) {
 
   return (
     <div className='page_wrap'>
+
+      <button
+        type='button'
+        className='prev_btn'
+        disabled={prevDisabled}
+        onClick={() => onClick(1)}
+      >
+        처음으로
+      </button>
       <button
         type='button'
         className='prev_btn'
@@ -69,6 +78,14 @@ export default function Pagination(props) {
         onClick={onNextClick}
       >
         다음 페이지
+      </button>
+      <button
+        type='button'
+        className='next_btn'
+        disabled={nextDisabled}
+        onClick={() => onClick(totalPage)}
+      >
+        끝으로
       </button>
     </div>
   );
