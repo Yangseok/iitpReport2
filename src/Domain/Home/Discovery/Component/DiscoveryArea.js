@@ -128,6 +128,7 @@ export default function PageSearchArea(props) {
           <h2 className='hidden_text'>디스커버리 검색 - 키워드 분석</h2>
           <AutoCompleteSearch 
             handleSearch={handleSearch}
+            setSearchButtonClick={props?.setSearchButtonClick}
             style={{ type: 2, name: '키워드 찾기', icon: icAnalysis }}
             labelText={'키워드 검색'}
           />

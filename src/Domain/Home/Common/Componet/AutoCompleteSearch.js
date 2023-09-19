@@ -24,6 +24,10 @@ export default function AutoCompleteSearch(props) {
     dispatch(setSearchKeyword(tmpSearchKeyword));
     const handleSearch = props?.handleSearch;
     if (handleSearch !== undefined) handleSearch();
+
+    const setSearchButtonClick = props?.setSearchButtonClick;
+    if (setSearchButtonClick !== undefined) setSearchButtonClick(true);
+
     return null;
   };
 

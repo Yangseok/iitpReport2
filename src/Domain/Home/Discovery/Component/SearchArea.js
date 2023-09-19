@@ -188,6 +188,7 @@ export default function Search(props) {
           <h2 className='hidden_text'>통합 검색</h2>
           <AutoCompleteSearch 
             handleSearch={handleSearch}
+            setSearchButtonClick={props?.setSearchButtonClick}
             style={{ type: 3, name: '통합 검색', icon: icSearch }}
           />
         </div>

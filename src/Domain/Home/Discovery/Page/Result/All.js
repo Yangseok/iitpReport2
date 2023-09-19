@@ -21,6 +21,8 @@ export default function DiscoveryResult() {
   const [orgn, setOrgn] = useState([]);
   const [news, setNews] = useState([]);
 
+  const [searchButtonClick, setSearchButtonClick] = useState(false);
+
   useEffect(() => {
     (async () => {
       let data = [];
@@ -185,8 +187,11 @@ export default function DiscoveryResult() {
       setResearcher(researcherData);
       setOrgn(orgnData);
       setNews(newsData);
+      setSearchButtonClick(false);
     })();
-  }, [keyword]);
+  }, [keyword, searchButtonClick]);
+
+  
 
   // const tempData1 = [
   //   {
@@ -494,7 +499,7 @@ export default function DiscoveryResult() {
   // ];
 
   return (
-    <DiscoveryResultLayout totalCount={tabCount?.all} tabCount={tabCount} keyword={keyword} >
+    <DiscoveryResultLayout totalCount={tabCount?.all} tabCount={tabCount} keyword={keyword} setSearchButtonClick={setSearchButtonClick} >
       <section className='mt-6'>
         <div className='container'>
           <div className='list_wrap_style01'>
