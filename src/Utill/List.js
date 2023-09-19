@@ -278,7 +278,7 @@ export const getProcData = (filterKey, dataList) => {
         period: period.replaceAll('-','.'), 
         agency: parse(dataList?.[i]?.researchAgencyName ?? ''),
         name: parse(dataList?.[i]?.researchManagerName ?? ''),
-        ict: 'ICT 기술 분류',
+        ict: common.joinArrNStr(dataList?.[i]?.technicalClassification ?? [],', ',''),
         keyword: keywordt.join(', '),
       };
       procData.push(pushData);
