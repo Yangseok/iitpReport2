@@ -7,6 +7,18 @@ export default function ExcelPopup(props) {
   const { popup, setPopup } = props;
   const popupRef = useRef(null);
 
+  const handlePopupClick = (e) => {
+    if(e.target.id === 'excelPopup') {
+      setPopup(false);
+    }
+  };
+  const handlePopupKeyDown = (e) => {
+    if (e.key === 'Escape') {
+      setPopup(false);
+      $('.project_excel_btn').focus();
+    }
+  };
+
   useEffect(() => {
     if(popup) {
       popupRef.current.focus();
@@ -22,22 +34,6 @@ export default function ExcelPopup(props) {
       });
       $(document).on('keyup',function(e){
         if(e.key === 'Shift') _shift = false;
-      });
-      
-      // 모달 배경 클릭으로 모달 닫기
-      $('.popup_bg').on('click', function(e) {
-        const modal = $(e.target).parents('.popup_bg');
-        if (!modal.hasClass('popup_bg')) {
-          setPopup(false);
-        }
-      });
-
-      // ESC 키로 모달 닫기
-      $('.popup_bg').on('keydown', function(e) {
-        if (e.key === 'Escape') {
-          setPopup(false);
-          $('.project_excel_btn').focus();
-        }
       });
 
       // 포커스 트랩: 모달 내에서 포커스가 빠져나가지 못하도록 설정
@@ -63,9 +59,12 @@ export default function ExcelPopup(props) {
   return (
     <>
       <div
+        id='excelPopup'
         className="popup_bg"
         ref={popupRef}
         tabIndex={-1}
+        onClick={handlePopupClick}
+        onKeyDown={handlePopupKeyDown}
       >
         <div className="popup_wrap w-180 rounded-3xl py-20 px-15 text-center">
           <p className='text-xl font-bold text-color-dark mb-6'>

@@ -6,6 +6,18 @@ export default function SiteMap(props) {
   const { nav, show, setShow } = props;
   const sitemapRef = useRef(null);
 
+  const handlePopupClick = (e) => {
+    if(e.target.id === 'sitemap') {
+      setShow(false);
+    }
+  };
+  const handlePopupKeyDown = (e) => {
+    if (e.key === 'Escape') {
+      setShow(false);
+      $('#header .menu_btn').focus();
+    }
+  };
+
   useEffect(() => {
     if(show) {
       sitemapRef.current.focus();
@@ -21,22 +33,6 @@ export default function SiteMap(props) {
       });
       $(document).on('keyup',function(e){
         if(e.key === 'Shift') _shift = false;
-      });
-
-      // 모달 배경 클릭으로 모달 닫기
-      $('#sitemap').on('click', function(e) {
-        const modal = $(e.target).parents('#sitemap');
-        if (modal.attr('id') !== 'sitemap') {
-          setShow(false);
-        }
-      });
-
-      // ESC 키로 모달 닫기
-      $('#sitemap').on('keydown', function(e) {
-        if (e.key === 'Escape') {
-          setShow(false);
-          $('#header .menu_btn').focus();
-        }
       });
 
       // 포커스 트랩: 모달 내에서 포커스가 빠져나가지 못하도록 설정
@@ -65,6 +61,8 @@ export default function SiteMap(props) {
         id='sitemap'
         ref={sitemapRef}
         tabIndex={-1}
+        onClick={handlePopupClick}
+        onKeyDown={handlePopupKeyDown}
       >
         <nav>
           <ul>

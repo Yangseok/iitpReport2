@@ -6,6 +6,18 @@ export default function GuidePopup(props) {
 
   const popupRef = useRef(null);
 
+  const handlePopupClick = (e) => {
+    if(e.target.id === 'guidePopup') {
+      setPopup(false);
+    }
+  };
+  const handlePopupKeyDown = (e) => {
+    if (e.key === 'Escape') {
+      setPopup(false);
+      $(`.${focusClass}`).focus();
+    }
+  };
+
   useEffect(() => {
     if(popup) {
       popupRef.current.focus();
@@ -14,22 +26,6 @@ export default function GuidePopup(props) {
 
   useEffect(() => {
     const eventSettings = () => {
-      // 모달 배경 클릭으로 모달 닫기
-      $('.popup_bg').on('click', function(e) {
-        const modal = $(e.target).parents('.popup_bg');
-        if (!modal.hasClass('popup_bg')) {
-          setPopup(false);
-        }
-      });
-
-      // ESC 키로 모달 닫기
-      $('.popup_bg').on('keydown', function(e) {
-        if (e.key === 'Escape') {
-          setPopup(false);
-          $(`.${focusClass}`).focus();
-        }
-      });
-
       // 포커스 트랩: 모달 내에서 포커스가 빠져나가지 못하도록 설정
       $('.popup_bg button').on('keydown', function(e) {
         if(e.key === 'Tab') {
@@ -45,7 +41,14 @@ export default function GuidePopup(props) {
   }, []);
 
   return (
-    <div className='popup_bg' ref={popupRef} tabIndex={-1}>
+    <div 
+      id="guidePopup"
+      className='popup_bg' 
+      ref={popupRef} 
+      tabIndex={-1}
+      onClick={handlePopupClick}
+      onKeyDown={handlePopupKeyDown}
+    >
       <div className='popup_wrap w-180 p-10 rounded-xl'>
         <div className='flex items-center justify-between'>
           <p className='text-xl'><strong>{title}</strong></p>

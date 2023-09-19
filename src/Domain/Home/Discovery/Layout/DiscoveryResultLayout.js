@@ -4,7 +4,7 @@ import DiscoveryArea from 'Domain/Home/Discovery/Component/DiscoveryArea';
 import SearchArea from 'Domain/Home/Discovery/Component/SearchArea';
 import CategoryWrap from 'Domain/Home/Common/Componet/CategoryWrap';
 import common from 'Utill';
-import { getFileKeywordList } from 'Domain/Home/Common/Status/CommonSlice';
+import { getFileKeywordList, getTmpSearchKeyword } from 'Domain/Home/Common/Status/CommonSlice';
 import { useSelector } from 'react-redux';
 import WordClouds from 'Domain/Home/Discovery/Component/WordClouds';
 
@@ -14,6 +14,7 @@ export default function DiscoveryResultLayout({children, totalCount, tabCount, k
   const [path, setPath] = useState('');
 
   const fileKeywordList = useSelector(getFileKeywordList);
+  const searchKeyword = useSelector(getTmpSearchKeyword);
 
   useEffect(() => {
     const se = common.getSegment();
@@ -51,9 +52,13 @@ export default function DiscoveryResultLayout({children, totalCount, tabCount, k
                 ? <>
                   업로드한 “<span className='text-color-main'>{'인공지능.docs'}</span>” 파일 분석 결과입니다.
                 </>
-                : <>
+                : (page2 === 'project')
+                  ?  <>
                   과제 정보 분석 결과는 총 <span className='text-color-main'>{common.setPriceInput(totalCount ?? 0)}건</span> 입니다.
-                </>
+                  </>
+                  :  <>
+                    “<span className='text-color-main'>{searchKeyword}</span>”에 대한 분석 결과는 총 <span className='text-color-main'>{common.setPriceInput(totalCount ?? 0)}건</span> 입니다.
+                  </>
             }
           </h3>
           {(page2 === 'file') 
