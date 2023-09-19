@@ -33,7 +33,7 @@ export default function Main() {
   const tmpSearchKeyword = useSelector(getTmpSearchKeyword);
   const [dataCount, setDataCount] = useState({});
   
-  const [dataSearch, setDataSearch] = useState([]);
+  // const [dataSearch, setDataSearch] = useState([]);
   const fullpageRef = useRef(null);
 
   const navigate = useNavigate();
@@ -149,14 +149,14 @@ export default function Main() {
     };
   }, []);
 
-  useEffect(() => {
-    (async () => {
-      if(tmpSearchKeyword.trim() !== '') {
-        const data = await mainAPI.autocomplete(tmpSearchKeyword);
-        setDataSearch(data?.data?.result);
-      }
-    })();
-  }, [tmpSearchKeyword]);
+  // useEffect(() => {
+  //   (async () => {
+  //     if(tmpSearchKeyword.trim() !== '') {
+  //       const data = await mainAPI.autocomplete(tmpSearchKeyword);
+  //       setDataSearch(data?.data?.result);
+  //     }
+  //   })();
+  // }, [tmpSearchKeyword]);
 
   return (
     <Layout>
@@ -167,7 +167,6 @@ export default function Main() {
               <h2 className='hidden_text'>통합검색</h2>
               <AutoCompleteSearch
                 handleSearch={handleSearch}
-                data={dataSearch}
                 style={{ type: 1, name: 'ICT 키워드 검색', icon: icSearch }}
                 labelText={'검색어 혹은 추천 키워드를 이용한 검색'}
               />

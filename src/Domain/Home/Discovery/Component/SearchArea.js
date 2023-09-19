@@ -3,7 +3,7 @@ import icSearch from 'Assets/Images/ic_search.png';
 import icQuestion from 'Assets/Images/ic_question.png';
 import arrDrop from 'Assets/Images/arr_drop.png';
 import AutoCompleteSearch from 'Domain/Home/Common/Componet/AutoCompleteSearch';
-import * as mainAPI from 'Domain/Home/Main/API/Call';
+// import * as mainAPI from 'Domain/Home/Main/API/Call';
 import { useSelector, useDispatch } from 'react-redux';
 import { setSearchKeywordReset, getTmpSearchKeyword, getSearchDetailData, setSearchDetailData as setGlobalSearchDetailData } from 'Domain/Home/Common/Status/CommonSlice';
 import Button from 'Domain/Home/Common/Componet/Button';
@@ -37,7 +37,7 @@ export default function Search(props) {
   ];
 
   const tmpSearchKeyword = useSelector(getTmpSearchKeyword);
-  const [dataSearch, setDataSearch] = useState([]);
+  // const [dataSearch, setDataSearch] = useState([]);
 
   const [fold, setFold] = useState(true);
   const [tabActive, setTabActive] = useState(0);
@@ -156,14 +156,14 @@ export default function Search(props) {
     }
   };
 
-  useEffect(() => {
-    (async () => {
-      if(tmpSearchKeyword.trim() !== '') {
-        const data = await mainAPI.autocomplete(tmpSearchKeyword);
-        setDataSearch(data?.data?.result);
-      }
-    })();
-  }, [tmpSearchKeyword]);
+  // useEffect(() => {
+  //   (async () => {
+  //     if(tmpSearchKeyword.trim() !== '') {
+  //       const data = await mainAPI.autocomplete(tmpSearchKeyword);
+  //       setDataSearch(data?.data?.result);
+  //     }
+  //   })();
+  // }, [tmpSearchKeyword]);
   
   useEffect(() => {
     let yearArr = [];
@@ -188,7 +188,6 @@ export default function Search(props) {
           <h2 className='hidden_text'>통합 검색</h2>
           <AutoCompleteSearch 
             handleSearch={handleSearch}
-            data={dataSearch}
             style={{ type: 3, name: '통합 검색', icon: icSearch }}
           />
         </div>

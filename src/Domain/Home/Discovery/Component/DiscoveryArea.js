@@ -3,7 +3,7 @@ import icAnalysis from 'Assets/Images/ic_analysis.png';
 import icSearch from 'Assets/Images/ic_search.png';
 import AutoCompleteSearch from 'Domain/Home/Common/Componet/AutoCompleteSearch';
 import KeywordWrap from 'Domain/Home/Discovery/Component/Keyword/KeywordWrap';
-import * as mainAPI from 'Domain/Home/Main/API/Call';
+// import * as mainAPI from 'Domain/Home/Main/API/Call';
 import { useSelector, useDispatch } from 'react-redux';
 import { getSearchKeyword, setSearchKeywordReset, getTmpSearchKeyword, setFileKeywordList, getFileName, setFileName } from 'Domain/Home/Common/Status/CommonSlice';
 import common from 'Utill';
@@ -26,7 +26,6 @@ export default function PageSearchArea(props) {
   
   const keyword = useSelector(getSearchKeyword);
   const tmpSearchKeyword = useSelector(getTmpSearchKeyword);
-  const [dataSearch, setDataSearch] = useState([]);
 
   const navigate = useNavigate();
   const se = common.getSegment();
@@ -112,14 +111,14 @@ export default function PageSearchArea(props) {
     }
   }, [se, paramSe2]);
 
-  useEffect(() => {
-    (async () => {
-      if(tmpSearchKeyword.trim() !== '') {
-        const data = await mainAPI.autocomplete(tmpSearchKeyword);
-        setDataSearch(data?.data?.result);
-      }
-    })();
-  }, [tmpSearchKeyword]);
+  // useEffect(() => {
+  //   (async () => {
+  //     if(tmpSearchKeyword.trim() !== '') {
+  //       const data = await mainAPI.autocomplete(tmpSearchKeyword);
+  //       setDataSearch(data?.data?.result);
+  //     }
+  //   })();
+  // }, [tmpSearchKeyword]);
 
   return (
     <>
@@ -129,7 +128,6 @@ export default function PageSearchArea(props) {
           <h2 className='hidden_text'>디스커버리 검색 - 키워드 분석</h2>
           <AutoCompleteSearch 
             handleSearch={handleSearch}
-            data={dataSearch}
             style={{ type: 2, name: '키워드 찾기', icon: icAnalysis }}
             labelText={'키워드 검색'}
           />

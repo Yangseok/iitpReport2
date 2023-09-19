@@ -1,20 +1,23 @@
-import React, { useEffect, useState, useRef } from 'react';
-import * as Hangul from 'hangul-js';
+import React, { useEffect, useState, useRef, useCallback } from 'react';
+// import * as Hangul from 'hangul-js';
 import Button from 'Domain/Home/Common/Componet/Button';
 import { useSelector, useDispatch } from 'react-redux';
 import { setSearchKeyword, setTmpSearchKeyword, getTmpSearchKeyword } from 'Domain/Home/Common/Status/CommonSlice';
 // import $ from 'jquery';
 // import { useSearchParams } from 'react-router-dom';
 import parse from 'html-react-parser';
+import * as mainAPI from 'Domain/Home/Main/API/Call';
 
 export default function AutoCompleteSearch(props) {
-  const { data, style, labelText } = props;
+  const { style, labelText } = props;
   const [listData, setListData] = useState([]);
   const [searchFocus, setSearchFocus] = useState(false);
   const dispatch = useDispatch();
   const tmpSearchKeyword = useSelector(getTmpSearchKeyword);
   // const [searchParams] = useSearchParams();
   // const searchParamKeyword = searchParams.get('keyword')??'';
+
+  const [timeoutFn, setTimeoutFn] = useState(null);
 
   const searchEvent = async () => {
     setSearchFocus(false);
@@ -30,42 +33,10 @@ export default function AutoCompleteSearch(props) {
       return;
     }
     const value = e.target.value;
-    // const hangulValue = Hangul.disassemble(value).join(''); // ㄺ=>ㄹㄱ
-    const tempArr = [];
     setSearchFocus(true);
-    
     if (value === '') {
       return setListData([]);
     }
-
-    let resData = data;
-
-    // console.log('data:', data);
-
-    // object 에 초성필드 추가 {text:"홍길동", diassembled:"ㅎㄱㄷ"}
-    resData.map((item) => {
-      const dis = Hangul.disassemble(item.originData, true);
-      const cho = dis.reduce(function (prev, el) {
-        el = el[0] ? el[0] : el;
-        return prev + el;
-      }, '');
-      item.diassembled = cho;
-    });
-    
-    // 문자열 검색 || 초성검색
-    resData
-      // .filter((item) => {
-      //   return item.originData.includes(value) || item.diassembled.includes(hangulValue);
-      // })
-      .map((item) => {
-        const obj = {};
-        obj.text = parse(item.data);
-        obj.agency = (item.type !== 'keyword');
-        obj.onClick = () => onListClick(item.originData, obj.agency);
-        tempArr.push(obj);
-      });
-    setListData(tempArr);
-    // console.log('listData:', listData);
   };
 
   const onListClick = (text, agency=false) => {
@@ -118,6 +89,34 @@ export default function AutoCompleteSearch(props) {
     }
   };
 
+  const getAutocompleteList = useCallback(async (keyword) => {
+    if ((keyword?.trim() ?? '') !== '') {
+      const data = await mainAPI.autocomplete(keyword);
+      // console.log('api get keyword:', keyword, data);
+
+      const tempArr = [];
+      data?.data?.result?.map((item) => {
+        const obj = {};
+        obj.text = parse(item.data);
+        obj.agency = (item.type !== 'keyword');
+        obj.onClick = () => onListClick(item.originData, obj.agency);
+        tempArr.push(obj);
+      });
+      setListData(tempArr);
+    }
+  }, []);
+
+  const onChangeInput = useCallback(async (e) => {
+    // console.log('onChangeInput e.target.value:', e.target.value);
+    dispatch(setTmpSearchKeyword(e.target.value));
+    if (timeoutFn !== null) {
+      clearTimeout(timeoutFn);
+    }
+    setTimeoutFn(setTimeout(async() => {
+      await getAutocompleteList(e.target.value);
+    }, 300));
+  }, [timeoutFn]);
+
   useEffect(() => {
     document.addEventListener('click', handleClickOutside);
     document.addEventListener('focusin', handleClickOutside);
@@ -140,7 +139,7 @@ export default function AutoCompleteSearch(props) {
           type='text'
           name='search_text'
           id='search_text'
-          onChange={(e) => dispatch(setTmpSearchKeyword(e.target.value))}
+          onChange={onChangeInput}
           onKeyUp={onSearchKeyUp}
           onKeyDown={handleInputKeyDown}
           onFocus={(e) => {setSearchFocus(true); onSearchKeyUp(e);}}
