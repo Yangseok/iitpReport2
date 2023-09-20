@@ -4,7 +4,7 @@ import DiscoveryArea from 'Domain/Home/Discovery/Component/DiscoveryArea';
 import SearchArea from 'Domain/Home/Discovery/Component/SearchArea';
 import CategoryWrap from 'Domain/Home/Common/Componet/CategoryWrap';
 import common from 'Utill';
-import { getFileKeywordList, getTmpSearchKeyword } from 'Domain/Home/Common/Status/CommonSlice';
+import { getFileKeywordList } from 'Domain/Home/Common/Status/CommonSlice';
 import { useSelector } from 'react-redux';
 import WordClouds from 'Domain/Home/Discovery/Component/WordClouds';
 
@@ -14,7 +14,7 @@ export default function DiscoveryResultLayout({children, totalCount, tabCount, k
   const [path, setPath] = useState('');
 
   const fileKeywordList = useSelector(getFileKeywordList);
-  const searchKeyword = useSelector(getTmpSearchKeyword);
+  // const searchKeyword = useSelector(getTmpSearchKeyword);
 
   useEffect(() => {
     const se = common.getSegment();
@@ -57,7 +57,7 @@ export default function DiscoveryResultLayout({children, totalCount, tabCount, k
                   과제 정보 분석 결과는 총 <span className='text-color-main'>{common.setPriceInput(totalCount ?? 0)}건</span> 입니다.
                   </>
                   :  <>
-                    “<span className='text-color-main'>{searchKeyword}</span>”에 대한 분석 결과는 총 <span className='text-color-main'>{common.setPriceInput(totalCount ?? 0)}건</span> 입니다.
+                    “<span className='text-color-main'>{keyword}</span>”에 대한 분석 결과는 총 <span className='text-color-main'>{common.setPriceInput(totalCount ?? 0)}건</span> 입니다.
                   </>
             }
           </h3>
