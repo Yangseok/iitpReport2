@@ -6,16 +6,9 @@ export default function GuidePopup(props) {
 
   const popupRef = useRef(null);
 
-  const handlePopupClick = (e) => {
-    if(e.target.id === 'guidePopup') {
-      setPopup(false);
-    }
-  };
-  const handlePopupKeyDown = (e) => {
-    if (e.key === 'Escape') {
-      setPopup(false);
-      $(`.${focusClass}`).focus();
-    }
+  const handlePopupClose = () => {
+    setPopup(false);
+    $(`.${focusClass}`).focus();
   };
 
   useEffect(() => {
@@ -46,16 +39,13 @@ export default function GuidePopup(props) {
       className='popup_bg' 
       ref={popupRef} 
       tabIndex={-1}
-      onClick={handlePopupClick}
-      onKeyDown={handlePopupKeyDown}
+      onClick={(e) => (e.target.id === 'guidePopup') && handlePopupClose()}
+      onKeyDown={(e) => (e.key === 'Escape') && handlePopupClose()}
     >
       <div className='popup_wrap w-180 p-10 rounded-xl'>
         <div className='flex items-center justify-between'>
           <p className='text-xl'><strong>{title}</strong></p>
-          <button type='button' className='popup_close_btn' onClick={() => {
-            setPopup(false);
-            $(`.${focusClass}`).focus();
-          }}>팝업 닫기</button>
+          <button type='button' className='popup_close_btn' onClick={handlePopupClose}>팝업 닫기</button>
         </div>
         <div className='mt-4'>
           <div className='text_box'>

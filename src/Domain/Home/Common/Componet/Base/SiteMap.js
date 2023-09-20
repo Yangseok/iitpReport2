@@ -6,16 +6,9 @@ export default function SiteMap(props) {
   const { nav, show, setShow } = props;
   const sitemapRef = useRef(null);
 
-  const handlePopupClick = (e) => {
-    if(e.target.id === 'sitemap') {
-      setShow(false);
-    }
-  };
-  const handlePopupKeyDown = (e) => {
-    if (e.key === 'Escape') {
-      setShow(false);
-      $('#header .menu_btn').focus();
-    }
+  const handlePopupClose = () => {
+    setShow(false);
+    $('#header .menu_btn').focus();
   };
 
   useEffect(() => {
@@ -61,23 +54,33 @@ export default function SiteMap(props) {
         id='sitemap'
         ref={sitemapRef}
         tabIndex={-1}
-        onClick={handlePopupClick}
-        onKeyDown={handlePopupKeyDown}
+        onClick={(e) => (e.target.id === 'sitemap') && handlePopupClose()}
+        onKeyDown={(e) => (e.key === 'Escape') && handlePopupClose()}
       >
-        <nav>
-          <ul>
-            {nav.map((e, i) => (
-              <li key={i}>
-                <p><strong>{e.name}</strong></p>
-                {e.depth2.map((e2, i2) => (
-                  <NavLink key={i2} to={e2.to}>
-                    {e2.name}
-                  </NavLink>
-                ))}
-              </li>
-            ))}
-          </ul>
-        </nav>
+        <div className='sitemap_wrap'>
+          <div className='flex justify-end mb-4'>
+            <button 
+              type='button' 
+              className='popup_close_btn' 
+              onClick={handlePopupClose}>
+            사이트맵 닫기
+            </button>
+          </div>
+          <nav>
+            <ul>
+              {nav.map((e, i) => (
+                <li key={i}>
+                  <p><strong>{e.name}</strong></p>
+                  {e.depth2.map((e2, i2) => (
+                    <NavLink key={i2} to={e2.to}>
+                      {e2.name}
+                    </NavLink>
+                  ))}
+                </li>
+              ))}
+            </ul>
+          </nav>
+        </div>
       </div>
     </>
   );

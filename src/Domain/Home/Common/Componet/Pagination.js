@@ -4,6 +4,8 @@ export default function Pagination(props) {
   const { total, page, size, onClick } = props;
   const [prevDisabled, setPrevDisabled] = useState(false);
   const [nextDisabled, setNextDisabled] = useState(false);
+  const [prev02Disabled, setPrev02Disabled] = useState(false);
+  const [next02Disabled, setNext02Disabled] = useState(false);
 
   let limit = 10; // 한 번에 노출되는 리스트 갯수
   if (size !== undefined) limit = size;
@@ -40,6 +42,16 @@ export default function Pagination(props) {
     } else {
       setNextDisabled(false);
     }
+    if(page === 1) {
+      setPrev02Disabled(true);
+    } else {
+      setPrev02Disabled(false);
+    }
+    if(page === totalPage) {
+      setNext02Disabled(true);
+    } else {
+      setNext02Disabled(false);
+    }
   }, [props]);
 
   return (
@@ -47,15 +59,15 @@ export default function Pagination(props) {
 
       <button
         type='button'
-        className='prev_btn'
-        disabled={prevDisabled}
+        className='arr_btn start'
+        disabled={prev02Disabled}
         onClick={() => onClick(1)}
       >
-        처음으로
+        처음 페이지
       </button>
       <button
         type='button'
-        className='prev_btn'
+        className='arr_btn prev'
         disabled={prevDisabled}
         onClick={onPrevClick}
       >
@@ -73,7 +85,7 @@ export default function Pagination(props) {
       ))}
       <button
         type='button'
-        className='next_btn'
+        className='arr_btn next'
         disabled={nextDisabled}
         onClick={onNextClick}
       >
@@ -81,11 +93,11 @@ export default function Pagination(props) {
       </button>
       <button
         type='button'
-        className='next_btn'
-        disabled={nextDisabled}
+        className='arr_btn end'
+        disabled={next02Disabled}
         onClick={() => onClick(totalPage)}
       >
-        끝으로
+        끝 페이지
       </button>
     </div>
   );

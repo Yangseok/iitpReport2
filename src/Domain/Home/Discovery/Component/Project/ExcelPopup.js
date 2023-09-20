@@ -7,16 +7,9 @@ export default function ExcelPopup(props) {
   const { popup, setPopup } = props;
   const popupRef = useRef(null);
 
-  const handlePopupClick = (e) => {
-    if(e.target.id === 'excelPopup') {
-      setPopup(false);
-    }
-  };
-  const handlePopupKeyDown = (e) => {
-    if (e.key === 'Escape') {
-      setPopup(false);
-      $('.project_excel_btn').focus();
-    }
+  const handlePopupClose = () => {
+    setPopup(false);
+    $('.project_excel_btn').focus();
   };
 
   useEffect(() => {
@@ -63,10 +56,18 @@ export default function ExcelPopup(props) {
         className="popup_bg"
         ref={popupRef}
         tabIndex={-1}
-        onClick={handlePopupClick}
-        onKeyDown={handlePopupKeyDown}
+        onClick={(e) => (e.target.id === 'excelPopup') && handlePopupClose()}
+        onKeyDown={(e) => (e.key === 'Escape') && handlePopupClose()}
       >
-        <div className="popup_wrap w-180 rounded-3xl py-20 px-15 text-center">
+        <div className="popup_wrap w-180 rounded-3xl pt-10 pb-20 px-15 text-center">
+          <div className='flex justify-end mb-4'>
+            <button 
+              type='button' 
+              className='popup_close_btn' 
+              onClick={handlePopupClose}>
+            사이트맵 닫기
+            </button>
+          </div>
           <p className='text-xl font-bold text-color-dark mb-6'>
             <strong>엑셀 파일로 과제 정보 입력</strong>
           </p>

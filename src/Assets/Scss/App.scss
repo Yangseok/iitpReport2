@@ -135,11 +135,12 @@ hr { color: $color_line; }
   height: 100%;
   background-color: rgba(0,0,0,0.5);
   
-  nav {
+  .sitemap_wrap {
+    position: relative;
     width: 96%;
     max-width: 1280px;
     min-width: 800px;
-    padding: 48px 70px;
+    padding: 24px 70px 48px;
     background-color: $color_white;
 
     ul {
@@ -1048,21 +1049,30 @@ textarea {
       color: $color_main;
       font-weight: 700;
     }
-    &.prev_btn, &.next_btn {
+    &.arr_btn {
       @include hiddenAltText;
       width: 24px;
       height: 24px;
       background-repeat: no-repeat;
       background-position: center;
       background-size: contain;
-    }
-    &.prev_btn {
-      background-image: url('Assets/Images/arr_page_prev_on.png');
-      &:disabled { background-image: url('Assets/Images/arr_page_prev_off.png'); }
-    }
-    &.next_btn {
-      background-image: url('Assets/Images/arr_page_next_on.png');
-      &:disabled { background-image: url('Assets/Images/arr_page_next_off.png'); }
+
+      &.prev {
+        background-image: url('Assets/Images/arr_page_prev_on.png');
+        &:disabled { background-image: url('Assets/Images/arr_page_prev_off.png'); }
+      }
+      &.next {
+        background-image: url('Assets/Images/arr_page_next_on.png');
+        &:disabled { background-image: url('Assets/Images/arr_page_next_off.png'); }
+      }
+      &.start {
+        background-image: url('Assets/Images/arr_page_start_on.png');
+        &:disabled { background-image: url('Assets/Images/arr_page_start_off.png'); }
+      }
+      &.end {
+        background-image: url('Assets/Images/arr_page_end_on.png');
+        &:disabled { background-image: url('Assets/Images/arr_page_end_off.png'); }
+      }
     }
   }
 }
@@ -1106,13 +1116,12 @@ textarea {
 .popup_wrap {
   max-width: 98%;
   background-color: $color_white;
-
-  .popup_close_btn {
-    @include hiddenAltText;
-    width: 24px;
-    height: 24px;
-    background: url('Assets/Images/ic_x.png') no-repeat center / contain;
-  }
+}
+.popup_close_btn {
+  @include hiddenAltText;
+  width: 24px;
+  height: 24px;
+  background: url('Assets/Images/ic_x.png') no-repeat center / contain;
 }
 
 
@@ -1392,8 +1401,8 @@ $bg_percents: (1: -7%,  2: 7%, 3: -7%);
   .visual_bg_deco div { background-size: 120%; }
 }
 @media all and (max-width: 991px) {
-  #sitemap nav {
-    padding: 48px;
+  #sitemap .sitemap_wrap {
+    padding: 24px 48px 48px;
     ul li { min-width: calc((100% - 48px) / 4); }
   }
 }

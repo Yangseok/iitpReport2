@@ -8,16 +8,9 @@ export default function ListPopup(props) {
 
   const popupRef = useRef(null);
 
-  const handlePopupClick = (e) => {
-    if(e.target.id === 'listPopup') {
-      setPopup(false);
-    }
-  };
-  const handlePopupKeyDown = (e) => {
-    if (e.key === 'Escape') {
-      setPopup(false);
-      $('.list_style06 button').last().focus();
-    }
+  const handlePopupClose = () => {
+    setPopup(false);
+    $('.list_style06 button').last().focus();
   };
 
   useEffect(() => {
@@ -64,15 +57,12 @@ export default function ListPopup(props) {
         className='popup_bg' 
         ref={popupRef} 
         tabIndex={-1}
-        onClick={handlePopupClick}
-        onKeyDown={handlePopupKeyDown}
+        onClick={(e) => (e.target.id === 'listPopup') && handlePopupClose()}
+        onKeyDown={(e) => (e.key === 'Escape') && handlePopupClose()}
       >
         <div className='popup_wrap w-340 p-10 min-h-177'>
           <div className='flex justify-end'>
-            <button type='button' className='popup_close_btn' onClick={() => {
-              setPopup(false); 
-              $('.list_style06 button').last().focus();
-            }}>팝업 닫기</button>
+            <button type='button' className='popup_close_btn' onClick={handlePopupClose}>팝업 닫기</button>
           </div>
           {(category === 'patent')
             ? <PopupPatent />
