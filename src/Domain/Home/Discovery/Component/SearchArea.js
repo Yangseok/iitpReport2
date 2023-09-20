@@ -114,9 +114,10 @@ export default function Search(props) {
   };
 
   const initSearch = () => {
-    let newState = JSON.parse(JSON.stringify(searchDetailData));
-    delete newState[tabActive];
-    setSearchDetailData(newState);
+    // let newState = JSON.parse(JSON.stringify(searchDetailData));
+    // delete newState[tabActive];
+    setSearchDetailData({});
+    dispatch(setGlobalSearchDetailData({}));
   };
 
   const handleDtailSearch = () => {
