@@ -27,19 +27,19 @@ export default function View() {
       { content: '', colspan: 3 },
     ],
     [
-      { content: '연구 개발비', scope: 'row' },
+      { content: '총연구개발비', scope: 'row' },
       { content: '' },
       { content: '부처명', scope: 'row' },
       { content: '' },
     ],
     [
-      { content: '총 연구 기간', scope: 'row' },
+      { content: '총연구개발기간', scope: 'row' },
       { content: '' },
-      { content: '당해연도 연구 기간', scope: 'row' },
+      { content: '당해연도 연구개발기간', scope: 'row' },
       { content: '' },
     ],
     [
-      { content: '연구 개발기관', scope: 'row' },
+      { content: '주관연구개발기관', scope: 'row' },
       { content: '' },
       { content: '연구 책임자', scope: 'row' },
       { content: '' },
@@ -47,7 +47,7 @@ export default function View() {
     [
       { content: '지역', scope: 'row' },
       { content: '' },
-      { content: '연구 개발단계', scope: 'row' },
+      { content: '연구개발단계', scope: 'row' },
       { content: '' },
     ],
     [
@@ -98,19 +98,19 @@ export default function View() {
             { content: data?.data?.result?.bigProjectName ?? '', colspan: 3 },
           ],
           [
-            { content: '연구 개발비', scope: 'row' },
+            { content: '총연구개발비', scope: 'row' },
             { content: common.setPriceInput(data?.data?.result?.fund ?? 0) + '원' },
             { content: '부처명', scope: 'row' },
             { content: data?.data?.result?.orderAgencyName ?? '' },
           ],
           [
-            { content: '총 연구 기간', scope: 'row' },
+            { content: '총연구개발기간', scope: 'row' },
             { content: (data?.data?.result?.totalPeriod ?? '').replaceAll('-','.') },
-            { content: '당해연도 연구 기간', scope: 'row' },
+            { content: '당해연도 연구개발기간', scope: 'row' },
             { content: (data?.data?.result?.period ?? '').replaceAll('-','.') },
           ],
           [
-            { content: '연구 개발기관', scope: 'row' },
+            { content: '주관연구개발기관', scope: 'row' },
             { content: data?.data?.result?.researchAgencyName ?? '' },
             { content: '연구 책임자', scope: 'row' },
             { content: data?.data?.result?.researchManagerName ?? '' },
@@ -118,7 +118,7 @@ export default function View() {
           [
             { content: '지역', scope: 'row' },
             { content: data?.data?.result?.region ?? '' },
-            { content: '연구 개발단계', scope: 'row' },
+            { content: '연구개발단계', scope: 'row' },
             { content: data?.data?.result?.developmentPhases ?? '' },
           ],
           [

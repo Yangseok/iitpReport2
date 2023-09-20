@@ -19,13 +19,13 @@ export default function ProjectIn(props) {
                   title={e.title}
                   contents={<>
                     <div>
-                      <p className='text-sm text-color-regular'>연구 개발비: <span className='font-medium text-color-main'>{e.price}</span></p>
-                      <p className='text-sm text-color-regular'>연구 개발기간: <span className='font-medium text-color-main'>{e.period}</span></p>
-                      <p className='text-sm text-color-regular'>연구 개발기관: <span className='font-medium text-color-main'>{e.agency}</span></p>
-                      <p className='text-sm text-color-regular'>연구 책임자: <span className='font-medium text-color-main'>{e.name}</span></p>
+                      <p className='text-sm text-color-regular'>총연구개발비: <span className='font-medium text-color-main'>{e.price}</span></p>
+                      <p className='text-sm text-color-regular'>총연구개발기간: <span className='font-medium text-color-main'>{e.period}</span></p>
+                      <p className='text-sm text-color-regular'>주관연구개발기관: <span className='font-medium text-color-main'>{e.agency}</span></p>
+                      <p className='text-sm text-color-regular'>연구책임자: <span className='font-medium text-color-main'>{e.name}</span></p>
                     </div>
                     <div>
-                      <p className='text-sm text-color-regular'>ICT 기술 분류: <span className='font-medium text-color-main'>{e.ict}</span></p>
+                      <p className='text-sm text-color-regular'>ICT 기술분류: <span className='font-medium text-color-main'>{e.ict}</span></p>
                       <p className='text-sm text-color-regular'>한글 키워드: <span className='font-medium text-color-main'>{e.keyword}</span></p>
                     </div>
                   </>}

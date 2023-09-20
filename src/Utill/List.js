@@ -252,7 +252,7 @@ export const getProcData = (filterKey, dataList) => {
         id: dataList?.[i]?.projectNumber ?? i,
         tag : ((periodArr?.[1]??'').replaceAll(' ','') === '9999-12-31') ? 1 : 2,
         title: parse(dataList?.[i]?.title ?? ''),
-        price: common.setPriceInput(dataList?.[i]?.fund ?? '') + '억',
+        price: common.setPriceInput(dataList?.[i]?.fund ?? '') + '원',
         period: period.replaceAll('-','.'), 
         agency: parse(dataList?.[i]?.researchAgencyName ?? ''),
         name: parse(dataList?.[i]?.researchManagerName ?? ''),
@@ -274,7 +274,7 @@ export const getProcData = (filterKey, dataList) => {
         id: dataList?.[i]?.projectNumber ?? i,
         tag : ((periodArr?.[1]??'').replaceAll(' ','') === '9999-12-31') ? 1 : 2,
         title: parse(dataList?.[i]?.title ?? ''),
-        price: common.setPriceInput(dataList?.[i]?.fund ?? '') + '억',
+        price: common.setPriceInput(dataList?.[i]?.fund ?? '') + '원',
         period: period.replaceAll('-','.'), 
         agency: parse(dataList?.[i]?.researchAgencyName ?? ''),
         name: parse(dataList?.[i]?.researchManagerName ?? ''),
@@ -410,7 +410,7 @@ export const getExcelProcData = (filterKey, dataList) => {
 
   switch (filterKey) {
   case 'search/projectOut':
-    title = ['과제명', '연구 개발비', '연구 개발기간', '연구 개발기관', '연구 책임자', '부처명', '연구 개발성과', '국가과학기술표준분류', '한글 키워드'];
+    title = ['과제명', '총연구개발비', '총연구개발기간', '주관연구개발기관', '연구책임자', '부처명', '연구개발성과', '국가과학기술표준분류', '한글 키워드'];
     for (let i in dataList ?? []) {
       // console.log(i, dataList?.[i]);
       const period = dataList?.[i]?.period ?? '';
@@ -418,7 +418,7 @@ export const getExcelProcData = (filterKey, dataList) => {
       const keywordt = dataList?.[i]?.keywords ?? [];
       data.push([
         common.deHighlight(dataList?.[i]?.title ?? ''),
-        (dataList?.[i]?.fund ?? '') + '억',
+        common.setPriceInput(dataList?.[i]?.fund ?? '') + '원',
         period.replaceAll('-','.'),
         common.deHighlight(dataList?.[i]?.researchAgencyName ?? ''),
         common.deHighlight(dataList?.[i]?.researchManagerName ?? ''),
@@ -430,21 +430,18 @@ export const getExcelProcData = (filterKey, dataList) => {
     }
     break;
   case 'search/projectIn':
-    title = ['과제명', '연구 개발비', '연구 개발기간', '연구 개발기관', '연구 책임자', '부처명', '연구 개발성과', '국가과학기술표준분류', '한글 키워드'];
+    title = ['과제명', '총연구개발비', '총연구개발기간', '주관연구개발기관', '연구책임자', 'ICT 기술분류', '한글 키워드'];
     for (let i in dataList ?? []) {
       // console.log(i, dataList?.[i]);
       const period = dataList?.[i]?.period ?? '';
-      const division = dataList?.[i]?.technicalClassification ?? [];
       const keywordt = dataList?.[i]?.keywords ?? [];
       data.push([
         common.deHighlight(dataList?.[i]?.title ?? ''),
-        (dataList?.[i]?.fund ?? '') + '억',
+        common.setPriceInput(dataList?.[i]?.fund ?? '') + '원',
         period.replaceAll('-','.'),
         common.deHighlight(dataList?.[i]?.researchAgencyName ?? ''),
         common.deHighlight(dataList?.[i]?.researchManagerName ?? ''),
-        common.deHighlight(dataList?.[i]?.orderAgencyName ?? ''),
-        dataList?.[i]?.performance ?? '',
-        division.join(', '),
+        common.joinArrNStr(dataList?.[i]?.technicalClassification ?? [],', ',''),
         keywordt.join(', '),
       ]);
     }

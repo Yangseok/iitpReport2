@@ -44,7 +44,7 @@ export default function DiscoveryResult() {
           id: data?.data?.result?.dataInfo?.projectOut?.[i]?.projectNumber ?? i,
           tab: '국가R&D',
           title: parse(data?.data?.result?.dataInfo?.projectOut?.[i]?.title ?? ''),
-          price: (data?.data?.result?.dataInfo?.projectOut?.[i]?.fund ?? '') + '억',
+          price: common.setPriceInput(data?.data?.result?.dataInfo?.projectOut?.[i]?.fund ?? '') + '원',
           period: period.replaceAll('-','.'), 
           agency: parse(data?.data?.result?.dataInfo?.projectOut?.[i]?.researchAgencyName ?? ''),
           name: parse(data?.data?.result?.dataInfo?.projectOut?.[i]?.researchManagerName ?? ''),
@@ -57,7 +57,7 @@ export default function DiscoveryResult() {
           id: data?.data?.result?.dataInfo?.projectIn?.[i]?.projectNumber ?? i,
           tab: 'IITP내부',
           title: parse(data?.data?.result?.dataInfo?.projectIn?.[i]?.title ?? ''),
-          price: (data?.data?.result?.dataInfo?.projectIn?.[i]?.fund ?? '') + '억',
+          price: common.setPriceInput(data?.data?.result?.dataInfo?.projectIn?.[i]?.fund ?? '') + '원',
           period: period.replaceAll('-','.'), 
           agency: parse(data?.data?.result?.dataInfo?.projectIn?.[i]?.researchAgencyName ?? ''),
           name: parse(data?.data?.result?.dataInfo?.projectIn?.[i]?.researchManagerName ?? ''),
@@ -517,10 +517,10 @@ export default function DiscoveryResult() {
                             <strong className='font-medium'>[{e.tab}] {e.title}</strong>
                           </p>
                           <div className='text_style01 mt-0.5 line1_text'>
-                            <p className='text-sm text-color-regular line1_text'>연구 개발비: <span className='font-medium text-color-main'>{e.price}</span></p>
-                            <p className='text-sm text-color-regular line1_text'>연구 개발기간: <span className='font-medium text-color-main'>{e.period}</span></p>
-                            <p className='text-sm text-color-regular line1_text'>연구 개발기관: <span className='font-medium text-color-main'>{e.agency}</span></p>
-                            <p className='text-sm text-color-regular line1_text'>연구 책임자: <span className='font-medium text-color-main'>{e.name}</span></p>
+                            <p className='text-sm text-color-regular line1_text'>총연구개발비: <span className='font-medium text-color-main'>{e.price}</span></p>
+                            <p className='text-sm text-color-regular line1_text'>총연구개발기간: <span className='font-medium text-color-main'>{e.period}</span></p>
+                            <p className='text-sm text-color-regular line1_text'>주관연구개발기관: <span className='font-medium text-color-main'>{e.agency}</span></p>
+                            <p className='text-sm text-color-regular line1_text'>연구책임자: <span className='font-medium text-color-main'>{e.name}</span></p>
                             
                           </div>
                         </a>

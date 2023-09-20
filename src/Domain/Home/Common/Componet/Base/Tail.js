@@ -14,7 +14,7 @@ export default function Tail() {
             <a href='/agree'>이용약관</a>
           </div>
           <p className='mt-8'>
-            대전광역시 유성구 유성대로 1548 (정보통신기획평가원) 동향분석팀 담장자 E-mail: key@iitp.kr <br/>
+            대전광역시 유성구 유성대로 1548 (정보통신기획평가원)<br/>
             ALL RIGHTS RESERVED ⓒ 정보통신기획평가원
           </p>
         </div>
