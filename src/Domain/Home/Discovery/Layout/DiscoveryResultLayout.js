@@ -57,7 +57,7 @@ export default function DiscoveryResultLayout({children, totalCount, tabCount, k
                   과제 정보 분석 결과는 총 <span className='text-color-main'>{common.setPriceInput(totalCount ?? 0)}건</span> 입니다.
                   </>
                   :  <>
-                    “<span className='text-color-main'>{keyword}</span>”에 대한 분석 결과는 총 <span className='text-color-main'>{common.setPriceInput(totalCount ?? 0)}건</span> 입니다.
+                    {(keyword ?? '') !== '' ? <>“<span className='text-color-main'>{keyword}</span>”에 대한 </> : null}분석 결과는 총 <span className='text-color-main'>{common.setPriceInput(totalCount ?? 0)}건</span> 입니다.
                   </>
             }
           </h3>

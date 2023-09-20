@@ -130,7 +130,9 @@ export default function Search(props) {
   };
 
   const handleSearch = (agency=false) => {
-    if (tmpSearchKeyword.trim() === '') {
+    let searchDetailActiveTabData = searchDetailData?.[tabActive] ?? {};
+    console.log(searchDetailActiveTabData);
+    if (tmpSearchKeyword.trim() === '' && JSON.stringify(searchDetailActiveTabData) === JSON.stringify({})) {
       dispatch(setMsg({
         title: '알림',
         msg: '키워드를 입력해주세요.',
