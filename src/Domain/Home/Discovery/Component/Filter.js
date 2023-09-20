@@ -3,18 +3,20 @@ import icSearch from 'Assets/Images/ic_search.png';
 import Button from 'Domain/Home/Common/Componet/Button';
 import common from 'Utill';
 import { useSelector, useDispatch } from 'react-redux';
-import { getFilterActive, setFilterActive } from 'Domain/Home/Discovery/Status/DiscoverySlice';
+import { getFilterActive, setFilterActive, setInitalFilter, getInitalFilter } from 'Domain/Home/Discovery/Status/DiscoverySlice';
 import { items } from 'Domain/Home/Discovery/Data/FilterItems';
 import SelectedFilterArea from 'Domain/Home/Discovery/Component/SelectedFilterArea';
 
 export default function Filter(props) {
-  const {filterItem, filterKey} = props;
+  const {filterItem, filterKey, setFilterShow} = props;
 
   const dispatch = useDispatch();
   const filterActive = useSelector(getFilterActive);
   const [tabActive, setTabActive] = useState(-1);
   const [selectItem, setSelectItem] = useState([]);
   const [selectItemActive, setSelectItemActive] = useState(filterActive);
+
+  const initalFilter = useSelector(getInitalFilter);
 
   // console.log('selectItemActive[filterKey].selected:', selectItemActive[filterKey].selected);
 
@@ -58,6 +60,16 @@ export default function Filter(props) {
     const subItem = filterItem[tabActive] ?? [];
     setSelectItem(subItem);
   }, [filterItem, tabActive]);
+
+  
+
+  useEffect(() => {
+    if (initalFilter) {
+      setSelectItemActive(items);
+      dispatch(setInitalFilter(false));
+      setFilterShow(false);
+    }
+  }, [initalFilter]);
   
   return (
     <div className='section mb-10'>

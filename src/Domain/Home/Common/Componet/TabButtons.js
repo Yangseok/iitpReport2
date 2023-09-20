@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import Button from './Button';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 export default function TabButtons(props) {
   const navigate = useNavigate();
-  const { style, tabs, active = 0 } = props;
+  const pathName = useLocation().pathname;
+  const { style, tabs, active = 0, statusProps } = props;
   const [tabClass, setTabClass] = useState('');
 
   useEffect(() => {
@@ -30,7 +31,7 @@ export default function TabButtons(props) {
       <ul>
         {tabs.map((e) => (
           <React.Fragment key={e.id}>
-            <li className={(e.id == active) ? 'on' : ''}><Button name={e.name} onClick={(e?.to) ? () => navigate(e.to) : e.onClick} /></li>
+            <li className={(e.id == active) ? 'on' : ''}><Button name={e.name} onClick={(e?.to) ? () => navigate(e.to, (statusProps === true) ? {state: {prevPath: pathName}} : undefined) : e.onClick} /></li>
           </React.Fragment>
         ))}
       </ul>

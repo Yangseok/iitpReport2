@@ -5,8 +5,8 @@ import arrDrop from 'Assets/Images/arr_drop.png';
 import AutoCompleteSearch from 'Domain/Home/Common/Componet/AutoCompleteSearch';
 // import * as mainAPI from 'Domain/Home/Main/API/Call';
 import { useSelector, useDispatch } from 'react-redux';
-import { setSearchKeywordReset, getTmpSearchKeyword } from 'Domain/Home/Common/Status/CommonSlice';
-import { getSearchDetailData, setSearchDetailData as setGlobalSearchDetailData } from 'Domain/Home/Discovery/Status/DiscoverySlice';
+import { setSearchKeywordReset } from 'Domain/Home/Common/Status/CommonSlice';
+import { getSearchDetailData, setSearchDetailData as setGlobalSearchDetailData, getInitalSearch, setInitalSearch } from 'Domain/Home/Discovery/Status/DiscoverySlice';
 import Button from 'Domain/Home/Common/Componet/Button';
 import TabButtons from 'Domain/Home/Common/Componet/TabButtons';
 import InputTextXBtn from 'Domain/Home/Discovery/Component/InputTextXBtn';
@@ -37,8 +37,10 @@ export default function Search(props) {
     { id: 7, name: '뉴스', onClick: () => setTabActive(7) },
   ];
 
-  const tmpSearchKeyword = useSelector(getTmpSearchKeyword);
+  // const tmpSearchKeyword = useSelector(getTmpSearchKeyword);
   // const [dataSearch, setDataSearch] = useState([]);
+
+  const initalSearch = useSelector(getInitalSearch);
 
   const [fold, setFold] = useState(true);
   const [tabActive, setTabActive] = useState(0);
@@ -132,19 +134,19 @@ export default function Search(props) {
   };
 
   const handleSearch = (agency=false) => {
-    let searchDetailActiveTabData = searchDetailData?.[tabActive] ?? {};
-    console.log(searchDetailActiveTabData);
-    if (tmpSearchKeyword.trim() === '' && JSON.stringify(searchDetailActiveTabData) === JSON.stringify({})) {
-      dispatch(setMsg({
-        title: '알림',
-        msg: '키워드를 입력해주세요.',
-        btnCss: ['inline-block rounded bg-primary-100 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-primary-700 transition duration-150 ease-in-out hover:bg-primary-accent-100 focus:bg-primary-accent-100 focus:outline-none focus:ring-0 active:bg-primary-accent-200'],
-        btnTxt: ['확인'],
-        btnEvent: ['close']
-      }));
-      dispatch(setShow(true));
-      return null;
-    }
+    // let searchDetailActiveTabData = searchDetailData?.[tabActive] ?? {};
+    // console.log(searchDetailActiveTabData);
+    // if (tmpSearchKeyword.trim() === '' && JSON.stringify(searchDetailActiveTabData) === JSON.stringify({})) {
+    //   dispatch(setMsg({
+    //     title: '알림',
+    //     msg: '키워드를 입력해주세요.',
+    //     btnCss: ['inline-block rounded bg-primary-100 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-primary-700 transition duration-150 ease-in-out hover:bg-primary-accent-100 focus:bg-primary-accent-100 focus:outline-none focus:ring-0 active:bg-primary-accent-200'],
+    //     btnTxt: ['확인'],
+    //     btnEvent: ['close']
+    //   }));
+    //   dispatch(setShow(true));
+    //   return null;
+    // }
     dispatch(setSearchKeywordReset(true));
     // navigate('/search/result/all?keyword=' + tmpSearchKeyword);
     console.log('agency:', agency);
@@ -190,6 +192,13 @@ export default function Search(props) {
       setFold(true);
     }
   }, [se3]);
+
+  useEffect(() => {
+    if (initalSearch) {
+      setSearchDetailData({});
+      dispatch(setInitalSearch(false));
+    }
+  }, [initalSearch]);
 
   return (
     <>

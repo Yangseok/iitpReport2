@@ -9,7 +9,8 @@ import common from 'Utill';
 import { useSelector, useDispatch } from 'react-redux';
 import { setLoading } from 'Domain/Home/Common/Status/CommonSlice';
 import { getSearchKeyword, getSelectKeyword } from 'Domain/Home/Common/Status/CommonSlice';
-import { getFilterActive, getSearchDetailData, getFileKeywordList } from 'Domain/Home/Discovery/Status/DiscoverySlice';
+import { getFilterActive, getSearchDetailData, getFileKeywordList, setInitalFilter, setInitalSearch, setSearchDetailData, setFilterActive } from 'Domain/Home/Discovery/Status/DiscoverySlice';
+import { items } from 'Domain/Home/Discovery/Data/FilterItems';
 import * as discoveryAPI from 'Domain/Home/Discovery/API/Call';
 import * as researcherAPI from 'Domain/Home/Discovery/API/ResearcherCall';
 import * as orgnAPI from 'Domain/Home/Discovery/API/OrgnCall';
@@ -24,9 +25,11 @@ import Policy from 'Domain/Home/Common/Componet/List/Policy';
 import Researcher from 'Domain/Home/Common/Componet/List/Researcher';
 import Orgn from 'Domain/Home/Common/Componet/List/Orgn';
 import News from 'Domain/Home/Common/Componet/List/News';
+import { useLocation } from 'react-router-dom';
 
 export default function ListWrap(props) {
-
+  const location = useLocation();
+  const prevPath = location?.state?.prevPath;
   const { filterKey, searchDetailKey } = props;
 
   const dispatch = useDispatch();
@@ -342,6 +345,16 @@ export default function ListWrap(props) {
     })();
   }, [keyword, se1, se2, selectKeyword]);
 
+  useEffect(() => {
+    if (prevPath !== undefined) {
+      console.log('prevPath:', prevPath);
+      dispatch(setSearchDetailData({}));
+      dispatch(setFilterActive(items));
+      dispatch(setInitalSearch(true));
+      dispatch(setInitalFilter(true));
+    }
+  }, [prevPath]);
+
   const getListComponet = (filterKey) => {
     switch (filterKey) {
     case 'search/projectOut':
@@ -397,7 +410,7 @@ export default function ListWrap(props) {
             </div>
           </div>
 
-          {filterShow && <Filter filterItem={filterItem} filterKey={filterKey} />}
+          {filterShow && <Filter filterItem={filterItem} setFilterShow={setFilterShow} filterKey={filterKey} />}
 
           {getListComponet(filterKey)}
         </div>

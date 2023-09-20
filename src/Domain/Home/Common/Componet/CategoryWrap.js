@@ -55,17 +55,17 @@ export default function CategoryWrap(props) {
         <ul>
           {(page === 'search')
             && <li className={`all${(tabActive1 === 0) ? ' on' : ''}`}>
-              <CategoryButton type={0} name={'전체'} num={common.setPriceInput(tabCount?.all ?? 0)} onClick={() => navigate('/search/result/all')} />
+              <CategoryButton type={0} name={'전체'} num={common.setPriceInput(tabCount?.all ?? 0)} onClick={() => navigate('/search/result/all', {state: {prevPath: pathName}})} />
             </li>}
           {tabButtons1?.map((e) => (
             <li key={e.id} className={(e.id === tabActive1) ? 'on' : ''}>
-              <CategoryButton type={e.id} name={e.name} num={common.setPriceInput(tabCount?.[e.id] ?? 0)} onClick={() => navigate(e.to)} />
+              <CategoryButton type={e.id} name={e.name} num={common.setPriceInput(tabCount?.[e.id] ?? 0)} onClick={() => navigate(e.to, {state: {prevPath: pathName}})} />
             </li>
           ))}
         </ul>
       </div>
       {(tabActive1 === 1)
-        && <TabButtons style='2' tabs={tabButtons2} active={tabActive2} />}
+        && <TabButtons style='2' tabs={tabButtons2} active={tabActive2} statusProps={true} />}
     </>
   );
 }

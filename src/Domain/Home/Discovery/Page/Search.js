@@ -1,15 +1,28 @@
-import React, {useEffect} from 'react';
+import React, {useEffect } from 'react';
 import DiscoveryLayout from 'Domain/Home/Discovery/Layout/DiscoveryLayout';
 import SearchArea from 'Domain/Home/Discovery/Component/SearchArea';
 import { useDispatch } from 'react-redux';
 import { setTmpSearchKeyword } from 'Domain/Home/Common/Status/CommonSlice';
 
-export default function Search() {
+import { setInitalFilter, setInitalSearch, setSearchDetailData, setFilterActive } from 'Domain/Home/Discovery/Status/DiscoverySlice';
+import { items } from 'Domain/Home/Discovery/Data/FilterItems';
+
+export default function Search(props) {
+  const {searchInit} = props;
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(setTmpSearchKeyword(''));
   }, []);
+
+  useEffect(() => {
+    if (searchInit === true) {
+      dispatch(setSearchDetailData({}));
+      dispatch(setFilterActive(items));
+      dispatch(setInitalSearch(true));
+      dispatch(setInitalFilter(true));
+    }
+  }, [searchInit]);
 
   return (
     <DiscoveryLayout>

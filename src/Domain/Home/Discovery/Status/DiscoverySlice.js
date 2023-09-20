@@ -6,6 +6,8 @@ const initialState = {
   searchDetailData: {},
   fileName: null,
   fileKeywordList: [],
+  initalFilter: false,
+  initalSearch: false,
 };
 
 export const discoverySlice = createSlice({
@@ -24,14 +26,22 @@ export const discoverySlice = createSlice({
     setFileName:  (state, action) => {
       state.fileName = action.payload;
     },
+    setInitalFilter:  (state, action) => {
+      state.initalFilter = action.payload;
+    },
+    setInitalSearch:  (state, action) => {
+      state.initalSearch = action.payload;
+    },
   },
 });
 
-export const { setFilterActive, setSearchDetailData, setFileKeywordList, setFileName } = discoverySlice.actions;
+export const { setFilterActive, setSearchDetailData, setFileKeywordList, setFileName, setInitalFilter, setInitalSearch } = discoverySlice.actions;
 
 export const getFilterActive = (state) => state.discovery.filterActive;
 export const getSearchDetailData = (state) => state.discovery.searchDetailData;
 export const getFileKeywordList = (state) => state.discovery.fileKeywordList;
 export const getFileName = (state) => state.discovery.fileName;
+export const getInitalFilter = (state) => state.discovery.initalFilter;
+export const getInitalSearch = (state) => state.discovery.initalSearch;
 
 export default discoverySlice.reducer;
