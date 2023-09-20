@@ -37,10 +37,10 @@ export const commonSlice = createSlice({
 export const { setLoading, setSearchKeyword, setSelectKeyword, setSearchKeywordResult, setSearchKeywordReset, setTmpSearchKeyword } = commonSlice.actions;
 
 export const getLoading = (state) => state.common.loading;
-export const getSearchKeyword = (state) => state.discovery.searchKeyword;
-export const getTmpSearchKeyword = (state) => state.discovery.tmpSearchKeyword;
-export const getSelectKeyword = (state) => state.discovery.selectKeyword;
-export const getSearchKeywordResult = (state) => state.discovery.searchKeywordResult;
-export const getSearchKeywordReset = (state) => state.discovery.searchKeywordReset;
+export const getSearchKeyword = (state) => state.common.searchKeyword;
+export const getTmpSearchKeyword = (state) => state.common.tmpSearchKeyword;
+export const getSelectKeyword = (state) => state.common.selectKeyword;
+export const getSearchKeywordResult = (state) => state.common.searchKeywordResult;
+export const getSearchKeywordReset = (state) => state.common.searchKeywordReset;
 
 export default commonSlice.reducer;
