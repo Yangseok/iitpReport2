@@ -3,7 +3,7 @@ import icSearch from 'Assets/Images/ic_search.png';
 import Button from 'Domain/Home/Common/Componet/Button';
 import common from 'Utill';
 import { useSelector, useDispatch } from 'react-redux';
-import { getFilterActive, setFilterActive } from 'Domain/Home/Common/Status/CommonSlice';
+import { getFilterActive, setFilterActive } from 'Domain/Home/Discovery/Status/DiscoverySlice';
 import { items } from 'Domain/Home/Discovery/Data/FilterItems';
 import SelectedFilterArea from 'Domain/Home/Discovery/Component/SelectedFilterArea';
 

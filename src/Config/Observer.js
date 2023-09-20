@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import common from 'Utill';
 import { useDispatch } from 'react-redux';
-import { setFilterActive } from 'Domain/Home/Common/Status/CommonSlice';
+import { setFilterActive } from 'Domain/Home/Discovery/Status/DiscoverySlice';
 import { items } from 'Domain/Home/Discovery/Data/FilterItems';
 
 export default function Observer() {

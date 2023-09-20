@@ -4,7 +4,7 @@ import DiscoveryArea from 'Domain/Home/Discovery/Component/DiscoveryArea';
 import { useParams } from 'react-router-dom';
 import common from 'Utill';
 import { useDispatch } from 'react-redux';
-import { setTmpSearchKeyword } from 'Domain/Home/Common/Status/CommonSlice';
+import { setTmpSearchKeyword } from 'Domain/Home/Discovery/Status/DiscoverySlice';
 
 export default function Main() {
   const dispatch = useDispatch();

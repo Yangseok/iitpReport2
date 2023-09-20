@@ -24,7 +24,7 @@ import AutoCompleteSearch from 'Domain/Home/Common/Componet/AutoCompleteSearch';
 import $ from 'jquery';
 import { FullPage, Slide } from 'react-full-page';
 import { useSelector, useDispatch } from 'react-redux';
-import { setSearchKeywordReset, getTmpSearchKeyword, setTmpSearchKeyword } from 'Domain/Home/Common/Status/CommonSlice';
+import { setSearchKeywordReset, getTmpSearchKeyword, setTmpSearchKeyword } from 'Domain/Home/Discovery/Status/DiscoverySlice';
 import { useNavigate } from 'react-router-dom';
 import { setMsg,setShow } from 'Domain/Home/Common/Status/MsgSlice';
 

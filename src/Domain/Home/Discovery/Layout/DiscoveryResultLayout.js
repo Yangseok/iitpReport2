@@ -4,7 +4,7 @@ import DiscoveryArea from 'Domain/Home/Discovery/Component/DiscoveryArea';
 import SearchArea from 'Domain/Home/Discovery/Component/SearchArea';
 import CategoryWrap from 'Domain/Home/Common/Componet/CategoryWrap';
 import common from 'Utill';
-import { getFileKeywordList } from 'Domain/Home/Common/Status/CommonSlice';
+import { getFileKeywordList } from 'Domain/Home/Discovery/Status/DiscoverySlice';
 import { useSelector } from 'react-redux';
 import WordClouds from 'Domain/Home/Discovery/Component/WordClouds';
 

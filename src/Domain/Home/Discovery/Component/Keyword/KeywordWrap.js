@@ -9,7 +9,7 @@ import * as discoveryAPI from 'Domain/Home/Discovery/API/Call';
 import common from 'Utill';
 
 import { useSelector, useDispatch } from 'react-redux';
-import { getSelectKeyword, setSelectKeyword, setSearchKeywordResult, getSearchKeywordResult, setSearchKeywordReset, getSearchKeywordReset } from 'Domain/Home/Common/Status/CommonSlice';
+import { getSelectKeyword, setSelectKeyword, setSearchKeywordResult, getSearchKeywordResult, setSearchKeywordReset, getSearchKeywordReset } from 'Domain/Home/Discovery/Status/DiscoverySlice';
 
 export default function KeywordWrap(props) {
   const dispatch = useDispatch();

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import * as mainAPI from 'Domain/Home/Main/API/Call';
 import { useDispatch } from 'react-redux';
-import { setTmpSearchKeyword, setSearchKeyword } from 'Domain/Home/Common/Status/CommonSlice';
+import { setTmpSearchKeyword, setSearchKeyword } from 'Domain/Home/Discovery/Status/DiscoverySlice';
 
 export default function RecommandKeyword(props) {
 
