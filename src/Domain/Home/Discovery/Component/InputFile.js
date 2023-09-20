@@ -1,11 +1,27 @@
 import React, { useState } from 'react';
 import icFile from 'Assets/Images/ic_file.png';
+import { useDispatch } from 'react-redux';
+import { setMsg,setShow } from 'Domain/Home/Common/Status/MsgSlice';
 
 export default function InputFile(props) {
+  const dispatch = useDispatch();
   const [fileName, setFileName]  = useState(props.fileName ?? null);
   const [fileValue, setFileValue]  = useState(null);
 
   const onFileChange = (e) => {
+    const size = e.target?.files?.[0]?.size ?? 0;
+    const limitFileSize = 100 * 1024 * 1024;
+    if (size === 0 || limitFileSize < size) {
+      dispatch(setMsg({
+        title: '알림',
+        msg: '파일사이즈는 100MB를 넘을 수 없습니다.',
+        btnCss: ['inline-block rounded bg-primary-100 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-primary-700 transition duration-150 ease-in-out hover:bg-primary-accent-100 focus:bg-primary-accent-100 focus:outline-none focus:ring-0 active:bg-primary-accent-200'],
+        btnTxt: ['확인'],
+        btnEvent: ['close']
+      }));
+      dispatch(setShow(true));
+      return false;
+    }
     const value = e.target.value;
     const name = value.split('\\')[value.split('\\').length - 1];
 
