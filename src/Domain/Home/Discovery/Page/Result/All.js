@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import DiscoveryResultLayout from 'Domain/Home/Discovery/Layout/DiscoveryResultLayout';
 import { useSelector, useDispatch } from 'react-redux';
-import { getSearchKeyword } from 'Domain/Home/Discovery/Status/DiscoverySlice';
-import { setLoading } from 'Domain/Home/Common/Status/CommonSlice';
+import { setLoading, getSearchKeyword } from 'Domain/Home/Common/Status/CommonSlice';
 import * as discoveryAPI from 'Domain/Home/Discovery/API/Call';
 import common from 'Utill';
 import parse from 'html-react-parser';

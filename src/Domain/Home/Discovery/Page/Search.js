@@ -2,7 +2,7 @@ import React, {useEffect} from 'react';
 import DiscoveryLayout from 'Domain/Home/Discovery/Layout/DiscoveryLayout';
 import SearchArea from 'Domain/Home/Discovery/Component/SearchArea';
 import { useDispatch } from 'react-redux';
-import { setTmpSearchKeyword } from 'Domain/Home/Discovery/Status/DiscoverySlice';
+import { setTmpSearchKeyword } from 'Domain/Home/Common/Status/CommonSlice';
 
 export default function Search() {
   const dispatch = useDispatch();

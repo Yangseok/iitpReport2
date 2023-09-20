@@ -23,7 +23,7 @@ import storage from 'redux-persist/lib/storage';
 
 const persistConfig = {
   key: 'root',
-  version: 4,
+  version: 5,
   storage,
   // whitelist: [],
   // todo: api 관련 상태값은 로컬스토리지에 저장하지 않도록 하겠다.
