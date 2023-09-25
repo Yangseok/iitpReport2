@@ -63,19 +63,32 @@ export default function Main() {
 
   const selectedList = useSelector(getSelectedList);
 
+  useEffect(() => {
+    console.log('selectedList:', selectedList);
+  }, [selectedList]);
+
+  //필터 선택 초기화
+  const initFilterClick = () => {
+    getFilterList('BCLS','', true);
+    // handleFilterApply();
+  };
+
   // 전체 선택 클릭
   const onAllItemClick = () => {
+    // console.log('onAllItemClick');
     const newData = data?.map(e => {
       return {...e, active: !checkAll};
     });
     setData(newData);
     setCheckAll(state => !state);
+    // console.log('newData:', newData);
 
     let dataIds = [];
     if ((data?.length ?? 0) > 0) dataIds = data.map(e => e.id);
+    // console.log('dataIds:', dataIds);
 
-    // console.log('checkAll:', checkAll);
     if (checkAll) {
+      // console.log('setSelectedList:', selectedList.filter(e => dataIds.indexOf(e.id) === -1));
       dispatch(setSelectedList(selectedList.filter(e => dataIds.indexOf(e.id) === -1)));
     } else {
       let newSelecedList = JSON.parse(JSON.stringify(selectedList));
@@ -89,19 +102,35 @@ export default function Main() {
     }
   };
 
+  //개별 선택 클릭
   const handleItemClick = (id) => {
+    // console.log('handleItemClick');
     const newData = data?.map(e => {
       if (e.id === id) {
         return {...e, active: !e.active};
       }
       return e;
     });
+    // console.log('newData:', newData);
     setData(newData);
+    
+    // console.log('newData?.length:', newData?.length);
+    // console.log('selectedList?.map(e => e.id === id)?.length:', selectedList?.map(e => e.id === id)?.length);
+
     if ((newData?.length ?? 0) > 0) {
-      if ((selectedList?.map(e => e.id === id)?.length ?? 0) > 0) {
+      if ((selectedList?.filter(e => e.id === id)?.length ?? 0) > 0) {
         dispatch(setSelectedList(selectedList.filter(e => e.id !== id)));
       } else {
-        dispatch(setSelectedList([...selectedList, newData.filter(e => e.id === id)]));
+        let newSelecedList = JSON.parse(JSON.stringify(selectedList));
+        const addData = newData.filter(e => e.id === id);
+        if ((addData?.length ?? 0) > 0) {
+          for (let i in addData) {
+            newSelecedList.push(addData[i]);
+          }
+        }
+        // console.log('selectedList:', selectedList);
+        // console.log('newSelecedList:', newSelecedList);
+        dispatch(setSelectedList(newSelecedList));
       }
     }
   };
@@ -112,6 +141,7 @@ export default function Main() {
     });
     setData(newData);
     dispatch(setSelectedList([]));
+    setCheckAll(false);
   };
 
   const initFilterData = useCallback(async (type='BCLS') => {
@@ -139,7 +169,7 @@ export default function Main() {
     setSmallIct(smallIctTmp);
     setDetailIct(detailIctTmp);
     setPage(1);
-    e.preventDefault();
+    e?.preventDefault();
   };
 
   const getSurveyCount = useCallback(async () => {
@@ -181,7 +211,7 @@ export default function Main() {
     };
 
     let tmpData = [];
-    for(let i in data?.data?.result?.dataList ?? []) {
+    for (let i in data?.data?.result?.dataList ?? []) {
       if (data?.data?.result?.dataList?.[i]?.noticeId === undefined) continue;
       let pushData = {
         id: data?.data?.result?.dataList?.[i]?.noticeId,
@@ -194,11 +224,12 @@ export default function Main() {
       };
       tmpData.push(pushData);
     }
+    // console.log('tmpData:', tmpData);
     setData(tmpData);
     setTotalCount(data?.data?.result?.totalCount ?? 0);
-  }, [rangeValue, sortType, sortStatus, bigIct, middleIct, smallIct, detailIct, size, page]);
+  }, [rangeValue, sortType, sortStatus, bigIct, middleIct, smallIct, detailIct, size, page, selectedList]);
 
-  const getFilterList = useCallback(async (type='BCLS',code='') => {
+  const getFilterList = useCallback(async (type='BCLS',code='', handleApply=false) => {
     let data = [];
     try {
       dispatch(setLoading(true));
@@ -224,6 +255,9 @@ export default function Main() {
       dispatch(setDetailIctList(data?.data?.result ?? []));
       break;
     }
+    if (handleApply) {
+      handleFilterApply();
+    }
   }, []);
 
   useEffect(() => {
@@ -239,11 +273,11 @@ export default function Main() {
     } else {
       setBtnDisabled(true);
     }
-  }, [data]);
+  }, [data, page]);
   
   useEffect(() => {
     getNoticeList();
-  }, [rangeValue, sortType, sortStatus, bigIct, middleIct, smallIct, detailIct, size, page]);
+  }, [rangeValue, sortType, sortStatus, bigIct, middleIct, smallIct, detailIct, size, page, selectedList]);
 
   //필터 활성화시 대분류 리스트를 가져옴.
   useEffect(() => {
@@ -407,7 +441,7 @@ export default function Main() {
                   </dd>
                 </dl>
               </div>
-              <button type='button' className='sorting_reset_btn text-sm font-medium text-color-placeholder'>선택 초기화 <img src={icReset ?? icReset02} alt='선택 초기화' className='w-6' /></button>
+              <button type='button' onClick={initFilterClick} className='sorting_reset_btn text-sm font-medium text-color-placeholder'>선택 초기화 <img src={icReset ?? icReset02} alt='선택 초기화' className='w-6' /></button>
               <Button name="필터 적용" onClick={handleFilterApply} icon={icSearch} className="gap-2 mt-6 mx-auto py-3 px-6.5 rounded-3xl text-base font-bold btn_style03" />
             </div>
             : ''
