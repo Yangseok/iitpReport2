@@ -14,7 +14,7 @@ import Pagination from 'Domain/Home/Common/Componet/Pagination';
 import common from 'Utill';
 
 export default function Orgn(props) {
-  const { projectData, totalCount, size, page, setPage, orgnActive, onOrgnSelect, simialityOrgn, subListMode, setSubListMode, subProjectList, subPatentList } = props;
+  const { projectData, totalCount, size, page, setPage, orgnActive, onOrgnSelect, simialityOrgn, subListMode, setSubListMode, subProjectList, subPatentList, subTotalCount, subSize, subPage, setSubPage } = props;
 
   return (
     <>
@@ -38,8 +38,8 @@ export default function Orgn(props) {
                       >
                         <p className='text-base font-bold text-color-main line1_text pr-40'>{e.name}</p>
                         <div className='text_style01'>
-                          <p className='text-sm text-color-regular'>과제: <span className='font-medium text-color-main'>{e.assign}건</span></p>
-                          <p className='text-sm text-color-regular'>특허: <span className='font-medium text-color-main'>{e.patent}건</span></p>
+                          <p className='text-sm text-color-regular'>과제: <span className='font-medium text-color-main'>{common.setPriceInput(e.assign ?? 0)}건</span></p>
+                          <p className='text-sm text-color-regular'>특허: <span className='font-medium text-color-main'>{common.setPriceInput(e.patent ?? 0)}건</span></p>
                           {(e?.institue) && <p className='text-sm text-color-regular'>부설연구소: <span className='font-medium text-color-main'>{e.institue}</span></p>}
                         </div>
                       </div>
@@ -122,10 +122,10 @@ export default function Orgn(props) {
               <div className='tab_btns tab_style05'>
                 <ul>
                   <li className={(subListMode === 'project')? 'on' : ''}>
-                    <button type='button' onClick={() => setSubListMode('project')}>과제({common.setPriceInput(subProjectList.length)})</button>
+                    <button type='button' onClick={() => {setSubPage(1); setSubListMode('project');}}>과제({common.setPriceInput(subTotalCount?.project ?? 0)})</button>
                   </li>
                   <li className={(subListMode === 'patent')? 'on' : ''}>
-                    <button type='button' onClick={() => setSubListMode('patent')}>특허({common.setPriceInput(subPatentList.length)})</button>
+                    <button type='button' onClick={() => {setSubPage(1); setSubListMode('patent');}}>특허({common.setPriceInput(subTotalCount?.patent ?? 0)})</button>
                   </li>
                 </ul>
               </div>
@@ -199,6 +199,9 @@ export default function Orgn(props) {
                     : null
                 }
               </ul>
+            </div>
+            <div className='mt-10'>
+              <Pagination total={subTotalCount?.[subListMode] ?? 0} size={subSize} page={subPage} onClick={(page) => setSubPage(page)} />
             </div>
           </div>
         </div>

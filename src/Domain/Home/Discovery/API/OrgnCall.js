@@ -44,8 +44,8 @@ export const orgn = async (
   return await API.post('/search/orgn', params);
 };
 //기관 검색
-export const orgnDetail = async (id) => {
-  return await API.get('/search/orgnDetail', {params: {id: id}});
+export const orgnDetail = async (id, size, page) => {
+  return await API.get('/search/orgnDetail', {params: {id: id, size: size, page: page}});
 };
 //기관 상세페이지
 export const orgnView = async (id) => {

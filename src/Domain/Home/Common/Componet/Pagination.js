@@ -57,22 +57,22 @@ export default function Pagination(props) {
   return (
     <div className='page_wrap'>
 
-      <button
+      {(!prev02Disabled && total !== 0) ? <button
         type='button'
         className='arr_btn start'
         disabled={prev02Disabled}
         onClick={() => onClick(1)}
       >
         처음 페이지
-      </button>
-      <button
+      </button> : null}
+      {(!prevDisabled && total !== 0) ? <button
         type='button'
         className='arr_btn prev'
         disabled={prevDisabled}
         onClick={onPrevClick}
       >
         이전 페이지
-      </button>
+      </button> : null}
       {pageNumers?.map((e, i) => (
         <button
           type='button'
@@ -83,22 +83,22 @@ export default function Pagination(props) {
           {e}
         </button>
       ))}
-      <button
+      {(!nextDisabled && total !== 0) ? <button
         type='button'
         className='arr_btn next'
         disabled={nextDisabled}
         onClick={onNextClick}
       >
         다음 페이지
-      </button>
-      <button
+      </button> : null}
+      {(!next02Disabled && total !== 0) ? <button
         type='button'
         className='arr_btn end'
         disabled={next02Disabled}
         onClick={() => onClick(totalPage)}
       >
         끝 페이지
-      </button>
+      </button> : null}
     </div>
   );
 }

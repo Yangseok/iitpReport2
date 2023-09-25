@@ -66,6 +66,10 @@ export default function ListWrap(props) {
   const [subPatentList, setSubPatentList] = useState([]);
   const [subListMode, setSubListMode] = useState('project');
 
+  const [subTotalCount, setSubTotalCount] = useState({project: 0, patent: 0});
+  const [subPage, setSubPage] = useState(1);
+  const [subSize] = useState(5);
+
   const getList = useCallback(async () => {
     await (async () => {
       let filterObj = List.getFilterObj(filterKey, filterActive);
@@ -197,14 +201,14 @@ export default function ListWrap(props) {
       try {
         dispatch(setLoading(true));
         if (se1 == 'search') {
-          data = await orgnAPI.orgnDetail(orgnActive.id);
+          data = await orgnAPI.orgnDetail(orgnActive.id, subSize, subPage);
         } else if (se1 == 'discovery') {
           if (se2 == 'keyword') {
-            data = await orgnAPI.orgnDetail(orgnActive.id);
+            data = await orgnAPI.orgnDetail(orgnActive.id, subSize, subPage);
           } else if (se2 == 'file') {
-            data = await orgnAPI.orgnDetail(orgnActive.id);
+            data = await orgnAPI.orgnDetail(orgnActive.id, subSize, subPage);
           } else if (se2 == 'project') {
-            data = await orgnAPI.orgnDetail(orgnActive.id);
+            data = await orgnAPI.orgnDetail(orgnActive.id, subSize, subPage);
           }
         }
       } catch (e) {
@@ -228,24 +232,24 @@ export default function ListWrap(props) {
       setSimialityOrgn(simialityOrgn);
 
       let subProjectList = [];
-      for (let i in data?.data?.result?.orgnResultInfo?.projectOut ?? []) {
-        // console.log(i, data?.data?.result?.orgnResultInfo?.projectOut?.[i]);
-        const period = data?.data?.result?.orgnResultInfo?.projectOut?.[i]?.period ?? '';
+      for (let i in data?.data?.result?.orgnResultInfo?.dataInfo?.projectOut ?? []) {
+        // console.log(i, data?.data?.result?.orgnResultInfo?.dataInfo?.projectOut?.[i]);
+        const period = data?.data?.result?.orgnResultInfo?.dataInfo?.projectOut?.[i]?.period ?? '';
         const periodArr = period.split('~');
-        let division = data?.data?.result?.orgnResultInfo?.projectOut?.[i]?.technicalClassification ?? [];
+        let division = data?.data?.result?.orgnResultInfo?.dataInfo?.projectOut?.[i]?.technicalClassification ?? [];
         if (division == '') division = [];
-        let keywordt = data?.data?.result?.orgnResultInfo?.projectOut?.[i]?.keywords ?? [];
+        let keywordt = data?.data?.result?.orgnResultInfo?.dataInfo?.projectOut?.[i]?.keywords ?? [];
         if (keywordt == '') keywordt = [];
         const subProjectListPushData = {
-          id: data?.data?.result?.orgnResultInfo?.projectOut?.[i]?.projectNumber ?? i,
+          id: data?.data?.result?.orgnResultInfo?.dataInfo?.projectOut?.[i]?.projectNumber ?? i,
           tag : ((periodArr?.[1]??'').replaceAll(' ','') === '9999-12-31') ? 1 : 2,
-          title: data?.data?.result?.orgnResultInfo?.projectOut?.[i]?.bigProjectName ?? '',
-          price: common.setPriceInput(data?.data?.result?.orgnResultInfo?.projectOut?.[i]?.fund ?? '') + '원',
+          title: data?.data?.result?.orgnResultInfo?.dataInfo?.projectOut?.[i]?.bigProjectName ?? '',
+          price: common.setPriceInput(data?.data?.result?.orgnResultInfo?.dataInfo?.projectOut?.[i]?.fund ?? '') + '원',
           period: period.replaceAll('-','.'), 
-          agency: data?.data?.result?.orgnResultInfo?.projectOut?.[i]?.researchAgencyName ?? '',
-          name: data?.data?.result?.orgnResultInfo?.projectOut?.[i]?.researchManagerName ?? '',
-          department: data?.data?.result?.orgnResultInfo?.projectOut?.[i]?.orderAgencyName ?? '',
-          performance: data?.data?.result?.orgnResultInfo?.projectOut?.[i]?.performance ?? '',
+          agency: data?.data?.result?.orgnResultInfo?.dataInfo?.projectOut?.[i]?.researchAgencyName ?? '',
+          name: data?.data?.result?.orgnResultInfo?.dataInfo?.projectOut?.[i]?.researchManagerName ?? '',
+          department: data?.data?.result?.orgnResultInfo?.dataInfo?.projectOut?.[i]?.orderAgencyName ?? '',
+          performance: data?.data?.result?.orgnResultInfo?.dataInfo?.projectOut?.[i]?.performance ?? '',
           division: division.join(' / '),
           keyword: keywordt.join(', '),
         };
@@ -254,16 +258,16 @@ export default function ListWrap(props) {
       setSubProjectList(subProjectList);
 
       let subPatentList = [];
-      for (let i in data?.data?.result?.orgnResultInfo?.patent ?? []) {
-        const agency = data?.data?.result?.orgnResultInfo?.patent?.[i]?.applicantName ?? [];
-        const name = data?.data?.result?.orgnResultInfo?.patent?.[i]?.inventorName ?? [];
-        const date = data?.data?.result?.orgnResultInfo?.patent?.[i]?.applDate ?? '';
+      for (let i in data?.data?.result?.orgnResultInfo?.dataInfo?.patent ?? []) {
+        const agency = data?.data?.result?.orgnResultInfo?.dataInfo?.patent?.[i]?.applicantName ?? [];
+        const name = data?.data?.result?.orgnResultInfo?.dataInfo?.patent?.[i]?.inventorName ?? [];
+        const date = data?.data?.result?.orgnResultInfo?.dataInfo?.patent?.[i]?.applDate ?? '';
         const subPatentListPushData = {
-          id: data?.data?.result?.orgnResultInfo?.patent?.[i]?.applNumber ?? i,
-          title: data?.data?.result?.orgnResultInfo?.patent?.[i]?.applName ?? '',
-          project: data?.data?.result?.orgnResultInfo?.patent?.[i]?.applName ?? '',
-          division: data?.data?.result?.orgnResultInfo?.patent?.[i]?.registrationType ?? '',
-          num: data?.data?.result?.orgnResultInfo?.patent?.[i]?.applNumber ?? '',
+          id: data?.data?.result?.orgnResultInfo?.dataInfo?.patent?.[i]?.applNumber ?? i,
+          title: data?.data?.result?.orgnResultInfo?.dataInfo?.patent?.[i]?.applName ?? '',
+          project: data?.data?.result?.orgnResultInfo?.dataInfo?.patent?.[i]?.applName ?? '',
+          division: data?.data?.result?.orgnResultInfo?.dataInfo?.patent?.[i]?.registrationType ?? '',
+          num: data?.data?.result?.orgnResultInfo?.dataInfo?.patent?.[i]?.applNumber ?? '',
           date: date.replace(/^(\d{4})(\d{2})(\d{2})$/, '$1.$2.$3'),
           agency: agency.join(', '),
           name: name.join(', '),
@@ -272,13 +276,14 @@ export default function ListWrap(props) {
       }
       setSubPatentList(subPatentList);
 
-      setSubListMode('project');
+      setSubTotalCount({project: data?.data?.result?.orgnResultInfo?.countInfo?.projectOut ?? 0, patent: data?.data?.result?.orgnResultInfo?.countInfo?.patent ?? 0});
     })();
-  }, [orgnActive, se1, se2]);
+  }, [orgnActive, subSize, subPage, se1, se2]);
 
   // 기관 선택 시
   const onOrgnSelect = (e, id, name) => {
     if(e.currentTarget.nodeName !== 'BUTTON') {
+      setSubListMode('project');
       setOrgnActive({ id, name });
     }
   };
@@ -304,7 +309,7 @@ export default function ListWrap(props) {
 
   useEffect(() => {
     getOrgnDetail();
-  }, [orgnActive]);
+  }, [orgnActive, subSize, subPage]);
 
   useEffect(() => {
     (async () => {
@@ -372,7 +377,7 @@ export default function ListWrap(props) {
     case 'search/indv':
       return <Researcher projectData={projectData} totalCount={totalCount} size={size} page={page} setPage={setPage} researcherActive={researcherActive} onResearcherSelect={onResearcherSelect} simialityResearcher={simialityResearcher} subList={subList} />;
     case 'search/orgn':
-      return <Orgn projectData={projectData} totalCount={totalCount} size={size} page={page} setPage={setPage} orgnActive={orgnActive} onOrgnSelect={onOrgnSelect} simialityOrgn={simialityOrgn} subListMode={subListMode} setSubListMode={setSubListMode} subProjectList={subProjectList} subPatentList={subPatentList} />;
+      return <Orgn projectData={projectData} totalCount={totalCount} size={size} page={page} setPage={setPage} orgnActive={orgnActive} onOrgnSelect={onOrgnSelect} simialityOrgn={simialityOrgn} subListMode={subListMode} setSubListMode={setSubListMode} subProjectList={subProjectList} subPatentList={subPatentList} subTotalCount={subTotalCount} subSize={subSize} subPage={subPage} setSubPage={setSubPage} />;
     case 'search/news':
       return <News projectData={projectData} totalCount={totalCount} size={size} page={page} setPage={setPage} />;
     default:
