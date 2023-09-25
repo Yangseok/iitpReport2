@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import TabButtons from 'Domain/Home/Common/Componet/TabButtons';
 import CategoryButton from './CategoryButton';
 import common from 'Utill';
 
 export default function CategoryWrap(props) {
-  const { tabCount, path } = props;
+  const { tabCount, path, isSearchDetail, activeCount } = props;
   const navigate = useNavigate();
   const pathName = useLocation().pathname;
   const [tabButtons1, setTabButtons1] = useState([]);
@@ -49,17 +49,25 @@ export default function CategoryWrap(props) {
     });
   }, [navigate, tabButtons1, tabButtons2]);
 
+  const getNum = useCallback((count, isActive) => {
+    if (isSearchDetail === true) {
+      if (!isActive) return 0;
+      else return Number(activeCount);
+    }
+    return Number(count);
+  }, [isSearchDetail, activeCount]);
+
   return (
     <>
       <div className={`category_wrap mb-10 ${(page === 'search') ? `grid0${tabButtons1.length + 1}` : `grid0${tabButtons1.length}`}`}>
         <ul>
           {(page === 'search')
             && <li className={`all${(tabActive1 === 0) ? ' on' : ''}`}>
-              <CategoryButton type={0} name={'전체'} num={common.setPriceInput(tabCount?.all ?? 0)} onClick={() => navigate('/search/result/all', {state: {prevPath: pathName}})} />
+              <CategoryButton type={0} name={'전체'} num={common.setPriceInput(getNum(tabCount?.all ?? 0, (tabActive1 === 0)))} onClick={() => (isSearchDetail === true) ? void(0) : navigate('/search/result/all', {state: {prevPath: pathName}})} />
             </li>}
           {tabButtons1?.map((e) => (
             <li key={e.id} className={(e.id === tabActive1) ? 'on' : ''}>
-              <CategoryButton type={e.id} name={e.name} num={common.setPriceInput(tabCount?.[e.id] ?? 0)} onClick={() => navigate(e.to, {state: {prevPath: pathName}})} />
+              <CategoryButton type={e.id} name={e.name} num={common.setPriceInput(getNum(tabCount?.[e.id] ?? 0, (e.id === tabActive1)))} onClick={() => (isSearchDetail === true) ? void(0) : navigate(e.to, {state: {prevPath: pathName}})} />
             </li>
           ))}
         </ul>

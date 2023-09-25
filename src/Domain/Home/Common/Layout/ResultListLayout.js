@@ -5,7 +5,7 @@ import FileResultLayout from 'Domain/Home/DemandBanking/Layout/FileResultLayout'
 
 export default function ResultListLayout(props) {
 
-  const { children, totalCount, tabCount, keyword, setSearchButtonClick } = props;
+  const { children, totalCount, tabCount, keyword, setSearchButtonClick, isSearchDetail, activeCount } = props;
 
   const [paramSe1, setParamSe1] = useState('');
   
@@ -19,7 +19,7 @@ export default function ResultListLayout(props) {
   return (
     <>
       {(paramSe1 === 'discovery' || paramSe1 === 'search') 
-        ? <DiscoveryResultLayout totalCount={totalCount} tabCount={tabCount} keyword={keyword} setSearchButtonClick={setSearchButtonClick}>
+        ? <DiscoveryResultLayout totalCount={totalCount} tabCount={tabCount} keyword={keyword} setSearchButtonClick={setSearchButtonClick} isSearchDetail={isSearchDetail} activeCount={activeCount}>
           {children}
         </DiscoveryResultLayout>
         : (paramSe1 === 'demandbanking')

@@ -70,6 +70,20 @@ export default function ListWrap(props) {
   const [subPage, setSubPage] = useState(1);
   const [subSize] = useState(5);
 
+  const [isSearchDetail, setIsSearchDetail] = useState(false);
+  const [activeCount, setActiveCount] = useState(0);
+
+  useEffect(() => {
+    if (se1 === 'search' && !(globalSearchDetailData[searchDetailKey] === undefined || JSON.stringify(globalSearchDetailData[searchDetailKey]) === JSON.stringify({}))) {
+      console.log('상세검색', globalSearchDetailData[searchDetailKey]);
+      console.log('globalSearchDetailData:', globalSearchDetailData);
+      console.log('searchDetailKey:', searchDetailKey);
+      setIsSearchDetail(true);
+      return;
+    }
+    setIsSearchDetail(false);
+  }, [se1, globalSearchDetailData, searchDetailKey]);
+
   const getList = useCallback(async () => {
     await (async () => {
       let filterObj = List.getFilterObj(filterKey, filterActive);
@@ -95,6 +109,7 @@ export default function ListWrap(props) {
       } else if (filterKey === 'search/orgn') {
         setOrgnActive({ id: data?.data?.result?.dataList?.[0]?.id ?? -1, name: common.deHighlight(data?.data?.result?.dataList?.[0]?.orgnName ?? '') });
       }
+      setActiveCount(data?.data?.result?.totalCount ?? 0);
     })();
 
   }, [keyword, searchButtonClick, page, size, sort, se1, se2, filterActive, filterKey, searchDetailKey, globalSearchDetailData, fileKeywordList]);
@@ -334,7 +349,7 @@ export default function ListWrap(props) {
       } finally {
         dispatch(setLoading(false));  
       }
-      // console.log('count:', data?.data?.result);
+      console.log('count:', data?.data?.result);
 
       setTabCount({
         'all': data?.data?.result?.countInfo?.all ?? 0,
@@ -386,7 +401,7 @@ export default function ListWrap(props) {
   };
 
   return (
-    <ResultListLayout totalCount={tabCount?.all} tabCount={tabCount} keyword={keyword} setSearchButtonClick={setSearchButtonClick} >
+    <ResultListLayout totalCount={tabCount?.all} tabCount={tabCount} keyword={keyword} setSearchButtonClick={setSearchButtonClick} isSearchDetail={isSearchDetail} activeCount={activeCount} >
       <section className='mt-6'>
         <div className='container'>
           <div className='flex items-center justify-between'>

@@ -5,7 +5,7 @@ import arrDrop from 'Assets/Images/arr_drop.png';
 import AutoCompleteSearch from 'Domain/Home/Common/Componet/AutoCompleteSearch';
 // import * as mainAPI from 'Domain/Home/Main/API/Call';
 import { useSelector, useDispatch } from 'react-redux';
-import { setSearchKeywordReset } from 'Domain/Home/Common/Status/CommonSlice';
+import { setSearchKeywordReset, getTmpSearchKeyword, getSearchKeyword, setSearchKeyword } from 'Domain/Home/Common/Status/CommonSlice';
 import { getSearchDetailData, setSearchDetailData as setGlobalSearchDetailData, getInitalSearch, setInitalSearch } from 'Domain/Home/Discovery/Status/DiscoverySlice';
 import Button from 'Domain/Home/Common/Componet/Button';
 import TabButtons from 'Domain/Home/Common/Componet/TabButtons';
@@ -37,7 +37,8 @@ export default function Search(props) {
     { id: 7, name: '뉴스', onClick: () => setTabActive(7) },
   ];
 
-  // const tmpSearchKeyword = useSelector(getTmpSearchKeyword);
+  const tmpSearchKeyword = useSelector(getTmpSearchKeyword);
+  const searchKeyword = useSelector(getSearchKeyword);
   // const [dataSearch, setDataSearch] = useState([]);
 
   const initalSearch = useSelector(getInitalSearch);
@@ -124,7 +125,11 @@ export default function Search(props) {
   };
 
   const handleDtailSearch = () => {
-    console.log(searchDetailData[tabActive]);
+    console.log('handleDtailSearch:', searchDetailData[tabActive]);
+    if (tmpSearchKeyword == '' && searchKeyword != '') {
+      dispatch(setSearchKeyword(''));
+    }
+    setFold(true);
     dispatch(setGlobalSearchDetailData(searchDetailData));
     const setSearchButtonClick = props?.setSearchButtonClick;
     if (setSearchButtonClick !== undefined) {

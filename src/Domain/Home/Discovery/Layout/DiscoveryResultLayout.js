@@ -8,7 +8,7 @@ import { getFileKeywordList } from 'Domain/Home/Discovery/Status/DiscoverySlice'
 import { useSelector } from 'react-redux';
 import WordClouds from 'Domain/Home/Discovery/Component/WordClouds';
 
-export default function DiscoveryResultLayout({children, totalCount, tabCount, keyword, setSearchButtonClick}) {
+export default function DiscoveryResultLayout({children, totalCount, tabCount, keyword, setSearchButtonClick, isSearchDetail, activeCount}) {
   const [page1, setPage1] = useState('');
   const [page2, setPage2] = useState('');
   const [path, setPath] = useState('');
@@ -56,9 +56,12 @@ export default function DiscoveryResultLayout({children, totalCount, tabCount, k
                   ?  <>
                   과제 정보 분석 결과는 총 <span className='text-color-main'>{common.setPriceInput(totalCount ?? 0)}건</span> 입니다.
                   </>
-                  :  <>
-                    {(keyword ?? '') !== '' ? <>“<span className='text-color-main'>{keyword}</span>”에 대한 </> : null}분석 결과는 총 <span className='text-color-main'>{common.setPriceInput(totalCount ?? 0)}건</span> 입니다.
-                  </>
+                  :  (isSearchDetail === true)
+                    ? null 
+                    :
+                    <>
+                      {(keyword ?? '') !== '' ? <>“<span className='text-color-main'>{keyword}</span>”에 대한 </> : null}분석 결과는 총 <span className='text-color-main'>{common.setPriceInput(totalCount ?? 0)}건</span> 입니다.
+                    </>
             }
           </h3>
           {(page2 === 'file') 
@@ -67,7 +70,7 @@ export default function DiscoveryResultLayout({children, totalCount, tabCount, k
             </div> 
             : ''}
           <div className='mt-10'>
-            <CategoryWrap tabCount={tabCount} path={path} />
+            <CategoryWrap tabCount={tabCount} path={path} isSearchDetail={isSearchDetail} activeCount={activeCount} />
           </div>
         </div>
       </section>
