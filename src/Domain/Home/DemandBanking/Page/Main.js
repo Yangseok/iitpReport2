@@ -63,9 +63,9 @@ export default function Main() {
 
   const selectedList = useSelector(getSelectedList);
 
-  useEffect(() => {
-    console.log('selectedList:', selectedList);
-  }, [selectedList]);
+  // useEffect(() => {
+  //   console.log('selectedList:', selectedList);
+  // }, [selectedList]);
 
   //필터 선택 초기화
   const initFilterClick = () => {
@@ -263,17 +263,21 @@ export default function Main() {
   useEffect(() => {
     const activeItems = data.filter(e => e.active === true);
     if (activeItems.length > 0) {
-      setBtnDisabled(false);
-
       if (activeItems.length === data.length) {
         setCheckAll(true);
       } else {
         setCheckAll(false);
       }
+    }
+  }, [data, page]);
+
+  useEffect(() => {
+    if (selectedList.length > 0) {
+      setBtnDisabled(false);
     } else {
       setBtnDisabled(true);
     }
-  }, [data, page]);
+  }, [selectedList]);
   
   useEffect(() => {
     getNoticeList();
