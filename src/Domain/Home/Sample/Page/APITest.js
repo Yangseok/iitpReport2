@@ -12,6 +12,7 @@ import OrgnAPIButton from 'Domain/Home/Sample/Component/OrgnAPIButton';
 import NewsAPIButton from 'Domain/Home/Sample/Component/NewsAPIButton';
 import ViewAPIButton from 'Domain/Home/Sample/Component/ViewAPIButton';
 import DemandAPIButton from 'Domain/Home/Sample/Component/DemandAPIButton';
+import IctTrendAPIButton from 'Domain/Home/Sample/Component/IctTrendAPIButton';
 import * as discoveryAPI from 'Domain/Home/Discovery/API/Call';
 import { useDispatch } from 'react-redux';
 import { setLoading } from 'Domain/Home/Common/Status/CommonSlice';
@@ -85,6 +86,13 @@ export default function APITest() {
         <ul className='text-center'>
           <h2>수요뱅킹</h2>
           <DemandAPIButton apiCallWrap={apiCallWrap} />
+        </ul>
+      </div>
+
+      <div className='border-2 border-gray-400 border-solid rounded-lg mx-auto mr-10 ml-10 pt-10 pb-10 mb-10'>
+        <ul className='text-center'>
+          <h2>ICT 트렌드</h2>
+          <IctTrendAPIButton apiCallWrap={apiCallWrap} />
         </ul>
       </div>
     </SampleLayout>
