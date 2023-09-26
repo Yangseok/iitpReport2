@@ -1,11 +1,12 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import SiteMap from './SiteMap';
 import common from 'Utill';
-import { useSelector } from 'react-redux';
-import { getAccount } from 'Domain/Home/Common/Status/CommonSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { getAccount, setAccount } from 'Domain/Home/Common/Status/CommonSlice';
 
 export default function Head(props) {
+  const dispatch = useDispatch();
   const account = useSelector(getAccount);
 
   const { className } = props;
@@ -45,6 +46,16 @@ export default function Head(props) {
   const [sitemapShow, setSitemapShow] = useState(false);
   const [logoutShow, setLogoutShow] = useState(false);
 
+  const handleLogout = useCallback((e) => {
+    dispatch(setAccount({
+      isLogin: false,
+      id: '',
+      accessToken: '',
+      userName: '',
+    }));
+    e.preventDefault();
+  }, []);
+
   return (
     <header id='header' className={className}>
       <div className='container'>
@@ -77,7 +88,7 @@ export default function Head(props) {
                   <button type='button' onClick={() => setLogoutShow(state => !state)}>{account?.userName ?? ''}님</button>
                   {(logoutShow) 
                     ? <div className='logout_btn'>
-                      <button type='button' onClick={() => {}}>로그아웃</button>
+                      <button type='button' onClick={handleLogout}>로그아웃</button>
                     </div>
                     : null}
                 </>
