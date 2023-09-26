@@ -100,12 +100,15 @@ hr { color: $color_line; }
     @include flexLayout(center, center, 8px);
 
     li {
+      position: relative;
+
       p {
         font-size: 16px;
         color: $color_regular;
         font-weight: 700;
       }
-      button, a {
+
+      .icon_btn {
         @include hiddenAltText;
         display: block;
         width: 24px;
@@ -113,11 +116,24 @@ hr { color: $color_line; }
         background-repeat: no-repeat;
         background-position: center;
         background-size: contain;
+        &.ic_login { background-image: url('Assets/Images/ic_guest.png'); }
+        &.ic_menu { background-image: url('Assets/Images/ic_menu.png'); }
       }
-      &:nth-of-type(1) > button,
-      &:nth-of-type(1) > a { background-image: url('Assets/Images/ic_guest.png'); }
-      &:nth-of-type(2) > button,
-      &:nth-of-type(2) > a { background-image: url('Assets/Images/ic_menu.png'); }
+
+      .logout_btn {
+        position: absolute;
+        top: 100%;
+        right: 0;
+        display: block;
+        border-radius: 8px;
+        background-color: $color_white;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.09);
+
+        button {
+          width: 100px;
+          padding: 8px 0;
+        }
+      }
     }
   }
 

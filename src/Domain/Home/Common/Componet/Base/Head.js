@@ -43,6 +43,7 @@ export default function Head(props) {
   const se1 = se[1] ?? '';
 
   const [sitemapShow, setSitemapShow] = useState(false);
+  const [logoutShow, setLogoutShow] = useState(false);
 
   return (
     <header id='header' className={className}>
@@ -71,12 +72,20 @@ export default function Head(props) {
           </nav>
           <ul className='right_menu'>
             <li>
-              {((account?.isLogin ?? false) === true) ?
-                <p>{account?.userName ?? ''}님</p> : <NavLink to='/login'>Guest Login</NavLink>
+              {((account?.isLogin ?? false) === true) 
+                ? <>
+                  <button type='button' onClick={() => setLogoutShow(state => !state)}>{account?.userName ?? ''}님</button>
+                  {(logoutShow) 
+                    ? <div className='logout_btn'>
+                      <button type='button' onClick={() => {}}>로그아웃</button>
+                    </div>
+                    : null}
+                </>
+                : <NavLink to='/login' className={'icon_btn ic_login'}>Guest Login</NavLink>
               }
             </li>
             <li>
-              <button type='button' className='menu_btn' onClick={() => setSitemapShow(true)}>Menu</button>
+              <button type='button' className='icon_btn ic_menu' onClick={() => setSitemapShow(true)}>Menu</button>
             </li>
           </ul>
         </div>
