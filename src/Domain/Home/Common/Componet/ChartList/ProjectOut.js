@@ -1,16 +1,13 @@
 import React, { useState } from 'react';
-import IctResultLayout from 'Domain/Home/ICTTrend/Layout/IctResultLayout';
 import IctWordClouds from 'Domain/Home/ICTTrend/Component/IctWordClouds';
 import IctTreeMap from 'Domain/Home/ICTTrend/Component/IctTreeMap';
 import IctChart1 from 'Domain/Home/ICTTrend/Component/IctChart1';
 import IctChart2 from 'Domain/Home/ICTTrend/Component/IctChart2';
 import IctChart3 from 'Domain/Home/ICTTrend/Component/IctChart3';
-import ListItem from 'Domain/Home/Common/Componet/ListItem';
-import Pagination from 'Domain/Home/Common/Componet/Pagination';
 import RcSlider from 'rc-slider';
 import moment from 'moment';
 
-export default function Result() {
+export default function Result () {
   const tempWordCloudData = [
     {
       'text': '제스처',
@@ -255,23 +252,6 @@ export default function Result() {
     [5, 4, 6, 9, 8, 6, 10, 13, 17, 15],
     [3, 4, 5, 6, 7, 9, 10, 12, 15, 20],
   ];
-  // 데이터는 10개씩 뿌려줌
-  const tempData = [
-    {
-      id: 0,
-      tag: 1,
-      title: '인공지능 학습 및 디지털 트윈을 위한 3차원 데이터 수집·전처리 및 가공 플랫폼 개발',
-      price: '10억',
-      period: '2023.04.01 ~ 2024.04.30',
-      agency: '주식회사 오름',
-      name: '홍길동',
-      department: '중소벤처기업부',
-      performance: '논문(1), 특허(3)',
-      division: '정보 / 통신 / 소프트웨어 / S/W솔루션 ',
-      keyword: '3D 데이터, 디지털 트윈, 지능형 데이터 가공 플랫폼, 깊이 추정',
-    },
-  ];
-
   const [cloudsRangeValue, setCloudsRangeValue] = useState([2022, 2023]);
   const [chartRangeValue, setChartRangeValue] = useState(2022);
 
@@ -308,10 +288,10 @@ export default function Result() {
   const labels2 = getLabels(10);
   const labels3_1 = getLabels(10);
   const labels3_2 = ['서울대', '연세대', '고려대', '전남대'];
-
+  
   return (
-    <IctResultLayout>
-      <section className='mt-10'>
+    <>
+      <section className='mt-10 mb-10'>
         <div className='container'>
           <div className='list_wrap_style02 grid02'>
             <div>
@@ -367,49 +347,6 @@ export default function Result() {
           </div>
         </div>
       </section>
-      <section className='mt-14'>
-        <div className='container'>
-          <h3 className='text-base font-bold text-color-dark'>국가 R&D 과제 <span className='text-color-main'>50,150건</span></h3>
-          <div className='list_style01 mt-5'>
-            <ul>
-              {(tempData?.length > 0)
-                ? tempData?.map((e) => {
-                  return (
-                    <ListItem 
-                      key={e.id}
-                      tag={e.tag}
-                      title={e.title}
-                      contents={<>
-                        <div>
-                          <p className='text-sm text-color-regular'>총연구개발비: <span className='font-medium text-color-main'>{e.price}</span></p>
-                          <p className='text-sm text-color-regular'>총연구개발기간: <span className='font-medium text-color-main'>{e.period}</span></p>
-                          <p className='text-sm text-color-regular'>주관연구개발기관: <span className='font-medium text-color-main'>{e.agency}</span></p>
-                          <p className='text-sm text-color-regular'>연구책임자: <span className='font-medium text-color-main'>{e.name}</span></p>
-                          <p className='text-sm text-color-regular'>부처명: <span className='font-medium text-color-main'>{e.department}</span></p>
-                        </div>
-                        <div>
-                          <p className='text-sm text-color-regular'>연구개발성과: <span className='font-medium text-color-main'>{e.performance}</span></p>
-                          <p className='text-sm text-color-regular'>국가과학기술표준분류: <span className='font-medium text-color-main'>{e.division}</span></p>
-                          <p className='text-sm text-color-regular'>한글 키워드: <span className='font-medium text-color-main'>{e.keyword}</span></p>
-                        </div>
-                      </>}
-                      btns={<>
-                        <a href={`/view/projectout/${e.id}`} className='h-5 px-1.5 rounded-sm text-xs font-medium text-color-white bg-color-light1' target='_blank' rel="noreferrer" title={`새창이동, ${e.title} 상세 페이지`}>자세히 보기↗</a>
-                      </>}
-                    />
-                  );
-                })
-                : <li>
-                  <p className='text-base text-color-placeholder'>데이터가 없습니다.</p>
-                </li>
-              }
-            </ul>
-          </div>
-          <div className='mt-10'>
-            <Pagination total={50} page={1} onClick={(i) => console.log(i)} />
-          </div>
-        </div>
-      </section>
-    </IctResultLayout>
+    </>
   );
 }

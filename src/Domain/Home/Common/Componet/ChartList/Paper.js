@@ -1,16 +1,13 @@
 import React, { useState } from 'react';
-import IctResultLayout from 'Domain/Home/ICTTrend/Layout/IctResultLayout';
 import IctWordClouds from 'Domain/Home/ICTTrend/Component/IctWordClouds';
 import IctTreeMap from 'Domain/Home/ICTTrend/Component/IctTreeMap';
 import IctChart1 from 'Domain/Home/ICTTrend/Component/IctChart1';
 import IctChart2 from 'Domain/Home/ICTTrend/Component/IctChart2';
-import ListItem from 'Domain/Home/Common/Componet/ListItem';
-import Pagination from 'Domain/Home/Common/Componet/Pagination';
 import ListPopup from 'Domain/Home/ICTTrend/Component/Popup/ListPopup';
 import RcSlider from 'rc-slider';
 import moment from 'moment';
 
-export default function Result() {
+export default function Result () {
   const tempWordCloudData = [
     {
       'text': '제스처',
@@ -262,19 +259,6 @@ export default function Result() {
     { id: 8, name: '인피닉', count: 70 },
     { id: 9, name: '서울대학교 산학협력단', count: 69 },
   ];
-  const tempData2 = [
-    {
-      id: 0,
-      title: '드론을 이용한 인공지능 기반 재난 피해정보 탐지 방법 및 시스템',
-      project: 'AI기술을 활용한 공공데이터 기반 지역현안 솔루션 개발 및 실용화(안전·안심사회 실현을 위한 실증연구 중심으로)',
-      division: '출원',
-      num: '1020200077142',
-      date: '2021.01.08',
-      agency: '행정안전부국립재난안전연구원',
-      name: '홍길동',
-      link: null,
-    },
-  ];
 
   const [popup, setPopup] = useState(false);
   const [cloudsRangeValue, setCloudsRangeValue] = useState([2022, 2023]);
@@ -313,8 +297,8 @@ export default function Result() {
   const labels2 = getLabels(10);
 
   return (
-    <IctResultLayout>
-      <section className='mt-10'>
+    <>
+      <section className='mt-10 mb-10'>
         <div className='container'>
           <div className='list_wrap_style02 grid02'>
             <div>
@@ -388,50 +372,9 @@ export default function Result() {
           </div>
         </div>
       </section>
-      <section className='mt-14'>
-        <div className='container'>
-          <h3 className='text-base font-bold text-color-dark'>출원 특허 <span className='text-color-main'>50,150건</span></h3>
-          <div className='list_style01 mt-5'>
-            <ul>
-              {(tempData2?.length > 0)
-                ? tempData2?.map((e) => {
-                  return (
-                    <ListItem 
-                      key={e.id}
-                      title={e.title}
-                      contents={<>
-                        <div>
-                          <p className='text-sm text-color-regular'>유발 과제: <span className='font-medium text-color-main'>{e.project}</span></p>
-                          <p className='text-sm text-color-regular'>출원등록구분: <span className='font-medium text-color-main'>{e.division}</span></p>
-                          <p className='text-sm text-color-regular'>출원(등록)번호: <span className='font-medium text-color-main'>{e.num}</span></p>
-                        </div>
-                        <div>
-                          <p className='text-sm text-color-regular'>출원(등록)일: <span className='font-medium text-color-main'>{e.date}</span></p>
-                          <p className='text-sm text-color-regular'>출원(등록)인: <span className='font-medium text-color-main'>{e.agency}</span></p>
-                          <p className='text-sm text-color-regular'>발명자: <span className='font-medium text-color-main'>{e.name}</span></p>
-                        </div>
-                      </>}
-                      btns={<>
-                        <a href={`/view/patent/${e.id}`} className='h-5 px-1.5 rounded-sm text-xs font-medium text-color-white bg-color-light1' target='_blank' rel="noreferrer" title={`새창이동, ${e.title} 상세 페이지`}>자세히 보기↗</a>
-                        {(e.link && e.link !== '') ? <a href={e.link} className='h-5 px-1.5 rounded-sm text-xs font-medium text-color-white bg-color-footer' target='_blank' rel='noreferrer' title={`새창이동, ${e.title} 원문 페이지`}>원문 보기↗</a> : null}
-                      </>}
-                    />
-                  );
-                })
-                : <li>
-                  <p className='text-base text-color-placeholder'>데이터가 없습니다.</p>
-                </li>
-              }
-            </ul>
-          </div>
-          <div className='mt-10'>
-            <Pagination total={50} page={1} onClick={(i) => console.log(i)} />
-          </div>
-        </div>
-      </section>
       {(popup) 
-        ? <ListPopup popup={popup} setPopup={setPopup} category={'patent'} /> 
+        ? <ListPopup popup={popup} setPopup={setPopup} category={'paper'} /> 
         : null}
-    </IctResultLayout>
+    </>
   );
 }

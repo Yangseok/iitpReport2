@@ -9,6 +9,7 @@ import msgReducer from 'Domain/Home/Common/Status/MsgSlice';
 import commonReducer from 'Domain/Home/Common/Status/CommonSlice';
 import discoveryReducer from 'Domain/Home/Discovery/Status/DiscoverySlice';
 import demandReducer from 'Domain/Home/DemandBanking/Status/DemandSlice';
+import ictTrendReducer from 'Domain/Home/ICTTrend/Status/IctTrendSlice';
 import {
   persistStore,
   persistReducer,
@@ -23,7 +24,7 @@ import storage from 'redux-persist/lib/storage';
 
 const persistConfig = {
   key: 'root',
-  version: 6,
+  version: 7,
   storage,
   // whitelist: [],
   // todo: api 관련 상태값은 로컬스토리지에 저장하지 않도록 하겠다.
@@ -36,6 +37,7 @@ const rootReducer = combineReducers({
   common: commonReducer,
   discovery: discoveryReducer,
   demand: demandReducer,
+  ictTrend: ictTrendReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

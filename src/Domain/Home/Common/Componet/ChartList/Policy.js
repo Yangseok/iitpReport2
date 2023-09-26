@@ -1,13 +1,10 @@
 import React, { useState } from 'react';
-import IctResultLayout from 'Domain/Home/ICTTrend/Layout/IctResultLayout';
 import IctWordClouds from 'Domain/Home/ICTTrend/Component/IctWordClouds';
 import IctChart1 from 'Domain/Home/ICTTrend/Component/IctChart1';
 import IctChart4 from 'Domain/Home/ICTTrend/Component/IctChart4';
-import ListItem from 'Domain/Home/Common/Componet/ListItem';
-import Pagination from 'Domain/Home/Common/Componet/Pagination';
 import RcSlider from 'rc-slider';
 
-export default function Result() {
+export default function Result () {
   const tempWordCloudData = [
     {
       'text': '제스처',
@@ -239,17 +236,6 @@ export default function Result() {
     { x: 51, y: 120 },
   ];
   const tempChartData2 = [185, 83, 42, 30, 16, 6, 4, 2];
-  // 데이터는 10개씩 뿌려줌
-  const tempData = [
-    {
-      id: 0,
-      title: '싱가포르 인공지능 진출가이드 2023',
-      agency: '정보통신기획평가원',
-      date: '2023.06.08',
-      content: '싱가포르 국립연구재단, 디지털 경제 혁신을 위해 250억 싱가포르 달러 투자 계획 • 인공지능을 비롯해 5G, 사이버보안 등 디지털 경제 구축을 위한 투자 진행 - 싱가포르 국립연구재단(NRF)는 2025년까지 싱가포르 주요 국가 주도 연구개발계획을 발표, 디지털 경제 혁신을 위해 최대 규모의 연구개발 투자를 진행할 예정 - 특히 항공 및 항만 시스템 분야에서 ...',
-      link: null,
-    },
-  ];
 
   const [cloudsRangeValue, setCloudsRangeValue] = useState([2022, 2023]);
   const [chartRangeValue, setChartRangeValue] = useState(2022);
@@ -271,8 +257,8 @@ export default function Result() {
   const labels2 = ['기타','기술개발진행중','기술개발완료','특허만신청(등록)','시제품단계','아이디어창안','실용화단계','시장개척단계'];
 
   return (
-    <IctResultLayout>
-      <section className='mt-10'>
+    <>
+      <section className='mt-10 mb-10'>
         <div className='container'>
           <div className='list_wrap_style02 grid02'>
             <div>
@@ -318,43 +304,6 @@ export default function Result() {
           </div>
         </div>
       </section>
-      <section className='mt-14'>
-        <div className='container'>
-          <h3 className='text-base font-bold text-color-dark'>정부정책 <span className='text-color-main'>50,150건</span></h3>
-          <div className='list_style01 mt-5'>
-            <ul>
-              {(tempData?.length > 0)
-                ? tempData?.map((e) => {
-                  return (
-                    <ListItem 
-                      key={e.id}
-                      title={e.title}
-                      contents={<>
-                        <p className='text-sm text-color-regular line2_text'>{e.content}</p>
-                      </>}
-                      desc={<>
-                        <div className='text_style01 flex items-center gap-4'>
-                          <div>
-                            <p className='text-sm text-color-regular'>출처: <span className='font-medium text-color-main'>{e.agency}</span></p>
-                            <p className='text-sm text-color-regular'>작성일: <span className='font-medium text-color-main'>{e.date}</span></p>
-                          </div>
-                          {(e.link && e.link !== '') ? <a href={e.link} className='h-5 px-1.5 rounded-sm text-xs font-medium text-color-white bg-color-footer' target='_blank' rel='noreferrer' title={`새창이동, ${e.title} 원문 페이지`}>원문 보기↗</a> : null}
-                        </div>
-                      </>}
-                    />
-                  );
-                })
-                : <li>
-                  <p className='text-base text-color-placeholder'>데이터가 없습니다.</p>
-                </li>
-              }
-            </ul>
-          </div>
-          <div className='mt-10'>
-            <Pagination total={50} page={1} onClick={(i) => console.log(i)} />
-          </div>
-        </div>
-      </section>
-    </IctResultLayout>
+    </>
   );
 }

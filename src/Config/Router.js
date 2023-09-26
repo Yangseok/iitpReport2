@@ -16,13 +16,6 @@ import DemandBankingResult from 'Domain/Home/DemandBanking/Page/Result';
 import DemandBankingView from 'Domain/Home/DemandBanking/Page/View';
 import DemandBankingMerge from 'Domain/Home/DemandBanking/Page/Merge';
 import ICTTrend from 'Domain/Home/ICTTrend/Page/Main';
-import ICTTrendResultProjectOut from 'Domain/Home/ICTTrend/Page/Result/ProjectOut';
-import ICTTrendResultProjectIn from 'Domain/Home/ICTTrend/Page/Result/ProjectIn';
-import ICTTrendResultPatent from 'Domain/Home/ICTTrend/Page/Result/Patent';
-import ICTTrendResultPaper from 'Domain/Home/ICTTrend/Page/Result/Paper';
-import ICTTrendResultIct from 'Domain/Home/ICTTrend/Page/Result/Ict';
-import ICTTrendResultPolicy from 'Domain/Home/ICTTrend/Page/Result/Policy';
-import ICTTrendResultNews from 'Domain/Home/ICTTrend/Page/Result/News';
 import PageNotFound from 'Domain/Home/Common/ErrorPage/404';
 import Counter from 'Domain/Home/Sample/Page/Counter';
 import Modal1 from 'Domain/Home/Sample/Page/Modal1';
@@ -119,13 +112,9 @@ export default function Router() {
         <Route path='/icttrend' element={<ICTTrend />} />
         <Route path='/icttrend/:se2' element={<ICTTrend />} />
         <Route path='/icttrend/:se2/result' element={<ICTTrend />} />
-        <Route path='/icttrend/:se2/result/projectout' element={<ICTTrendResultProjectOut />} />
-        <Route path='/icttrend/:se2/result/projectin' element={<ICTTrendResultProjectIn />} />
-        <Route path='/icttrend/:se2/result/patent' element={<ICTTrendResultPatent />} />
-        <Route path='/icttrend/:se2/result/paper' element={<ICTTrendResultPaper />} />
-        <Route path='/icttrend/:se2/result/ict' element={<ICTTrendResultIct />} />
-        <Route path='/icttrend/:se2/result/policy' element={<ICTTrendResultPolicy />} />
-        <Route path='/icttrend/:se2/result/news' element={<ICTTrendResultNews />} />
+        {list.map((e,i) => {
+          return <Route key={i} path={'/icttrend/:se2/result/' + e.path} element={<ListWrap filterKey={e.filterKey} searchDetailKey={e.searchDetailKey} />} />;
+        })}
         <Route path='/sample/redux' element={<Counter />} />
         <Route path='/sample/modal1' element={<Modal1 />} />
         <Route path='/sample/modal2' element={<Modal2 />} />

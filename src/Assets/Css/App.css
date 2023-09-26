@@ -268,10 +268,10 @@ hr {
   background-position: center;
   background-size: contain;
 }
-#header ul.right_menu li:nth-of-type(1) > * {
+#header ul.right_menu li:nth-of-type(1) > button, #header ul.right_menu li:nth-of-type(1) > a {
   background-image: url("Assets/Images/ic_guest.png");
 }
-#header ul.right_menu li:nth-of-type(2) > * {
+#header ul.right_menu li:nth-of-type(2) > button, #header ul.right_menu li:nth-of-type(2) > a {
   background-image: url("Assets/Images/ic_menu.png");
 }
 #header.hd_style02 {

@@ -25,6 +25,13 @@ import Policy from 'Domain/Home/Common/Componet/List/Policy';
 import Researcher from 'Domain/Home/Common/Componet/List/Researcher';
 import Orgn from 'Domain/Home/Common/Componet/List/Orgn';
 import News from 'Domain/Home/Common/Componet/List/News';
+import ProjectOutChart from 'Domain/Home/Common/Componet/ChartList/ProjectOut';
+import ProjectInChart from 'Domain/Home/Common/Componet/ChartList/ProjectIn';
+import PatentChart from 'Domain/Home/Common/Componet/ChartList/Patent';
+import PaperChart from 'Domain/Home/Common/Componet/ChartList/Paper';
+import IctChart from 'Domain/Home/Common/Componet/ChartList/Ict';
+import PolicyChart from 'Domain/Home/Common/Componet/ChartList/Policy';
+import NewsChart from 'Domain/Home/Common/Componet/ChartList/News';
 import { useLocation } from 'react-router-dom';
 
 export default function ListWrap(props) {
@@ -400,34 +407,63 @@ export default function ListWrap(props) {
     }
   };
 
+  const getChartComponent = (filterKey) => {
+    switch (filterKey) {
+    case 'search/projectOut':
+      return <ProjectOutChart />;
+    case 'search/projectIn':
+      return <ProjectInChart />;
+    case 'search/patent':
+      return <PatentChart />;
+    case 'search/paper':
+      return <PaperChart />;
+    case 'search/ict':
+      return <IctChart />;
+    case 'search/policy':
+      return <PolicyChart />;
+    case 'search/news':
+      return <NewsChart />;
+    default:
+      return null;
+    }
+  };
+
   return (
     <ResultListLayout totalCount={tabCount?.all} tabCount={tabCount} keyword={keyword} setSearchButtonClick={setSearchButtonClick} isSearchDetail={isSearchDetail} activeCount={activeCount} >
+      {(se1 === 'icttrend')
+        ? getChartComponent(filterKey)
+        : null
+      }
+      
       <section className='mt-6'>
         <div className='container'>
           <div className='flex items-center justify-between'>
             <h4 className='text-base font-bold text-color-dark'>
               {List.getTitle(filterKey)} <span className='text-color-main'>{common.setPriceInput(totalCount)}건</span>
             </h4>
-            <div className='flex gap-4'>
-              <Button className='gap-2 h-12 px-4 rounded text-sm font-bold btn_style04 mr-2' name='목록 다운로드' icon={icArrow} onClick={downExcel} />
-              <div>
-                <label htmlFor='sort_order' className='hidden_text'>정렬 순서</label>
-                <select name='sort_order' id='sort_order' value={sort} onChange={(e) => {setPage(1); setSort(e.target.value);}}>
-                  {(List.getSortList(filterKey, se1)?.list ?? []).map((e,i) => {
-                    return <option key={i} value={e.value ?? ''}>{e.text ?? ''}</option>;
-                  })}
-                </select>
+            {(se1 !== 'icttrend')
+              ? <div className='flex gap-4'>
+                <Button className='gap-2 h-12 px-4 rounded text-sm font-bold btn_style04 mr-2' name='목록 다운로드' icon={icArrow} onClick={downExcel} />
+                <div>
+                  <label htmlFor='sort_order' className='hidden_text'>정렬 순서</label>
+                  <select name='sort_order' id='sort_order' value={sort} onChange={(e) => {setPage(1); setSort(e.target.value);}}>
+                    {(List.getSortList(filterKey, se1)?.list ?? []).map((e,i) => {
+                      return <option key={i} value={e.value ?? ''}>{e.text ?? ''}</option>;
+                    })}
+                  </select>
+                </div>
+                <div>
+                  <label htmlFor='list_num' className='hidden_text'>노출되는 목록수</label>
+                  <select name='list_num' id='list_num' value={size} onChange={(e) => {setPage(1); setSize(e.target.value);}}>
+                    {[10,20,30,50,100].map((e,i) => {
+                      return <option key={i} value={e}>{e}</option>;
+                    })}
+                  </select>
+                </div>
+                <Button className={`gap-2 h-12 px-4 rounded text-sm font-bold btn_style01${filterShow ? ' on' : ''}`} name='필터' icon={filterShow ? icFilter02 : icFilter} onClick={() => setFilterShow(state => !state)} />
               </div>
-              <div>
-                <label htmlFor='list_num' className='hidden_text'>노출되는 목록수</label>
-                <select name='list_num' id='list_num' value={size} onChange={(e) => {setPage(1); setSize(e.target.value);}}>
-                  {[10,20,30,50,100].map((e,i) => {
-                    return <option key={i} value={e}>{e}</option>;
-                  })}
-                </select>
-              </div>
-              <Button className={`gap-2 h-12 px-4 rounded text-sm font-bold btn_style01${filterShow ? ' on' : ''}`} name='필터' icon={filterShow ? icFilter02 : icFilter} onClick={() => setFilterShow(state => !state)} />
-            </div>
+              : null
+            }
           </div>
 
           {filterShow && <Filter filterItem={filterItem} setFilterShow={setFilterShow} filterKey={filterKey} />}
