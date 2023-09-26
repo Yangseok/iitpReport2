@@ -114,8 +114,10 @@ hr { color: $color_line; }
         background-position: center;
         background-size: contain;
       }
-      &:nth-of-type(1) > * { background-image: url('Assets/Images/ic_guest.png'); }
-      &:nth-of-type(2) > * { background-image: url('Assets/Images/ic_menu.png'); }
+      &:nth-of-type(1) > button,
+      &:nth-of-type(1) > a { background-image: url('Assets/Images/ic_guest.png'); }
+      &:nth-of-type(2) > button,
+      &:nth-of-type(2) > a { background-image: url('Assets/Images/ic_menu.png'); }
     }
   }
 

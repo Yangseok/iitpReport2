@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import common from 'Utill';
 import DiscoveryResultLayout from 'Domain/Home/Discovery/Layout/DiscoveryResultLayout';
 import FileResultLayout from 'Domain/Home/DemandBanking/Layout/FileResultLayout';
+import IctResultLayout from 'Domain/Home/ICTTrend/Layout/IctResultLayout';
 
 export default function ResultListLayout(props) {
 
@@ -26,7 +27,11 @@ export default function ResultListLayout(props) {
           ? <FileResultLayout totalCount={totalCount} tabCount={tabCount} keyword={keyword} setSearchButtonClick={setSearchButtonClick}>
             {children}
           </FileResultLayout>
-          : ''
+          : (paramSe1 === 'icttrend')
+            ? <IctResultLayout totalCount={totalCount} tabCount={tabCount} keyword={keyword} setSearchButtonClick={setSearchButtonClick}>
+              {children}
+            </IctResultLayout>
+            : ''
       }
     </>
   );

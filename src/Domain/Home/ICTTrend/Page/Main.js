@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import arrRight from 'Assets/Images/arr_right.png';
 import icSearch from 'Assets/Images/ic_search.png';
 import icArrow from 'Assets/Images/ic_arrow02.png';
@@ -9,228 +10,232 @@ import TabButtons from 'Domain/Home/Common/Componet/TabButtons';
 import IctWordClouds from 'Domain/Home/ICTTrend/Component/IctWordClouds';
 import IctTreeMap from 'Domain/Home/ICTTrend/Component/IctTreeMap';
 import IctChart1 from 'Domain/Home/ICTTrend/Component/IctChart1';
+import { setLoading } from 'Domain/Home/Common/Status/CommonSlice';
+import { setCategory, setEndYear, setStartYear, setSingleYear, setKeywordTrend, getCategory } from 'Domain/Home/ICTTrend/Status/IctTrendSlice';
+import * as ictTrendAPI from 'Domain/Home/ICTTrend/API/Call';
 import RcSlider from 'rc-slider';
 import common from 'Utill';
+import moment from 'moment';
 
 export default function Main() {
-  const tempWordCloudData = [
-    {
-      'text': '제스처',
-      'value': 500
-    },
-    {
-      'text': '의료',
-      'value': 600
-    },
-    {
-      'text': '제공방법',
-      'value': 500
-    },
-    {
-      'text': '발음',
-      'value': 300
-    },
-    {
-      'text': '뉴럴',
-      'value': 300
-    },
-    {
-      'text': '습득',
-      'value': 300
-    },
-    {
-      'text': '자율주행',
-      'value': 500
-    },
-    {
-      'text': '로봇',
-      'value': 600
-    },
-    {
-      'text': '음성인식',
-      'value': 500
-    },
-    {
-      'text': '데스크탑',
-      'value': 300
-    },
-    {
-      'text': '가상현실',
-      'value': 300
-    },
-    {
-      'text': '통계',
-      'value': 600
-    },
-    {
-      'text': 'DNN',
-      'value': 700
-    },
-    {
-      'text': '어휘',
-      'value': 300
-    },
-    {
-      'text': '소유',
-      'value': 300
-    },
-    {
-      'text': '습관',
-      'value': 300
-    },
-    {
-      'text': 'learning',
-      'value': 800
-    },
-    {
-      'text': '온라인',
-      'value': 700
-    },
-    {
-      'text': '엔터테인먼트',
-      'value': 300
-    },
-    {
-      'text': 'GUI',
-      'value': 500
-    },
-    {
-      'text': '사물',
-      'value': 600
-    },
-    {
-      'text': '애플리케이션',
-      'value': 2000
-    },
-    {
-      'text': '그래픽',
-      'value': 800
-    },
-    {
-      'text': '어노테이션',
-      'value': 300
-    },
-    {
-      'text': '인물',
-      'value': 300
-    },
-    {
-      'text': '검색어',
-      'value': 300
-    },
-    {
-      'text': '체험',
-      'value': 300
-    },
-    {
-      'text': '감정',
-      'value': 600
-    },
-    {
-      'text': '발음',
-      'value': 300
-    },
-    {
-      'text': '뉴럴',
-      'value': 300
-    },
-    {
-      'text': 'DNN',
-      'value': 700
-    },
-    {
-      'text': '신경망',
-      'value': 800
-    },
-    {
-      'text': '클라우드',
-      'value': 900
-    },
-    {
-      'text': '학습자',
-      'value': 300
-    },
-    {
-      'text': '소셜',
-      'value': 300
-    },
-    {
-      'text': '참여자',
-      'value': 300
-    },
-    {
-      'text': '표정',
-      'value': 300
-    },
-    {
-      'text': '상담',
-      'value': 300
-    },
-    {
-      'text': '성향',
-      'value': 300
-    },
-    {
-      'text': 'UI 앱',
-      'value': 700
-    },
-    {
-      'text': '증강현실',
-      'value': 300
-    },
-    {
-      'text': '키워드',
-      'value': 600
-    },
-    {
-      'text': '검색어',
-      'value': 300
-    },
-    {
-      'text': '체험',
-      'value': 300
-    },
-    {
-      'text': '발음',
-      'value': 600
-    },
-    {
-      'text': '뉴럴',
-      'value': 300
-    },
-    {
-      'text': '하드웨어',
-      'value': 3000
-    },
-    {
-      'text': '소프트웨어',
-      'value': 1700
-    },
-    {
-      'text': '소프트웨어',
-      'value': 1700
-    },
-    {
-      'text': '애플리케이션',
-      'value': 2500
-    },
-    {
-      'text': '소프트웨어',
-      'value': 1700
-    },
-    {
-      'text': '소프트웨어',
-      'value': 1700
-    },
-    {
-      'text': '컴퓨팅',
-      'value': 1600
-    },
-    {
-      'text': '빅데이터',
-      'value': 1000
-    },
-  ];
+  // const tempWordCloudData = [
+  //   {
+  //     'text': '제스처',
+  //     'value': 500
+  //   },
+  //   {
+  //     'text': '의료',
+  //     'value': 600
+  //   },
+  //   {
+  //     'text': '제공방법',
+  //     'value': 500
+  //   },
+  //   {
+  //     'text': '발음',
+  //     'value': 300
+  //   },
+  //   {
+  //     'text': '뉴럴',
+  //     'value': 300
+  //   },
+  //   {
+  //     'text': '습득',
+  //     'value': 300
+  //   },
+  //   {
+  //     'text': '자율주행',
+  //     'value': 500
+  //   },
+  //   {
+  //     'text': '로봇',
+  //     'value': 600
+  //   },
+  //   {
+  //     'text': '음성인식',
+  //     'value': 500
+  //   },
+  //   {
+  //     'text': '데스크탑',
+  //     'value': 300
+  //   },
+  //   {
+  //     'text': '가상현실',
+  //     'value': 300
+  //   },
+  //   {
+  //     'text': '통계',
+  //     'value': 600
+  //   },
+  //   {
+  //     'text': 'DNN',
+  //     'value': 700
+  //   },
+  //   {
+  //     'text': '어휘',
+  //     'value': 300
+  //   },
+  //   {
+  //     'text': '소유',
+  //     'value': 300
+  //   },
+  //   {
+  //     'text': '습관',
+  //     'value': 300
+  //   },
+  //   {
+  //     'text': 'learning',
+  //     'value': 800
+  //   },
+  //   {
+  //     'text': '온라인',
+  //     'value': 700
+  //   },
+  //   {
+  //     'text': '엔터테인먼트',
+  //     'value': 300
+  //   },
+  //   {
+  //     'text': 'GUI',
+  //     'value': 500
+  //   },
+  //   {
+  //     'text': '사물',
+  //     'value': 600
+  //   },
+  //   {
+  //     'text': '애플리케이션',
+  //     'value': 2000
+  //   },
+  //   {
+  //     'text': '그래픽',
+  //     'value': 800
+  //   },
+  //   {
+  //     'text': '어노테이션',
+  //     'value': 300
+  //   },
+  //   {
+  //     'text': '인물',
+  //     'value': 300
+  //   },
+  //   {
+  //     'text': '검색어',
+  //     'value': 300
+  //   },
+  //   {
+  //     'text': '체험',
+  //     'value': 300
+  //   },
+  //   {
+  //     'text': '감정',
+  //     'value': 600
+  //   },
+  //   {
+  //     'text': '발음',
+  //     'value': 300
+  //   },
+  //   {
+  //     'text': '뉴럴',
+  //     'value': 300
+  //   },
+  //   {
+  //     'text': 'DNN',
+  //     'value': 700
+  //   },
+  //   {
+  //     'text': '신경망',
+  //     'value': 800
+  //   },
+  //   {
+  //     'text': '클라우드',
+  //     'value': 900
+  //   },
+  //   {
+  //     'text': '학습자',
+  //     'value': 300
+  //   },
+  //   {
+  //     'text': '소셜',
+  //     'value': 300
+  //   },
+  //   {
+  //     'text': '참여자',
+  //     'value': 300
+  //   },
+  //   {
+  //     'text': '표정',
+  //     'value': 300
+  //   },
+  //   {
+  //     'text': '상담',
+  //     'value': 300
+  //   },
+  //   {
+  //     'text': '성향',
+  //     'value': 300
+  //   },
+  //   {
+  //     'text': 'UI 앱',
+  //     'value': 700
+  //   },
+  //   {
+  //     'text': '증강현실',
+  //     'value': 300
+  //   },
+  //   {
+  //     'text': '키워드',
+  //     'value': 600
+  //   },
+  //   {
+  //     'text': '검색어',
+  //     'value': 300
+  //   },
+  //   {
+  //     'text': '체험',
+  //     'value': 300
+  //   },
+  //   {
+  //     'text': '발음',
+  //     'value': 600
+  //   },
+  //   {
+  //     'text': '뉴럴',
+  //     'value': 300
+  //   },
+  //   {
+  //     'text': '하드웨어',
+  //     'value': 3000
+  //   },
+  //   {
+  //     'text': '소프트웨어',
+  //     'value': 1700
+  //   },
+  //   {
+  //     'text': '소프트웨어',
+  //     'value': 1700
+  //   },
+  //   {
+  //     'text': '애플리케이션',
+  //     'value': 2500
+  //   },
+  //   {
+  //     'text': '소프트웨어',
+  //     'value': 1700
+  //   },
+  //   {
+  //     'text': '소프트웨어',
+  //     'value': 1700
+  //   },
+  //   {
+  //     'text': '컴퓨팅',
+  //     'value': 1600
+  //   },
+  //   {
+  //     'text': '빅데이터',
+  //     'value': 1000
+  //   },
+  // ];
   const tempTreeMapData = [
     {
       'type': 'treemap',
@@ -266,58 +271,188 @@ export default function Main() {
   
   const navigate = useNavigate();
   const locations = useLocation();
+  const dispatch = useDispatch();
+
+  let rangeMarks1 = {}, rangeMarks2 = {};
+  const rangeMin = 2014;
+  const rangeMax = Number(moment().format('YYYY'));
+  for(let i = rangeMin; i <= rangeMax; i++) {
+    rangeMarks1[i] = i;
+  }
+  for(let i = (rangeMin-1); i <= (rangeMax-1); i++) {
+    rangeMarks2[i] = i;
+  }
+
+  const category = useSelector(getCategory);
   const [tabButtons1, setTabButtons1] = useState([]);
   const [tabButtons2, setTabButtons2] = useState([]);
   const [tabActive1, setTabActive1] = useState(0);
   const [tabActive2, setTabActive2] = useState(0);
   const [page, setPage] = useState('');
-  const [keywordRangeValue, setKeywordRangeValue] = useState([2022, 2023]);
+  const [keywordRangeValue, setKeywordRangeValue] = useState([Number(moment().subtract(1, 'year').format('YYYY')), rangeMax]);
   const [issueRangeValue, setIssueRangeValue] = useState(2023);
+  const [wordCloudData, setWordCloudData] = useState([]);
 
   const se = common.getSegment();
   const paramSe2 = se[2] ?? '';
 
-  // rc-slider 범위 지정
-  const getRanges = (min, max) => {
-    let marks = {};    
-    for(let i = min; i <= max; i++) {
-      marks[i] = i;
+  const getKeywordCloud = useCallback(async (category) => {
+    let data = [], resData = [];
+    try {
+      dispatch(setLoading(true));
+      data = await ictTrendAPI.ictSearchWordCloud(category, 'wordCloud');
+    } catch (e) {
+      console.warn(e);
+    } finally {
+      dispatch(setLoading(false));
     }
+    const dataList = data?.data?.result ?? [];
+    console.log('getKeywordCloud', dataList);
+    setWordCloudData(dataList);
 
-    return { min, max, marks };
-  };
-
-  const ranges1 = getRanges(2014, 2023);
-  const ranges2 = getRanges(2013, 2022);
+    for (let i in dataList ?? []) {
+      const pushData = {
+        text: dataList?.[i]?.key ?? '',
+        value: dataList?.[i]?.doc_count ?? 0,
+      };
+      resData.push(pushData);
+    }
+    console.log(resData);
+    // setWordCloudData(resData);
+  }, [category]);
 
   useEffect(() => {
     let tab1 = [], tab2 = [];
 
     if(paramSe2 === 'keyword') {
       tab1 = [
-        { id: 0, name: '전체', onClick: () => setTabActive1(0) },
-        { id: 1, name: '과제', onClick: () => setTabActive1(1) },
-        { id: 2, name: '특허', onClick: () => setTabActive1(2) },
-        { id: 3, name: '논문', onClick: () => setTabActive1(3) },
-        { id: 4, name: 'ICT 자료', onClick: () => setTabActive1(4) },
-        { id: 5, name: '정부정책', onClick: () => setTabActive1(5) },
-        { id: 6, name: '뉴스', onClick: () => setTabActive1(6) },
+        { 
+          id: 0, 
+          name: '전체', 
+          onClick: () => {
+            setTabActive1(0);
+            dispatch(setCategory(''));
+          }
+        },
+        { 
+          id: 1, 
+          name: '과제', onClick: () => {
+            setTabActive1(1);
+            dispatch(setCategory('projectout'));
+          } 
+        },
+        { 
+          id: 2, 
+          name: '특허', 
+          onClick: () => {
+            setTabActive1(2);
+            dispatch(setCategory('patent'));
+          } 
+        },
+        { 
+          id: 3, 
+          name: '논문', 
+          onClick: () => {
+            setTabActive1(3);
+            dispatch(setCategory('paper'));
+          } 
+        },
+        { 
+          id: 4, 
+          name: 'ICT 자료', 
+          onClick: () => {
+            setTabActive1(4);
+            dispatch(setCategory('ict'));
+          } 
+        },
+        { 
+          id: 5, 
+          name: '정부정책', 
+          onClick: () => {
+            setTabActive1(5);
+            dispatch(setCategory('policy'));
+          } 
+        },
+        { 
+          id: 6, 
+          name: '뉴스', 
+          onClick: () => {
+            setTabActive1(6);
+            dispatch(setCategory('news'));
+          } 
+        },
       ];
       tab2 = [
-        { id: 0, name: '국가 R&D 과제', onClick: () => setTabActive2(0) },
-        { id: 1, name: 'IITP 내부 과제', onClick: () => setTabActive2(1) },
+        { 
+          id: 0, 
+          name: '국가 R&D 과제', 
+          onClick: () => {
+            setTabActive2(0);
+            dispatch(setCategory('projectout'));
+          } 
+        },
+        { 
+          id: 1, 
+          name: 'IITP 내부 과제', 
+          onClick: () => {
+            setTabActive2(1);
+            dispatch(setCategory('projectin'));
+          } 
+        },
       ];
       setTabActive1(0);
     } else if(paramSe2 === 'technology') {
       tab1 = [
-        { id: 1, name: '과제', onClick: () => setTabActive1(1) },
-        { id: 2, name: '특허', onClick: () => setTabActive1(2) },
-        { id: 3, name: '논문', onClick: () => setTabActive1(3) },
-        { id: 5, name: '정부정책', onClick: () => setTabActive1(5) },
+        { 
+          id: 1, 
+          name: '과제', 
+          onClick: () => {
+            setTabActive1(1);
+            dispatch(setCategory('projectout'));
+          } 
+        },
+        { 
+          id: 2, 
+          name: '특허', 
+          onClick: () => {
+            setTabActive1(2);
+            dispatch(setCategory('patent'));
+          } 
+        },
+        { 
+          id: 3, 
+          name: '논문', 
+          onClick: () => {
+            setTabActive1(3);
+            dispatch(setCategory('paper'));
+          } 
+        },
+        { 
+          id: 5, 
+          name: '정부정책', 
+          onClick: () => {
+            setTabActive1(5);
+            dispatch(setCategory('policy'));
+          } 
+        },
       ];
       tab2 = [
-        { id: 0, name: '국가 R&D 과제', onClick: () => setTabActive2(0) },
-        { id: 1, name: 'IITP 내부 과제', onClick: () => setTabActive2(1) },
+        { 
+          id: 0, 
+          name: '국가 R&D 과제', 
+          onClick: () => {
+            setTabActive2(0);
+            dispatch(setCategory('projectout'));
+          } 
+        },
+        { 
+          id: 1, 
+          name: 'IITP 내부 과제', 
+          onClick: () => {
+            setTabActive2(1);
+            dispatch(setCategory('projectin'));
+          } 
+        },
       ];
       setTabActive1(1);
     }
@@ -353,6 +488,23 @@ export default function Main() {
     }
   }, [issueRangeValue, se]);
 
+  useEffect(() => {
+    dispatch(setStartYear(keywordRangeValue[0]));
+    dispatch(setEndYear(keywordRangeValue[1]));
+  }, [keywordRangeValue]);
+
+  useEffect(() => {
+    dispatch(setSingleYear(issueRangeValue));
+  }, [issueRangeValue]);
+
+  useEffect(() => {
+    getKeywordCloud((category !== '') ? category : 'all');
+  }, [category]);
+
+  useEffect(() => {
+    dispatch(setCategory(''));
+  }, []);
+
   return (
     <IctLayout>
       {(page === 'keyword' || page === 'technology')
@@ -360,9 +512,9 @@ export default function Main() {
           <div className='container'>
             <TabButtons style='4-2' tabs={tabButtons1} active={tabActive1} />
             {(tabActive1 === 1) 
-          && <div className='mt-4'>
-            <TabButtons style='2' tabs={tabButtons2} active={tabActive2} />
-          </div>
+              && <div className='mt-4'>
+                <TabButtons style='2' tabs={tabButtons2} active={tabActive2} />
+              </div>
             }
           </div>
         </div>
@@ -372,13 +524,15 @@ export default function Main() {
         ? // ICT 키워드 트렌드
         <div className='section mt-4'>
           <div className='container'>
-            <IctWordClouds data={tempWordCloudData} height={600} />
+            <div className='wordcloud_cursor_wrap'>
+              <IctWordClouds data={wordCloudData} height={800} />
+            </div>
             <div className='rc_custom max-w-4.5xl mt-4 mx-auto'>
               <RcSlider
                 range
-                min={ranges1.min}
-                max={ranges1.max}
-                marks={ranges1.marks}
+                min={rangeMin}
+                max={rangeMax}
+                marks={rangeMarks1}
                 value={keywordRangeValue}
                 onChange={(e) => setKeywordRangeValue(e)}
               />
@@ -416,9 +570,9 @@ export default function Main() {
                     <div className='rc_custom type02'>
                       <RcSlider
                         included={false}
-                        min={ranges2.min}
-                        max={ranges2.max}
-                        marks={ranges2.marks}
+                        min={rangeMin - 1}
+                        max={rangeMax - 1}
+                        marks={rangeMarks2}
                         value={issueRangeValue}
                         onChange={(e) => setIssueRangeValue(e)}
                       />
@@ -437,7 +591,10 @@ export default function Main() {
                   {tempIssueKeyword?.map((e) => {
                     return <button 
                       key={e.id}
-                      onClick={() => navigate('/icttrend/issue/result/projectout')} 
+                      onClick={() => {
+                        dispatch(setKeywordTrend(e.text));
+                        navigate('/icttrend/issue/result/projectout');
+                      }} 
                       className='h-10 px-4 rounded text-base font-bold btn_style08'
                     >
                       {e.text}

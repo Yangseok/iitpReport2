@@ -1,14 +1,13 @@
 import React, { useState } from 'react';
-import IctResultLayout from 'Domain/Home/ICTTrend/Layout/IctResultLayout';
 import IctWordClouds from 'Domain/Home/ICTTrend/Component/IctWordClouds';
+import IctTreeMap from 'Domain/Home/ICTTrend/Component/IctTreeMap';
 import IctChart1 from 'Domain/Home/ICTTrend/Component/IctChart1';
-import IctChart4 from 'Domain/Home/ICTTrend/Component/IctChart4';
-import NewsWordClouds from 'Domain/Home/ICTTrend/Component/NewsWordClouds';
-import ToggleListItem from 'Domain/Home/Common/Componet/ToggleListItem';
-import Pagination from 'Domain/Home/Common/Componet/Pagination';
+import IctChart2 from 'Domain/Home/ICTTrend/Component/IctChart2';
+import IctChart3 from 'Domain/Home/ICTTrend/Component/IctChart3';
 import RcSlider from 'rc-slider';
+import moment from 'moment';
 
-export default function Result() {
+export default function Result () {
   const tempWordCloudData = [
     {
       'text': '제스처',
@@ -227,6 +226,13 @@ export default function Result() {
       'value': 1000
     },
   ];
+  const tempTreeMapData = [
+    {
+      'type': 'treemap',
+      'labels': ['전체', '물리학', '관리용', '금융용', '전기에 의한 디지털 데이터처리', '생활필수품', '진단', '전기', '처리조작', '운전 제어 시스템', '기계공학', '섬유'],
+      'parents': ['', '전체', '물리학', '물리학', '관리용', '전체', '생활필수품', '전체', '전체', '처리조작', '전체', '전체' ]
+    }
+  ];
   const tempChartData1 = [
     { x: 48, y: -90 },
     { x: 40, y: 510 },
@@ -239,19 +245,13 @@ export default function Result() {
     { x: 54, y: 50 },
     { x: 51, y: 120 },
   ];
-  const tempChartData2 = [185, 83, 42, 30, 16, 6, 4, 2];
-  const tempChartData3 = [185, 83, 42, 30, 16, 6, 4, 2];
-  // 데이터는 10개씩 뿌려줌
-  const tempData = [
-    {
-      id: 0,
-      title: 'AGI 예고한 ‘챗GPT 아버지’… “내가 인간인지 증명해야 할 시대 올 것”',
-      link: '#',
-      source: '서울신문',
-      date: '2023.06.08',
-    },
+  const tempChartData2 = [18108, 26335, 22137, 34727, 35612, 8189, 18242, 15114, 28919, 20010];
+  const tempChartData3 = [
+    [4, 5, 2, 3, 5, 4, 4, 5, 6, 8],
+    [1, 1, 4, 2, 3, 5, 8, 7, 6, 10],
+    [5, 4, 6, 9, 8, 6, 10, 13, 17, 15],
+    [3, 4, 5, 6, 7, 9, 10, 12, 15, 20],
   ];
-
   const [cloudsRangeValue, setCloudsRangeValue] = useState([2022, 2023]);
   const [chartRangeValue, setChartRangeValue] = useState(2022);
 
@@ -268,13 +268,30 @@ export default function Result() {
   const ranges1 = getRanges(2014, 2023);
   const ranges2 = getRanges(2013, 2022);
 
-  const labels1 = ['플랫폼','learning','빅데이터','딥러닝','모니터링','네트워크','솔루션','고도','모델링','소프트웨어'];
-  const labels2 = ['기타','기술개발진행중','기술개발완료','특허만신청(등록)','시제품단계','아이디어창안','실용화단계','시장개척단계'];
-  const labels3 = ['기타','기술개발진행중','기술개발완료','특허만신청(등록)','시제품단계','아이디어창안','실용화단계','시장개척단계'];
+  // label 생성
+  const getLabels = (length, gap) => {
+    let arr = [];
+    const date = new Date();
+    const year1 = Number(moment(date).format('YYYY'));
+    const year2 = Number(moment(date).subtract(length, 'years').format('YYYY'));
 
+    (gap) && arr.push('');
+    for (let i=year2; i<year1; i++) {
+      arr.push(i);
+    }
+    (gap) && arr.push('');
+
+    return arr;
+  };
+
+  const labels1 = ['플랫폼','learning','빅데이터','딥러닝','모니터링','네트워크','솔루션','고도','모델링','소프트웨어'];
+  const labels2 = getLabels(10);
+  const labels3_1 = getLabels(10);
+  const labels3_2 = ['서울대', '연세대', '고려대', '전남대'];
+  
   return (
-    <IctResultLayout>
-      <section className='mt-10'>
+    <>
+      <section className='mt-10 mb-10'>
         <div className='container'>
           <div className='list_wrap_style02 grid02'>
             <div>
@@ -310,58 +327,26 @@ export default function Result() {
               </div>
             </div>
             <div>
-              <h3 className='text-base font-bold text-color-dark'>뉴스 언급 기업 건수</h3>
-              <div className='mt-4'>
-                <IctChart4 labels={labels2} datas={tempChartData2} />
+              <h3 className='text-base font-bold text-color-dark'>연도별 과제 건수</h3>
+              <div className='chart_wrap mt-10'>
+                <IctChart2 labels={labels2} datas={tempChartData2} />
               </div>
             </div>
             <div>
-              <h3 className='text-base font-bold text-color-dark'>뉴스 카테고리별 건수</h3>
-              <div className='mt-4'>
-                <IctChart4 labels={labels3} datas={tempChartData3} />
+              <h3 className='text-base font-bold text-color-dark'>과제 수행기관별 비교</h3>
+              <div className='chart_wrap mt-10'>
+                <IctChart3 xLabels={labels3_1} dataLabels={labels3_2} datas={tempChartData3} />
               </div>
+            </div>
+          </div>
+          <div className='mt-14'>
+            <h3 className='text-base font-bold text-color-dark'>국제과학기술표준분류</h3>
+            <div className='mt-5'>
+              <IctTreeMap data={tempTreeMapData} />
             </div>
           </div>
         </div>
       </section>
-      <section className='mt-14'>
-        <div className='container'>
-          <h3 className='text-base font-bold text-color-dark'>뉴스 <span className='text-color-main'>50,150건</span></h3>
-          <div className='list_style03 mt-5'>
-            <ul>
-              {(tempData?.length > 0)
-                ? tempData?.map((e) => {
-                  return (
-                    <ToggleListItem 
-                      key={e.id}
-                      id={e.id}
-                      title={<>
-                        <p className='flex-1 text-base font-bold text-color-dark'>{e.title}</p>
-                        <div className='text_style01'>
-                          <p className='text-sm text-color-regular'>출처: <span className='font-medium text-color-main'>{e.source}</span></p>
-                          <p className='text-sm text-color-regular'>출처일: <span className='font-medium text-color-main'>{e.date}</span></p>
-                        </div>
-                      </>}
-                      btn={(e.link) ? <>
-                        <a href={e.link} className='h-5 px-1.5 rounded-sm text-xs font-medium text-color-white bg-color-footer' target='_blank' rel='noreferrer' title={`새창이동, ${e.title} 원문 페이지`}>원문 보기↗</a>
-                      </> : null}
-                      contents={<>
-                        <NewsWordClouds data={tempWordCloudData} />
-                      </>}
-                    />
-                  );
-                })
-                : <li className='nodata'>
-                  <p className='text-base text-color-placeholder'>데이터가 없습니다.</p>
-                </li>
-              }
-            </ul>
-          </div>
-          <div className='mt-10'>
-            <Pagination total={50} page={1} onClick={(i) => console.log(i)} />
-          </div>
-        </div>
-      </section>
-    </IctResultLayout>
+    </>
   );
 }
