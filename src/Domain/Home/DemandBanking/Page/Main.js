@@ -169,6 +169,8 @@ export default function Main() {
     setSmallIct(smallIctTmp);
     setDetailIct(detailIctTmp);
     setPage(1);
+    dispatch(setSelectedList([]));
+    setCheckAll(false);
     e?.preventDefault();
   };
 
@@ -281,7 +283,7 @@ export default function Main() {
   
   useEffect(() => {
     getNoticeList();
-  }, [rangeValue, sortType, sortStatus, bigIct, middleIct, smallIct, detailIct, size, page, selectedList]);
+  }, [rangeValue, sortType, sortStatus, bigIct, middleIct, smallIct, detailIct, size, page]);
 
   //필터 활성화시 대분류 리스트를 가져옴.
   useEffect(() => {
@@ -312,7 +314,23 @@ export default function Main() {
   }, [smallIctTmp]);
 
   useEffect(() => {
+    //수요조사 접수현황
     getSurveyCount();
+
+    //페이지 이동하여 왔을시 초기화
+    setRangeValue([Number(moment().subtract(1, 'year').format('YYYY')), rangeMax]);
+    setSortType('ALL');
+    setSortStatus('ALL');
+    handleInitSelectedClick();
+    getFilterList('BCLS','',true);
+    
+    const getDelaytNoticeList = () => {
+      return setTimeout(() => {
+        getNoticeList();
+      }, 300);
+    };
+    getDelaytNoticeList();
+    return () => clearTimeout(getDelaytNoticeList);
   }, []);
 
   return (

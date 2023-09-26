@@ -2,8 +2,12 @@ import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import SiteMap from './SiteMap';
 import common from 'Utill';
+import { useSelector } from 'react-redux';
+import { getAccount } from 'Domain/Home/Common/Status/CommonSlice';
 
 export default function Head(props) {
+  const account = useSelector(getAccount);
+
   const { className } = props;
   const nav = [
     {
@@ -67,10 +71,9 @@ export default function Head(props) {
           </nav>
           <ul className='right_menu'>
             <li>
-              {/* 로그인시,
-              <p>1234님</p>
-               */}
-              <NavLink to='/login'>Guest Login</NavLink>
+              {((account?.isLogin ?? false) === true) ?
+                <p>{account?.userName ?? ''}님</p> : <NavLink to='/login'>Guest Login</NavLink>
+              }
             </li>
             <li>
               <button type='button' className='menu_btn' onClick={() => setSitemapShow(true)}>Menu</button>
