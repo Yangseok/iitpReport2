@@ -76,11 +76,6 @@ export default function DemandResult() {
   const [applicantTmp, setApplicantTmp] = useState('');
   const [surveyTitleTmp, setSurveyTitleTmp] = useState('');
 
-  const [bigIct, setBigIct] = useState('');
-  const [middleIct, setMiddleIct] = useState('');
-  const [smallIct, setSmallIct] = useState('');
-  const [detailIct, setDetailIct] = useState('');
-
   const bigIctTmp = useSelector(getBigIctTmp);
   const middleIctTmp = useSelector(getMiddleIctTmp);
   const smallIctTmp = useSelector(getSmallIctTmp);
@@ -90,6 +85,11 @@ export default function DemandResult() {
   const middleIctList = useSelector(getMiddleIctList);
   const smallIctList = useSelector(getSmallIctList);
   const detailIctList = useSelector(getDetailIctList);
+
+  const [bigIct, setBigIct] = useState(bigIctTmp);
+  const [middleIct, setMiddleIct] = useState(middleIctTmp);
+  const [smallIct, setSmallIct] = useState(smallIctTmp);
+  const [detailIct, setDetailIct] = useState(detailIctTmp);
 
   const [surveyList, setSurveyList] = useState([]);
 
@@ -137,6 +137,17 @@ export default function DemandResult() {
     setOrgnName(orgnNameTmp);
     setApplicant(applicantTmp);
     setSurveyTitle(surveyTitleTmp);
+    e?.preventDefault();
+  };
+
+  const listDownload = (e) => {
+    const winOpen = (url, name, option) => {
+      var popup = window.open(url, name, option);
+      popup.focus();
+      return popup;
+    };
+    const noticeId = getNoticeId();
+    winOpen(process.env.REACT_APP_API_URL+'/demand/surveyListDownload?noticeId='+noticeId);
     e?.preventDefault();
   };
   
@@ -281,10 +292,6 @@ export default function DemandResult() {
     }
   }, [smallIctTmp]);
 
-  useEffect(() => {
-    handleFilterApply();
-  }, []);
-
   return (
     <Layout>
       <section>
@@ -310,7 +317,7 @@ export default function DemandResult() {
               기술수요조사서 <span className='text-color-main'>{common.setPriceInput(totalCount)}건</span>
             </h3>
             <div className='flex gap-4'>
-              <Button className='gap-2 h-12 px-4 rounded text-sm font-bold btn_style04 mr-2' name='목록 다운로드' icon={icArrow} onClick={() => {}} />
+              <Button className='gap-2 h-12 px-4 rounded text-sm font-bold btn_style04 mr-2' name='목록 다운로드' icon={icArrow} onClick={listDownload} />
               <Button className={`gap-2 h-12 px-4 rounded text-sm font-bold btn_style01${filterShow ? ' on' : ''}`} name='필터' icon={filterShow ? icFilter02 : icFilter} onClick={() => setFilterShow(state => !state)} />
             </div>
           </div>

@@ -171,6 +171,7 @@ export default function Main() {
     setPage(1);
     dispatch(setSelectedList([]));
     setCheckAll(false);
+    getNoticeList(true);
     e?.preventDefault();
   };
 
@@ -188,7 +189,7 @@ export default function Main() {
     setCountData(data?.data?.result ?? []);
   }, []);
 
-  const getNoticeList = useCallback(async (activeMode = false) => {
+  const getNoticeList = useCallback(async (activeMode=false) => {
     let data = [];
     try {
       dispatch(setLoading(true));
@@ -229,6 +230,7 @@ export default function Main() {
     // console.log('tmpData:', tmpData);
     setData(tmpData);
     setTotalCount(data?.data?.result?.totalCount ?? 0);
+    if (activeMode) setCheckAll(false);
   }, [rangeValue, sortType, sortStatus, bigIct, middleIct, smallIct, detailIct, size, page, selectedList]);
 
   const getFilterList = useCallback(async (type='BCLS',code='', handleApply=false) => {
@@ -321,8 +323,14 @@ export default function Main() {
     setRangeValue([Number(moment().subtract(1, 'year').format('YYYY')), rangeMax]);
     setSortType('ALL');
     setSortStatus('ALL');
-    handleInitSelectedClick();
     getFilterList('BCLS','',true);
+    setBigIct('');
+    setMiddleIct('');
+    setSmallIct('');
+    setDetailIct('');
+    dispatch(setSelectedList([]));
+    setPage(1);
+    setCheckAll(false);
     
     const getDelaytNoticeList = () => {
       return setTimeout(() => {
