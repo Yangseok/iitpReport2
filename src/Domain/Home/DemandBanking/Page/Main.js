@@ -188,7 +188,7 @@ export default function Main() {
     setCountData(data?.data?.result ?? []);
   }, []);
 
-  const getNoticeList = useCallback(async () => {
+  const getNoticeList = useCallback(async (activeMode = false) => {
     let data = [];
     try {
       dispatch(setLoading(true));
@@ -222,7 +222,7 @@ export default function Main() {
         period: data?.data?.result?.dataList?.[i]?.period ?? '',
         title: data?.data?.result?.dataList?.[i]?.noticeTitle ?? '',
         count: data?.data?.result?.dataList?.[i]?.surveyCount ?? 0,
-        active: ((selectedList?.filter(e => e.id === data?.data?.result?.dataList?.[i]?.noticeId)?.length ?? 0) === 1),
+        active: (activeMode) ? false : ((selectedList?.filter(e => e.id === data?.data?.result?.dataList?.[i]?.noticeId)?.length ?? 0) === 1),
       };
       tmpData.push(pushData);
     }
@@ -326,7 +326,7 @@ export default function Main() {
     
     const getDelaytNoticeList = () => {
       return setTimeout(() => {
-        getNoticeList();
+        getNoticeList(true);
       }, 300);
     };
     getDelaytNoticeList();

@@ -53,7 +53,6 @@ export default function DemandResult() {
     },
   ];
 
-
   const selectedList = useSelector(getSelectedList);
 
   const [data, setData] = useState([]);
@@ -112,6 +111,20 @@ export default function DemandResult() {
       dispatch(setDetailIctList([]));
     }
   }, []);
+
+  const initFilterClick = () => {
+    initFilterData('BCLS');
+    setStartDate('');
+    setEndDate('');
+    setOrgnName('');
+    setApplicant('');
+    setSurveyTitle('');
+    setBigIct('');
+    setMiddleIct('');
+    setSmallIct('');
+    setDetailIct('');
+    setPage(1);
+  };
 
   const handleFilterApply = (e) => {
     setBigIct(bigIctTmp);
@@ -373,7 +386,7 @@ export default function DemandResult() {
                   </dd>
                 </dl>
               </div>
-              <button type='button' className='sorting_reset_btn text-sm font-medium text-color-placeholder'>선택 초기화 <img src={icReset ?? icReset02} alt='선택 초기화' className='w-6' /></button>
+              <button type='button' onClick={initFilterClick} className='sorting_reset_btn text-sm font-medium text-color-placeholder'>선택 초기화 <img src={icReset ?? icReset02} alt='선택 초기화' className='w-6' /></button>
               <Button name="필터 적용" onClick={handleFilterApply} icon={icSearch} className="gap-2 mt-6 mx-auto py-3 px-6.5 rounded-3xl text-base font-bold btn_style03" />
             </div>
             : ''
