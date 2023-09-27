@@ -5,19 +5,25 @@ import * as ictTrendCallAPI from 'Domain/Home/ICTTrend/API/Call';
 export default function ICTTrendAPIButton(props) {
 
 
-
-
-  // const ictTrendwordCloud = async (category) => {
-  //   const apiFn = async () => {
-  //     const data = await ictTrendCallAPI.ictSearchWordCloud(category,'wordCloud');
-  //     console.log(data?.data?.result);
-  //   };
-  //   await props.apiCallWrap(apiFn);
-  // };
-
   const ictTrend= async (category, labal) => {
     const apiFn = async () => {
       const data = await ictTrendCallAPI.ictSearchWordCloud(category, labal);
+      console.log(data?.data?.result);
+    };
+    await props.apiCallWrap(apiFn);
+  };
+
+  const ictTrendList= async (category) => {
+    const apiFn = async () => {
+      const data = await ictTrendCallAPI.ictList(category);
+      console.log(data?.data?.result);
+    };
+    await props.apiCallWrap(apiFn);
+  };
+
+  const ictTrendPerformanceList= async (category) => {
+    const apiFn = async () => {
+      const data = await ictTrendCallAPI.ictPerformanceList(category);
       console.log(data?.data?.result);
     };
     await props.apiCallWrap(apiFn);
@@ -45,7 +51,6 @@ export default function ICTTrendAPIButton(props) {
       <li className='mb-1'><Button text="ICT 트렌드 특허(관련 키워드 추이)" onClick={() => ictTrend('patent','trend')} /></li>
       <li className='mb-1'><Button text="ICT 트렌드 특허(연도별 과제 건수)" onClick={() => ictTrend('patent', 'year')} /></li>
       <li className='mb-1'><Button text="ICT 트렌드 특허(출원인 순위)" onClick={() => ictTrend('patent', 'appl')} /></li>
-      <li className='mb-1'><Button text="ICT 트렌드 특허(과제 수행기관별 비교)" onClick={() => ictTrend('patent', 'orgn')} /></li>
       <li className='mb-1'><Button text="ICT 트렌드 특허(ICT 기술 분류)" onClick={() => ictTrend('patent', 'class')} /></li>
 
       <br></br>
@@ -70,6 +75,21 @@ export default function ICTTrendAPIButton(props) {
       <li className='mb-1'><Button text="ICT 트렌드 뉴스(관련 키워드 추이)" onClick={() => ictTrend('news','trend')} /></li>
       <li className='mb-1'><Button text="ICT 트렌드 뉴스(뉴스 언급 기업 순위)" onClick={() => ictTrend('news','orgn')} /></li>
       <li className='mb-1'><Button text="ICT 트렌드 뉴스(뉴스 카테고리별 건수)" onClick={() => ictTrend('news', 'category')} /></li>
+
+      <br></br>
+      <li className='mb-1'><Button text="ICT 트렌드 리스트(국가 R&D 과제)" onClick={() => ictTrendList('rnd_project')}/></li>
+      <li className='mb-1'><Button text="ICT 트렌드 리스트(IITP 내부 과제)" onClick={() => ictTrendList('iitp_project')} /></li>
+      <li className='mb-1'><Button text="ICT 트렌드 리스트(특허)" onClick={() => ictTrendList('patent')} /></li>
+      <li className='mb-1'><Button text="ICT 트렌드 리스트(논문)" onClick={() => ictTrendList('paper')} /></li>
+      <li className='mb-1'><Button text="ICT 트렌드 리스트(ICT 자료)" onClick={() => ictTrendList('ict_report')} /></li>
+      <li className='mb-1'><Button text="ICT 트렌드 리스트(정부정책)" onClick={() => ictTrendList('policy')} /></li>
+      <li className='mb-1'><Button text="ICT 트렌드 리스트(뉴스)" onClick={() => ictTrendList('news')} /></li>
+
+
+      <br></br>
+      <li className='mb-1'><Button text="ICT 성과 목록(특허)" onClick={() => ictTrendPerformanceList('patent')}/></li>
+      <li className='mb-1'><Button text="ICT 성과 목록(논문)" onClick={() => ictTrendPerformanceList('paper')} /></li>
+
       
     </>
   );
