@@ -18,22 +18,35 @@ export default function IctWordClouds(props) {
       const valueLengths = data.map(o => o.doc_count.toString().length);
       const maxLength = Math.max(...valueLengths);
       const maxValue = data.map(o => o.doc_count).reduce((min, curr) => min < curr ? curr : min);
-      console.log('maxValue:',maxValue);
+      // const minValue = data.map(o => o.doc_count).reduce((min, curr) => min > curr ? curr : min);
+      const firstValue = Number((maxValue + '').slice(0,1));
+      const gap = Math.abs(maxLength - digitCount);
+      console.log('maxValue:', maxValue);
+      console.log('firstValue:', firstValue);
+      console.log('maxLength:', maxLength);
+      console.log('gap:', gap);
+
+      if(maxLength > digitCount) {
+        console.log('크다.');
+      } else if (maxLength < digitCount) {
+        console.log('작다.');
+      } else {
+        console.log('작지도 크지도 않다.');
+      }
 
       setNewData(
-        data.map((item) => {
+        data.map((item, i) => {
           let itemValue = 0;
 
-          const gap = Math.abs(maxLength - digitCount);
           if(maxLength > digitCount) {
             // itemValue = Math.floor(item.doc_count / Math.pow(10, gap));
-            itemValue = Math.floor(item.doc_count / Math.pow(10, gap));
+            itemValue = Math.floor(item.doc_count * 3 / Math.pow(10, gap));
           } else if (maxLength < digitCount) {
-            itemValue = Math.floor(item.doc_count * Math.pow(5, gap));
+            itemValue = Math.floor(Math.pow(Math.log10(item.doc_count) * 5, gap + 2) / firstValue) * gap * 5;
           } else {
-            itemValue = item.doc_count;
+            itemValue = Math.floor(Math.log10(item.doc_count * 3) * 300);
           }
-          console.log(item.doc_count, itemValue);
+          if (i < 10) console.log(item.doc_count, itemValue);
 
           return {
             text: item.key,
