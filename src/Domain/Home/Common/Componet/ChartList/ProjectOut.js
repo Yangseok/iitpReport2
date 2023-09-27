@@ -5,12 +5,12 @@ import IctTreeMap from 'Domain/Home/ICTTrend/Component/IctTreeMap';
 import IctChart1 from 'Domain/Home/ICTTrend/Component/IctChart1';
 import IctChart2 from 'Domain/Home/ICTTrend/Component/IctChart2';
 import IctChart3 from 'Domain/Home/ICTTrend/Component/IctChart3';
-import { getEndYear, getStartYear, setEndYear, setStartYear } from 'Domain/Home/ICTTrend/Status/IctTrendSlice';
+import { getEndYear, getSingleYear, getStartYear, setEndYear, setSingleYear, setStartYear } from 'Domain/Home/ICTTrend/Status/IctTrendSlice';
 import RcSlider from 'rc-slider';
 import moment from 'moment';
 
 export default function Result (props) {
-  const { wordCloudData, onWordClick } = props;
+  const { wordCloudData, onWordClick, trendData, yearData, orgnData } = props;
 
   const tempTreeMapData = [
     {
@@ -19,19 +19,6 @@ export default function Result (props) {
       'parents': ['', '전체', '물리학', '물리학', '관리용', '전체', '생활필수품', '전체', '전체', '처리조작', '전체', '전체' ]
     }
   ];
-  const tempChartData1 = [
-    { x: 48, y: -90 },
-    { x: 40, y: 510 },
-    { x: 65, y: 490 },
-    { x: 2, y: 210 },
-    { x: 64, y: 410 },
-    { x: 49, y: 390 },
-    { x: 4, y: 150 },
-    { x: 82, y: 380 },
-    { x: 54, y: 50 },
-    { x: 51, y: 120 },
-  ];
-  const tempChartData2 = [18108, 26335, 22137, 34727, 35612, 8189, 18242, 15114, 28919, 20010];
   const tempChartData3 = [
     [4, 5, 2, 3, 5, 4, 4, 5, 6, 8],
     [1, 1, 4, 2, 3, 5, 8, 7, 6, 10],
@@ -52,29 +39,80 @@ export default function Result (props) {
   const dispatch = useDispatch();
   const startYear = useSelector(getStartYear);
   const endYear = useSelector(getEndYear);
+  const singleYear = useSelector(getSingleYear);
   const [cloudsRangeValue, setCloudsRangeValue] = useState([Number(moment().subtract(1, 'year').format('YYYY')), rangeMax]);
   const [chartRangeValue, setChartRangeValue] = useState(rangeMax - 1);
+  const [newTrendData, setNewTrendData] = useState([]);
+  const [trendLabels, setTrendLabels] = useState([]);
+  const [newYearData, setNewYearData] = useState([]);
+  const [yearLabels, setYearLabels] = useState([]);
+  const [orgnLabels1, setOrgnLabels1] = useState([]);
+  const [orgnLabels2, setOrgnLabels2] = useState([]);
 
-  // label 생성
-  const getLabels = (length, gap) => {
-    let arr = [];
-    const date = new Date();
-    const year1 = Number(moment(date).format('YYYY'));
-    const year2 = Number(moment(date).subtract(length, 'years').format('YYYY'));
-
-    (gap) && arr.push('');
-    for (let i=year2; i<year1; i++) {
-      arr.push(i);
+  // 관련 키워드 추이 데이터 
+  const getTrendLabelData = () => {
+    let datas = [], labels = [];
+    
+    if (trendData?.length > 0) {
+      for (let i in trendData ?? []) {
+        const pushData = {
+          x: trendData[i].doc_count ?? 0,
+          y: trendData[i].rate ?? 0,
+        };
+        const pushLabel = trendData[i].key ?? '';
+        datas.push(pushData);
+        labels.push(pushLabel);
+      }
+      setNewTrendData(datas);
+      setTrendLabels(labels);
     }
-    (gap) && arr.push('');
-
-    return arr;
   };
 
-  const labels1 = ['플랫폼','learning','빅데이터','딥러닝','모니터링','네트워크','솔루션','고도','모델링','소프트웨어'];
-  const labels2 = getLabels(10);
-  const labels3_1 = getLabels(10);
-  const labels3_2 = ['서울대', '연세대', '고려대', '전남대'];
+  // 연도별 과제 건수 데이터
+  const getYearLabelData = () => {
+    let datas = [], labels = [];
+    
+    if (yearData?.length > 0) {
+      for (let i in yearData ?? []) {
+        const pushData = yearData[i].doc_count ?? 0;
+        const labelData = yearData[i].key ?? '';
+        datas.push(pushData);
+        labels.push(labelData);
+      }
+      setNewYearData(datas);
+      setYearLabels(labels);
+    }
+  };
+
+  // 과제 수행기관별 데이터
+  const getOrgnLabelData = () => {
+    let datas = [], labels1 = [], labels2 = [];
+    
+    if (orgnData?.length > 0) {
+      const maxYear = orgnData?.map(o => o.count2?.buckets?.map(o2 => o2.key).reduce((max, curr) => max < curr ? curr : max)).reduce((max, curr) => max < curr ? curr : max);
+      const minYear = orgnData?.map(o => o.count2?.buckets?.map(o2 => o2.key).reduce((min, curr) => min > curr ? curr : min)).reduce((min, curr) => min > curr ? curr : min);
+      for (let i = Number(minYear); i <= Number(maxYear); i++) {
+        labels1.push(i);
+      }
+
+      // 데이터 연도 순서가 안맞음
+      for (let i in orgnData ?? []) {
+        const labelData1 = orgnData[i].key ?? '';
+        let tempPushData = [];
+        labels2.push(labelData1);
+
+        orgnData[i]?.count2?.buckets?.map((i2) => {
+          const labelData3 = i2.doc_count ?? 0;
+          tempPushData.push(labelData3);
+          // console.log(i2);
+        });
+        datas.push(tempPushData);
+      }
+      setOrgnLabels1(labels1);
+      setOrgnLabels2(labels2);
+      console.log('Data & LABEL', datas, labels1, labels2);
+    }
+  };
 
   useEffect(() => {
     dispatch(setStartYear(cloudsRangeValue[0]));
@@ -82,8 +120,25 @@ export default function Result (props) {
   }, [cloudsRangeValue]);
 
   useEffect(() => {
+    dispatch(setSingleYear(chartRangeValue));
+  }, [chartRangeValue]);
+
+  useEffect(() => {
     setCloudsRangeValue([startYear, endYear]);
+    setChartRangeValue(singleYear);
   }, []);
+
+  useEffect(() => {
+    getTrendLabelData();
+  }, [trendData]);
+
+  useEffect(() => {
+    getYearLabelData();
+  }, [yearData]);
+
+  useEffect(() => {
+    getOrgnLabelData();
+  }, [orgnData]);
   
   return (
     <>
@@ -109,7 +164,7 @@ export default function Result (props) {
             <div>
               <h3 className='text-base font-bold text-color-dark'>관련 키워드 추이</h3>
               <div className='mt-4'>
-                <IctChart1 labels={labels1} datas={tempChartData1} height={660} />
+                <IctChart1 labels={trendLabels} datas={newTrendData} height={660} />
               </div>
               <div className='rc_custom type02 max-w-lg mt-4 mx-auto'>
                 <RcSlider
@@ -125,13 +180,13 @@ export default function Result (props) {
             <div>
               <h3 className='text-base font-bold text-color-dark'>연도별 과제 건수</h3>
               <div className='chart_wrap mt-10'>
-                <IctChart2 labels={labels2} datas={tempChartData2} />
+                <IctChart2 labels={yearLabels} datas={newYearData} />
               </div>
             </div>
             <div>
               <h3 className='text-base font-bold text-color-dark'>과제 수행기관별 비교</h3>
               <div className='chart_wrap mt-10'>
-                <IctChart3 xLabels={labels3_1} dataLabels={labels3_2} datas={tempChartData3} />
+                <IctChart3 xLabels={orgnLabels1} dataLabels={orgnLabels2} datas={tempChartData3} />
               </div>
             </div>
           </div>
