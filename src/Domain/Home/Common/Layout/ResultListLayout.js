@@ -6,7 +6,7 @@ import IctResultLayout from 'Domain/Home/ICTTrend/Layout/IctResultLayout';
 
 export default function ResultListLayout(props) {
 
-  const { children, totalCount, tabCount, keyword, setSearchButtonClick, isSearchDetail, activeCount } = props;
+  const { children, totalCount, tabCount, keyword, setSearchButtonClick, isSearchDetail, activeCount, filterKey } = props;
 
   const [paramSe1, setParamSe1] = useState('');
   
@@ -28,7 +28,7 @@ export default function ResultListLayout(props) {
             {children}
           </FileResultLayout>
           : (paramSe1 === 'icttrend')
-            ? <IctResultLayout totalCount={totalCount} tabCount={tabCount} keyword={keyword} setSearchButtonClick={setSearchButtonClick}>
+            ? <IctResultLayout totalCount={totalCount} tabCount={tabCount} keyword={keyword} setSearchButtonClick={setSearchButtonClick} filterKey={filterKey}>
               {children}
             </IctResultLayout>
             : ''

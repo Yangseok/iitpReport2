@@ -17,25 +17,25 @@ export default function IctWordClouds(props) {
       const digitCount = valueSize ?? 4;
       const valueLengths = data.map(o => o.doc_count.toString().length);
       const maxLength = Math.max(...valueLengths);
-      const maxValue = data.map(o => o.doc_count).reduce((min, curr) => min < curr ? curr : min);
+      const maxValue = data.map(o => o.doc_count).reduce((max, curr) => max < curr ? curr : max);
       // const minValue = data.map(o => o.doc_count).reduce((min, curr) => min > curr ? curr : min);
       const firstValue = Number((maxValue + '').slice(0,1));
       const gap = Math.abs(maxLength - digitCount);
-      console.log('maxValue:', maxValue);
-      console.log('firstValue:', firstValue);
-      console.log('maxLength:', maxLength);
-      console.log('gap:', gap);
+      // console.log('maxValue:', maxValue);
+      // console.log('firstValue:', firstValue);
+      // console.log('maxLength:', maxLength);
+      // console.log('gap:', gap);
 
-      if(maxLength > digitCount) {
-        console.log('크다.');
-      } else if (maxLength < digitCount) {
-        console.log('작다.');
-      } else {
-        console.log('작지도 크지도 않다.');
-      }
+      // if(maxLength > digitCount) {
+      //   console.log('크다.');
+      // } else if (maxLength < digitCount) {
+      //   console.log('작다.');
+      // } else {
+      //   console.log('작지도 크지도 않다.');
+      // }
 
       setNewData(
-        data.map((item, i) => {
+        data.map((item) => {
           let itemValue = 0;
 
           if(maxLength > digitCount) {
@@ -46,7 +46,7 @@ export default function IctWordClouds(props) {
           } else {
             itemValue = Math.floor(Math.log10(item.doc_count * 3) * 300);
           }
-          if (i < 10) console.log(item.doc_count, itemValue);
+          // if (i < 10) console.log(item.doc_count, itemValue);
 
           return {
             text: item.key,
@@ -54,7 +54,7 @@ export default function IctWordClouds(props) {
           };
         })
       );
-      console.log('');
+      // console.log('');
     } else {
       setNewData([]);
     }

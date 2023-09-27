@@ -1,17 +1,17 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import IctWordClouds from 'Domain/Home/ICTTrend/Component/IctWordClouds';
 import IctTreeMap from 'Domain/Home/ICTTrend/Component/IctTreeMap';
 import IctChart1 from 'Domain/Home/ICTTrend/Component/IctChart1';
 import IctChart2 from 'Domain/Home/ICTTrend/Component/IctChart2';
 import IctChart3 from 'Domain/Home/ICTTrend/Component/IctChart3';
-import { setLoading } from 'Domain/Home/Common/Status/CommonSlice';
-import { getCategory, getEndYear, getKeywordTrend, getStartYear, setCategory, setEndYear, setKeywordTrend, setStartYear } from 'Domain/Home/ICTTrend/Status/IctTrendSlice';
-import * as ictTrendAPI from 'Domain/Home/ICTTrend/API/Call';
+import { getEndYear, getStartYear, setEndYear, setStartYear } from 'Domain/Home/ICTTrend/Status/IctTrendSlice';
 import RcSlider from 'rc-slider';
 import moment from 'moment';
 
-export default function Result () {
+export default function Result (props) {
+  const { wordCloudData, onWordClick } = props;
+
   const tempTreeMapData = [
     {
       'type': 'treemap',
@@ -50,14 +50,10 @@ export default function Result () {
   }
 
   const dispatch = useDispatch();
-  
-  const category = useSelector(getCategory);
-  const keywordTrend = useSelector(getKeywordTrend);
   const startYear = useSelector(getStartYear);
   const endYear = useSelector(getEndYear);
   const [cloudsRangeValue, setCloudsRangeValue] = useState([Number(moment().subtract(1, 'year').format('YYYY')), rangeMax]);
   const [chartRangeValue, setChartRangeValue] = useState(rangeMax - 1);
-  const [wordCloudData, setWordCloudData] = useState([]);
 
   // label 생성
   const getLabels = (length, gap) => {
@@ -79,39 +75,14 @@ export default function Result () {
   const labels2 = getLabels(10);
   const labels3_1 = getLabels(10);
   const labels3_2 = ['서울대', '연세대', '고려대', '전남대'];
-  
-  // 연관어 클라우드 API
-  const getKeywordCloud = useCallback(async (category, keyword, startYear, endYear) => {
-    let data = [];
-    try {
-      dispatch(setLoading(true));
-      data = await ictTrendAPI.ictSearchWordCloud(category, 'wordCloud', keyword, 100, startYear, endYear);
-    } catch (e) {
-      console.warn(e);
-    } finally {
-      dispatch(setLoading(false));
-    }
-    console.log('getKeywordCloud', category, data?.data?.result);
-    setWordCloudData(data?.data?.result ?? []);
-  }, [category]);
-
-  // 연관어 클라우드 클릭 이벤트
-  const handleWordClick = useCallback((_, d) => {
-    dispatch(setKeywordTrend(d.text));
-    dispatch(setStartYear(cloudsRangeValue[0]));
-    dispatch(setEndYear(cloudsRangeValue[1]));
-  });
 
   useEffect(() => {
-    getKeywordCloud(category, keywordTrend, cloudsRangeValue[0], cloudsRangeValue[1]);
-  }, [category, keywordTrend, cloudsRangeValue]);
+    dispatch(setStartYear(cloudsRangeValue[0]));
+    dispatch(setEndYear(cloudsRangeValue[1]));
+  }, [cloudsRangeValue]);
 
   useEffect(() => {
     setCloudsRangeValue([startYear, endYear]);
-
-    if(category === 'all' || category !== '') {
-      dispatch(setCategory('rnd_project'));
-    }
   }, []);
   
   return (
@@ -122,7 +93,7 @@ export default function Result () {
             <div>
               <h3 className='text-base font-bold text-color-dark'>연관어 클라우드</h3>
               <div className='wordcloud_cursor_wrap mt-4'>
-                <IctWordClouds data={wordCloudData} height={660} onWordClick={handleWordClick} valueSize={5} />
+                <IctWordClouds data={wordCloudData} onWordClick={onWordClick} height={660} />
               </div>
               <div className='rc_custom max-w-lg mt-4 mx-auto'>
                 <RcSlider

@@ -111,7 +111,7 @@ export default function Main() {
     dispatch(setStartYear(keywordRangeValue[0]));
     dispatch(setEndYear(keywordRangeValue[1]));
     navigate(`/icttrend/${paramSe2}/result/${ictCategory}`);
-  });
+  }, [category, keywordRangeValue]);
 
   // 탭 버튼
   useEffect(() => {
@@ -131,6 +131,7 @@ export default function Main() {
           id: 1, 
           name: '과제', onClick: () => {
             setTabActive1(1);
+            setTabActive2(0);
             dispatch(setCategory('rnd_project'));
           } 
         },

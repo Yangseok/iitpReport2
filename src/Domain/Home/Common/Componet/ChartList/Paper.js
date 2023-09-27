@@ -1,231 +1,17 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import IctWordClouds from 'Domain/Home/ICTTrend/Component/IctWordClouds';
 import IctTreeMap from 'Domain/Home/ICTTrend/Component/IctTreeMap';
 import IctChart1 from 'Domain/Home/ICTTrend/Component/IctChart1';
 import IctChart2 from 'Domain/Home/ICTTrend/Component/IctChart2';
 import ListPopup from 'Domain/Home/ICTTrend/Component/Popup/ListPopup';
+import { getEndYear, getStartYear, setEndYear, setStartYear } from 'Domain/Home/ICTTrend/Status/IctTrendSlice';
 import RcSlider from 'rc-slider';
 import moment from 'moment';
 
-export default function Result () {
-  const tempWordCloudData = [
-    {
-      'key': '제스처',
-      'doc_count': 500
-    },
-    {
-      'key': '의료',
-      'doc_count': 600
-    },
-    {
-      'key': '제공방법',
-      'doc_count': 500
-    },
-    {
-      'key': '발음',
-      'doc_count': 300
-    },
-    {
-      'key': '뉴럴',
-      'doc_count': 300
-    },
-    {
-      'key': '습득',
-      'doc_count': 300
-    },
-    {
-      'key': '자율주행',
-      'doc_count': 500
-    },
-    {
-      'key': '로봇',
-      'doc_count': 600
-    },
-    {
-      'key': '음성인식',
-      'doc_count': 500
-    },
-    {
-      'key': '데스크탑',
-      'doc_count': 300
-    },
-    {
-      'key': '가상현실',
-      'doc_count': 300
-    },
-    {
-      'key': '통계',
-      'doc_count': 600
-    },
-    {
-      'key': 'DNN',
-      'doc_count': 700
-    },
-    {
-      'key': '어휘',
-      'doc_count': 300
-    },
-    {
-      'key': '소유',
-      'doc_count': 300
-    },
-    {
-      'key': '습관',
-      'doc_count': 300
-    },
-    {
-      'key': 'learning',
-      'doc_count': 800
-    },
-    {
-      'key': '온라인',
-      'doc_count': 700
-    },
-    {
-      'key': '엔터테인먼트',
-      'doc_count': 300
-    },
-    {
-      'key': 'GUI',
-      'doc_count': 500
-    },
-    {
-      'key': '사물',
-      'doc_count': 600
-    },
-    {
-      'key': '애플리케이션',
-      'doc_count': 2000
-    },
-    {
-      'key': '그래픽',
-      'doc_count': 800
-    },
-    {
-      'key': '어노테이션',
-      'doc_count': 300
-    },
-    {
-      'key': '인물',
-      'doc_count': 300
-    },
-    {
-      'key': '검색어',
-      'doc_count': 300
-    },
-    {
-      'key': '체험',
-      'doc_count': 300
-    },
-    {
-      'key': '감정',
-      'doc_count': 600
-    },
-    {
-      'key': '발음',
-      'doc_count': 300
-    },
-    {
-      'key': '뉴럴',
-      'doc_count': 300
-    },
-    {
-      'key': 'DNN',
-      'doc_count': 700
-    },
-    {
-      'key': '신경망',
-      'doc_count': 800
-    },
-    {
-      'key': '클라우드',
-      'doc_count': 900
-    },
-    {
-      'key': '학습자',
-      'doc_count': 300
-    },
-    {
-      'key': '소셜',
-      'doc_count': 300
-    },
-    {
-      'key': '참여자',
-      'doc_count': 300
-    },
-    {
-      'key': '표정',
-      'doc_count': 300
-    },
-    {
-      'key': '상담',
-      'doc_count': 300
-    },
-    {
-      'key': '성향',
-      'doc_count': 300
-    },
-    {
-      'key': 'UI 앱',
-      'doc_count': 700
-    },
-    {
-      'key': '증강현실',
-      'doc_count': 300
-    },
-    {
-      'key': '키워드',
-      'doc_count': 600
-    },
-    {
-      'key': '검색어',
-      'doc_count': 300
-    },
-    {
-      'key': '체험',
-      'doc_count': 300
-    },
-    {
-      'key': '발음',
-      'doc_count': 600
-    },
-    {
-      'key': '뉴럴',
-      'doc_count': 300
-    },
-    {
-      'key': '하드웨어',
-      'doc_count': 3000
-    },
-    {
-      'key': '소프트웨어',
-      'doc_count': 1700
-    },
-    {
-      'key': '소프트웨어',
-      'doc_count': 1700
-    },
-    {
-      'key': '애플리케이션',
-      'doc_count': 2500
-    },
-    {
-      'key': '소프트웨어',
-      'doc_count': 1700
-    },
-    {
-      'key': '소프트웨어',
-      'doc_count': 1700
-    },
-    {
-      'key': '컴퓨팅',
-      'doc_count': 1600
-    },
-    {
-      'key': '빅데이터',
-      'doc_count': 1000
-    },
-  ];
+export default function Result (props) {
+  const { wordCloudData, onWordClick } = props;
+
   const tempTreeMapData = [
     {
       'type': 'treemap',
@@ -260,22 +46,22 @@ export default function Result () {
     { id: 9, name: '서울대학교 산학협력단', count: 69 },
   ];
 
+  let rangeMarks1 = {}, rangeMarks2 = {};
+  const rangeMin = 2014;
+  const rangeMax = Number(moment().format('YYYY'));
+  for(let i = rangeMin; i <= rangeMax; i++) {
+    rangeMarks1[i] = i;
+  }
+  for(let i = (rangeMin-1); i <= (rangeMax-1); i++) {
+    rangeMarks2[i] = i;
+  }
+
+  const dispatch = useDispatch();
+  const startYear = useSelector(getStartYear);
+  const endYear = useSelector(getEndYear);
+  const [cloudsRangeValue, setCloudsRangeValue] = useState([Number(moment().subtract(1, 'year').format('YYYY')), rangeMax]);
+  const [chartRangeValue, setChartRangeValue] = useState(rangeMax - 1);
   const [popup, setPopup] = useState(false);
-  const [cloudsRangeValue, setCloudsRangeValue] = useState([2022, 2023]);
-  const [chartRangeValue, setChartRangeValue] = useState(2022);
-
-  // rc-slider 범위 지정
-  const getRanges = (min, max) => {
-    let marks = {};    
-    for(let i = min; i <= max; i++) {
-      marks[i] = i;
-    }
-
-    return { min, max, marks };
-  };
-
-  const ranges1 = getRanges(2014, 2023);
-  const ranges2 = getRanges(2013, 2022);
 
   // label 생성
   const getLabels = (length, gap) => {
@@ -296,6 +82,15 @@ export default function Result () {
   const labels1 = ['플랫폼','learning','빅데이터','딥러닝','모니터링','네트워크','솔루션','고도','모델링','소프트웨어'];
   const labels2 = getLabels(10);
 
+  useEffect(() => {
+    dispatch(setStartYear(cloudsRangeValue[0]));
+    dispatch(setEndYear(cloudsRangeValue[1]));
+  }, [cloudsRangeValue]);
+
+  useEffect(() => {
+    setCloudsRangeValue([startYear, endYear]);
+  }, []);
+
   return (
     <>
       <section className='mt-10 mb-10'>
@@ -304,14 +99,14 @@ export default function Result () {
             <div>
               <h3 className='text-base font-bold text-color-dark'>연관어 클라우드</h3>
               <div className='mt-4'>
-                <IctWordClouds data={tempWordCloudData} height={660} />
+                <IctWordClouds data={wordCloudData} onWordClick={onWordClick} height={660} />
               </div>
               <div className='rc_custom max-w-lg mt-4 mx-auto'>
                 <RcSlider
                   range
-                  min={ranges1.min}
-                  max={ranges1.max}
-                  marks={ranges1.marks}
+                  min={rangeMin}
+                  max={rangeMax}
+                  marks={rangeMarks1}
                   value={cloudsRangeValue}
                   onChange={(e) => setCloudsRangeValue(e)}
                 />
@@ -325,9 +120,9 @@ export default function Result () {
               <div className='rc_custom type02 max-w-lg mt-4 mx-auto'>
                 <RcSlider
                   included={false}
-                  min={ranges2.min}
-                  max={ranges2.max}
-                  marks={ranges2.marks}
+                  min={rangeMin - 1}
+                  max={rangeMax - 1}
+                  marks={rangeMarks2}
                   value={chartRangeValue}
                   onChange={(e) => setChartRangeValue(e)}
                 />
