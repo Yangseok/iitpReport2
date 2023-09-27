@@ -25,13 +25,6 @@ import Policy from 'Domain/Home/Common/Componet/List/Policy';
 import Researcher from 'Domain/Home/Common/Componet/List/Researcher';
 import Orgn from 'Domain/Home/Common/Componet/List/Orgn';
 import News from 'Domain/Home/Common/Componet/List/News';
-import ProjectOutChart from 'Domain/Home/Common/Componet/ChartList/ProjectOut';
-import ProjectInChart from 'Domain/Home/Common/Componet/ChartList/ProjectIn';
-import PatentChart from 'Domain/Home/Common/Componet/ChartList/Patent';
-import PaperChart from 'Domain/Home/Common/Componet/ChartList/Paper';
-import IctChart from 'Domain/Home/Common/Componet/ChartList/Ict';
-import PolicyChart from 'Domain/Home/Common/Componet/ChartList/Policy';
-import NewsChart from 'Domain/Home/Common/Componet/ChartList/News';
 import { useLocation } from 'react-router-dom';
 
 export default function ListWrap(props) {
@@ -407,34 +400,8 @@ export default function ListWrap(props) {
     }
   };
 
-  const getChartComponent = (filterKey) => {
-    switch (filterKey) {
-    case 'search/projectOut':
-      return <ProjectOutChart />;
-    case 'search/projectIn':
-      return <ProjectInChart />;
-    case 'search/patent':
-      return <PatentChart />;
-    case 'search/paper':
-      return <PaperChart />;
-    case 'search/ict':
-      return <IctChart />;
-    case 'search/policy':
-      return <PolicyChart />;
-    case 'search/news':
-      return <NewsChart />;
-    default:
-      return null;
-    }
-  };
-
   return (
-    <ResultListLayout totalCount={tabCount?.all} tabCount={tabCount} keyword={keyword} setSearchButtonClick={setSearchButtonClick} isSearchDetail={isSearchDetail} activeCount={activeCount} >
-      {(se1 === 'icttrend')
-        ? getChartComponent(filterKey)
-        : null
-      }
-      
+    <ResultListLayout totalCount={tabCount?.all} tabCount={tabCount} keyword={keyword} setSearchButtonClick={setSearchButtonClick} isSearchDetail={isSearchDetail} activeCount={activeCount} filterKey={filterKey}>
       <section className='mt-6'>
         <div className='container'>
           <div className='flex items-center justify-between'>

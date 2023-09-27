@@ -53,7 +53,6 @@ export default function DemandResult() {
     },
   ];
 
-
   const selectedList = useSelector(getSelectedList);
 
   const [data, setData] = useState([]);
@@ -77,11 +76,6 @@ export default function DemandResult() {
   const [applicantTmp, setApplicantTmp] = useState('');
   const [surveyTitleTmp, setSurveyTitleTmp] = useState('');
 
-  const [bigIct, setBigIct] = useState('');
-  const [middleIct, setMiddleIct] = useState('');
-  const [smallIct, setSmallIct] = useState('');
-  const [detailIct, setDetailIct] = useState('');
-
   const bigIctTmp = useSelector(getBigIctTmp);
   const middleIctTmp = useSelector(getMiddleIctTmp);
   const smallIctTmp = useSelector(getSmallIctTmp);
@@ -91,6 +85,11 @@ export default function DemandResult() {
   const middleIctList = useSelector(getMiddleIctList);
   const smallIctList = useSelector(getSmallIctList);
   const detailIctList = useSelector(getDetailIctList);
+
+  const [bigIct, setBigIct] = useState(bigIctTmp);
+  const [middleIct, setMiddleIct] = useState(middleIctTmp);
+  const [smallIct, setSmallIct] = useState(smallIctTmp);
+  const [detailIct, setDetailIct] = useState(detailIctTmp);
 
   const [surveyList, setSurveyList] = useState([]);
 
@@ -113,6 +112,20 @@ export default function DemandResult() {
     }
   }, []);
 
+  const initFilterClick = () => {
+    initFilterData('BCLS');
+    setStartDate('');
+    setEndDate('');
+    setOrgnName('');
+    setApplicant('');
+    setSurveyTitle('');
+    setBigIct('');
+    setMiddleIct('');
+    setSmallIct('');
+    setDetailIct('');
+    setPage(1);
+  };
+
   const handleFilterApply = (e) => {
     setBigIct(bigIctTmp);
     setMiddleIct(middleIctTmp);
@@ -124,6 +137,17 @@ export default function DemandResult() {
     setOrgnName(orgnNameTmp);
     setApplicant(applicantTmp);
     setSurveyTitle(surveyTitleTmp);
+    e?.preventDefault();
+  };
+
+  const listDownload = (e) => {
+    const winOpen = (url, name, option) => {
+      var popup = window.open(url, name, option);
+      popup.focus();
+      return popup;
+    };
+    const noticeId = getNoticeId();
+    winOpen(process.env.REACT_APP_API_URL+'/demand/surveyListDownload?noticeId='+noticeId);
     e?.preventDefault();
   };
   
@@ -217,6 +241,7 @@ export default function DemandResult() {
       if (data?.data?.result?.dataList?.[i]?.surveyId === undefined) continue;
       let pushData = {
         key: i,
+        noticeId: data?.data?.result?.dataList?.[i]?.noticeId ?? '',
         id: data?.data?.result?.dataList?.[i]?.surveyId,
         pblanc: (data?.data?.result?.dataList?.[i]?.noticeTitle ?? '') + ' (' + (data?.data?.result?.dataList?.[i]?.period ?? '') + ')',
         title: data?.data?.result?.dataList?.[i]?.surveyTitle ?? '',
@@ -268,10 +293,6 @@ export default function DemandResult() {
     }
   }, [smallIctTmp]);
 
-  useEffect(() => {
-    handleFilterApply();
-  }, []);
-
   return (
     <Layout>
       <section>
@@ -297,7 +318,7 @@ export default function DemandResult() {
               기술수요조사서 <span className='text-color-main'>{common.setPriceInput(totalCount)}건</span>
             </h3>
             <div className='flex gap-4'>
-              <Button className='gap-2 h-12 px-4 rounded text-sm font-bold btn_style04 mr-2' name='목록 다운로드' icon={icArrow} onClick={() => {}} />
+              <Button className='gap-2 h-12 px-4 rounded text-sm font-bold btn_style04 mr-2' name='목록 다운로드' icon={icArrow} onClick={listDownload} />
               <Button className={`gap-2 h-12 px-4 rounded text-sm font-bold btn_style01${filterShow ? ' on' : ''}`} name='필터' icon={filterShow ? icFilter02 : icFilter} onClick={() => setFilterShow(state => !state)} />
             </div>
           </div>
@@ -373,7 +394,7 @@ export default function DemandResult() {
                   </dd>
                 </dl>
               </div>
-              <button type='button' className='sorting_reset_btn text-sm font-medium text-color-placeholder'>선택 초기화 <img src={icReset ?? icReset02} alt='선택 초기화' className='w-6' /></button>
+              <button type='button' onClick={initFilterClick} className='sorting_reset_btn text-sm font-medium text-color-placeholder'>선택 초기화 <img src={icReset ?? icReset02} alt='선택 초기화' className='w-6' /></button>
               <Button name="필터 적용" onClick={handleFilterApply} icon={icSearch} className="gap-2 mt-6 mx-auto py-3 px-6.5 rounded-3xl text-base font-bold btn_style03" />
             </div>
             : ''
@@ -403,7 +424,7 @@ export default function DemandResult() {
                         {/* 파일이 존재하면 파일 분석 버튼 생성 */}
                         <a href={'/demandbanking/file/result/projectout'} className='h-5 px-1.5 rounded-sm text-xs font-medium btn_style05' target="_blank" rel='noreferrer' title={`새창이동, ${e.title} 파일분석 페이지`}>파일 분석</a>
                         <div className='flex flex-col gap-2.5'>
-                          <a href={`/demandbanking/view/${e.id}`} className='h-5 px-1.5 rounded-sm text-xs font-medium text-color-white bg-color-light1' target="_blank" rel='noreferrer' title={`새창이동, ${e.title} 상세 페이지`}>자세히 보기↗</a>
+                          <a href={`/demandbanking/view/${e.noticeId}/${e.id}`} className='h-5 px-1.5 rounded-sm text-xs font-medium text-color-white bg-color-light1' target="_blank" rel='noreferrer' title={`새창이동, ${e.title} 상세 페이지`}>자세히 보기↗</a>
                           <a href={`/demandbanking/merge/${e.id}`} className='h-5 px-1.5 rounded-sm text-xs font-medium btn_style05' target="_blank" rel='noreferrer' title={`새창이동, ${e.title} 병합수요 페이지`}>병합수요↗</a>
                           <button type='button' className={`h-5 px-1.5 rounded-sm text-xs font-medium btn_style05${(e.id === demandActive) ? ' on' : ''}`} onClick={(event) => onItemSlide(event, e.id)}>유사기술조사서</button>
                         </div>

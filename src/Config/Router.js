@@ -104,8 +104,8 @@ export default function Router() {
         <Route path='/view/orgn/:id' element={<ViewOrgn />} />
         <Route path='/demandbanking' element={<DemandBanking />} />
         <Route path='/demandbanking/result' element={<DemandBankingResult />} />
-        <Route path='/demandbanking/view/:id' element={<DemandBankingView />} />
-        <Route path='/demandbanking/merge/:id' element={<DemandBankingMerge />} />
+        <Route path='/demandbanking/view/:noticeId/:surveyId' element={<DemandBankingView />} />
+        <Route path='/demandbanking/merge/:surveyId' element={<DemandBankingMerge />} />
         {list.map((e,i) => {
           return <Route key={i} path={'/demandbanking/file/result/' + e.path} element={<ListWrap filterKey={e.filterKey} searchDetailKey={e.searchDetailKey} />} />;
         })}
