@@ -23,36 +23,6 @@ import common from 'Utill';
 export default function DemandResult() {
   const dispatch = useDispatch();
 
-  const tempData3 = [
-    {
-      id: 0,
-      pblanc: '정보통신방송 연구개발사업 기술수요조사서 (2023.01.05 ~ 2023.03.30)',
-      title: '초실감 콘텐츠 제작용 버츄얼 스튜디오 기술 개발',
-      agency: '한국표준과학연구원',
-      name: '홍길동',
-      registration: '증강/혼합현실(AR/MR)',
-      recommend: '증강/혼합현실(AR/MR)',
-    },
-    {
-      id: 1,
-      pblanc: '정보통신방송 연구개발사업 기술수요조사서 (2023.01.05 ~ 2023.03.30)',
-      title: '초실감 콘텐츠 제작용 버츄얼 스튜디오 기술 개발',
-      agency: '한국표준과학연구원',
-      name: '홍길동',
-      registration: '증강/혼합현실(AR/MR)',
-      recommend: '증강/혼합현실(AR/MR)',
-    },
-    {
-      id: 2,
-      pblanc: '정보통신방송 연구개발사업 기술수요조사서 (2023.01.05 ~ 2023.03.30)',
-      title: '초실감 콘텐츠 제작용 버츄얼 스튜디오 기술 개발',
-      agency: '한국표준과학연구원',
-      name: '홍길동',
-      registration: '증강/혼합현실(AR/MR)',
-      recommend: '증강/혼합현실(AR/MR)',
-    },
-  ];
-
   const selectedList = useSelector(getSelectedList);
 
   const [data, setData] = useState([]);
@@ -92,6 +62,15 @@ export default function DemandResult() {
   const [detailIct, setDetailIct] = useState(detailIctTmp);
 
   const [surveyList, setSurveyList] = useState([]);
+
+  const [subPage, setSubPage] = useState(1);
+  const [subSize] = useState(10);
+  const [subTab, setSubTab] = useState('ALL');
+  const [subTotalCount, setSubTotalCount] = useState(0);
+  const [similarNoticeId, setSimilarNoticeId] = useState('');
+  const [similarSurveyId, setSimilarSurveyId] = useState('');
+
+  const [subData, setSubData] = useState([]);
 
   const initFilterData = useCallback(async (type='BCLS') => {
     if (['BCLS'].indexOf(type) !== -1) {
@@ -150,24 +129,31 @@ export default function DemandResult() {
     winOpen(process.env.REACT_APP_API_URL+'/demand/surveyListDownload?noticeId='+noticeId);
     e?.preventDefault();
   };
-  
-  const handleItemClick = (id) => {
-    const newData = data?.map(e => {
-      if(e.id === id) {
-        return {...e, active: !e.active};
-      }
-      return e;
-    });
-    setData(newData);
-  };
 
+  const handleItemClick = () => {};
+  
+  // const handleItemClick = (id) => {
+  //   const newData = data?.map(e => {
+  //     if(e.id === id) {
+  //       return {...e, active: !e.active};
+  //     }
+  //     return e;
+  //   });
+  //   setData(newData);
+  // };
+  
   // 유사 기술 조사서 버튼 클릭
-  const onItemSlide = (e, id) => {
+  const onItemSlide = (e, noticeId, surveyId) => {
     const pd = 24;
     const liEl = $(e.currentTarget).parents('li');
     const contsEl = liEl.find('.conts_box');
 
-    setDemandActive(id);
+    setSubPage(1);
+    setSubTab('ALL');
+    setSimilarNoticeId(noticeId);
+    setSimilarSurveyId(surveyId);
+
+    setDemandActive(surveyId);
     liEl.siblings().removeClass('on');
     liEl.siblings().find('.conts_box').css({ 'height': 0, 'paddingTop': 0, 'paddingBottom': 0 });
 
@@ -292,6 +278,58 @@ export default function DemandResult() {
       getFilterList('SCLS',smallIctTmp);
     }
   }, [smallIctTmp]);
+
+  const getSimilarSurvey = useCallback(async () => {
+    let data = [];
+    try {
+      dispatch(setLoading(true));
+      data = await demandCallAPI.similarSurvey(subTab,similarNoticeId,similarSurveyId,subSize,subPage);
+    } catch (e) {
+      console.warn(e);
+    } finally {
+      dispatch(setLoading(false));
+    }
+    console.log('getSimilarSurvey:', data?.data?.result);
+
+    setSubTotalCount(0);
+    setSubData([
+      {
+        id: 0,
+        pblanc: '정보통신방송 연구개발사업 기술수요조사서 (2023.01.05 ~ 2023.03.30)',
+        title: '초실감 콘텐츠 제작용 버츄얼 스튜디오 기술 개발',
+        agency: '한국표준과학연구원',
+        name: '홍길동',
+        registration: '증강/혼합현실(AR/MR)',
+        recommend: '증강/혼합현실(AR/MR)',
+      },
+      {
+        id: 1,
+        pblanc: '정보통신방송 연구개발사업 기술수요조사서 (2023.01.05 ~ 2023.03.30)',
+        title: '초실감 콘텐츠 제작용 버츄얼 스튜디오 기술 개발',
+        agency: '한국표준과학연구원',
+        name: '홍길동',
+        registration: '증강/혼합현실(AR/MR)',
+        recommend: '증강/혼합현실(AR/MR)',
+      },
+      {
+        id: 2,
+        pblanc: '정보통신방송 연구개발사업 기술수요조사서 (2023.01.05 ~ 2023.03.30)',
+        title: '초실감 콘텐츠 제작용 버츄얼 스튜디오 기술 개발',
+        agency: '한국표준과학연구원',
+        name: '홍길동',
+        registration: '증강/혼합현실(AR/MR)',
+        recommend: '증강/혼합현실(AR/MR)',
+      },
+    ]);
+  }, [similarNoticeId, similarSurveyId, subPage, subSize, subTab]);
+
+  useEffect(() => {
+    setSubPage(1);
+  }, [subTab]);
+
+  useEffect(() => {
+    getSimilarSurvey();
+  }, [similarNoticeId, similarSurveyId, subPage, subSize, subTab]);
 
   return (
     <Layout>
@@ -426,12 +464,12 @@ export default function DemandResult() {
                         <div className='flex flex-col gap-2.5'>
                           <a href={`/demandbanking/view/${e.noticeId}/${e.id}`} className='h-5 px-1.5 rounded-sm text-xs font-medium text-color-white bg-color-light1' target="_blank" rel='noreferrer' title={`새창이동, ${e.title} 상세 페이지`}>자세히 보기↗</a>
                           <a href={`/demandbanking/merge/${e.id}`} className='h-5 px-1.5 rounded-sm text-xs font-medium btn_style05' target="_blank" rel='noreferrer' title={`새창이동, ${e.title} 병합수요 페이지`}>병합수요↗</a>
-                          <button type='button' className={`h-5 px-1.5 rounded-sm text-xs font-medium btn_style05${(e.id === demandActive) ? ' on' : ''}`} onClick={(event) => onItemSlide(event, e.id)}>유사기술조사서</button>
+                          <button type='button' className={`h-5 px-1.5 rounded-sm text-xs font-medium btn_style05${(e.id === demandActive) ? ' on' : ''}`} onClick={(event) => onItemSlide(event, e.noticeId, e.id)}>유사기술조사서</button>
                         </div>
                       </div>
                     </>}
                   >
-                    <DemandListItemDetail data={tempData3} />
+                    <DemandListItemDetail data={subData} setSubPage={setSubPage} subPage={subPage} subTotalCount={subTotalCount} subTab={subTab} />
                   </DemandListItem>;
                 })
                 : <li className='nodata'>
