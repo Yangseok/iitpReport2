@@ -10,220 +10,220 @@ import moment from 'moment';
 export default function Result () {
   const tempWordCloudData = [
     {
-      'text': '제스처',
-      'value': 500
+      'key': '제스처',
+      'doc_count': 500
     },
     {
-      'text': '의료',
-      'value': 600
+      'key': '의료',
+      'doc_count': 600
     },
     {
-      'text': '제공방법',
-      'value': 500
+      'key': '제공방법',
+      'doc_count': 500
     },
     {
-      'text': '발음',
-      'value': 300
+      'key': '발음',
+      'doc_count': 300
     },
     {
-      'text': '뉴럴',
-      'value': 300
+      'key': '뉴럴',
+      'doc_count': 300
     },
     {
-      'text': '습득',
-      'value': 300
+      'key': '습득',
+      'doc_count': 300
     },
     {
-      'text': '자율주행',
-      'value': 500
+      'key': '자율주행',
+      'doc_count': 500
     },
     {
-      'text': '로봇',
-      'value': 600
+      'key': '로봇',
+      'doc_count': 600
     },
     {
-      'text': '음성인식',
-      'value': 500
+      'key': '음성인식',
+      'doc_count': 500
     },
     {
-      'text': '데스크탑',
-      'value': 300
+      'key': '데스크탑',
+      'doc_count': 300
     },
     {
-      'text': '가상현실',
-      'value': 300
+      'key': '가상현실',
+      'doc_count': 300
     },
     {
-      'text': '통계',
-      'value': 600
+      'key': '통계',
+      'doc_count': 600
     },
     {
-      'text': 'DNN',
-      'value': 700
+      'key': 'DNN',
+      'doc_count': 700
     },
     {
-      'text': '어휘',
-      'value': 300
+      'key': '어휘',
+      'doc_count': 300
     },
     {
-      'text': '소유',
-      'value': 300
+      'key': '소유',
+      'doc_count': 300
     },
     {
-      'text': '습관',
-      'value': 300
+      'key': '습관',
+      'doc_count': 300
     },
     {
-      'text': 'learning',
-      'value': 800
+      'key': 'learning',
+      'doc_count': 800
     },
     {
-      'text': '온라인',
-      'value': 700
+      'key': '온라인',
+      'doc_count': 700
     },
     {
-      'text': '엔터테인먼트',
-      'value': 300
+      'key': '엔터테인먼트',
+      'doc_count': 300
     },
     {
-      'text': 'GUI',
-      'value': 500
+      'key': 'GUI',
+      'doc_count': 500
     },
     {
-      'text': '사물',
-      'value': 600
+      'key': '사물',
+      'doc_count': 600
     },
     {
-      'text': '애플리케이션',
-      'value': 2000
+      'key': '애플리케이션',
+      'doc_count': 2000
     },
     {
-      'text': '그래픽',
-      'value': 800
+      'key': '그래픽',
+      'doc_count': 800
     },
     {
-      'text': '어노테이션',
-      'value': 300
+      'key': '어노테이션',
+      'doc_count': 300
     },
     {
-      'text': '인물',
-      'value': 300
+      'key': '인물',
+      'doc_count': 300
     },
     {
-      'text': '검색어',
-      'value': 300
+      'key': '검색어',
+      'doc_count': 300
     },
     {
-      'text': '체험',
-      'value': 300
+      'key': '체험',
+      'doc_count': 300
     },
     {
-      'text': '감정',
-      'value': 600
+      'key': '감정',
+      'doc_count': 600
     },
     {
-      'text': '발음',
-      'value': 300
+      'key': '발음',
+      'doc_count': 300
     },
     {
-      'text': '뉴럴',
-      'value': 300
+      'key': '뉴럴',
+      'doc_count': 300
     },
     {
-      'text': 'DNN',
-      'value': 700
+      'key': 'DNN',
+      'doc_count': 700
     },
     {
-      'text': '신경망',
-      'value': 800
+      'key': '신경망',
+      'doc_count': 800
     },
     {
-      'text': '클라우드',
-      'value': 900
+      'key': '클라우드',
+      'doc_count': 900
     },
     {
-      'text': '학습자',
-      'value': 300
+      'key': '학습자',
+      'doc_count': 300
     },
     {
-      'text': '소셜',
-      'value': 300
+      'key': '소셜',
+      'doc_count': 300
     },
     {
-      'text': '참여자',
-      'value': 300
+      'key': '참여자',
+      'doc_count': 300
     },
     {
-      'text': '표정',
-      'value': 300
+      'key': '표정',
+      'doc_count': 300
     },
     {
-      'text': '상담',
-      'value': 300
+      'key': '상담',
+      'doc_count': 300
     },
     {
-      'text': '성향',
-      'value': 300
+      'key': '성향',
+      'doc_count': 300
     },
     {
-      'text': 'UI 앱',
-      'value': 700
+      'key': 'UI 앱',
+      'doc_count': 700
     },
     {
-      'text': '증강현실',
-      'value': 300
+      'key': '증강현실',
+      'doc_count': 300
     },
     {
-      'text': '키워드',
-      'value': 600
+      'key': '키워드',
+      'doc_count': 600
     },
     {
-      'text': '검색어',
-      'value': 300
+      'key': '검색어',
+      'doc_count': 300
     },
     {
-      'text': '체험',
-      'value': 300
+      'key': '체험',
+      'doc_count': 300
     },
     {
-      'text': '발음',
-      'value': 600
+      'key': '발음',
+      'doc_count': 600
     },
     {
-      'text': '뉴럴',
-      'value': 300
+      'key': '뉴럴',
+      'doc_count': 300
     },
     {
-      'text': '하드웨어',
-      'value': 3000
+      'key': '하드웨어',
+      'doc_count': 3000
     },
     {
-      'text': '소프트웨어',
-      'value': 1700
+      'key': '소프트웨어',
+      'doc_count': 1700
     },
     {
-      'text': '소프트웨어',
-      'value': 1700
+      'key': '소프트웨어',
+      'doc_count': 1700
     },
     {
-      'text': '애플리케이션',
-      'value': 2500
+      'key': '애플리케이션',
+      'doc_count': 2500
     },
     {
-      'text': '소프트웨어',
-      'value': 1700
+      'key': '소프트웨어',
+      'doc_count': 1700
     },
     {
-      'text': '소프트웨어',
-      'value': 1700
+      'key': '소프트웨어',
+      'doc_count': 1700
     },
     {
-      'text': '컴퓨팅',
-      'value': 1600
+      'key': '컴퓨팅',
+      'doc_count': 1600
     },
     {
-      'text': '빅데이터',
-      'value': 1000
+      'key': '빅데이터',
+      'doc_count': 1000
     },
   ];
   const tempTreeMapData = [

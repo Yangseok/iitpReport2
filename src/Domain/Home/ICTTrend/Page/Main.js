@@ -18,224 +18,6 @@ import common from 'Utill';
 import moment from 'moment';
 
 export default function Main() {
-  // const tempWordCloudData = [
-  //   {
-  //     'text': '제스처',
-  //     'value': 500
-  //   },
-  //   {
-  //     'text': '의료',
-  //     'value': 600
-  //   },
-  //   {
-  //     'text': '제공방법',
-  //     'value': 500
-  //   },
-  //   {
-  //     'text': '발음',
-  //     'value': 300
-  //   },
-  //   {
-  //     'text': '뉴럴',
-  //     'value': 300
-  //   },
-  //   {
-  //     'text': '습득',
-  //     'value': 300
-  //   },
-  //   {
-  //     'text': '자율주행',
-  //     'value': 500
-  //   },
-  //   {
-  //     'text': '로봇',
-  //     'value': 600
-  //   },
-  //   {
-  //     'text': '음성인식',
-  //     'value': 500
-  //   },
-  //   {
-  //     'text': '데스크탑',
-  //     'value': 300
-  //   },
-  //   {
-  //     'text': '가상현실',
-  //     'value': 300
-  //   },
-  //   {
-  //     'text': '통계',
-  //     'value': 600
-  //   },
-  //   {
-  //     'text': 'DNN',
-  //     'value': 700
-  //   },
-  //   {
-  //     'text': '어휘',
-  //     'value': 300
-  //   },
-  //   {
-  //     'text': '소유',
-  //     'value': 300
-  //   },
-  //   {
-  //     'text': '습관',
-  //     'value': 300
-  //   },
-  //   {
-  //     'text': 'learning',
-  //     'value': 800
-  //   },
-  //   {
-  //     'text': '온라인',
-  //     'value': 700
-  //   },
-  //   {
-  //     'text': '엔터테인먼트',
-  //     'value': 300
-  //   },
-  //   {
-  //     'text': 'GUI',
-  //     'value': 500
-  //   },
-  //   {
-  //     'text': '사물',
-  //     'value': 600
-  //   },
-  //   {
-  //     'text': '애플리케이션',
-  //     'value': 2000
-  //   },
-  //   {
-  //     'text': '그래픽',
-  //     'value': 800
-  //   },
-  //   {
-  //     'text': '어노테이션',
-  //     'value': 300
-  //   },
-  //   {
-  //     'text': '인물',
-  //     'value': 300
-  //   },
-  //   {
-  //     'text': '검색어',
-  //     'value': 300
-  //   },
-  //   {
-  //     'text': '체험',
-  //     'value': 300
-  //   },
-  //   {
-  //     'text': '감정',
-  //     'value': 600
-  //   },
-  //   {
-  //     'text': '발음',
-  //     'value': 300
-  //   },
-  //   {
-  //     'text': '뉴럴',
-  //     'value': 300
-  //   },
-  //   {
-  //     'text': 'DNN',
-  //     'value': 700
-  //   },
-  //   {
-  //     'text': '신경망',
-  //     'value': 800
-  //   },
-  //   {
-  //     'text': '클라우드',
-  //     'value': 900
-  //   },
-  //   {
-  //     'text': '학습자',
-  //     'value': 300
-  //   },
-  //   {
-  //     'text': '소셜',
-  //     'value': 300
-  //   },
-  //   {
-  //     'text': '참여자',
-  //     'value': 300
-  //   },
-  //   {
-  //     'text': '표정',
-  //     'value': 300
-  //   },
-  //   {
-  //     'text': '상담',
-  //     'value': 300
-  //   },
-  //   {
-  //     'text': '성향',
-  //     'value': 300
-  //   },
-  //   {
-  //     'text': 'UI 앱',
-  //     'value': 700
-  //   },
-  //   {
-  //     'text': '증강현실',
-  //     'value': 300
-  //   },
-  //   {
-  //     'text': '키워드',
-  //     'value': 600
-  //   },
-  //   {
-  //     'text': '검색어',
-  //     'value': 300
-  //   },
-  //   {
-  //     'text': '체험',
-  //     'value': 300
-  //   },
-  //   {
-  //     'text': '발음',
-  //     'value': 600
-  //   },
-  //   {
-  //     'text': '뉴럴',
-  //     'value': 300
-  //   },
-  //   {
-  //     'text': '하드웨어',
-  //     'value': 3000
-  //   },
-  //   {
-  //     'text': '소프트웨어',
-  //     'value': 1700
-  //   },
-  //   {
-  //     'text': '소프트웨어',
-  //     'value': 1700
-  //   },
-  //   {
-  //     'text': '애플리케이션',
-  //     'value': 2500
-  //   },
-  //   {
-  //     'text': '소프트웨어',
-  //     'value': 1700
-  //   },
-  //   {
-  //     'text': '소프트웨어',
-  //     'value': 1700
-  //   },
-  //   {
-  //     'text': '컴퓨팅',
-  //     'value': 1600
-  //   },
-  //   {
-  //     'text': '빅데이터',
-  //     'value': 1000
-  //   },
-  // ];
   const tempTreeMapData = [
     {
       'type': 'treemap',
@@ -268,10 +50,6 @@ export default function Main() {
     { x: 51, y: 120 },
   ];
   const labels1 = ['플랫폼','learning','빅데이터','딥러닝','모니터링','네트워크','솔루션','고도','모델링','소프트웨어'];
-  
-  const navigate = useNavigate();
-  const locations = useLocation();
-  const dispatch = useDispatch();
 
   let rangeMarks1 = {}, rangeMarks2 = {};
   const rangeMin = 2014;
@@ -282,6 +60,10 @@ export default function Main() {
   for(let i = (rangeMin-1); i <= (rangeMax-1); i++) {
     rangeMarks2[i] = i;
   }
+  
+  const navigate = useNavigate();
+  const locations = useLocation();
+  const dispatch = useDispatch();
 
   const category = useSelector(getCategory);
   const [tabButtons1, setTabButtons1] = useState([]);
@@ -290,37 +72,48 @@ export default function Main() {
   const [tabActive2, setTabActive2] = useState(0);
   const [page, setPage] = useState('');
   const [keywordRangeValue, setKeywordRangeValue] = useState([Number(moment().subtract(1, 'year').format('YYYY')), rangeMax]);
-  const [issueRangeValue, setIssueRangeValue] = useState(2023);
+  const [issueRangeValue, setIssueRangeValue] = useState(rangeMax - 1);
   const [wordCloudData, setWordCloudData] = useState([]);
 
   const se = common.getSegment();
   const paramSe2 = se[2] ?? '';
 
-  const getKeywordCloud = useCallback(async (category) => {
-    let data = [], resData = [];
+  // 키워드 트렌드 - 워드 클라우드 API
+  const getKeywordCloud = useCallback(async (category, startYear, endYear) => {
+    let data = [];
     try {
       dispatch(setLoading(true));
-      data = await ictTrendAPI.ictSearchWordCloud(category, 'wordCloud');
+      data = await ictTrendAPI.ictSearchWordCloud(category, 'wordCloud', undefined, 160, startYear, endYear);
     } catch (e) {
       console.warn(e);
     } finally {
       dispatch(setLoading(false));
     }
-    const dataList = data?.data?.result ?? [];
-    console.log('getKeywordCloud', dataList);
-    setWordCloudData(dataList);
-
-    for (let i in dataList ?? []) {
-      const pushData = {
-        text: dataList?.[i]?.key ?? '',
-        value: dataList?.[i]?.doc_count ?? 0,
-      };
-      resData.push(pushData);
-    }
-    console.log(resData);
-    // setWordCloudData(resData);
+    console.log('getKeywordCloud', category, startYear, endYear, data?.data?.result);
+    setWordCloudData(data?.data?.result ?? []);
   }, [category]);
 
+  // 키워드 트렌드 - 키워드 클릭 이벤트
+  const handleWordClick = useCallback((_, d) => {
+    let ictCategory = category;
+    
+    if(category === 'all') {
+      ictCategory = 'projectout';
+    } else if (category === 'rnd_project') {
+      ictCategory = 'projectout';
+    } else if (category === 'iitp_project') {
+      ictCategory = 'projectin';
+    } else if (category === 'ict_report') {
+      ictCategory = 'ict';
+    }
+
+    dispatch(setKeywordTrend(d.text));
+    dispatch(setStartYear(keywordRangeValue[0]));
+    dispatch(setEndYear(keywordRangeValue[1]));
+    navigate(`/icttrend/${paramSe2}/result/${ictCategory}`);
+  });
+
+  // 탭 버튼
   useEffect(() => {
     let tab1 = [], tab2 = [];
 
@@ -331,14 +124,14 @@ export default function Main() {
           name: '전체', 
           onClick: () => {
             setTabActive1(0);
-            dispatch(setCategory(''));
+            dispatch(setCategory('all'));
           }
         },
         { 
           id: 1, 
           name: '과제', onClick: () => {
             setTabActive1(1);
-            dispatch(setCategory('projectout'));
+            dispatch(setCategory('rnd_project'));
           } 
         },
         { 
@@ -362,7 +155,7 @@ export default function Main() {
           name: 'ICT 자료', 
           onClick: () => {
             setTabActive1(4);
-            dispatch(setCategory('ict'));
+            dispatch(setCategory('ict_report'));
           } 
         },
         { 
@@ -382,24 +175,6 @@ export default function Main() {
           } 
         },
       ];
-      tab2 = [
-        { 
-          id: 0, 
-          name: '국가 R&D 과제', 
-          onClick: () => {
-            setTabActive2(0);
-            dispatch(setCategory('projectout'));
-          } 
-        },
-        { 
-          id: 1, 
-          name: 'IITP 내부 과제', 
-          onClick: () => {
-            setTabActive2(1);
-            dispatch(setCategory('projectin'));
-          } 
-        },
-      ];
       setTabActive1(0);
     } else if(paramSe2 === 'technology') {
       tab1 = [
@@ -408,7 +183,7 @@ export default function Main() {
           name: '과제', 
           onClick: () => {
             setTabActive1(1);
-            dispatch(setCategory('projectout'));
+            dispatch(setCategory('rnd_project'));
           } 
         },
         { 
@@ -436,26 +211,27 @@ export default function Main() {
           } 
         },
       ];
-      tab2 = [
-        { 
-          id: 0, 
-          name: '국가 R&D 과제', 
-          onClick: () => {
-            setTabActive2(0);
-            dispatch(setCategory('projectout'));
-          } 
-        },
-        { 
-          id: 1, 
-          name: 'IITP 내부 과제', 
-          onClick: () => {
-            setTabActive2(1);
-            dispatch(setCategory('projectin'));
-          } 
-        },
-      ];
       setTabActive1(1);
     }
+    
+    tab2 = [
+      { 
+        id: 0, 
+        name: '국가 R&D 과제', 
+        onClick: () => {
+          setTabActive2(0);
+          dispatch(setCategory('rnd_project'));
+        } 
+      },
+      { 
+        id: 1, 
+        name: 'IITP 내부 과제', 
+        onClick: () => {
+          setTabActive2(1);
+          dispatch(setCategory('iitp_project'));
+        } 
+      },
+    ];
 
     setPage(paramSe2);
     setTabButtons1(tab1);
@@ -489,20 +265,29 @@ export default function Main() {
   }, [issueRangeValue, se]);
 
   useEffect(() => {
-    dispatch(setStartYear(keywordRangeValue[0]));
-    dispatch(setEndYear(keywordRangeValue[1]));
-  }, [keywordRangeValue]);
-
-  useEffect(() => {
     dispatch(setSingleYear(issueRangeValue));
   }, [issueRangeValue]);
 
+  // 연도 변경시, 새 키워드 가져옴
   useEffect(() => {
-    getKeywordCloud((category !== '') ? category : 'all');
-  }, [category]);
+    getKeywordCloud(category, keywordRangeValue[0], keywordRangeValue[1]);
+  }, [category, keywordRangeValue]);
 
   useEffect(() => {
-    dispatch(setCategory(''));
+    if(paramSe2 === 'keyword') {
+      dispatch(setCategory('all'));
+    } else if(paramSe2 === 'technology') {
+      dispatch(setCategory('rnd_project'));
+    }
+
+    // 페이지 이동하여 왔을시 초기화
+    const getDelayKeywordCloud = () => {
+      return setTimeout(() => {
+        getKeywordCloud('all');
+      }, 300);
+    };
+    getDelayKeywordCloud();
+    return () => clearTimeout(getDelayKeywordCloud);
   }, []);
 
   return (
@@ -525,7 +310,7 @@ export default function Main() {
         <div className='section mt-4'>
           <div className='container'>
             <div className='wordcloud_cursor_wrap'>
-              <IctWordClouds data={wordCloudData} height={800} />
+              <IctWordClouds data={wordCloudData} height={600} onWordClick={handleWordClick} />
             </div>
             <div className='rc_custom max-w-4.5xl mt-4 mx-auto'>
               <RcSlider
