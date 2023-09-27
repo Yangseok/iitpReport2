@@ -58,21 +58,21 @@ export default function DemandMerge() {
     } finally {
       dispatch(setLoading(false));
     }
-    console.log('getMergedSurveyList:', data?.data);
+    console.log('getMergedSurveyList:', data?.data?.result);
 
     let tmpData = [];
-    for (let i in data?.data?.result?.childSurvey ?? []) {
-      if (data?.data?.result?.childSurvey?.[i]?.surveyId === undefined) continue;
+    for (let i in data?.data?.result?.childSurveyList ?? []) {
+      if (data?.data?.result?.childSurveyList?.[i]?.surveyId === undefined) continue;
       let pushData = {
         key: i,
         noticeId: data?.data?.result?.parentSurvey?.noticeId ?? '',
-        id: data?.data?.result?.childSurvey?.[i]?.surveyId,
+        id: data?.data?.result?.childSurveyList?.[i]?.surveyId,
         pblanc: (data?.data?.result?.parentSurvey?.noticeTitle ?? '') + ' (' + (data?.data?.result?.parentSurvey?.period ?? '') + ')',
-        title: data?.data?.result?.childSurvey?.[i]?.surveyTitle ?? '',
-        agency: data?.data?.result?.childSurvey?.[i]?.orgnName ?? '',
-        name: data?.data?.result?.childSurvey?.[i]?.applicant ?? '',
-        registration: data?.data?.result?.childSurvey?.[i]?.registrationIctCode ?? '',
-        recommend: data?.data?.result?.childSurvey?.[i]?.recommendIctCode ?? '',
+        title: data?.data?.result?.childSurveyList?.[i]?.surveyTitle ?? '',
+        agency: data?.data?.result?.childSurveyList?.[i]?.orgnName ?? '',
+        name: data?.data?.result?.childSurveyList?.[i]?.applicant ?? '',
+        registration: data?.data?.result?.childSurveyList?.[i]?.registrationIctCode ?? '',
+        recommend: data?.data?.result?.childSurveyList?.[i]?.recommendIctCode ?? '',
       };
       tmpData.push(pushData);
     }
@@ -114,7 +114,7 @@ export default function DemandMerge() {
                     btns={<>
                       <div className='flex items-start gap-4'>
                         {/* 파일이 존재하면 파일 분석 버튼 생성 */}
-                        <a href={'/demandbanking/file/result/projectout'} className='h-5 px-1.5 rounded-sm text-xs font-medium btn_style05' target="_blank" rel='noreferrer' title={`새창이동, ${e.title} 파일분석 페이지`}>파일 분석</a>
+                        <a href={`/demandbanking/file/${e.noticeId}/${e.id}/result/projectout`} className='h-5 px-1.5 rounded-sm text-xs font-medium btn_style05' target="_blank" rel='noreferrer' title={`새창이동, ${e.title} 파일분석 페이지`}>파일 분석</a>
                         <a href={`/demandbanking/view/${e.noticeId}/${e.id}`} className='h-5 px-1.5 rounded-sm text-xs font-medium text-color-white bg-color-light1' target="_blank" rel='noreferrer' title={`새창이동, ${e.title} 상세 페이지`}>자세히 보기↗</a>
                       </div>
                     </>}

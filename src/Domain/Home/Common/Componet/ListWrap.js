@@ -26,6 +26,8 @@ import Researcher from 'Domain/Home/Common/Componet/List/Researcher';
 import Orgn from 'Domain/Home/Common/Componet/List/Orgn';
 import News from 'Domain/Home/Common/Componet/List/News';
 import { useLocation } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
+import * as demandCallAPI from 'Domain/Home/DemandBanking/API/Call';
 
 export default function ListWrap(props) {
   const location = useLocation();
@@ -38,6 +40,9 @@ export default function ListWrap(props) {
   const se2 = se[2] ?? '';
   const se3 = se[3] ?? '';
   const se4 = se[4] ?? '';
+  const params = useParams();
+  const noticeId = params?.noticeId ?? '';
+  const surveyId = params?.surveyId ?? '';
   const selectKeyword = useSelector(getSelectKeyword);
   const keyword = useSelector(getSearchKeyword);
   const [tabCount, setTabCount] = useState({});
@@ -73,6 +78,9 @@ export default function ListWrap(props) {
   const [isSearchDetail, setIsSearchDetail] = useState(false);
   const [activeCount, setActiveCount] = useState(0);
 
+  const [wordCloudSurveyFile, setWordCloudSurveyFile] = useState([]);
+  const [surveyFileTitle, setSurveyFileTitle] = useState([]);
+  
   useEffect(() => {
     if (se1 === 'search' && !(globalSearchDetailData[searchDetailKey] === undefined || JSON.stringify(globalSearchDetailData[searchDetailKey]) === JSON.stringify({}))) {
       console.log('상세검색', globalSearchDetailData[searchDetailKey]);
@@ -84,15 +92,43 @@ export default function ListWrap(props) {
     setIsSearchDetail(false);
   }, [se1, globalSearchDetailData, searchDetailKey]);
 
+  const getSurveyFile = useCallback(async () => {
+    let data = [];
+    try {
+      dispatch(setLoading(true));
+      data = await demandCallAPI.surveyFile(noticeId, surveyId, 160, 1);
+    } catch (e) {
+      console.warn(e);
+    } finally {
+      dispatch(setLoading(false));  
+    }
+    console.log('getSurveyFile result:', data?.data?.result);
+    let selectKeyword = [];
+    if ((data?.data?.result?.textAnalyticsKeywordList?.length ?? 0) > 0) {
+      selectKeyword = data?.data?.result?.textAnalyticsKeywordList ?? [];
+    }
+    setWordCloudSurveyFile(selectKeyword);
+    setSurveyFileTitle(data?.data?.result?.surveyTitle ?? '');
+    return selectKeyword;
+  }, [noticeId, surveyId]);
+
   const getList = useCallback(async () => {
     await (async () => {
+      let surveyFileKeyword;
+      if (se1 === 'demandbanking') {
+        surveyFileKeyword = await getSurveyFile();
+      }
       let filterObj = List.getFilterObj(filterKey, filterActive);
       // console.log('filterObj:', filterObj);
       let etcParam = { aggs: true };
       let data = [];
       try {
         dispatch(setLoading(true));
-        data = await List.callListAPI(filterKey, se1, se2, globalSearchDetailData, searchDetailKey, selectKeyword, size, page, keyword, fileKeywordList, sort, filterObj, etcParam);
+        let setSelectKeyword = selectKeyword;
+        if (surveyFileKeyword?.length !== undefined) {
+          setSelectKeyword = surveyFileKeyword;
+        }
+        data = await List.callListAPI(filterKey, se1, se2, globalSearchDetailData, searchDetailKey, setSelectKeyword, size, page, keyword, fileKeywordList, sort, filterObj, etcParam);
       } catch (e) {
         console.warn(e);
       } finally {
@@ -343,6 +379,8 @@ export default function ListWrap(props) {
           } else if (se2 == 'project') {
             data = await discoveryAPI.searchCount('discovery',keyword);
           }
+        } else if (se1 === 'demandbanking') {
+          data = await discoveryAPI.searchCount('discovery',wordCloudSurveyFile?.map(o => o.keyword)?.join('|'));
         }
       } catch (e) {
         console.warn(e);
@@ -363,11 +401,11 @@ export default function ListWrap(props) {
         8: data?.data?.result?.countInfo?.news ?? 0,
       });
     })();
-  }, [keyword, se1, se2, selectKeyword]);
+  }, [keyword, se1, se2, selectKeyword, wordCloudSurveyFile]);
 
   useEffect(() => {
     if (prevPath !== undefined) {
-      console.log('prevPath:', prevPath);
+      // console.log('prevPath:', prevPath);
       dispatch(setSearchDetailData({}));
       dispatch(setFilterActive(items));
       dispatch(setInitalSearch(true));
@@ -401,7 +439,7 @@ export default function ListWrap(props) {
   };
 
   return (
-    <ResultListLayout totalCount={tabCount?.all} tabCount={tabCount} keyword={keyword} setSearchButtonClick={setSearchButtonClick} isSearchDetail={isSearchDetail} activeCount={activeCount} filterKey={filterKey}>
+    <ResultListLayout totalCount={tabCount?.all} tabCount={tabCount} keyword={keyword} setSearchButtonClick={setSearchButtonClick} isSearchDetail={isSearchDetail} activeCount={activeCount} filterKey={filterKey} wordCloudSurveyFile={wordCloudSurveyFile} surveyFileTitle={surveyFileTitle}>
       <section className='mt-6'>
         <div className='container'>
           <div className='flex items-center justify-between'>

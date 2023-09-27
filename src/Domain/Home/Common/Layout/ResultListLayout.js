@@ -6,7 +6,7 @@ import IctResultLayout from 'Domain/Home/ICTTrend/Layout/IctResultLayout';
 
 export default function ResultListLayout(props) {
 
-  const { children, totalCount, tabCount, keyword, setSearchButtonClick, isSearchDetail, activeCount, filterKey } = props;
+  const { children, totalCount, tabCount, keyword, setSearchButtonClick, isSearchDetail, activeCount, filterKey, wordCloudSurveyFile, surveyFileTitle } = props;
 
   const [paramSe1, setParamSe1] = useState('');
   
@@ -24,7 +24,7 @@ export default function ResultListLayout(props) {
           {children}
         </DiscoveryResultLayout>
         : (paramSe1 === 'demandbanking')
-          ? <FileResultLayout totalCount={totalCount} tabCount={tabCount} keyword={keyword} setSearchButtonClick={setSearchButtonClick}>
+          ? <FileResultLayout totalCount={totalCount} tabCount={tabCount} keyword={keyword} setSearchButtonClick={setSearchButtonClick} wordCloudSurveyFile={wordCloudSurveyFile} surveyFileTitle={surveyFileTitle}>
             {children}
           </FileResultLayout>
           : (paramSe1 === 'icttrend')
