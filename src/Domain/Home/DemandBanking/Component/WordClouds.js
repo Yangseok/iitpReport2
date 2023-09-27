@@ -11,7 +11,7 @@ export default function WordClouds({wordCloudSurveyFile}) {
   //     'value': 500
   //   },]
 
-  const newData = wordCloudSurveyFile?.map(o => { return {'text': o.keyword, 'value': Math.floor(o.weight * 1000)}; });
+  const newData = useCallback(wordCloudSurveyFile?.map(o => { return {'text': o.keyword, 'value': Math.floor(o.weight * 1000)}; }), []);
 
   // useEffect(() => {
   //   const timer = setInterval(() => {

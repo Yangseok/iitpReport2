@@ -86,8 +86,6 @@ export default function DemandMerge() {
     getMergedSurveyList();
   }, [surveyId, size, page]);
 
-
-  
   return (
     <Layout>
       <section>

@@ -109,15 +109,10 @@ export default function ListWrap(props) {
     }
     setWordCloudSurveyFile(selectKeyword);
     setSurveyFileTitle(data?.data?.result?.surveyTitle ?? '');
-    return selectKeyword;
   }, [noticeId, surveyId]);
 
   const getList = useCallback(async () => {
     await (async () => {
-      let surveyFileKeyword;
-      if (se1 === 'demandbanking') {
-        surveyFileKeyword = await getSurveyFile();
-      }
       let filterObj = List.getFilterObj(filterKey, filterActive);
       // console.log('filterObj:', filterObj);
       let etcParam = { aggs: true };
@@ -125,8 +120,8 @@ export default function ListWrap(props) {
       try {
         dispatch(setLoading(true));
         let setSelectKeyword = selectKeyword;
-        if (surveyFileKeyword?.length !== undefined) {
-          setSelectKeyword = surveyFileKeyword;
+        if (se1 === 'demandbanking') {
+          setSelectKeyword = wordCloudSurveyFile;
         }
         data = await List.callListAPI(filterKey, se1, se2, globalSearchDetailData, searchDetailKey, setSelectKeyword, size, page, keyword, fileKeywordList, sort, filterObj, etcParam);
       } catch (e) {
@@ -148,7 +143,7 @@ export default function ListWrap(props) {
       setActiveCount(data?.data?.result?.totalCount ?? 0);
     })();
 
-  }, [keyword, searchButtonClick, page, size, sort, se1, se2, filterActive, filterKey, searchDetailKey, globalSearchDetailData, fileKeywordList]);
+  }, [keyword, searchButtonClick, page, size, sort, se1, se2, filterActive, filterKey, searchDetailKey, globalSearchDetailData, fileKeywordList, wordCloudSurveyFile]);
 
   const downExcel = useCallback(async () => {
     const excelSize = 1000;
@@ -169,7 +164,7 @@ export default function ListWrap(props) {
       let procData = List.getExcelProcData(filterKey, data?.data?.result?.dataList);
       await common.excelExport('down', procData?.title ?? [], procData?.data ?? []);
     })();
-  }, [keyword, sort, se1, se2, filterActive, filterKey, searchDetailKey, globalSearchDetailData, fileKeywordList]);
+  }, [keyword, sort, se1, se2, filterActive, filterKey, searchDetailKey, globalSearchDetailData, fileKeywordList, wordCloudSurveyFile]);
 
   const getResearcherDetail = useCallback(async () => {
     if (researcherActive.id === -1) return null;
@@ -341,7 +336,7 @@ export default function ListWrap(props) {
 
   useEffect(() => {
     getList();
-  }, [keyword, page, size, sort, filterActive, filterKey, searchDetailKey, globalSearchDetailData, fileKeywordList]);
+  }, [keyword, page, size, sort, filterActive, filterKey, searchDetailKey, globalSearchDetailData, fileKeywordList, wordCloudSurveyFile]);
 
   useEffect(() => {
     if (searchButtonClick) {
@@ -353,6 +348,10 @@ export default function ListWrap(props) {
   useEffect(() => {
     setPage(1);
   }, [se2,se3,se4]);
+
+  useEffect(() => {
+    getSurveyFile();
+  }, [noticeId, surveyId]);
 
   useEffect(() => {
     getResearcherDetail();
