@@ -40,50 +40,5 @@ export const ictSearchWordCloud = async (category, label, keyword, size, startYe
 };
 
 
-/**
- * ICT 트렌드 검색결과 하단 리스트
- * @param {string} category rnd_project, iitp_project, patent, paper, ict_report, policy, news
- * @param {int} size default 10
- * @param {int} page default 1
- * @returns 
- */
-
-export const ictList = async (category, keyword, size, page) => {
-  
-  !category ? 'all': category;
-
-  let params = {
-    category: category,
-    keyword: !keyword ? '인공지능' : keyword,
-    size: !size ? 10 : size,
-    page: !page ? 1: page
-  };
-  
-  console.log('params',params);
-
-  return await API.post('/ict/list', params);
-};
 
 
-/**
- * ICT 성과 목록 (특허, 논문)
- * @param {string} category patent, paper
- * @param {string} appl ? 선택한 출원인 이름
- * @param {int} size default 10
- * @param {int} page default 1
- * @returns 
- */
-
-export const ictPerformanceList = async (category, appl, size, page) => {
-  
-  let params = {
-    category: category,
-    appl:appl,
-    size: !size ? 10 : size,
-    page: !page ? 1: page
-  };
-  
-  console.log('params',params);
-
-  return await API.post('/ict/appList', params);
-};
