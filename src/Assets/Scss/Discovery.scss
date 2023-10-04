@@ -153,6 +153,10 @@
 
   &.fold img { transform: rotate(-180deg); } 
 }
+.project_excel_btn {
+  color: $color_placeholder;
+  &.on { color: $color_main; }
+}
 
 /* Search Result */
 .search_detail_wrap {

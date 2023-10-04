@@ -1057,7 +1057,7 @@ textarea {
   @include flexLayout(center, center, 16px);
 
   button, a {
-    width: 20px;
+    // width: 20px;
     height: 20px;
     font-size: 14px;
     color: $color_regular;

@@ -1496,7 +1496,6 @@ textarea::placeholder {
   gap: 16px;
 }
 .page_wrap button, .page_wrap a {
-  width: 20px;
   height: 20px;
   font-size: 14px;
   color: #334155;

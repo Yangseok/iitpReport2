@@ -183,6 +183,13 @@
   transform: rotate(-180deg);
 }
 
+.project_excel_btn {
+  color: #94A3B8;
+}
+.project_excel_btn.on {
+  color: #0056B8;
+}
+
 /* Search Result */
 .search_detail_wrap dl {
   display: flex;
