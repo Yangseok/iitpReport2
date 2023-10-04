@@ -44,7 +44,7 @@ export default function APITest() {
 
   const discoveryProjectInfoTest = async () => {
     const apiFn = async () => {
-      const data = await discoveryAPI.projectInfo('원자력연구개발중장기계획(기금)');
+      const data = await discoveryAPI.projectInfo('parameter','원자력연구개발중장기계획(기금)');
       console.log(data?.data?.result);
     };
     await apiCallWrap(apiFn);

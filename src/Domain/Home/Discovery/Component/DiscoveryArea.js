@@ -6,7 +6,10 @@ import KeywordWrap from 'Domain/Home/Discovery/Component/Keyword/KeywordWrap';
 // import * as mainAPI from 'Domain/Home/Main/API/Call';
 import { useSelector, useDispatch } from 'react-redux';
 import { getSearchKeyword, getTmpSearchKeyword, setSearchKeywordReset } from 'Domain/Home/Common/Status/CommonSlice';
-import { setFileKeywordList, getFileName, setFileName } from 'Domain/Home/Discovery/Status/DiscoverySaveSlice';
+import { 
+  setFileKeywordList, getFileName, setFileName,
+  setProjectTitle, setKeywordKor, setKeywordEng, setResearchGoal, setResearchDescription, setExpectationEffectiveness
+} from 'Domain/Home/Discovery/Status/DiscoverySaveSlice';
 import common from 'Utill';
 import { useParams, useNavigate } from 'react-router-dom';
 import { setMsg,setShow } from 'Domain/Home/Common/Status/MsgSlice';
@@ -90,7 +93,7 @@ export default function PageSearchArea(props) {
 
     if (selectedFile !== null) {
       if (menu === 2) {
-        const data = await discoveryAPI.projectInfo('','','','','','', selectedFile);
+        const data = await discoveryAPI.projectInfo('file','','','','','','', selectedFile);
         console.log(data?.data?.result);
         dispatch(setFileKeywordList(data?.data?.result?.textAnalyticsKeywordList ?? []));
         navigate('/discovery/project/result/projectout');
@@ -123,10 +126,17 @@ export default function PageSearchArea(props) {
 
   useEffect(() => {
     if (paramSe3 === '') {
-      console.log('초기화됨', paramSe3);
+      // console.log('초기화됨', paramSe3);
       dispatch(setFileKeywordList([]));
       setSelectedFile(null);
       dispatch(setFileName(null));
+
+      dispatch(setProjectTitle(''));
+      dispatch(setKeywordKor(''));
+      dispatch(setKeywordEng(''));
+      dispatch(setResearchGoal(''));
+      dispatch(setResearchDescription(''));
+      dispatch(setExpectationEffectiveness(''));
     }
   }, [paramSe3]);
 
