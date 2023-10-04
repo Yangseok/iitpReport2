@@ -144,30 +144,19 @@ export default function DemandResult() {
   
   // 유사 기술 조사서 버튼 클릭
   const onItemSlide = (e, noticeId, surveyId) => {
-    const pd = 24;
-    const liEl = $(e.currentTarget).parents('li');
-    const contsEl = liEl.find('.conts_box');
-
     setSubPage(1);
     setSubTab('ALL');
     setSimilarNoticeId(noticeId);
     setSimilarSurveyId(surveyId);
-
     setDemandActive(surveyId);
-    liEl.siblings().removeClass('on');
-    liEl.siblings().find('.conts_box').css({ 'height': 0, 'paddingTop': 0, 'paddingBottom': 0 });
 
-    if(!liEl.hasClass('on')) {
-      liEl.addClass('on');
-      contsEl.css({ 
-        'height': `${contsEl.prop('scrollHeight') + pd * 2}px`, 
-        'paddingTop': `${pd}px`, 
-        'paddingBottom': `${pd}px` 
-      });
-    } else {
+    const liEl = $('.demand_'+surveyId);
+    const contsEl = liEl.find('.conts_box');
+    if(liEl.hasClass('on')) {
       liEl.removeClass('on');
       contsEl.css({ 'height': 0, 'paddingTop': 0, 'paddingBottom': 0 });
       setDemandActive(null);
+      setSimilarSurveyId('');
     }
   };
 
@@ -291,36 +280,47 @@ export default function DemandResult() {
     }
     console.log('getSimilarSurvey:', data?.data?.result);
 
-    setSubTotalCount(0);
-    setSubData([
-      {
-        id: 0,
-        pblanc: '정보통신방송 연구개발사업 기술수요조사서 (2023.01.05 ~ 2023.03.30)',
-        title: '초실감 콘텐츠 제작용 버츄얼 스튜디오 기술 개발',
-        agency: '한국표준과학연구원',
-        name: '홍길동',
-        registration: '증강/혼합현실(AR/MR)',
-        recommend: '증강/혼합현실(AR/MR)',
-      },
-      {
-        id: 1,
-        pblanc: '정보통신방송 연구개발사업 기술수요조사서 (2023.01.05 ~ 2023.03.30)',
-        title: '초실감 콘텐츠 제작용 버츄얼 스튜디오 기술 개발',
-        agency: '한국표준과학연구원',
-        name: '홍길동',
-        registration: '증강/혼합현실(AR/MR)',
-        recommend: '증강/혼합현실(AR/MR)',
-      },
-      {
-        id: 2,
-        pblanc: '정보통신방송 연구개발사업 기술수요조사서 (2023.01.05 ~ 2023.03.30)',
-        title: '초실감 콘텐츠 제작용 버츄얼 스튜디오 기술 개발',
-        agency: '한국표준과학연구원',
-        name: '홍길동',
-        registration: '증강/혼합현실(AR/MR)',
-        recommend: '증강/혼합현실(AR/MR)',
-      },
-    ]);
+    let tmpData = [];
+    for (let i in data?.data?.result ?? []) {
+      if (data?.data?.result?.[i]?.surveyId === undefined) continue;
+      let pushData = {
+        key: (subSize * subPage) + i,
+        noticeId: data?.data?.result?.[i]?.noticeId ?? '',
+        id: data?.data?.result?.[i]?.surveyId,
+        pblanc: (data?.data?.result?.[i]?.noticeTitle ?? '') + ' (' + (data?.data?.result?.[i]?.period ?? '') + ')',
+        title: data?.data?.result?.[i]?.surveyTitle ?? '',
+        agency: data?.data?.result?.[i]?.orgnName ?? '',
+        name: data?.data?.result?.[i]?.applicant ?? '',
+        registration: data?.data?.result?.[i]?.registrationIctCode ?? '',
+        recommend: data?.data?.result?.dataList?.[i]?.recommendIctCode ?? '',
+        percent: ((data?.data?.result?.[i]?.weight ?? 0) * 100).toFixed(1),
+      };
+      tmpData.push(pushData);
+    }
+
+    setSubTotalCount((tmpData.length > 0) ? (subPage * subSize + 1) : 0);
+    if (subPage === 1) {
+      setSubData(tmpData);
+    } else {
+      setSubData([...subData, ...tmpData]);
+    }
+
+    setTimeout(() => {
+      const pd = 24;
+      const liEl = $('.demand_'+similarSurveyId);
+      const contsEl = liEl.find('.conts_box');
+      liEl.siblings().removeClass('on');
+      liEl.siblings().find('.conts_box').css({ 'height': 0, 'paddingTop': 0, 'paddingBottom': 0 });
+
+      if(liEl.hasClass('on')) {
+        liEl.addClass('on');
+        contsEl.css({ 
+          'height': `${contsEl.prop('scrollHeight') + pd * 2}px`, 
+          'paddingTop': `${pd}px`, 
+          'paddingBottom': `${pd}px` 
+        });
+      }
+    }, 100);
   }, [similarNoticeId, similarSurveyId, subPage, subSize, subTab]);
 
   useEffect(() => {
@@ -328,7 +328,7 @@ export default function DemandResult() {
   }, [subTab]);
 
   useEffect(() => {
-    getSimilarSurvey();
+    if (similarSurveyId) getSimilarSurvey();
   }, [similarNoticeId, similarSurveyId, subPage, subSize, subTab]);
 
   return (
@@ -444,7 +444,7 @@ export default function DemandResult() {
                 ? surveyList?.map(e => {
                   return <DemandListItem 
                     key={e.id}
-                    className={(e.id === demandActive) ? 'on' : ''}
+                    className={(e.id === demandActive) ? 'on demand_' + e.id : 'demand_' + e.id}
                     title={e.title}
                     contents={<>
                       <div className='text_style01'>
@@ -469,7 +469,7 @@ export default function DemandResult() {
                       </div>
                     </>}
                   >
-                    <DemandListItemDetail data={subData} setSubPage={setSubPage} subPage={subPage} subTotalCount={subTotalCount} subTab={subTab} />
+                    <DemandListItemDetail data={subData} setSubPage={setSubPage} subPage={subPage} subTotalCount={subTotalCount} subTab={subTab} setSubTab={setSubTab} subSize={subSize} />
                   </DemandListItem>;
                 })
                 : <li className='nodata'>
