@@ -271,7 +271,10 @@ export default function Main() {
 
   // 연도 변경시, 새 키워드 가져옴
   useEffect(() => {
-    getKeywordCloud(category, keywordRangeValue[0], keywordRangeValue[1]);
+    // console.log('category:', category);
+    if (keywordRangeValue[0] !== undefined && keywordRangeValue[1] !== undefined) {
+      getKeywordCloud(category, keywordRangeValue[0], keywordRangeValue[1]);
+    }
   }, [category, keywordRangeValue]);
 
   useEffect(() => {
@@ -280,15 +283,6 @@ export default function Main() {
     } else if(paramSe2 === 'technology') {
       dispatch(setCategory('rnd_project'));
     }
-
-    // 페이지 이동하여 왔을시 초기화
-    const getDelayKeywordCloud = () => {
-      return setTimeout(() => {
-        getKeywordCloud('all');
-      }, 300);
-    };
-    getDelayKeywordCloud();
-    return () => clearTimeout(getDelayKeywordCloud);
   }, []);
 
   return (
