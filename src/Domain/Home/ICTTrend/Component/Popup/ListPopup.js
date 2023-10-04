@@ -4,7 +4,7 @@ import PopupPaper from './PopupPaper';
 import $ from 'jquery';
 
 export default function ListPopup(props) {
-  const { popup, setPopup, category } = props;
+  const { popup, setPopup, category, applData } = props;
 
   const popupRef = useRef(null);
 
@@ -65,9 +65,9 @@ export default function ListPopup(props) {
             <button type='button' className='popup_close_btn' onClick={handlePopupClose}>팝업 닫기</button>
           </div>
           {(category === 'patent')
-            ? <PopupPatent />
+            ? <PopupPatent applData={applData} />
             : (category === 'paper') 
-              ? <PopupPaper /> : null}
+              ? <PopupPaper applData={applData} /> : null}
         </div>
       </div>
     </>

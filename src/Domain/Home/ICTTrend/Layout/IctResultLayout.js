@@ -36,6 +36,8 @@ export default function IctResultLayout({children, filterKey}) {
   const [trendData, setTrendData] = useState([]);
   const [yearData, setYearData] = useState([]);
   const [orgnData, setOrgnData] = useState([]);
+  const [classData, setClassData] = useState([]);
+  const [applData, setApplData] = useState([]);
 
   const se = common.getSegment();
   const paramSe2 = se[2] ?? '';
@@ -46,6 +48,7 @@ export default function IctResultLayout({children, filterKey}) {
     try {
       dispatch(setLoading(true));
       data = await ictTrendAPI.ictSearchWordCloud(category, label, keyword, size, startYear, endYear, year);
+      console.log('DATA!!!!!!', label, data);
     } catch (e) {
       console.warn(e);
     } finally {
@@ -65,7 +68,13 @@ export default function IctResultLayout({children, filterKey}) {
       // console.log('year', dataList);
     } else if (label === 'orgn') {
       setOrgnData(dataList);
-      console.log('orgn', dataList);
+      // console.log('orgn', dataList);
+    } else if (label === 'class') {
+      setClassData(dataList);
+      // console.log('class', dataList);
+    } else if (label === 'appl') {
+      setApplData(dataList);
+      console.log('appl', dataList);
     }
   }, []);
   
@@ -139,25 +148,27 @@ export default function IctResultLayout({children, filterKey}) {
 
   useEffect(() => {
     getChartDatas('year', category, keywordTrend, 10);
-    getChartDatas('orgn', category, keywordTrend, 16);
+    getChartDatas('orgn', category, keywordTrend, 10);
+    getChartDatas('class', category, keywordTrend);
+    getChartDatas('appl', category, keywordTrend, 10);
   }, [category, keywordTrend]);
 
   const getChartComponent = (filterKey) => {
     switch (filterKey) {
     case 'search/projectOut':
-      return <ProjectOutChart wordCloudData={wordCloudData} onWordClick={handleWordClick} trendData={trendData} yearData={yearData} orgnData={orgnData} />;
+      return <ProjectOutChart wordCloudData={wordCloudData} onWordClick={handleWordClick} trendData={trendData} yearData={yearData} orgnData={orgnData} classData={classData} />;
     case 'search/projectIn':
-      return <ProjectInChart wordCloudData={wordCloudData} onWordClick={handleWordClick} trendData={trendData} yearData={yearData} orgnData={orgnData} />;
+      return <ProjectInChart wordCloudData={wordCloudData} onWordClick={handleWordClick} trendData={trendData} yearData={yearData} orgnData={orgnData} classData={classData} />;
     case 'search/patent':
-      return <PatentChart wordCloudData={wordCloudData} onWordClick={handleWordClick} trendData={trendData} yearData={yearData} orgnData={orgnData} />;
+      return <PatentChart wordCloudData={wordCloudData} onWordClick={handleWordClick} trendData={trendData} yearData={yearData} applData={applData} classData={classData} />;
     case 'search/paper':
-      return <PaperChart wordCloudData={wordCloudData} onWordClick={handleWordClick} trendData={trendData} yearData={yearData} orgnData={orgnData} />;
+      return <PaperChart wordCloudData={wordCloudData} onWordClick={handleWordClick} trendData={trendData} yearData={yearData} applData={applData} classData={classData} />;
     case 'search/ict':
-      return <IctChart wordCloudData={wordCloudData} onWordClick={handleWordClick} trendData={trendData} yearData={yearData} orgnData={orgnData} />;
+      return <IctChart wordCloudData={wordCloudData} onWordClick={handleWordClick} trendData={trendData} yearData={yearData} orgnData={orgnData} classData={classData} />;
     case 'search/policy':
-      return <PolicyChart wordCloudData={wordCloudData} onWordClick={handleWordClick} trendData={trendData} yearData={yearData} orgnData={orgnData} />;
+      return <PolicyChart wordCloudData={wordCloudData} onWordClick={handleWordClick} trendData={trendData} yearData={yearData} orgnData={orgnData} classData={classData} />;
     case 'search/news':
-      return <NewsChart wordCloudData={wordCloudData} onWordClick={handleWordClick} trendData={trendData} yearData={yearData} orgnData={orgnData} />;
+      return <NewsChart wordCloudData={wordCloudData} onWordClick={handleWordClick} trendData={trendData} yearData={yearData} orgnData={orgnData} classData={classData} />;
     default:
       return null;
     }

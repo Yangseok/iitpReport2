@@ -2,7 +2,7 @@ import React from 'react';
 import Pagination from 'Domain/Home/Common/Componet/Pagination';
 
 export default function PopupListLayout(props) {
-  const { title, recommendCnt, totalCnt, listData, listClick } = props;
+  const { title, recommendCnt, totalCnt, listData, listClick, page, setPage } = props;
 
   return (
     <>
@@ -23,14 +23,14 @@ export default function PopupListLayout(props) {
                 </button>
               </li>;
             })
-            : <li>
+            : <li className='nodata'>
               <p className='text-base text-color-placeholder'>데이터가 없습니다.</p>
             </li>
           }
         </ul>
       </div>
       <div className='mt-6'>
-        <Pagination total={60} page={1} onClick={(i) => console.log(i)} />
+        <Pagination total={totalCnt} page={page} onClick={(page) => setPage(page)} />
       </div>
     </>
   );

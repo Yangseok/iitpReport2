@@ -10,21 +10,21 @@ import RcSlider from 'rc-slider';
 import moment from 'moment';
 
 export default function Result (props) {
-  const { wordCloudData, onWordClick, trendData, yearData, orgnData } = props;
+  const { wordCloudData, onWordClick, trendData, yearData, orgnData, classData } = props;
 
-  const tempTreeMapData = [
-    {
-      'type': 'treemap',
-      'labels': ['전체', '물리학', '관리용', '금융용', '전기에 의한 디지털 데이터처리', '생활필수품', '진단', '전기', '처리조작', '운전 제어 시스템', '기계공학', '섬유'],
-      'parents': ['', '전체', '물리학', '물리학', '관리용', '전체', '생활필수품', '전체', '전체', '처리조작', '전체', '전체' ]
-    }
-  ];
-  const tempChartData3 = [
-    [4, 5, 2, 3, 5, 4, 4, 5, 6, 8],
-    [1, 1, 4, 2, 3, 5, 8, 7, 6, 10],
-    [5, 4, 6, 9, 8, 6, 10, 13, 17, 15],
-    [3, 4, 5, 6, 7, 9, 10, 12, 15, 20],
-  ];
+  // const tempTreeMapData = [
+  //   {
+  //     'type': 'treemap',
+  //     'labels': ['전체', '물리학', '관리용', '금융용', '전기에 의한 디지털 데이터처리', '생활필수품', '진단', '전기', '처리조작', '운전 제어 시스템', '기계공학', '섬유'],
+  //     'parents': ['', '전체', '물리학', '물리학', '관리용', '전체', '생활필수품', '전체', '전체', '처리조작', '전체', '전체' ]
+  //   }
+  // ];
+  // const tempChartData3 = [
+  //   [4, 5, 2, 3, 5, 4, 4, 5, 6, 8],
+  //   [1, 1, 4, 2, 3, 5, 8, 7, 6, 10],
+  //   [5, 4, 6, 9, 8, 6, 10, 13, 17, 15],
+  //   [3, 4, 5, 6, 7, 9, 10, 12, 15, 20],
+  // ];
 
   let rangeMarks1 = {}, rangeMarks2 = {};
   const rangeMin = 2014;
@@ -46,8 +46,10 @@ export default function Result (props) {
   const [trendLabels, setTrendLabels] = useState([]);
   const [newYearData, setNewYearData] = useState([]);
   const [yearLabels, setYearLabels] = useState([]);
+  const [newOrgnData, setNewOrgnData] = useState([]);
   const [orgnLabels1, setOrgnLabels1] = useState([]);
   const [orgnLabels2, setOrgnLabels2] = useState([]);
+  const [newClassData, setNewClassData] = useState([]);
 
   // 관련 키워드 추이 데이터 
   const getTrendLabelData = () => {
@@ -84,7 +86,7 @@ export default function Result (props) {
     }
   };
 
-  // 과제 수행기관별 데이터
+  // 과제 수행기관별 데이터 (미완료 - 데이터 확인 필요)
   const getOrgnLabelData = () => {
     let datas = [], labels1 = [], labels2 = [];
     
@@ -95,22 +97,62 @@ export default function Result (props) {
         labels1.push(i);
       }
 
-      // 데이터 연도 순서가 안맞음
       for (let i in orgnData ?? []) {
         const labelData1 = orgnData[i].key ?? '';
-        let tempPushData = [];
+        let tempPushData = [], isPushData = false;
         labels2.push(labelData1);
 
-        orgnData[i]?.count2?.buckets?.map((i2) => {
-          const labelData3 = i2.doc_count ?? 0;
-          tempPushData.push(labelData3);
-          // console.log(i2);
+        labels1.map((i2) => {
+          orgnData[i]?.count2?.buckets?.map((i3) => {
+            if(i2 === Number(i3.key)) {
+              const labelData3 = i3.doc_count ?? 0;
+              tempPushData.push(labelData3);
+              isPushData = true;
+            }
+          });
+          if(!isPushData) {
+            tempPushData.push(null);
+          }
+          isPushData = false;
         });
         datas.push(tempPushData);
       }
+      setNewOrgnData(datas);
       setOrgnLabels1(labels1);
       setOrgnLabels2(labels2);
       console.log('Data & LABEL', datas, labels1, labels2);
+    }
+  };
+  
+  // 국제과학기술표준분류 데이터
+  const getClassLabelData = () => {
+    let datas = [], labels = [], parents = [];
+
+    if (classData?.length > 0) {
+      labels.push('');
+      parents.push('');
+      for (let i in classData ?? []) {
+        const labelData = classData[i].key ?? '';
+        labels.push(labelData);
+        parents.push('');
+
+        if (classData[i]?.middle?.length > 0) {
+          for (let j = 0; j < classData[i].middle.length; j++) {
+            const middleData = classData[i].middle[j].key ?? '';
+            labels.push(middleData);
+            parents.push(labelData);
+          }
+        }
+      }
+
+      datas.push({
+        'type': 'treemap',
+        'labels': labels,
+        'parents': parents,
+      });
+      setNewClassData(datas);
+
+      // console.log(datas, labels, parents);
     }
   };
 
@@ -139,6 +181,10 @@ export default function Result (props) {
   useEffect(() => {
     getOrgnLabelData();
   }, [orgnData]);
+
+  useEffect(() => {
+    getClassLabelData();
+  }, [classData]);
   
   return (
     <>
@@ -186,14 +232,14 @@ export default function Result (props) {
             <div>
               <h3 className='text-base font-bold text-color-dark'>과제 수행기관별 비교</h3>
               <div className='chart_wrap mt-10'>
-                <IctChart3 xLabels={orgnLabels1} dataLabels={orgnLabels2} datas={tempChartData3} />
+                <IctChart3 xLabels={orgnLabels1} dataLabels={orgnLabels2} datas={newOrgnData} />
               </div>
             </div>
           </div>
           <div className='mt-14'>
             <h3 className='text-base font-bold text-color-dark'>국제과학기술표준분류</h3>
             <div className='mt-5'>
-              <IctTreeMap data={tempTreeMapData} />
+              <IctTreeMap data={newClassData} />
             </div>
           </div>
         </div>
