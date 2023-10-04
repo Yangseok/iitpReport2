@@ -28,6 +28,11 @@ export default function InputFile(props) {
     setFileName(name);
     setFileValue(e.target.files);
 
+    // console.log('onFileChange name:', name);
+    // console.log('onFileChange e.target.files[0]:', e.target.files[0]);
+    // console.log('props.setSelectedFileName:', props.setSelectedFileName);
+    // console.log('props.setSelectedFile:', props.setSelectedFile);
+
     if (props.setSelectedFileName !== undefined) props.setSelectedFileName(name);
     if (props.setSelectedFile !== undefined) props.setSelectedFile(e.target.files[0]);
   };
@@ -63,7 +68,7 @@ export default function InputFile(props) {
             id='uploadFile' 
             value={fileValue ?? ''}
             onChange={onFileChange}
-            accept='.xls,.xlsx,.ppt,.pptx,.doc,.docx,.hwp,.hwpx,.pdf,.txt'
+            accept={props.accept ?? ''}
           />
         </div>
         : ''

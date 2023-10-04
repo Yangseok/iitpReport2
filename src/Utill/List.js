@@ -230,7 +230,8 @@ export const callListAPI = async (filterKey, se1, se2, globalSearchDetailData, s
       similarity = fileKeywordList;
       data = await apiMethod('discovery',size,page,'',similarity,sort,filterObj,searchParam,etcParam);
     } else if (se2 == 'project') {
-      data = await apiMethod('discovery',size,page,keyword,similarity,sort,filterObj,searchParam,etcParam);
+      similarity = fileKeywordList;
+      data = await apiMethod('discovery',size,page,'',similarity,sort,filterObj,searchParam,etcParam);
     }
   } else if (se1 === 'demandbanking') {
     // console.log('demandbanking selectKeyword:', selectKeyword);

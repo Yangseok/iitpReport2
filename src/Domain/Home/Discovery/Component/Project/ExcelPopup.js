@@ -1,10 +1,12 @@
 import React, { useEffect, useRef } from 'react';
 import InputFile from 'Domain/Home/Discovery/Component/InputFile';
 import excelFile from 'Assets/Images/Sample/sample_excel.xlsx';
+import icSearch from 'Assets/Images/ic_search.png';
+import Button from 'Domain/Home/Common/Componet/Button';
 import $ from 'jquery';
 
 export default function ExcelPopup(props) {
-  const { popup, setPopup } = props;
+  const { popup, setPopup, setSelectedFile, setSelectedFileName, fileName, accept, handleFileUpload } = props;
   const popupRef = useRef(null);
 
   const handlePopupClose = () => {
@@ -65,7 +67,7 @@ export default function ExcelPopup(props) {
               type='button' 
               className='popup_close_btn' 
               onClick={handlePopupClose}>
-            사이트맵 닫기
+            엑셀 파일로 과제 정보 입력 닫기
             </button>
           </div>
           <p className='text-xl font-bold text-color-dark mb-6'>
@@ -77,8 +79,9 @@ export default function ExcelPopup(props) {
             (1개의 과제 정보에 대해서만 엑셀 파일로 과제 정보 입력이 됩니다.)
             <a href={excelFile} download='' className='inline-block text-sm font-bold text-color-main underline ml-1'>엑셀양식 다운로드↓</a>
           </p>
-          <InputFile />
-          <button type='button' className='py-2 px-10 mt-6 mx-auto rounded-3xl btn_style03' onClick={() => {setPopup(false); $('.project_excel_btn').focus();}}>저장</button>
+          <InputFile setSelectedFile={setSelectedFile} setSelectedFileName={setSelectedFileName} fileName={fileName} accept={accept} />
+          {/* <button type='button' className='py-2 px-10 mt-6 mx-auto rounded-3xl btn_style03' onClick={() => {setPopup(false); $('.project_excel_btn').focus();}}>저장</button> */}
+          <Button name="과제 정보 분석" icon={icSearch} onClick={(e) => {setPopup(false); handleFileUpload(e);}} className="gap-2 mt-6 mx-auto py-3 px-6.5 rounded-3xl text-base font-bold btn_style03" />
         </div>
       </div>
     </>

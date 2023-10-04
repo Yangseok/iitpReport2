@@ -4,7 +4,7 @@ import DiscoveryArea from 'Domain/Home/Discovery/Component/DiscoveryArea';
 import SearchArea from 'Domain/Home/Discovery/Component/SearchArea';
 import CategoryWrap from 'Domain/Home/Common/Componet/CategoryWrap';
 import common from 'Utill';
-import { getFileKeywordList } from 'Domain/Home/Discovery/Status/DiscoverySlice';
+import { getFileKeywordList, getFileName } from 'Domain/Home/Discovery/Status/DiscoverySaveSlice';
 import { useSelector } from 'react-redux';
 import WordClouds from 'Domain/Home/Discovery/Component/WordClouds';
 
@@ -15,6 +15,8 @@ export default function DiscoveryResultLayout({children, totalCount, tabCount, k
 
   const fileKeywordList = useSelector(getFileKeywordList);
   // const searchKeyword = useSelector(getTmpSearchKeyword);
+
+  const fileName = useSelector(getFileName);
 
   useEffect(() => {
     const se = common.getSegment();
@@ -50,7 +52,7 @@ export default function DiscoveryResultLayout({children, totalCount, tabCount, k
               </>
               : (page2 === 'file')
                 ? <>
-                  업로드한 “<span className='text-color-main'>{'인공지능.docs'}</span>” 파일 분석 결과입니다.
+                  업로드한 “<span className='text-color-main'>{fileName}</span>” 파일 분석 결과입니다.
                 </>
                 : (page2 === 'project')
                   ?  <>

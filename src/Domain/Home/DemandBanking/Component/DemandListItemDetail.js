@@ -23,7 +23,7 @@ export default function DemandListItemDetail(props) {
             ? data?.map(e => {
               return <ListItem 
                 key={e.key}
-                title={'초실감 콘텐츠 제작용 버츄얼 스튜디오 기술 개발'}
+                title={e.title}
                 contents={<>
                   <div className='text_style01'>
                     <p className='text-sm text-color-regular'>기관명: <span className='font-medium text-color-main'>{e.agency}</span></p>

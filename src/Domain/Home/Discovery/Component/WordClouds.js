@@ -11,15 +11,17 @@ export default function NewsWordClouds(props) {
   useEffect(() => {
     // const maxValue = wordCloudData.map(o => o.weight).reduce((max, curr) => max < curr ? curr : max);
     // const minValue = wordCloudData.map(o => o.weight).reduce((min, curr) => min > curr ? curr : min);
-    // console.log(wordCloudData);
-    setNewData(
-      wordCloudData.map((item) => {
-        return {
-          text: item.keyword,
-          value: Number(Math.floor(Math.floor((item.weight) * 10000) / 10))
-        };
-      })
-    );
+    // console.log('wordCloudData:', wordCloudData);
+    if (wordCloudData !== undefined) {
+      setNewData(
+        wordCloudData.map((item) => {
+          return {
+            text: item.keyword,
+            value: Number(Math.floor(Math.floor((item.weight) * 10000) / 10))
+          };
+        })
+      );
+    }
   }, [wordCloudData]);
 
   const fontSizeMapper = useCallback((word) => Math.log2(word.value) * 5, []);

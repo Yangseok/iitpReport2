@@ -11,7 +11,7 @@ import ExcelPopup from './ExcelPopup';
 import { useNavigate } from 'react-router-dom';
 
 export default function ProjectWrap(props) {
-  const { folded } = props;
+  const { folded, setSelectedFile, setSelectedFileName, fileName, accept, handleFileUpload } = props;
 
   const [resetDisabled, setResetDisabled] = useState(true);
   const [fold, setFold] = useState(folded ?? false);
@@ -88,7 +88,7 @@ export default function ProjectWrap(props) {
         </>
         : ''
       }
-      {(popup) ? <ExcelPopup popup={popup} setPopup={setPopup} /> : ''}
+      {(popup) ? <ExcelPopup popup={popup} setPopup={setPopup} setSelectedFile={setSelectedFile} setSelectedFileName={setSelectedFileName} fileName={fileName} accept={accept} handleFileUpload={handleFileUpload} /> : ''}
     </>
   );
 }

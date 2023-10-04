@@ -41,6 +41,14 @@ export default function APITest() {
     };
     await apiCallWrap(apiFn);
   };
+
+  const discoveryProjectInfoTest = async () => {
+    const apiFn = async () => {
+      const data = await discoveryAPI.projectInfo('원자력연구개발중장기계획(기금)');
+      console.log(data?.data?.result);
+    };
+    await apiCallWrap(apiFn);
+  };
   
   return (
     <SampleLayout>
@@ -81,6 +89,7 @@ export default function APITest() {
           <h2>이외 api</h2>
           <li className='mb-1'><Button text="디스커버리 파일 분석" onClick={discoveryKeywordTest} /></li>
           <li className='mb-1'><Button text="디스커버리 키워드 분석" onClick={discoveryKeywordTest} /></li>
+          <li className='mb-1'><Button text="디스커버리 과제 정보 분석" onClick={discoveryProjectInfoTest} /></li>
         </ul>
       </div>
       <div className='border-2 border-gray-400 border-solid rounded-lg mx-auto mr-10 ml-10 pt-10 pb-10 mb-10'>

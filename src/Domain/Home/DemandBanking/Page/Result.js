@@ -278,11 +278,11 @@ export default function DemandResult() {
     } finally {
       dispatch(setLoading(false));
     }
-    console.log('getSimilarSurvey:', data?.data?.result);
 
     let tmpData = [];
     for (let i in data?.data?.result ?? []) {
       if (data?.data?.result?.[i]?.surveyId === undefined) continue;
+      console.log(data?.data?.result?.[i]?.surveyTitle);
       let pushData = {
         key: subTab + (subSize * subPage) + i,
         noticeId: data?.data?.result?.[i]?.noticeId ?? '',

@@ -9,7 +9,8 @@ import common from 'Utill';
 import { useSelector, useDispatch } from 'react-redux';
 import { setLoading } from 'Domain/Home/Common/Status/CommonSlice';
 import { getSearchKeyword, getSelectKeyword } from 'Domain/Home/Common/Status/CommonSlice';
-import { getFilterActive, getSearchDetailData, getFileKeywordList, setInitalFilter, setInitalSearch, setSearchDetailData, setFilterActive } from 'Domain/Home/Discovery/Status/DiscoverySlice';
+import { getFilterActive, getSearchDetailData, setInitalFilter, setInitalSearch, setSearchDetailData, setFilterActive } from 'Domain/Home/Discovery/Status/DiscoverySlice';
+import { getFileKeywordList } from 'Domain/Home/Discovery/Status/DiscoverySaveSlice';
 import { items } from 'Domain/Home/Discovery/Data/FilterItems';
 import * as discoveryAPI from 'Domain/Home/Discovery/API/Call';
 import * as researcherAPI from 'Domain/Home/Discovery/API/ResearcherCall';
@@ -350,7 +351,7 @@ export default function ListWrap(props) {
   }, [se2,se3,se4]);
 
   useEffect(() => {
-    getSurveyFile();
+    if (noticeId !== '' && surveyId !== '') getSurveyFile();
   }, [noticeId, surveyId]);
 
   useEffect(() => {
@@ -374,9 +375,9 @@ export default function ListWrap(props) {
             // console.log('procKeyword:', procKeyword);
             data = await discoveryAPI.searchCount('discovery',procKeyword.join('|'));
           } else if (se2 == 'file') {
-            data = await discoveryAPI.searchCount('discovery',keyword);
+            data = await discoveryAPI.searchCount('discovery',fileKeywordList.map(o => o.keyword).join('|'));
           } else if (se2 == 'project') {
-            data = await discoveryAPI.searchCount('discovery',keyword);
+            data = await discoveryAPI.searchCount('discovery',fileKeywordList.map(o => o.keyword).join('|'));
           }
         } else if (se1 === 'demandbanking') {
           data = await discoveryAPI.searchCount('discovery',wordCloudSurveyFile?.map(o => o.keyword)?.join('|'));
@@ -400,7 +401,7 @@ export default function ListWrap(props) {
         8: data?.data?.result?.countInfo?.news ?? 0,
       });
     })();
-  }, [keyword, se1, se2, selectKeyword, wordCloudSurveyFile]);
+  }, [keyword, se1, se2, selectKeyword, fileKeywordList, wordCloudSurveyFile]);
 
   useEffect(() => {
     if (prevPath !== undefined) {

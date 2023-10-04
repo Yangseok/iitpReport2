@@ -36,5 +36,17 @@ export const resultInfoView = async (id, type='projectOut', category='all', size
 export const discoveryFile = async (formData) => {
   return await API.post('/search/file', formData, multipartHeader);
 };
-
+//디스커버리 파일 분석
+export const projectInfo = async (projectTitle='', keywordKor='', keywordEng='', researchGoal='', researchDescription='', expectationEffectiveness='', selectedFile=null) => {
+  const formData = new FormData();
+  if (selectedFile !== null) formData.append('uploadFiles', selectedFile);
+  formData.append('type', (selectedFile !== null) ? 'file' : 'parameter');
+  formData.append('projectTitle', projectTitle);
+  formData.append('keywordKor', keywordKor);
+  formData.append('keywordEng', keywordEng);
+  formData.append('researchGoal', researchGoal);
+  formData.append('researchDescription', researchDescription);
+  formData.append('expectationEffectiveness', expectationEffectiveness);
+  return await API.post('/search/projectInfo', formData, multipartHeader);
+};
 
