@@ -284,7 +284,7 @@ export default function DemandResult() {
     for (let i in data?.data?.result ?? []) {
       if (data?.data?.result?.[i]?.surveyId === undefined) continue;
       let pushData = {
-        key: (subSize * subPage) + i,
+        key: subTab + (subSize * subPage) + i,
         noticeId: data?.data?.result?.[i]?.noticeId ?? '',
         id: data?.data?.result?.[i]?.surveyId,
         pblanc: (data?.data?.result?.[i]?.noticeTitle ?? '') + ' (' + (data?.data?.result?.[i]?.period ?? '') + ')',
@@ -305,14 +305,18 @@ export default function DemandResult() {
       setSubData([...subData, ...tmpData]);
     }
 
+
+    const pd = 24;
+    const liEl = $('.demand_'+similarSurveyId);
+    const contsEl = liEl.find('.conts_box');
+    contsEl.css({ 'height': 0, 'paddingTop': 0, 'paddingBottom': 0 });
+
     setTimeout(() => {
-      const pd = 24;
-      const liEl = $('.demand_'+similarSurveyId);
-      const contsEl = liEl.find('.conts_box');
       liEl.siblings().removeClass('on');
       liEl.siblings().find('.conts_box').css({ 'height': 0, 'paddingTop': 0, 'paddingBottom': 0 });
 
       if(liEl.hasClass('on')) {
+        console.log(1);
         liEl.addClass('on');
         contsEl.css({ 
           'height': `${contsEl.prop('scrollHeight') + pd * 2}px`, 
