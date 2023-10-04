@@ -15,8 +15,8 @@ export default function IctChart(props) {
       backgroundColor: sctColor[(i % sctColor.length)],
       borderColor: sctColor[(i % sctColor.length)],
       pointStyle: 'circle',
-      pointRadius: 8,
-      pointHoverRadius: 10,
+      pointRadius: 6,
+      pointHoverRadius: 8,
     });
   }
   const data = { datasets };

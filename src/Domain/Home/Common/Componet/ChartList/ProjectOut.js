@@ -12,20 +12,6 @@ import moment from 'moment';
 export default function Result (props) {
   const { wordCloudData, onWordClick, trendData, yearData, orgnData, classData } = props;
 
-  // const tempTreeMapData = [
-  //   {
-  //     'type': 'treemap',
-  //     'labels': ['전체', '물리학', '관리용', '금융용', '전기에 의한 디지털 데이터처리', '생활필수품', '진단', '전기', '처리조작', '운전 제어 시스템', '기계공학', '섬유'],
-  //     'parents': ['', '전체', '물리학', '물리학', '관리용', '전체', '생활필수품', '전체', '전체', '처리조작', '전체', '전체' ]
-  //   }
-  // ];
-  // const tempChartData3 = [
-  //   [4, 5, 2, 3, 5, 4, 4, 5, 6, 8],
-  //   [1, 1, 4, 2, 3, 5, 8, 7, 6, 10],
-  //   [5, 4, 6, 9, 8, 6, 10, 13, 17, 15],
-  //   [3, 4, 5, 6, 7, 9, 10, 12, 15, 20],
-  // ];
-
   let rangeMarks1 = {}, rangeMarks2 = {};
   const rangeMin = 2014;
   const rangeMax = Number(moment().format('YYYY'));
@@ -86,41 +72,44 @@ export default function Result (props) {
     }
   };
 
-  // 과제 수행기관별 데이터 (미완료 - 데이터 확인 필요)
+  // 과제 수행기관별 데이터
   const getOrgnLabelData = () => {
     let datas = [], labels1 = [], labels2 = [];
     
     if (orgnData?.length > 0) {
-      const maxYear = orgnData?.map(o => o.count2?.buckets?.map(o2 => o2.key).reduce((max, curr) => max < curr ? curr : max)).reduce((max, curr) => max < curr ? curr : max);
-      const minYear = orgnData?.map(o => o.count2?.buckets?.map(o2 => o2.key).reduce((min, curr) => min > curr ? curr : min)).reduce((min, curr) => min > curr ? curr : min);
+      const maxYear = orgnData?.map(o => o.year?.map(o2 => o2.key).reduce((max, curr) => max < curr ? curr : max)).reduce((max, curr) => max < curr ? curr : max);
+      const minYear = orgnData?.map(o => o.year?.map(o2 => o2.key).reduce((min, curr) => min > curr ? curr : min)).reduce((min, curr) => min > curr ? curr : min);
       for (let i = Number(minYear); i <= Number(maxYear); i++) {
         labels1.push(i);
       }
 
       for (let i in orgnData ?? []) {
         const labelData1 = orgnData[i].key ?? '';
-        let tempPushData = [], isPushData = false;
+        let prevValue = 0;
         labels2.push(labelData1);
 
-        labels1.map((i2) => {
-          orgnData[i]?.count2?.buckets?.map((i3) => {
-            if(i2 === Number(i3.key)) {
-              const labelData3 = i3.doc_count ?? 0;
-              tempPushData.push(labelData3);
-              isPushData = true;
-            }
-          });
-          if(!isPushData) {
-            tempPushData.push(null);
-          }
-          isPushData = false;
+        const orgnYearData = orgnData[i]?.year?.sort((a, b) => a.key.localeCompare(b.key));
+
+        const tempPushData = labels1.map((i2) => {
+          const yearItem = orgnYearData.find((i3) => i2 === Number(i3.key));
+          return yearItem ? (yearItem.doc_count || 0) : undefined;
         });
-        datas.push(tempPushData);
+
+        const newTempPushData = tempPushData.map((value) => {
+          if (typeof value === 'undefined') {
+            return prevValue;
+          }
+          prevValue = value;
+          return value;
+        });
+
+        datas.push(newTempPushData);
       }
+
       setNewOrgnData(datas);
       setOrgnLabels1(labels1);
       setOrgnLabels2(labels2);
-      console.log('Data & LABEL', datas, labels1, labels2);
+      // console.log('Data & LABEL', datas, labels1, labels2);
     }
   };
   

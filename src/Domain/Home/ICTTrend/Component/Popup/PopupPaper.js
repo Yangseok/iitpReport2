@@ -1,21 +1,26 @@
-import React, { useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import PopupListLayout from 'Domain/Home/ICTTrend/Layout/PopupListLayout';
 import PopupViewLayout from 'Domain/Home/ICTTrend/Layout/PopupViewLayout';
 import ViewTable from 'Domain/Home/Common/Componet/ViewTable';
+import { setLoading } from 'Domain/Home/Common/Status/CommonSlice';
+import * as ictTrendAPI from 'Domain/Home/ICTTrend/API/Call';
 
-export default function PopupPaperView() {
-  const tempData1 = [
-    { id: 0, title: '프로바이오틱 Pediococcus pentosaceus BCNU 9070 군주', people: '홍길동 외 1명' },
-    { id: 1, title: '프로바이오틱 Pediococcus pentosaceus BCNU 9070 군주', people: '홍길동 외 1명' },
-    { id: 2, title: '프로바이오틱 Pediococcus pentosaceus BCNU 9070 군주', people: '홍길동 외 1명' },
-    { id: 3, title: '프로바이오틱 Pediococcus pentosaceus BCNU 9070 군주', people: '홍길동 외 1명' },
-    { id: 4, title: '프로바이오틱 Pediococcus pentosaceus BCNU 9070 군주', people: '홍길동 외 1명' },
-    { id: 5, title: '프로바이오틱 Pediococcus pentosaceus BCNU 9070 군주', people: '홍길동 외 1명' },
-    { id: 6, title: '프로바이오틱 Pediococcus pentosaceus BCNU 9070 군주', people: '홍길동 외 1명' },
-    { id: 7, title: '프로바이오틱 Pediococcus pentosaceus BCNU 9070 군주', people: '홍길동 외 1명' },
-    { id: 8, title: '프로바이오틱 Pediococcus pentosaceus BCNU 9070 군주', people: '홍길동 외 1명' },
-    { id: 9, title: '프로바이오틱 Pediococcus pentosaceus BCNU 9070 군주', people: '홍길동 외 1명' },
-  ];
+export default function PopupPaperView(props) {
+  const { applData } = props;
+
+  // const tempData1 = [
+  //   { id: 0, title: '프로바이오틱 Pediococcus pentosaceus BCNU 9070 군주', people: '홍길동 외 1명' },
+  //   { id: 1, title: '프로바이오틱 Pediococcus pentosaceus BCNU 9070 군주', people: '홍길동 외 1명' },
+  //   { id: 2, title: '프로바이오틱 Pediococcus pentosaceus BCNU 9070 군주', people: '홍길동 외 1명' },
+  //   { id: 3, title: '프로바이오틱 Pediococcus pentosaceus BCNU 9070 군주', people: '홍길동 외 1명' },
+  //   { id: 4, title: '프로바이오틱 Pediococcus pentosaceus BCNU 9070 군주', people: '홍길동 외 1명' },
+  //   { id: 5, title: '프로바이오틱 Pediococcus pentosaceus BCNU 9070 군주', people: '홍길동 외 1명' },
+  //   { id: 6, title: '프로바이오틱 Pediococcus pentosaceus BCNU 9070 군주', people: '홍길동 외 1명' },
+  //   { id: 7, title: '프로바이오틱 Pediococcus pentosaceus BCNU 9070 군주', people: '홍길동 외 1명' },
+  //   { id: 8, title: '프로바이오틱 Pediococcus pentosaceus BCNU 9070 군주', people: '홍길동 외 1명' },
+  //   { id: 9, title: '프로바이오틱 Pediococcus pentosaceus BCNU 9070 군주', people: '홍길동 외 1명' },
+  // ];
   const tempData2 = [
     [
       { content: '발행년도', scope: 'row' },
@@ -54,18 +59,51 @@ export default function PopupPaperView() {
     { id: 1, name: '초록', onClick: () => setTabActive(1) },
   ];
 
+  const dispatch = useDispatch();
   const [showView, setShowView] = useState(false);
   const [tabActive, setTabActive] = useState(0);
+  const [listData, setListData] = useState([]);
+  const [totalCnt, setTotalCnt] = useState(0);
+  const [page, setPage] = useState(1);
+
+  // 논문 목록
+  const getPopupList = useCallback(async (appl, page) => {
+    let data = [];
+    try {
+      dispatch(setLoading(true));
+      data = await ictTrendAPI.ictPerformanceList('patent', appl, 10, page);
+
+      const dataList = data?.data?.result?.dataList ?? [];
+      const total = data?.data?.result?.totalCount ?? 0;
+      setListData(dataList);
+      setTotalCnt(total);
+      console.log(data?.data?.result);
+    } catch (e) {
+      console.warn(e);
+    } finally {
+      dispatch(setLoading(false));
+    }
+  });
+
+  useEffect(() => {
+    getPopupList(applData, page);
+  }, [applData, page]);
+
+  useEffect(() => {
+    setPage(1); 
+  }, [applData]);
 
   return (
     <>
       {(!showView)
         ? <PopupListLayout
-          title={'창원대학교 미생물학과 논문 목록'}
+          title={`${applData} 논문 목록`}
           recommendCnt={44}
-          totalCnt={44}
-          listData={tempData1}
+          totalCnt={totalCnt}
+          listData={listData}
           listClick={() => setShowView(true)}
+          page={page}
+          setPage={setPage}
         />
         : <PopupViewLayout
           tabStyle='4-3'

@@ -6,7 +6,7 @@ import Plot from 'react-plotly.js';
 // https://github.com/plotly/react-plotly.js
 
 export default function IctTreeMap(props) {
-  const { data } = props;
+  const { data, onClick } = props;
   
   const layout = {
     // width: 1000,
@@ -33,6 +33,7 @@ export default function IctTreeMap(props) {
         layout={layout}
         config={treeConfig}
         style={{position: 'relative', display: 'block', minHeight: '450px'}}
+        onClick={onClick}
       />
     </>
   );

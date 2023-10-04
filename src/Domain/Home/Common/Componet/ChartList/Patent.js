@@ -8,23 +8,10 @@ import ListPopup from 'Domain/Home/ICTTrend/Component/Popup/ListPopup';
 import { getEndYear, getSingleYear, getStartYear, setEndYear, setSingleYear, setStartYear } from 'Domain/Home/ICTTrend/Status/IctTrendSlice';
 import RcSlider from 'rc-slider';
 import moment from 'moment';
+import common from 'Utill';
 
 export default function Result (props) {
   const { wordCloudData, onWordClick, trendData, yearData, applData, classData } = props;
-
-  // 데이터는 10개씩 뿌려줌
-  // const tempData1 = [
-  //   { id: 0, name: '엘지전자', count: 1086 },
-  //   { id: 1, name: '삼성전자', count: 471 },
-  //   { id: 2, name: '한국전자통신연구원', count: 215 },
-  //   { id: 3, name: '한국전자기술연구원', count: 126 },
-  //   { id: 4, name: '한국과학기술원', count: 111 },
-  //   { id: 5, name: '크라우드웍스', count: 86 },
-  //   { id: 6, name: '고려대학교 산학협력단', count: 75 },
-  //   { id: 7, name: '케이티', count: 72 },
-  //   { id: 8, name: '인피닉', count: 70 },
-  //   { id: 9, name: '서울대학교 산학협력단', count: 69 },
-  // ];
 
   let rangeMarks1 = {}, rangeMarks2 = {};
   const rangeMin = 2014;
@@ -141,7 +128,6 @@ export default function Result (props) {
   }, [yearData]);
 
   useEffect(() => {
-    console.log(applSelected);
     setNewApplData(applData);
   }, [applData]);
 
@@ -156,7 +142,7 @@ export default function Result (props) {
           <div className='list_wrap_style02 grid02'>
             <div>
               <h3 className='text-base font-bold text-color-dark'>연관어 클라우드</h3>
-              <div className='mt-4'>
+              <div className='wordcloud_cursor_wrap mt-4'>
                 <IctWordClouds data={wordCloudData} onWordClick={onWordClick} height={660} />
               </div>
               <div className='rc_custom max-w-lg mt-4 mx-auto'>
@@ -204,7 +190,7 @@ export default function Result (props) {
                           <p className='text-sm font-medium text-color-regular'>{e.key}</p>
                         </div>
                         <div className='flex items-center gap-4'>
-                          <p className='text-sm font-medium text-color-regular'><b>{e.doc_count}</b>건</p>
+                          <p className='text-sm font-medium text-color-regular'><b>{common.setPriceInput(e.doc_count)}</b>건</p>
                           <button type='button' className='h-5 px-1.5 rounded-sm text-xs font-medium text-color-white bg-color-light1' onClick={() => {
                             setApplSelected(e.key);
                             setPopup(true);

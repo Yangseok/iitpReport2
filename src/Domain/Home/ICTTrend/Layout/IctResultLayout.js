@@ -12,7 +12,7 @@ import IctChart from 'Domain/Home/Common/Componet/ChartList/Ict';
 import PolicyChart from 'Domain/Home/Common/Componet/ChartList/Policy';
 import NewsChart from 'Domain/Home/Common/Componet/ChartList/News';
 import { setLoading } from 'Domain/Home/Common/Status/CommonSlice';
-import { getCategory, getEndYear, getKeywordTrend, getSingleYear, getStartYear, setCategory, setKeywordTrend } from 'Domain/Home/ICTTrend/Status/IctTrendSlice';
+import { getCategory, getEndYear, getIctKeyword, getSingleYear, getStartYear, setCategory, setIctKeyword } from 'Domain/Home/ICTTrend/Status/IctTrendSlice';
 import * as ictTrendAPI from 'Domain/Home/ICTTrend/API/Call';
 import common from 'Utill';
 
@@ -22,7 +22,7 @@ export default function IctResultLayout({children, filterKey}) {
   const pathName = locations.pathname;
 
   const category = useSelector(getCategory);
-  const keywordTrend = useSelector(getKeywordTrend);
+  const ictKeyword = useSelector(getIctKeyword);
   const startYear = useSelector(getStartYear);
   const endYear = useSelector(getEndYear);
   const singleYear = useSelector(getSingleYear);
@@ -38,6 +38,7 @@ export default function IctResultLayout({children, filterKey}) {
   const [orgnData, setOrgnData] = useState([]);
   const [classData, setClassData] = useState([]);
   const [applData, setApplData] = useState([]);
+  const [cateData, setCateData] = useState([]);
 
   const se = common.getSegment();
   const paramSe2 = se[2] ?? '';
@@ -45,43 +46,48 @@ export default function IctResultLayout({children, filterKey}) {
 
   const getChartDatas = useCallback(async (label, category, keyword, size, startYear, endYear, year) => {
     let data = [];
-    try {
-      dispatch(setLoading(true));
-      data = await ictTrendAPI.ictSearchWordCloud(category, label, keyword, size, startYear, endYear, year);
-      console.log('DATA!!!!!!', label, data);
-    } catch (e) {
-      console.warn(e);
-    } finally {
-      dispatch(setLoading(false));
-    }
 
-    const dataList = data?.data?.result ?? [];
+    if (label && category) {
+      try {
+        dispatch(setLoading(true));
+        data = await ictTrendAPI.ictSearchWordCloud(category, label, keyword, size, startYear, endYear, year);
+      } catch (e) {
+        console.warn(e);
+      } finally {
+        dispatch(setLoading(false));
+      }
 
-    if(label === 'wordCloud') {
-      setWordCloudData(dataList);
-      // console.log('wordCloud', dataList);
-    } else if (label === 'trend') {
-      setTrendData(dataList);
-      // console.log('trend', dataList);
-    } else if (label === 'year') {
-      setYearData(dataList);
-      // console.log('year', dataList);
-    } else if (label === 'orgn') {
-      setOrgnData(dataList);
-      // console.log('orgn', dataList);
-    } else if (label === 'class') {
-      setClassData(dataList);
-      // console.log('class', dataList);
-    } else if (label === 'appl') {
-      setApplData(dataList);
-      console.log('appl', dataList);
+      const dataList = data?.data?.result ?? [];
+  
+      if(label === 'wordCloud') {
+        setWordCloudData(dataList);
+        // console.log('wordCloud', dataList);
+      } else if (label === 'trend') {
+        setTrendData(dataList);
+        console.log('trend', dataList);
+      } else if (label === 'year') {
+        setYearData(dataList);
+        // console.log('year', dataList);
+      } else if (label === 'orgn') {
+        setOrgnData(dataList);
+        console.log('orgn', dataList);
+      } else if (label === 'class') {
+        setClassData(dataList);
+        // console.log('class', dataList);
+      } else if (label === 'appl') {
+        setApplData(dataList);
+        // console.log('appl', dataList);
+      } else if (label === 'category') {
+        setCateData(dataList);
+        console.log('category', dataList);
+      }
     }
   }, []);
   
   // 워드 클라우드 클릭시
   const handleWordClick = useCallback((_, d) => {
-    dispatch(setKeywordTrend(d.text));
-  }, [keywordTrend]);
+    dispatch(setIctKeyword(d.text));
+  }, [ictKeyword]);
 
   useEffect(() => {
     let tab1 = [], tab2 = [];
@@ -139,36 +145,48 @@ export default function IctResultLayout({children, filterKey}) {
   }, [tabButtons1, tabButtons2]);
 
   useEffect(() => {
-    getChartDatas('wordCloud', category, keywordTrend, 100, startYear, endYear);
-  }, [category, keywordTrend, startYear, endYear]);
+    getChartDatas('wordCloud', category, ictKeyword, 100, startYear, endYear);
+  }, [category, ictKeyword, startYear, endYear]);
 
   useEffect(() => {
-    getChartDatas('trend', category, keywordTrend, 16, undefined, undefined, singleYear);
-  }, [category, keywordTrend, singleYear]);
+    getChartDatas('trend', category, ictKeyword, 16, undefined, undefined, singleYear);
+  }, [category, ictKeyword, singleYear]);
 
   useEffect(() => {
-    getChartDatas('year', category, keywordTrend, 10);
-    getChartDatas('orgn', category, keywordTrend, 10);
-    getChartDatas('class', category, keywordTrend);
-    getChartDatas('appl', category, keywordTrend, 10);
-  }, [category, keywordTrend]);
+    if (paramSe4 === 'projectout' || paramSe4 === 'projectin' || paramSe4 === 'patent' || paramSe4 === 'paper') {
+      getChartDatas('year', category, ictKeyword, 10);
+      getChartDatas('class', category, ictKeyword);
+    }
+
+    if (paramSe4 === 'projectout' || paramSe4 === 'projectin' || paramSe4 === 'ict' || paramSe4 === 'policy' || paramSe4 === 'news') {
+      getChartDatas('orgn', category, ictKeyword, 10);
+    }
+
+    if (paramSe4 === 'patent' || paramSe4 === 'paper') {
+      getChartDatas('appl', category, ictKeyword, 10);
+    }
+
+    if (paramSe4 === 'news') {
+      getChartDatas('category', category, ictKeyword, 10);
+    }
+  }, [category, ictKeyword]);
 
   const getChartComponent = (filterKey) => {
     switch (filterKey) {
     case 'search/projectOut':
-      return <ProjectOutChart wordCloudData={wordCloudData} onWordClick={handleWordClick} trendData={trendData} yearData={yearData} orgnData={orgnData} classData={classData} />;
+      return <ProjectOutChart wordCloudData={wordCloudData} onWordClick={handleWordClick} trendData={trendData} yearData={yearData} orgnData={orgnData} classData={classData} applData={applData} cateData={cateData} />;
     case 'search/projectIn':
-      return <ProjectInChart wordCloudData={wordCloudData} onWordClick={handleWordClick} trendData={trendData} yearData={yearData} orgnData={orgnData} classData={classData} />;
+      return <ProjectInChart wordCloudData={wordCloudData} onWordClick={handleWordClick} trendData={trendData} yearData={yearData} orgnData={orgnData} classData={classData} applData={applData} cateData={cateData} />;
     case 'search/patent':
-      return <PatentChart wordCloudData={wordCloudData} onWordClick={handleWordClick} trendData={trendData} yearData={yearData} applData={applData} classData={classData} />;
+      return <PatentChart wordCloudData={wordCloudData} onWordClick={handleWordClick} trendData={trendData} yearData={yearData} orgnData={orgnData} classData={classData} applData={applData} cateData={cateData} />;
     case 'search/paper':
-      return <PaperChart wordCloudData={wordCloudData} onWordClick={handleWordClick} trendData={trendData} yearData={yearData} applData={applData} classData={classData} />;
+      return <PaperChart wordCloudData={wordCloudData} onWordClick={handleWordClick} trendData={trendData} yearData={yearData} orgnData={orgnData} classData={classData} applData={applData} cateData={cateData} />;
     case 'search/ict':
-      return <IctChart wordCloudData={wordCloudData} onWordClick={handleWordClick} trendData={trendData} yearData={yearData} orgnData={orgnData} classData={classData} />;
+      return <IctChart wordCloudData={wordCloudData} onWordClick={handleWordClick} trendData={trendData} yearData={yearData} orgnData={orgnData} classData={classData} applData={applData} cateData={cateData} />;
     case 'search/policy':
-      return <PolicyChart wordCloudData={wordCloudData} onWordClick={handleWordClick} trendData={trendData} yearData={yearData} orgnData={orgnData} classData={classData} />;
+      return <PolicyChart wordCloudData={wordCloudData} onWordClick={handleWordClick} trendData={trendData} yearData={yearData} orgnData={orgnData} classData={classData} applData={applData} cateData={cateData} />;
     case 'search/news':
-      return <NewsChart wordCloudData={wordCloudData} onWordClick={handleWordClick} trendData={trendData} yearData={yearData} orgnData={orgnData} classData={classData} />;
+      return <NewsChart wordCloudData={wordCloudData} onWordClick={handleWordClick} trendData={trendData} yearData={yearData} orgnData={orgnData} classData={classData} applData={applData} cateData={cateData} />;
     default:
       return null;
     }
@@ -179,7 +197,7 @@ export default function IctResultLayout({children, filterKey}) {
       <section>
         <div className='container'>
           <h2 className='text-xl font-bold text-color-regular text-center mb-10'>
-            “<span className='text-color-main'>{keywordTrend}</span>”에 대한
+            “<span className='text-color-main'>{ictKeyword}</span>”에 대한
             {(page !== 'technology')
               ? ' ICT 키워드 트렌드 '
               : ' ICT 기술분류 트렌드 '}

@@ -11,20 +11,20 @@ import IctWordClouds from 'Domain/Home/ICTTrend/Component/IctWordClouds';
 import IctTreeMap from 'Domain/Home/ICTTrend/Component/IctTreeMap';
 import IctChart1 from 'Domain/Home/ICTTrend/Component/IctChart1';
 import { setLoading } from 'Domain/Home/Common/Status/CommonSlice';
-import { setCategory, setEndYear, setStartYear, setSingleYear, setKeywordTrend, getCategory } from 'Domain/Home/ICTTrend/Status/IctTrendSlice';
+import { setCategory, setEndYear, setStartYear, setSingleYear, setIctKeyword, getCategory } from 'Domain/Home/ICTTrend/Status/IctTrendSlice';
 import * as ictTrendAPI from 'Domain/Home/ICTTrend/API/Call';
 import RcSlider from 'rc-slider';
 import common from 'Utill';
 import moment from 'moment';
 
 export default function Main() {
-  const tempTreeMapData = [
-    {
-      'type': 'treemap',
-      'labels': ['전체', '물리학', '관리용', '금융용', '전기에 의한 디지털 데이터처리', '생활필수품', '진단', '전기', '처리조작', '운전 제어 시스템', '기계공학', '섬유'],
-      'parents': ['', '전체', '물리학', '물리학', '관리용', '전체', '생활필수품', '전체', '전체', '처리조작', '전체', '전체' ]
-    }
-  ];
+  // const tempTreeMapData = [
+  //   {
+  //     'type': 'treemap',
+  //     'labels': ['', '물리학', '관리용', '금융용', '디지털 데이터처리', '디지털 데이터처리2', '생활필수품', '진단', '전기', '처리조작', '운전 제어 시스템', '기계공학', '섬유'],
+  //     'parents': ['', '', '물리학', '물리학', '관리용', '디지털 데이터처리', '', '생활필수품', '', '', '처리조작', '', '' ]
+  //   }
+  // ];
   const tempIssueKeyword = [
     {id: 0, text: '인공지능'},
     {id: 1, text: '디지털안전'},
@@ -54,6 +54,7 @@ export default function Main() {
   let rangeMarks1 = {}, rangeMarks2 = {};
   const rangeMin = 2014;
   const rangeMax = Number(moment().format('YYYY'));
+  const rangeDefault = [Number(moment().subtract(1, 'year').format('YYYY')), rangeMax];
   for(let i = rangeMin; i <= rangeMax; i++) {
     rangeMarks1[i] = i;
   }
@@ -71,9 +72,11 @@ export default function Main() {
   const [tabActive1, setTabActive1] = useState(0);
   const [tabActive2, setTabActive2] = useState(0);
   const [page, setPage] = useState('');
-  const [keywordRangeValue, setKeywordRangeValue] = useState([Number(moment().subtract(1, 'year').format('YYYY')), rangeMax]);
+  const [keywordRangeValue, setKeywordRangeValue] = useState(rangeDefault);
   const [issueRangeValue, setIssueRangeValue] = useState(rangeMax - 1);
   const [wordCloudData, setWordCloudData] = useState([]);
+  const [techData, setTechData] = useState([]);
+  const [techSearch, setTechSearch] = useState([]);
 
   const se = common.getSegment();
   const paramSe2 = se[2] ?? '';
@@ -107,11 +110,119 @@ export default function Main() {
       ictCategory = 'ict';
     }
 
-    dispatch(setKeywordTrend(d.text));
+    dispatch(setIctKeyword(d.text));
     dispatch(setStartYear(keywordRangeValue[0]));
     dispatch(setEndYear(keywordRangeValue[1]));
     navigate(`/icttrend/${paramSe2}/result/${ictCategory}`);
   }, [category, keywordRangeValue]);
+
+  // ICT 기술분류 트렌드 - ICT 기술분류 API
+  const getTechnology = useCallback(async (category) => {
+    let data = [], datas = [], labels = [], parents = [];
+    try {
+      dispatch(setLoading(true));
+      data = await ictTrendAPI.ictSearchWordCloud(category, 'class', undefined, 40);
+    } catch (e) {
+      console.warn(e);
+    } finally {
+      dispatch(setLoading(false));
+    }
+    
+    const dataList = data?.data?.result;
+    console.log('getTechnology', category, dataList);
+
+    if (dataList?.length > 0) {
+      labels.push('');
+      parents.push('');
+      for (let i in dataList ?? []) {
+        const labelData = dataList[i].key ?? '';
+        labels.push(labelData);
+        parents.push('');
+
+        if (dataList[i]?.middle?.length > 0) {
+          for (let j = 0; j < dataList[i].middle.length; j++) {
+            const middleData = dataList[i].middle[j].key ?? '';
+            labels.push(middleData);
+            parents.push(labelData);
+          }
+        }
+      }
+
+      datas.push({
+        'type': 'treemap',
+        'labels': labels,
+        'parents': parents,
+      });
+      setTechData(datas);
+    }
+  } , [category]);
+  
+  // ICT 기술분류 트렌드 - 기술분류 클릭 이벤트
+  const onTreeMapClick = (e) => {
+    const data = e.points[0];
+    const fullPath = data?.currentPath + data?.label;
+    const paths = fullPath?.split('/');
+    const [bigTech, middleTech, smallTech] = paths.slice(1);
+    let newData = [];
+    
+    if (data?.label) {
+      if (data?.currentPath) {
+        newData = [bigTech, middleTech, smallTech];
+      } else {
+        newData = techSearch;
+
+        for (let i = newData.length - 1; i >= 0; i--) {
+          if (typeof newData[i] !== 'undefined') {
+            newData[i] = undefined;
+            break;
+          }
+        }
+        
+      }
+    } else {
+      newData = [];
+    }
+
+    setTechSearch([...newData]);
+  };
+
+  // ICT 기술분류 트렌드 - 결과보기 클릭 이벤트
+  const onTechnologySearch = () => {
+    let ictCategory = category;
+    
+    if(category === 'all') {
+      ictCategory = 'projectout';
+    } else if (category === 'rnd_project') {
+      ictCategory = 'projectout';
+    } else if (category === 'iitp_project') {
+      ictCategory = 'projectin';
+    } else if (category === 'ict_report') {
+      ictCategory = 'ict';
+    }
+    
+    for (let i = techSearch.length - 1; i >= 0; i--) {
+      if (typeof techSearch[i] !== 'undefined') {
+        dispatch(setIctKeyword(techSearch[i]));
+        break;
+      }
+    }
+    navigate(`/icttrend/${paramSe2}/result/${ictCategory}`);
+  };
+
+  // 10대 이슈 - 이슈 키워드 추이 API
+  const getIssue = useCallback(async (year) => {
+    let data = [];
+    try {
+      dispatch(setLoading(true));
+      data = await ictTrendAPI.ictSearchWordCloud('all', 'trend', undefined, 20, undefined, undefined, year);
+    } catch (e) {
+      console.warn(e);
+    } finally {
+      dispatch(setLoading(false));
+    }
+    console.log('getIssue', category, year, data?.data?.result);
+    // setWordCloudData(data?.data?.result ?? []);
+  } , []);
 
   // 탭 버튼
   useEffect(() => {
@@ -125,6 +236,7 @@ export default function Main() {
           onClick: () => {
             setTabActive1(0);
             dispatch(setCategory('all'));
+            setKeywordRangeValue(rangeDefault);
           }
         },
         { 
@@ -133,6 +245,7 @@ export default function Main() {
             setTabActive1(1);
             setTabActive2(0);
             dispatch(setCategory('rnd_project'));
+            setKeywordRangeValue(rangeDefault);
           } 
         },
         { 
@@ -141,6 +254,7 @@ export default function Main() {
           onClick: () => {
             setTabActive1(2);
             dispatch(setCategory('patent'));
+            setKeywordRangeValue(rangeDefault);
           } 
         },
         { 
@@ -149,6 +263,7 @@ export default function Main() {
           onClick: () => {
             setTabActive1(3);
             dispatch(setCategory('paper'));
+            setKeywordRangeValue(rangeDefault);
           } 
         },
         { 
@@ -157,6 +272,7 @@ export default function Main() {
           onClick: () => {
             setTabActive1(4);
             dispatch(setCategory('ict_report'));
+            setKeywordRangeValue(rangeDefault);
           } 
         },
         { 
@@ -165,6 +281,7 @@ export default function Main() {
           onClick: () => {
             setTabActive1(5);
             dispatch(setCategory('policy'));
+            setKeywordRangeValue(rangeDefault);
           } 
         },
         { 
@@ -173,6 +290,7 @@ export default function Main() {
           onClick: () => {
             setTabActive1(6);
             dispatch(setCategory('news'));
+            setKeywordRangeValue(rangeDefault);
           } 
         },
       ];
@@ -184,7 +302,9 @@ export default function Main() {
           name: '과제', 
           onClick: () => {
             setTabActive1(1);
+            setTabActive2(0);
             dispatch(setCategory('rnd_project'));
+            setKeywordRangeValue(rangeDefault);
           } 
         },
         { 
@@ -193,6 +313,7 @@ export default function Main() {
           onClick: () => {
             setTabActive1(2);
             dispatch(setCategory('patent'));
+            setKeywordRangeValue(rangeDefault);
           } 
         },
         { 
@@ -201,6 +322,7 @@ export default function Main() {
           onClick: () => {
             setTabActive1(3);
             dispatch(setCategory('paper'));
+            setKeywordRangeValue(rangeDefault);
           } 
         },
         { 
@@ -209,6 +331,7 @@ export default function Main() {
           onClick: () => {
             setTabActive1(5);
             dispatch(setCategory('policy'));
+            setKeywordRangeValue(rangeDefault);
           } 
         },
       ];
@@ -222,6 +345,7 @@ export default function Main() {
         onClick: () => {
           setTabActive2(0);
           dispatch(setCategory('rnd_project'));
+          setKeywordRangeValue(rangeDefault);
         } 
       },
       { 
@@ -230,6 +354,7 @@ export default function Main() {
         onClick: () => {
           setTabActive2(1);
           dispatch(setCategory('iitp_project'));
+          setKeywordRangeValue(rangeDefault);
         } 
       },
     ];
@@ -269,13 +394,24 @@ export default function Main() {
     dispatch(setSingleYear(issueRangeValue));
   }, [issueRangeValue]);
 
-  // 연도 변경시, 새 키워드 가져옴
+  
   useEffect(() => {
-    // console.log('category:', category);
-    if (keywordRangeValue[0] !== undefined && keywordRangeValue[1] !== undefined) {
+    if (page === 'keyword' && keywordRangeValue[0] !== undefined && keywordRangeValue[1] !== undefined) {
       getKeywordCloud(category, keywordRangeValue[0], keywordRangeValue[1]);
     }
-  }, [category, keywordRangeValue]);
+  }, [page, category, keywordRangeValue]);
+  
+  useEffect(() => {
+    if (page === 'technology') {
+      getTechnology(category);
+    }
+  }, [page, category]);
+  
+  useEffect(() => {
+    if (page === 'issue') {
+      getIssue(issueRangeValue);
+    }
+  }, [page, issueRangeValue]);
 
   useEffect(() => {
     if(paramSe2 === 'keyword') {
@@ -283,7 +419,10 @@ export default function Main() {
     } else if(paramSe2 === 'technology') {
       dispatch(setCategory('rnd_project'));
     }
-  }, []);
+    
+    setKeywordRangeValue(rangeDefault);
+    setIssueRangeValue(rangeMax - 1);
+  }, [page]);
 
   return (
     <IctLayout>
@@ -323,7 +462,7 @@ export default function Main() {
           ? // ICT 기술분류 트렌드
           <div className='section mt-10'>
             <div className='container'>
-              <IctTreeMap data={tempTreeMapData} />
+              <IctTreeMap data={techData} onClick={onTreeMapClick} />
 
               <div className='flex items-center justify-between'>
                 {/* 
@@ -331,13 +470,22 @@ export default function Main() {
                   이를 토대로 결과 보기
                 */}
                 <div className='flex items-center gap-2'>
-                  <p className='text-xl font-bold text-color-regular'>대분류명</p>
-                  <img src={arrRight} alt='분류 화살표' className='w-6' />
-                  <p className='text-xl font-bold text-color-regular'>중분류명</p>
-                  <img src={arrRight} alt='분류 화살표' className='w-6' />
-                  <p className='text-xl font-bold text-color-regular'>소분류명</p>
+                  <p className='text-xl font-bold text-color-regular'>{techSearch[0]}</p>
+                  {(techSearch[1]) && (
+                    <>
+                      <img src={arrRight} alt='분류 화살표' className='w-6' />
+                      <p className='text-xl font-bold text-color-regular'>{techSearch[1]}</p>
+
+                      {(techSearch[2]) && (
+                        <>
+                          <img src={arrRight} alt='분류 화살표' className='w-6' />
+                          <p className='text-xl font-bold text-color-regular'>{techSearch[2]}</p>
+                        </>
+                      )}
+                    </>
+                  )}
                 </div>
-                <Button name="결과 보기" icon={icSearch} className="gap-2 py-3 px-6.5 rounded-3xl text-base font-bold btn_style03" />
+                {(techSearch[0]) && <Button name="결과 보기" icon={icSearch} className="gap-2 py-3 px-6.5 rounded-3xl text-base font-bold btn_style03" onClick={onTechnologySearch} />}
               </div>
             </div>
           </div>
@@ -358,7 +506,10 @@ export default function Main() {
                       />
                     </div>
                   </div>
-                  <Button name='보고서 다운로드' icon={icArrow} className='gap-2 h-12 px-4 rounded text-sm font-bold btn_style04' />
+                  <a href='#' download className='gap-2 h-12 px-4 rounded text-sm font-bold btn_style04'>
+                    보고서 다운로드
+                    <img src={icArrow} alt='보고서 다운로드' className='w-6' />
+                  </a>
                 </div>
               </div>
             </div>
@@ -372,7 +523,7 @@ export default function Main() {
                     return <button 
                       key={e.id}
                       onClick={() => {
-                        dispatch(setKeywordTrend(e.text));
+                        dispatch(setIctKeyword(e.text));
                         navigate('/icttrend/issue/result/projectout');
                       }} 
                       className='h-10 px-4 rounded text-base font-bold btn_style08'

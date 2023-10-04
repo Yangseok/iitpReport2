@@ -36,7 +36,7 @@ export const ictSearchWordCloud = async (category, label, keyword, size, startYe
     params={...params, year};
   }
 
-  // console.log('params',params);
+  console.log('params',params);
 
   return await API.post('/ict/searchAggs', params);
 };
@@ -89,5 +89,5 @@ export const ictPerformanceList = async (category, appl, size, page) => {
   
   // console.log('params',params);
 
-  return await API.post('/ict/appList', params);
+  return await API.post('/ict/applList', params);
 };

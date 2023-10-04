@@ -91,15 +91,21 @@ export default function PopupPatentView(props) {
   const [showView, setShowView] = useState(false);
   const [tabActive, setTabActive] = useState(0);
   const [listData, setListData] = useState([]);
+  const [totalCnt, setTotalCnt] = useState(0);
   const [page, setPage] = useState(1);
 
-  const getList = useCallback(async (appl) => {
+  // 출원특허 목록
+  const getPopupList = useCallback(async (appl, page) => {
     let data = [];
     try {
       dispatch(setLoading(true));
-      data = await ictTrendAPI.ictPerformanceList('patent', appl);
-      setListData(data?.data?.result ?? []);
-      console.log(data);
+      data = await ictTrendAPI.ictPerformanceList('patent', appl, 10, page);
+
+      const dataList = data?.data?.result?.dataList ?? [];
+      const total = data?.data?.result?.totalCount ?? 0;
+      setListData(dataList);
+      setTotalCnt(total);
+      console.log(data?.data?.result);
     } catch (e) {
       console.warn(e);
     } finally {
@@ -108,7 +114,10 @@ export default function PopupPatentView(props) {
   });
 
   useEffect(() => {
-    getList(applData);
+    getPopupList(applData, page);
+  }, [applData, page]);
+
+  useEffect(() => {
     setPage(1); 
   }, [applData]);
 
@@ -116,9 +125,9 @@ export default function PopupPatentView(props) {
     <>
       {(!showView)
         ? <PopupListLayout
-          title={'서울대학교 산학협력단 출원특허 목록'}
+          title={`${applData} 출원특허 목록`}
           recommendCnt={44}
-          totalCnt={44}
+          totalCnt={totalCnt}
           listData={listData}
           listClick={() => setShowView(true)}
           page={page}

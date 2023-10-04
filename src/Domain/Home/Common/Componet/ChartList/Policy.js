@@ -5,24 +5,10 @@ import IctChart1 from 'Domain/Home/ICTTrend/Component/IctChart1';
 import IctChart4 from 'Domain/Home/ICTTrend/Component/IctChart4';
 import RcSlider from 'rc-slider';
 import moment from 'moment';
-import { getEndYear, getStartYear, setEndYear, setStartYear } from 'Domain/Home/ICTTrend/Status/IctTrendSlice';
+import { getEndYear, getSingleYear, getStartYear, setEndYear, setSingleYear, setStartYear } from 'Domain/Home/ICTTrend/Status/IctTrendSlice';
 
 export default function Result (props) {
-  const { wordCloudData, onWordClick } = props;
-  
-  const tempChartData1 = [
-    { x: 48, y: -90 },
-    { x: 40, y: 510 },
-    { x: 65, y: 490 },
-    { x: 2, y: 210 },
-    { x: 64, y: 410 },
-    { x: 49, y: 390 },
-    { x: 4, y: 150 },
-    { x: 82, y: 380 },
-    { x: 54, y: 50 },
-    { x: 51, y: 120 },
-  ];
-  const tempChartData2 = [185, 83, 42, 30, 16, 6, 4, 2];
+  const { wordCloudData, onWordClick, trendData, orgnData } = props;
 
   let rangeMarks1 = {}, rangeMarks2 = {};
   const rangeMin = 2014;
@@ -37,11 +23,48 @@ export default function Result (props) {
   const dispatch = useDispatch();
   const startYear = useSelector(getStartYear);
   const endYear = useSelector(getEndYear);
+  const singleYear = useSelector(getSingleYear);
   const [cloudsRangeValue, setCloudsRangeValue] = useState([Number(moment().subtract(1, 'year').format('YYYY')), rangeMax]);
   const [chartRangeValue, setChartRangeValue] = useState(rangeMax - 1);
+  const [newTrendData, setNewTrendData] = useState([]);
+  const [trendLabels, setTrendLabels] = useState([]);
+  const [newOrgnData, setNewOrgnData] = useState([]);
+  const [orgnLabels, setOrgnLabels] = useState([]);
 
-  const labels1 = ['플랫폼','learning','빅데이터','딥러닝','모니터링','네트워크','솔루션','고도','모델링','소프트웨어'];
-  const labels2 = ['기타','기술개발진행중','기술개발완료','특허만신청(등록)','시제품단계','아이디어창안','실용화단계','시장개척단계'];
+  // 관련 키워드 추이 데이터 
+  const getTrendLabelData = () => {
+    let datas = [], labels = [];
+    
+    if (trendData?.length > 0) {
+      for (let i in trendData ?? []) {
+        const pushData = {
+          x: trendData[i].doc_count ?? 0,
+          y: trendData[i].rate ?? 0,
+        };
+        const pushLabel = trendData[i].key ?? '';
+        datas.push(pushData);
+        labels.push(pushLabel);
+      }
+      setNewTrendData(datas);
+      setTrendLabels(labels);
+    }
+  };
+
+  // 발행기관별 건수 데이터
+  const getOrgnLabelData = () => {
+    let datas = [], labels = [];
+
+    if(orgnData?.length > 0) {
+      for (let i in orgnData ?? []) {
+        const pushData = orgnData[i].doc_count ?? 0;
+        const labelData = orgnData[i].key ?? '';
+        datas.push(pushData);
+        labels.push(labelData);
+      }
+      setNewOrgnData(datas);
+      setOrgnLabels(labels);
+    }
+  };
 
   useEffect(() => {
     dispatch(setStartYear(cloudsRangeValue[0]));
@@ -49,8 +72,21 @@ export default function Result (props) {
   }, [cloudsRangeValue]);
 
   useEffect(() => {
+    dispatch(setSingleYear(chartRangeValue));
+  }, [chartRangeValue]);
+
+  useEffect(() => {
     setCloudsRangeValue([startYear, endYear]);
+    setChartRangeValue(singleYear);
   }, []);
+
+  useEffect(() => {
+    getTrendLabelData();
+  }, [trendData]);
+
+  useEffect(() => {
+    getOrgnLabelData();
+  }, [orgnData]);
 
   return (
     <>
@@ -59,7 +95,7 @@ export default function Result (props) {
           <div className='list_wrap_style02 grid02'>
             <div>
               <h3 className='text-base font-bold text-color-dark'>연관어 클라우드</h3>
-              <div className='mt-4'>
+              <div className='wordcloud_cursor_wrap mt-4'>
                 <IctWordClouds data={wordCloudData} onWordClick={onWordClick} height={660} valueSize={6} />
               </div>
               <div className='rc_custom max-w-lg mt-4 mx-auto'>
@@ -76,7 +112,7 @@ export default function Result (props) {
             <div>
               <h3 className='text-base font-bold text-color-dark'>관련 키워드 추이</h3>
               <div className='mt-4'>
-                <IctChart1 labels={labels1} datas={tempChartData1} height={660} />
+                <IctChart1 labels={trendLabels} datas={newTrendData} height={660} />
               </div>
               <div className='rc_custom type02 max-w-lg mt-4 mx-auto'>
                 <RcSlider
@@ -94,7 +130,7 @@ export default function Result (props) {
             <div>
               <h3 className='text-base font-bold text-color-dark'>발행기관별 건수</h3>
               <div className='mt-4'>
-                <IctChart4 labels={labels2} datas={tempChartData2} />
+                <IctChart4 labels={orgnLabels} datas={newOrgnData} />
               </div>
             </div>
           </div>

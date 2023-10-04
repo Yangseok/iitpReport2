@@ -5,46 +5,13 @@ import IctTreeMap from 'Domain/Home/ICTTrend/Component/IctTreeMap';
 import IctChart1 from 'Domain/Home/ICTTrend/Component/IctChart1';
 import IctChart2 from 'Domain/Home/ICTTrend/Component/IctChart2';
 import ListPopup from 'Domain/Home/ICTTrend/Component/Popup/ListPopup';
-import { getEndYear, getStartYear, setEndYear, setStartYear } from 'Domain/Home/ICTTrend/Status/IctTrendSlice';
+import { getEndYear, getSingleYear, getStartYear, setEndYear, setSingleYear, setStartYear } from 'Domain/Home/ICTTrend/Status/IctTrendSlice';
 import RcSlider from 'rc-slider';
 import moment from 'moment';
+import common from 'Utill';
 
 export default function Result (props) {
-  const { wordCloudData, onWordClick } = props;
-
-  const tempTreeMapData = [
-    {
-      'type': 'treemap',
-      'labels': ['전체', '물리학', '관리용', '금융용', '전기에 의한 디지털 데이터처리', '생활필수품', '진단', '전기', '처리조작', '운전 제어 시스템', '기계공학', '섬유'],
-      'parents': ['', '전체', '물리학', '물리학', '관리용', '전체', '생활필수품', '전체', '전체', '처리조작', '전체', '전체' ]
-    }
-  ];
-  const tempChartData1 = [
-    { x: 48, y: -90 },
-    { x: 40, y: 510 },
-    { x: 65, y: 490 },
-    { x: 2, y: 210 },
-    { x: 64, y: 410 },
-    { x: 49, y: 390 },
-    { x: 4, y: 150 },
-    { x: 82, y: 380 },
-    { x: 54, y: 50 },
-    { x: 51, y: 120 },
-  ];
-  const tempChartData2 = [18108, 26335, 22137, 34727, 35612, 8189, 18242, 15114, 28919, 20010];
-  // 데이터는 10개씩 뿌려줌
-  const tempData1 = [
-    { id: 0, name: '엘지전자', count: 1086 },
-    { id: 1, name: '삼성전자', count: 471 },
-    { id: 2, name: '한국전자통신연구원', count: 215 },
-    { id: 3, name: '한국전자기술연구원', count: 126 },
-    { id: 4, name: '한국과학기술원', count: 111 },
-    { id: 5, name: '크라우드웍스', count: 86 },
-    { id: 6, name: '고려대학교 산학협력단', count: 75 },
-    { id: 7, name: '케이티', count: 72 },
-    { id: 8, name: '인피닉', count: 70 },
-    { id: 9, name: '서울대학교 산학협력단', count: 69 },
-  ];
+  const { wordCloudData, onWordClick, trendData, yearData, applData, classData } = props;
 
   let rangeMarks1 = {}, rangeMarks2 = {};
   const rangeMin = 2014;
@@ -59,28 +26,84 @@ export default function Result (props) {
   const dispatch = useDispatch();
   const startYear = useSelector(getStartYear);
   const endYear = useSelector(getEndYear);
+  const singleYear = useSelector(getSingleYear);
   const [cloudsRangeValue, setCloudsRangeValue] = useState([Number(moment().subtract(1, 'year').format('YYYY')), rangeMax]);
   const [chartRangeValue, setChartRangeValue] = useState(rangeMax - 1);
+  const [newTrendData, setNewTrendData] = useState([]);
+  const [trendLabels, setTrendLabels] = useState([]);
+  const [newYearData, setNewYearData] = useState([]);
+  const [yearLabels, setYearLabels] = useState([]);
+  const [newApplData, setNewApplData] = useState([]);
+  const [newClassData, setNewClassData] = useState([]);
+  const [applSelected, setApplSelected] = useState('');
   const [popup, setPopup] = useState(false);
 
-  // label 생성
-  const getLabels = (length, gap) => {
-    let arr = [];
-    const date = new Date();
-    const year1 = Number(moment(date).format('YYYY'));
-    const year2 = Number(moment(date).subtract(length, 'years').format('YYYY'));
-
-    (gap) && arr.push('');
-    for (let i=year2; i<year1; i++) {
-      arr.push(i);
+  // 관련 키워드 추이 데이터 
+  const getTrendLabelData = () => {
+    let datas = [], labels = [];
+    
+    if (trendData?.length > 0) {
+      for (let i in trendData ?? []) {
+        const pushData = {
+          x: trendData[i].doc_count ?? 0,
+          y: trendData[i].rate ?? 0,
+        };
+        const pushLabel = trendData[i].key ?? '';
+        datas.push(pushData);
+        labels.push(pushLabel);
+      }
+      setNewTrendData(datas);
+      setTrendLabels(labels);
     }
-    (gap) && arr.push('');
-
-    return arr;
   };
 
-  const labels1 = ['플랫폼','learning','빅데이터','딥러닝','모니터링','네트워크','솔루션','고도','모델링','소프트웨어'];
-  const labels2 = getLabels(10);
+  // 연도별 과제 건수 데이터
+  const getYearLabelData = () => {
+    let datas = [], labels = [];
+    
+    if (yearData?.length > 0) {
+      for (let i in yearData ?? []) {
+        const pushData = yearData[i].doc_count ?? 0;
+        const labelData = yearData[i].key ?? '';
+        datas.push(pushData);
+        labels.push(labelData);
+      }
+      setNewYearData(datas);
+      setYearLabels(labels);
+    }
+  };
+  
+  // 국제과학기술표준분류 데이터
+  const getClassLabelData = () => {
+    let datas = [], labels = [], parents = [];
+
+    if (classData?.length > 0) {
+      labels.push('');
+      parents.push('');
+      for (let i in classData ?? []) {
+        const labelData = classData[i].key ?? '';
+        labels.push(labelData);
+        parents.push('');
+
+        if (classData[i]?.middle?.length > 0) {
+          for (let j = 0; j < classData[i].middle.length; j++) {
+            const middleData = classData[i].middle[j].key ?? '';
+            labels.push(middleData);
+            parents.push(labelData);
+          }
+        }
+      }
+
+      datas.push({
+        'type': 'treemap',
+        'labels': labels,
+        'parents': parents,
+      });
+      setNewClassData(datas);
+
+      // console.log(datas, labels, parents);
+    }
+  };
 
   useEffect(() => {
     dispatch(setStartYear(cloudsRangeValue[0]));
@@ -88,8 +111,29 @@ export default function Result (props) {
   }, [cloudsRangeValue]);
 
   useEffect(() => {
+    dispatch(setSingleYear(chartRangeValue));
+  }, [chartRangeValue]);
+
+  useEffect(() => {
     setCloudsRangeValue([startYear, endYear]);
+    setChartRangeValue(singleYear);
   }, []);
+
+  useEffect(() => {
+    getTrendLabelData();
+  }, [trendData]);
+
+  useEffect(() => {
+    getYearLabelData();
+  }, [yearData]);
+
+  useEffect(() => {
+    setNewApplData(applData);
+  }, [applData]);
+
+  useEffect(() => {
+    getClassLabelData();
+  }, [classData]);
 
   return (
     <>
@@ -98,7 +142,7 @@ export default function Result (props) {
           <div className='list_wrap_style02 grid02'>
             <div>
               <h3 className='text-base font-bold text-color-dark'>연관어 클라우드</h3>
-              <div className='mt-4'>
+              <div className='wordcloud_cursor_wrap mt-4'>
                 <IctWordClouds data={wordCloudData} onWordClick={onWordClick} height={660} />
               </div>
               <div className='rc_custom max-w-lg mt-4 mx-auto'>
@@ -115,7 +159,7 @@ export default function Result (props) {
             <div>
               <h3 className='text-base font-bold text-color-dark'>관련 키워드 추이</h3>
               <div className='mt-4'>
-                <IctChart1 labels={labels1} datas={tempChartData1} height={660} />
+                <IctChart1 labels={trendLabels} datas={newTrendData} height={660} />
               </div>
               <div className='rc_custom type02 max-w-lg mt-4 mx-auto'>
                 <RcSlider
@@ -131,23 +175,26 @@ export default function Result (props) {
             <div>
               <h3 className='text-base font-bold text-color-dark'>연도별 과제 건수</h3>
               <div className='chart_wrap mt-10'>
-                <IctChart2 labels={labels2} datas={tempChartData2} />
+                <IctChart2 labels={yearLabels} datas={newYearData} />
               </div>
             </div>
             <div>
               <h3 className='text-base font-bold text-color-dark'>출원인 순위</h3>
               <div className='list_style06 mt-2'>
                 <ul>
-                  {(tempData1?.length > 0)
-                    ? tempData1?.map((e, i) => {
-                      return  <li key={e.id} className='flex items-center justify-between gap-2'>
+                  {(newApplData?.length > 0)
+                    ? newApplData?.map((e, i) => {
+                      return  <li key={i} className='flex items-center justify-between gap-2'>
                         <div className='flex items-center gap-4'>
                           <span className='flex items-center justify-center w-5 h-5 text-sm font-medium text-color-regular rounded-sm bg-color-line'>{i + 1}</span>
-                          <p className='text-sm font-medium text-color-regular'>{e.name}</p>
+                          <p className='text-sm font-medium text-color-regular'>{e.key}</p>
                         </div>
                         <div className='flex items-center gap-4'>
-                          <p className='text-sm font-medium text-color-regular'><b>{e.count}</b>건</p>
-                          <button type='button' className='h-5 px-1.5 rounded-sm text-xs font-medium text-color-white bg-color-light1' onClick={() => setPopup(true)}>자세히 보기↗</button>
+                          <p className='text-sm font-medium text-color-regular'><b>{common.setPriceInput(e.doc_count)}</b>건</p>
+                          <button type='button' className='h-5 px-1.5 rounded-sm text-xs font-medium text-color-white bg-color-light1' onClick={() => {
+                            setApplSelected(e.key);
+                            setPopup(true);
+                          }}>자세히 보기↗</button>
                         </div>
                       </li>;
                     })
@@ -162,13 +209,13 @@ export default function Result (props) {
           <div className='mt-14'>
             <h3 className='text-base font-bold text-color-dark'>ICT 기술분류</h3>
             <div className='mt-5'>
-              <IctTreeMap data={tempTreeMapData} />
+              <IctTreeMap data={newClassData} />
             </div>
           </div>
         </div>
       </section>
       {(popup) 
-        ? <ListPopup popup={popup} setPopup={setPopup} category={'paper'} /> 
+        ? <ListPopup popup={popup} setPopup={setPopup} category={'paper'} applData={applSelected} /> 
         : null}
     </>
   );

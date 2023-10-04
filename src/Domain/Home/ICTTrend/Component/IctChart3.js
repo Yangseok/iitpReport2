@@ -5,7 +5,7 @@ import common from 'Utill';
 export default function IctChart(props) {
   const { xLabels, dataLabels, datas } = props;
 
-  const multiColor = ['rgb(0, 165, 68)','rgb(252, 108, 15)','rgb(125, 60, 132)','rgb(82, 163, 255)'];
+  const multiColor = ['#2E9F33','#FE822A','#9467BB','#2376B2','#8B574C'];
   let datasets = [];
   for (let i=0; i<dataLabels.length; i++) {
     datasets.push({
@@ -13,13 +13,13 @@ export default function IctChart(props) {
       label: dataLabels[i],
       borderColor: multiColor[(i % multiColor.length)],
       backgroundColor: multiColor[(i % multiColor.length)],
-      borderWidth: 3,
+      borderWidth: 2,
       fill: false,
       data: datas[i],
       pointStyle: 'circle',
       pointBackgroundColor: multiColor[(i % multiColor.length)],
-      pointRadius: 3,
-      pointHoverRadius: 4,
+      pointRadius: 2,
+      pointHoverRadius: 3,
     });
   }
   const data = {
