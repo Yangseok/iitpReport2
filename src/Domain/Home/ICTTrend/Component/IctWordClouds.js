@@ -12,7 +12,7 @@ export default function IctWordClouds(props) {
   const rotate =  useCallback(() => 0, []);
 
   const procWordCloudData = useCallback(() => {
-    console.log('data', data);
+    // console.log('data', data);
     if(data?.length > 0) {
       const digitCount = valueSize ?? 4;
       const valueLengths = data.map(o => o.doc_count.toString().length);
