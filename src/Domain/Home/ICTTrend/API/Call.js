@@ -12,11 +12,12 @@ import API from 'Utill/API';
  * @param {int} size 사이즈 
  * @param {string} startYear 그래프 종류가 wordCloud일 때 사용
  * @param {string} endYear 그래프 종류가 wordCloud일 때 사용
- * @param {string} year 그래프 종류가 trend일 때 사용
+ * @param {string} year 그래프 종류가 trend일 때 사용(필수)
+ * @param {string} firstYear 그래프 종류가 trend일 때 사용(필수) default:"N" 
  * @returns 
  */
 
-export const ictSearchWordCloud = async (category, label, keyword, size, startYear, endYear, year) => {
+export const ictSearchWordCloud = async (category, label, keyword, size, startYear, endYear, year, firstYear) => {
   
   !category ? 'all': category;
 
@@ -24,7 +25,7 @@ export const ictSearchWordCloud = async (category, label, keyword, size, startYe
     category: category,
     label: label,
     keyword: !keyword ? '인공지능' : keyword,
-    size:!size ? 20: size
+    size:!size ? 10: size
   };
   
 
@@ -32,8 +33,8 @@ export const ictSearchWordCloud = async (category, label, keyword, size, startYe
     params={...params, startYear, endYear};
   }
 
-  if (label==='trend') {
-    params={...params, year};
+  if (label === 'trend') {
+    params={...params, year, firstYear};
   }
 
   console.log('params',params);
@@ -90,4 +91,25 @@ export const ictPerformanceList = async (category, appl, size, page) => {
   // console.log('params',params);
 
   return await API.post('/ict/applList', params);
+};
+
+
+/**
+ * ICT 트렌드 10대 이슈 키워드 
+ * @param {string} year default 2023
+ */
+
+export const ictIssueKeyword = async (year) => {
+
+  return await API.get('/ict/issueKeyword', { params: { year: year } });
+};
+
+/**
+ * ICT 트렌드 10대 이슈 보고서 다운로드 
+ * @param {string} year default 2023
+ */
+
+export const ictIssueReportDownload = async (year) => {
+
+  return await API.get('/ict/issueDownload', { params: { year: year } });
 };

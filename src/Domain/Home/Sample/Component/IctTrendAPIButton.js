@@ -29,6 +29,20 @@ export default function ICTTrendAPIButton(props) {
     await props.apiCallWrap(apiFn);
   };
 
+  const ictTrendIssueKeyword= async () => {
+    const apiFn = async () => {
+      const data = await ictTrendCallAPI.ictIssueKeyword('2023');
+      console.log(data?.data?.keyword);
+    };
+    await props.apiCallWrap(apiFn);
+  };
+  const ictTrendIssueReportDownload= async () => {
+    const apiFn = async () => {
+      const data = await ictTrendCallAPI.ictIssueReportDownload('2023');
+      console.log(data);
+    };
+    await props.apiCallWrap(apiFn);
+  };
 
 
   return (
@@ -90,6 +104,10 @@ export default function ICTTrendAPIButton(props) {
       <li className='mb-1'><Button text="ICT 성과 목록(특허)" onClick={() => ictTrendPerformanceList('patent')}/></li>
       <li className='mb-1'><Button text="ICT 성과 목록(논문)" onClick={() => ictTrendPerformanceList('paper')} /></li>
 
+      
+      <br></br>
+      <li className='mb-1'><Button text="ICT 10대 이슈 키워드" onClick={() => ictTrendIssueKeyword()}/></li>
+      <li className='mb-1'><Button text="ICT 10대 이슈 보고서 다운로드" onClick={() => ictTrendIssueReportDownload()} /></li>
       
     </>
   );
