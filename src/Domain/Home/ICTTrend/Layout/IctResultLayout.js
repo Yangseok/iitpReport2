@@ -45,6 +45,7 @@ export default function IctResultLayout({children, filterKey}) {
   const paramSe4 = se[4] ?? '';
 
   const getChartDatas = useCallback(async (label, category, keyword, size, startYear, endYear, year) => {
+    if (category === 'all') return ;
     let data = [];
 
     if (label && category) {

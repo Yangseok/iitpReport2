@@ -96,7 +96,7 @@ export default function Result (props) {
             <div>
               <h3 className='text-base font-bold text-color-dark'>연관어 클라우드</h3>
               <div className='wordcloud_cursor_wrap mt-4'>
-                <IctWordClouds data={wordCloudData} onWordClick={onWordClick} height={660} valueSize={6} />
+                <IctWordClouds data={wordCloudData} onWordClick={onWordClick} height={660} />
               </div>
               <div className='rc_custom max-w-lg mt-4 mx-auto'>
                 <RcSlider

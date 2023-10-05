@@ -11,8 +11,8 @@ export default function IctWordClouds(props) {
   const fontSizeMapper = useCallback((word) => Math.log2(word.value) * 5, []);
   const rotate =  useCallback(() => 0, []);
 
-  useEffect(() => {
-    // console.log('data', data);
+  const procWordCloudData = useCallback(() => {
+    console.log('data', data);
     if(data?.length > 0) {
       const digitCount = valueSize ?? 4;
       const valueLengths = data.map(o => o.doc_count.toString().length);
@@ -24,6 +24,7 @@ export default function IctWordClouds(props) {
       // console.log('maxValue:', maxValue);
       // console.log('firstValue:', firstValue);
       // console.log('maxLength:', maxLength);
+      // console.log('digitCount:', digitCount);
       // console.log('gap:', gap);
 
       // if(maxLength > digitCount) {
@@ -40,9 +41,9 @@ export default function IctWordClouds(props) {
 
           if(maxLength > digitCount) {
             // itemValue = Math.floor(item.doc_count / Math.pow(10, gap));
-            itemValue = Math.floor(item.doc_count * 3 / Math.pow(10, gap));
+            itemValue = Math.floor(item.doc_count * Math.abs(digitCount - gap) / Math.pow(10, gap));
           } else if (maxLength < digitCount) {
-            itemValue = Math.floor(Math.pow(Math.log10(item.doc_count) * 5, gap + 2) / firstValue) * gap * 5;
+            itemValue = Math.floor(Math.pow(Math.log10(item.doc_count) * 5, gap + 2) / firstValue) * gap * Math.abs(digitCount - gap + 2);
           } else {
             itemValue = Math.floor(Math.log10(item.doc_count * 3) * 300);
           }
@@ -58,6 +59,10 @@ export default function IctWordClouds(props) {
     } else {
       setNewData([]);
     }
+  }, [data]);
+
+  useEffect(() => {
+    procWordCloudData();
   }, [data]);
 
   // const onWordMouseOver =  useCallback((word) => {
