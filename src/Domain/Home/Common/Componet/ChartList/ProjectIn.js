@@ -182,9 +182,14 @@ export default function Result (props) {
           <div className='list_wrap_style02 grid02'>
             <div>
               <h3 className='text-base font-bold text-color-dark'>연관어 클라우드</h3>
-              <div className='wordcloud_cursor_wrap mt-4'>
-                <IctWordClouds data={wordCloudData} onWordClick={onWordClick} height={660} />
-              </div>
+              {(wordCloudData?.length > 0)
+                ? <div className='wordcloud_cursor_wrap mt-4'>
+                  <IctWordClouds data={wordCloudData} onWordClick={onWordClick} height={660} />
+                </div>
+                : <div className='pt-5 pb-86'>
+                  <p className='text-base text-color-placeholder'>데이터가 없습니다.</p>
+                </div>
+              }
               <div className='rc_custom max-w-lg mt-4 mx-auto'>
                 <RcSlider
                   range
@@ -198,9 +203,14 @@ export default function Result (props) {
             </div>
             <div>
               <h3 className='text-base font-bold text-color-dark'>관련 키워드 추이</h3>
-              <div className='mt-4'>
-                <IctChart1 labels={trendLabels} datas={newTrendData} height={660} />
-              </div>
+              {(trendData?.length > 0)
+                ? <div className='mt-4'>
+                  <IctChart1 labels={trendLabels} datas={newTrendData} height={660} />
+                </div>
+                : <div className='pt-5 pb-86'>
+                  <p className='text-base text-color-placeholder'>데이터가 없습니다.</p>
+                </div>
+              }
               <div className='rc_custom type02 max-w-lg mt-4 mx-auto'>
                 <RcSlider
                   included={false}
@@ -214,22 +224,37 @@ export default function Result (props) {
             </div>
             <div>
               <h3 className='text-base font-bold text-color-dark'>연도별 과제 건수</h3>
-              <div className='chart_wrap mt-10'>
-                <IctChart2 labels={yearLabels} datas={newYearData} />
-              </div>
+              {(yearData?.length > 0)
+                ? <div className='chart_wrap mt-10'>
+                  <IctChart2 labels={yearLabels} datas={newYearData} />
+                </div>
+                : <div className='pt-5 pb-86'>
+                  <p className='text-base text-color-placeholder'>데이터가 없습니다.</p>
+                </div>
+              }
             </div>
             <div>
               <h3 className='text-base font-bold text-color-dark'>과제 수행기관별 비교</h3>
-              <div className='chart_wrap mt-10'>
-                <IctChart3 xLabels={orgnLabels1} dataLabels={orgnLabels2} datas={newOrgnData} />
-              </div>
+              {(orgnData?.length > 0)
+                ? <div className='chart_wrap mt-10'>
+                  <IctChart3 xLabels={orgnLabels1} dataLabels={orgnLabels2} datas={newOrgnData} />
+                </div>
+                : <div className='pt-5 pb-86'>
+                  <p className='text-base text-color-placeholder'>데이터가 없습니다.</p>
+                </div>
+              }
             </div>
           </div>
           <div className='mt-14'>
             <h3 className='text-base font-bold text-color-dark'>국제과학기술표준분류</h3>
-            <div className='mt-5'>
-              <IctTreeMap data={newClassData} />
-            </div>
+            {(classData?.length > 0)
+              ? <div className='mt-5'>
+                <IctTreeMap data={newClassData} />
+              </div>
+              : <div className='pt-5 pb-12'>
+                <p className='text-base text-color-placeholder'>데이터가 없습니다.</p>
+              </div>
+            }
           </div>
         </div>
       </section>

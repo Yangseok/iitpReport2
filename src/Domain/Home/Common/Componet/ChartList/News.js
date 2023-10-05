@@ -57,7 +57,7 @@ export default function Result (props) {
     let datas = [], labels = [];
 
     if(orgnData?.length > 0) {
-      for (let i in orgnData ?? []) {
+      for (let i in []) {
         const pushData = orgnData[i].doc_count ?? 0;
         const labelData = orgnData[i].key ?? '';
         datas.push(pushData);
@@ -117,9 +117,14 @@ export default function Result (props) {
           <div className='list_wrap_style02 grid02'>
             <div>
               <h3 className='text-base font-bold text-color-dark'>연관어 클라우드</h3>
-              <div className='wordcloud_cursor_wrap mt-4'>
-                <IctWordClouds data={wordCloudData} onWordClick={onWordClick} height={660} />
-              </div>
+              {(wordCloudData?.length > 0)
+                ? <div className='wordcloud_cursor_wrap mt-4'>
+                  <IctWordClouds data={wordCloudData} onWordClick={onWordClick} height={660} />
+                </div>
+                : <div className='pt-5 pb-86'>
+                  <p className='text-base text-color-placeholder'>데이터가 없습니다.</p>
+                </div>
+              }
               <div className='rc_custom max-w-lg mt-4 mx-auto'>
                 <RcSlider
                   range
@@ -133,9 +138,14 @@ export default function Result (props) {
             </div>
             <div>
               <h3 className='text-base font-bold text-color-dark'>관련 키워드 추이</h3>
-              <div className='mt-4'>
-                <IctChart1 labels={trendLabels} datas={newTrendData} height={660} />
-              </div>
+              {(trendData?.length > 0)
+                ? <div className='mt-4'>
+                  <IctChart1 labels={trendLabels} datas={newTrendData} height={660} />
+                </div>
+                : <div className='pt-5 pb-86'>
+                  <p className='text-base text-color-placeholder'>데이터가 없습니다.</p>
+                </div>
+              }
               <div className='rc_custom type02 max-w-lg mt-4 mx-auto'>
                 <RcSlider
                   included={false}
@@ -149,15 +159,25 @@ export default function Result (props) {
             </div>
             <div>
               <h3 className='text-base font-bold text-color-dark'>뉴스 언급 기업 건수</h3>
-              <div className='mt-4'>
-                <IctChart4 labels={orgnLabels} datas={newOrgnData} />
-              </div>
+              {(orgnData?.length > 0)
+                ? <div className='mt-4'>
+                  <IctChart4 labels={orgnLabels} datas={newOrgnData} />
+                </div>
+                : <div className='pt-5 pb-64'>
+                  <p className='text-base text-color-placeholder'>데이터가 없습니다.</p>
+                </div>
+              }
             </div>
             <div>
               <h3 className='text-base font-bold text-color-dark'>뉴스 카테고리별 건수</h3>
-              <div className='mt-4'>
-                <IctChart4 labels={cateLabels} datas={newCateData} />
-              </div>
+              {(cateData?.length > 0)
+                ? <div className='mt-4'>
+                  <IctChart4 labels={cateLabels} datas={newCateData} />
+                </div>
+                : <div className='pt-5 pb-64'>
+                  <p className='text-base text-color-placeholder'>데이터가 없습니다.</p>
+                </div>
+              }
             </div>
           </div>
         </div>

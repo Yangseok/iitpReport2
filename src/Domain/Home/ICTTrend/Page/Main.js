@@ -37,19 +37,19 @@ export default function Main() {
     {id: 8, text: '모빌리티'},
     {id: 9, text: '로봇'},
   ];
-  const tempChartData1 = [
-    { x: 48, y: -90 },
-    { x: 40, y: 510 },
-    { x: 65, y: 490 },
-    { x: 2, y: 210 },
-    { x: 64, y: 410 },
-    { x: 49, y: 390 },
-    { x: 4, y: 150 },
-    { x: 82, y: 380 },
-    { x: 54, y: 50 },
-    { x: 51, y: 120 },
-  ];
-  const labels1 = ['플랫폼','learning','빅데이터','딥러닝','모니터링','네트워크','솔루션','고도','모델링','소프트웨어'];
+  // const tempChartData1 = [
+  //   { x: 48, y: -90 },
+  //   { x: 40, y: 510 },
+  //   { x: 65, y: 490 },
+  //   { x: 2, y: 210 },
+  //   { x: 64, y: 410 },
+  //   { x: 49, y: 390 },
+  //   { x: 4, y: 150 },
+  //   { x: 82, y: 380 },
+  //   { x: 54, y: 50 },
+  //   { x: 51, y: 120 },
+  // ];
+  // const labels1 = ['플랫폼','learning','빅데이터','딥러닝','모니터링','네트워크','솔루션','고도','모델링','소프트웨어'];
 
   let rangeMarks1 = {}, rangeMarks2 = {};
   const rangeMin = 2014;
@@ -77,6 +77,8 @@ export default function Main() {
   const [wordCloudData, setWordCloudData] = useState([]);
   const [techData, setTechData] = useState([]);
   const [techSearch, setTechSearch] = useState([]);
+  const [issueData, setIssueData] = useState([]);
+  const [issueLabel, setIssueLabel] = useState([]);
 
   const se = common.getSegment();
   const paramSe2 = se[2] ?? '';
@@ -102,6 +104,7 @@ export default function Main() {
     
     if(category === 'all') {
       ictCategory = 'projectout';
+      dispatch(setCategory('rnd_project'));
     } else if (category === 'rnd_project') {
       ictCategory = 'projectout';
     } else if (category === 'iitp_project') {
@@ -209,6 +212,8 @@ export default function Main() {
     navigate(`/icttrend/${paramSe2}/result/${ictCategory}`);
   };
 
+  // 10대 이슈 - ICT 10대 이슈 키워드 API
+
   // 10대 이슈 - 이슈 키워드 추이 API
   const getIssue = useCallback(async (year) => {
     let data = [];
@@ -220,8 +225,24 @@ export default function Main() {
     } finally {
       dispatch(setLoading(false));
     }
-    console.log('getIssue', category, year, data?.data?.result);
-    // setWordCloudData(data?.data?.result ?? []);
+    // console.log('getIssue', category, year, data?.data?.result);
+
+    const dataList = data?.data?.result;
+    let datas = [], labels = [];
+    
+    if (dataList?.length > 0) {
+      for (let i in dataList ?? []) {
+        const pushData = {
+          x: dataList[i].doc_count ?? 0,
+          y: dataList[i].rate ?? 0,
+        };
+        const pushLabel = dataList[i].key ?? '';
+        datas.push(pushData);
+        labels.push(pushLabel);
+      }
+      setIssueData(datas);
+      setIssueLabel(labels);
+    }
   } , []);
 
   // 탭 버튼
@@ -538,7 +559,7 @@ export default function Main() {
               <div className='container'>
                 <h2 className='text-base font-bold text-color-dark'>이슈 키워드 추이</h2>
                 <div className='mt-4'>
-                  <IctChart1 labels={labels1} datas={tempChartData1} height={320} />
+                  <IctChart1 labels={issueLabel} datas={issueData} height={360} />
                 </div>
                 <p className='text-sm text-color-regular text-center mt-2'>누적 출현 수(건)</p>
               </div>

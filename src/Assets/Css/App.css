@@ -1827,6 +1827,10 @@ textarea::placeholder {
 .list_style06 ul li:nth-of-type(even) {
   background-color: #F9FBFF;
 }
+.list_style06 ul li.px-0 {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
 
 .list_wrap_style01 {
   display: flex;

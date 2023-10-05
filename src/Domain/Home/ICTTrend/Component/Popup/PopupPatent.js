@@ -7,6 +7,8 @@ import ListItem from 'Domain/Home/Common/Componet/ListItem';
 import ViewTable from 'Domain/Home/Common/Componet/ViewTable';
 import { setLoading } from 'Domain/Home/Common/Status/CommonSlice';
 import * as ictTrendAPI from 'Domain/Home/ICTTrend/API/Call';
+import * as patentAPI from 'Domain/Home/Discovery/API/PatentCall';
+import common from 'Utill';
 
 export default function PopupPatentView(props) {
   const { applData } = props;
@@ -23,48 +25,48 @@ export default function PopupPatentView(props) {
   //   { id: 8, title: '인공지능 학습 및 디지털 트윈을 위한 3차원 데이터 수집·전처리 및 가공 플랫폼 개발' },
   //   { id: 9, title: '인공지능 학습 및 디지털 트윈을 위한 3차원 데이터 수집·전처리 및 가공 플랫폼 개발' },
   // ];
-  const tempData2 = [
-    [
-      { content: '출원일', scope: 'row' },
-      { content: '2020.06.24' },
-      { content: '출원인', scope: 'row' },
-      { content: '행정안전부국립재난안전연구원' },
-    ],
-    [
-      { content: '소속기관 사업자등록번호', scope: 'row' },
-      { content: '*** - ** - **01*' },
-      { content: '해외출원여부', scope: 'row' },
-      { content: '국내출원' },
-    ],
-    [
-      { content: '우선권 주장번호', scope: 'row' },
-      { content: '-' },
-      { content: '발명자', scope: 'row' },
-      { content: '홍길동, 김영수, 김영희' },
-    ],
-    [
-      { content: '등록번호', scope: 'row' },
-      { content: '10-2203135-0000' },
-      { content: '등록일', scope: 'row' },
-      { content: '2021.01.08' },
-    ],
-    [
-      { content: 'IPC 코드', scope: 'row' },
-      { content: '-' },
-      { content: '법적 상태', scope: 'row' },
-      { content: '등록' },
-    ],
-    [
-      { content: '기술이전 희망', scope: 'row' },
-      { content: '-' },
-      { content: '심사청구 여부/일자', scope: 'row' },
-      { content: '-' },
-    ],
-    [
-      { content: '심사청구 항수', scope: 'row' },
-      { content: '-', colspan: 3 },
-    ],
-  ];
+  // const tempData2 = [
+  //   [
+  //     { content: '출원일', scope: 'row' },
+  //     { content: '2020.06.24' },
+  //     { content: '출원인', scope: 'row' },
+  //     { content: '행정안전부국립재난안전연구원' },
+  //   ],
+  //   [
+  //     { content: '소속기관 사업자등록번호', scope: 'row' },
+  //     { content: '*** - ** - **01*' },
+  //     { content: '해외출원여부', scope: 'row' },
+  //     { content: '국내출원' },
+  //   ],
+  //   [
+  //     { content: '우선권 주장번호', scope: 'row' },
+  //     { content: '-' },
+  //     { content: '발명자', scope: 'row' },
+  //     { content: '홍길동, 김영수, 김영희' },
+  //   ],
+  //   [
+  //     { content: '등록번호', scope: 'row' },
+  //     { content: '10-2203135-0000' },
+  //     { content: '등록일', scope: 'row' },
+  //     { content: '2021.01.08' },
+  //   ],
+  //   [
+  //     { content: 'IPC 코드', scope: 'row' },
+  //     { content: '-' },
+  //     { content: '법적 상태', scope: 'row' },
+  //     { content: '등록' },
+  //   ],
+  //   [
+  //     { content: '기술이전 희망', scope: 'row' },
+  //     { content: '-' },
+  //     { content: '심사청구 여부/일자', scope: 'row' },
+  //     { content: '-' },
+  //   ],
+  //   [
+  //     { content: '심사청구 항수', scope: 'row' },
+  //     { content: '-', colspan: 3 },
+  //   ],
+  // ];
   // 데이터 5개씩 뿌려줌
   const tempData3 = [
     {
@@ -89,10 +91,54 @@ export default function PopupPatentView(props) {
 
   const dispatch = useDispatch();
   const [showView, setShowView] = useState(false);
-  const [tabActive, setTabActive] = useState(0);
   const [listData, setListData] = useState([]);
   const [totalCnt, setTotalCnt] = useState(0);
   const [page, setPage] = useState(1);
+
+  const [viewTableData, setViewTableData] = useState([
+    [
+      { content: '출원일', scope: 'row' },
+      { content: '' },
+      { content: '출원인', scope: 'row' },
+      { content: '' },
+    ],
+    [
+      { content: '소속기관 사업자등록번호', scope: 'row' },
+      { content: '' },
+      { content: '해외출원여부', scope: 'row' },
+      { content: '' },
+    ],
+    [
+      { content: '우선권 주장번호', scope: 'row' },
+      { content: '' },
+      { content: '발명자', scope: 'row' },
+      { content: '' },
+    ],
+    [
+      { content: '등록번호', scope: 'row' },
+      { content: '' },
+      { content: '등록일', scope: 'row' },
+      { content: '' },
+    ],
+    [
+      { content: 'IPC 코드', scope: 'row' },
+      { content: '' },
+      { content: '법적 상태', scope: 'row' },
+      { content: '' },
+    ],
+    [
+      { content: '기술이전 희망', scope: 'row' },
+      { content: '' },
+      { content: '심사청구 여부/일자', scope: 'row' },
+      { content: '' },
+    ],
+    [
+      { content: '심사청구 항수', scope: 'row' },
+      { content: '', colspan: 3 },
+    ],
+  ]);
+  const [viewData, setViewData] = useState({});
+  const [tabActive, setTabActive] = useState(0);
 
   // 출원특허 목록
   const getPopupList = useCallback(async (appl, page) => {
@@ -113,6 +159,65 @@ export default function PopupPatentView(props) {
     }
   });
 
+  // 출원특허 상세
+  const getPopupView = useCallback(async () => {
+    await (async () => {
+      try {
+        dispatch(setLoading(true));
+        const data = await patentAPI.patentView('1020180167203');
+        console.log('viewData:', data?.data?.result);
+
+        setViewData(data?.data?.result ?? {});
+        setViewTableData([
+          [
+            { content: '출원일', scope: 'row' },
+            { content: (data?.data?.result?.applDate ?? '').replace(/^(\d{4})(\d{2})(\d{2})$/, '$1.$2.$3') },
+            { content: '출원인', scope: 'row' },
+            { content: common.joinArrNStr(data?.data?.result?.applicantName,', ','') },
+          ],
+          [
+            { content: '소속기관 사업자등록번호', scope: 'row' },
+            { content: data?.data?.result?.bzno ?? '' },
+            { content: '해외출원여부', scope: 'row' },
+            { content: '' },
+          ],
+          [
+            { content: '우선권 주장번호', scope: 'row' },
+            { content: '' },
+            { content: '발명자', scope: 'row' },
+            { content: common.joinArrNStr(data?.data?.result?.inventorName,', ','') },
+          ],
+          [
+            { content: '등록번호', scope: 'row' },
+            { content: data?.data?.result?.registrationNumber ?? '' },
+            { content: '등록일', scope: 'row' },
+            { content: (data?.data?.result?.registrationDate ?? '').replace(/^(\d{4})(\d{2})(\d{2})$/, '$1.$2.$3') },
+          ],
+          [
+            { content: 'IPC 코드', scope: 'row' },
+            { content: data?.data?.result?.ipcCode ?? '' },
+            { content: '법적 상태', scope: 'row' },
+            { content: data?.data?.result?.registrationType ?? '' },
+          ],
+          [
+            { content: '기술이전 희망', scope: 'row' },
+            { content: data?.data?.result?.technologyTransferHope ?? '' },
+            { content: '심사청구 여부/일자', scope: 'row' },
+            { content: data?.data?.result?.examinationRequest ?? '' },
+          ],
+          [
+            { content: '심사청구 항수', scope: 'row' },
+            { content: data?.data?.result?.claimCount ?? '', colspan: 3 },
+          ],
+        ]);
+      } catch (e) {
+        console.warn(e);
+      } finally {
+        dispatch(setLoading(false));  
+      }
+    })();
+  }, []);
+
   useEffect(() => {
     getPopupList(applData, page);
   }, [applData, page]);
@@ -120,6 +225,10 @@ export default function PopupPatentView(props) {
   useEffect(() => {
     setPage(1); 
   }, [applData]);
+
+  useEffect(() => {
+    getPopupView();
+  }, []);
 
   return (
     <>
@@ -137,12 +246,12 @@ export default function PopupPatentView(props) {
           tabStyle='4-3'
           tabs={tabButtons}
           active={tabActive}
-          title={'패션 소상공인을 위한 디지털 자산 기반 XR 협업 플랫폼 개발'}
+          title={viewData.applName ?? ''}
           tags={<>
             <div className="flex items-center gap-4">
               {/* 진행중 : tag_style05 | 종료 : tag_style02 */}
               <p className="tag_style05">진행중</p>
-              <p className="text-sm text-color-regular">출원번호: <span className="font-medium text-color-main">10-2020-0077142</span></p>
+              <p className="text-sm text-color-regular">출원번호: <span className="font-medium text-color-main mt-2">{viewData.applNumber ?? ''}</span></p>
             </div>
           </>}
           btnClick={() => setShowView(false)}
@@ -150,8 +259,8 @@ export default function PopupPatentView(props) {
           {(tabActive === 0)
             ? // 기본 정보
             <ViewTable
-              summary={'패션 소상공인을 위한 디지털 자산 기반 XR 협업 플랫폼 개발 기본 정보'}
-              bodyData={tempData2}
+              summary={viewData.applName ?? ''}
+              bodyData={viewTableData}
             />
             : (tabActive === 1)
               ? // 특허 요약

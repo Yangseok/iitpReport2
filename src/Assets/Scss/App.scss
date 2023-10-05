@@ -1350,6 +1350,7 @@ textarea {
 .list_style06 ul li {
   padding: 12px 16px;
   &:nth-of-type(even) { background-color: $color_m_bg; }
+  &.px-0 { padding-left: 0 !important; padding-right: 0 !important; }
 }
 .list_wrap_style01 {
   @include flexLayout(flex-start, flex-start, 40px 16px);

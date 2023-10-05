@@ -95,9 +95,14 @@ export default function Result (props) {
           <div className='list_wrap_style02 grid02'>
             <div>
               <h3 className='text-base font-bold text-color-dark'>연관어 클라우드</h3>
-              <div className='wordcloud_cursor_wrap mt-4'>
-                <IctWordClouds data={wordCloudData} onWordClick={onWordClick} height={660} />
-              </div>
+              {(wordCloudData?.length > 0)
+                ? <div className='wordcloud_cursor_wrap mt-4'>
+                  <IctWordClouds data={wordCloudData} onWordClick={onWordClick} height={660} />
+                </div>
+                : <div className='pt-5 pb-86'>
+                  <p className='text-base text-color-placeholder'>데이터가 없습니다.</p>
+                </div>
+              }
               <div className='rc_custom max-w-lg mt-4 mx-auto'>
                 <RcSlider
                   range
@@ -111,9 +116,14 @@ export default function Result (props) {
             </div>
             <div>
               <h3 className='text-base font-bold text-color-dark'>관련 키워드 추이</h3>
-              <div className='mt-4'>
-                <IctChart1 labels={trendLabels} datas={newTrendData} height={660} />
-              </div>
+              {(trendData?.length > 0)
+                ? <div className='mt-4'>
+                  <IctChart1 labels={trendLabels} datas={newTrendData} height={660} />
+                </div>
+                : <div className='pt-5 pb-86'>
+                  <p className='text-base text-color-placeholder'>데이터가 없습니다.</p>
+                </div>
+              }
               <div className='rc_custom type02 max-w-lg mt-4 mx-auto'>
                 <RcSlider
                   included={false}
@@ -129,9 +139,13 @@ export default function Result (props) {
           <div className='list_wrap_style02 mt-14'>
             <div>
               <h3 className='text-base font-bold text-color-dark'>발행기관별 건수</h3>
-              <div className='mt-4'>
-                <IctChart4 labels={orgnLabels} datas={newOrgnData} />
-              </div>
+              {(orgnData?.length > 0)
+                ? <div className='mt-4'>
+                  <IctChart4 labels={orgnLabels} datas={newOrgnData} />
+                </div>
+                : <div className='pt-5 pb-64'>
+                  <p className='text-base text-color-placeholder'>데이터가 없습니다.</p>
+                </div>}
             </div>
           </div>
         </div>
