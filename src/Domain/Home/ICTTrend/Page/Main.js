@@ -78,6 +78,7 @@ export default function Main() {
   const [techData, setTechData] = useState([]);
   const [techSearch, setTechSearch] = useState([]);
   const [issueKeywordData, setIssueKeywordData] = useState([]);
+  const [isIssueDownload, setIsIssueDownload] = useState(false);
   const [issueTrendData, setIssueTrendData] = useState([]);
   const [issueTrendLabel, setIssueTrendLabel] = useState([]);
 
@@ -214,6 +215,15 @@ export default function Main() {
   };
 
   // 10대 이슈 - 보고서 다운로드 API
+  const issueDownload = (e) => {
+    const winOpen = (url, name, option) => {
+      var popup = window.open(url, name, option);
+      popup.focus();
+      return popup;
+    };
+    winOpen(process.env.REACT_APP_API_URL+'/ict/issueDownload?year='+issueRangeValue);
+    e?.preventDefault();
+  };
 
   // 10대 이슈 - ICT 10대 이슈 키워드 API
   const getIssueKeyword = useCallback(async (year) => {
@@ -228,7 +238,8 @@ export default function Main() {
     }
     // console.log('getIssueKeyword', year, data?.data?.keyword);
 
-    setIssueKeywordData(data?.data?.keyword ?? []);
+    setIsIssueDownload(((data?.data?.result?.fileYN ?? 'N') === 'Y'));
+    setIssueKeywordData(data?.data?.result?.keyword ?? []);
   }, []);
 
   // 10대 이슈 - 이슈 키워드 추이 API
@@ -545,17 +556,14 @@ export default function Main() {
                       />
                     </div>
                   </div>
-                  <a href='#' download className='gap-2 h-12 px-4 rounded text-sm font-bold btn_style04'>
-                    보고서 다운로드
-                    <img src={icArrow} alt='보고서 다운로드' className='w-6' />
-                  </a>
+                  {(isIssueDownload) ? <Button className='gap-2 h-12 px-4 rounded text-sm font-bold btn_style04' name='보고서 다운로드' icon={icArrow} onClick={issueDownload} /> : null}
                 </div>
               </div>
             </div>
             <section className='mt-10'>
               <div className='container'>
                 <h2 className='text-base font-bold text-color-dark text-center'>
-                  <span className='text-color-main'>2023년</span> ICT 10대 이슈 키워드
+                  <span className='text-color-main'>{issueRangeValue}년</span> ICT 10대 이슈 키워드
                 </h2>
                 <div className='flex items-center justify-center flex-wrap gap-x-6 gap-y-2 mt-6'>
                   {(issueKeywordData?.length > 0)
