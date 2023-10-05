@@ -351,6 +351,12 @@ export default function ListWrap(props) {
   }, [se2,se3,se4]);
 
   useEffect(() => {
+    setTimeout(() => {
+      setPage(1);
+    }, 300);
+  }, [keyword]);
+
+  useEffect(() => {
     if (noticeId !== '' && surveyId !== '') getSurveyFile();
   }, [noticeId, surveyId]);
 
@@ -375,12 +381,14 @@ export default function ListWrap(props) {
             // console.log('procKeyword:', procKeyword);
             data = await discoveryAPI.searchCount('discovery',procKeyword.join('|'));
           } else if (se2 == 'file') {
-            data = await discoveryAPI.searchCount('discovery',fileKeywordList.map(o => o.keyword).join('|'));
+            if ((fileKeywordList?.length) ?? 0 > 0) data = await discoveryAPI.searchCount('discovery',fileKeywordList.map(o => o.keyword).join('|'));
           } else if (se2 == 'project') {
-            data = await discoveryAPI.searchCount('discovery',fileKeywordList.map(o => o.keyword).join('|'));
+            if ((fileKeywordList?.length) ?? 0 > 0) data = await discoveryAPI.searchCount('discovery',fileKeywordList.map(o => o.keyword).join('|'));
           }
         } else if (se1 === 'demandbanking') {
-          data = await discoveryAPI.searchCount('discovery',wordCloudSurveyFile?.map(o => o.keyword)?.join('|'));
+          if ((wordCloudSurveyFile?.length) ?? 0 > 0) data = await discoveryAPI.searchCount('discovery',wordCloudSurveyFile?.map(o => o.keyword)?.join('|'));
+        } else if (se1 === 'icttrend') {
+          // if (keyword !== '')data = await discoveryAPI.searchCount('discovery',keyword);
         }
       } catch (e) {
         console.warn(e);

@@ -228,15 +228,17 @@ export const callListAPI = async (filterKey, se1, se2, globalSearchDetailData, s
       data = await apiMethod('discovery',size,page,keyword,similarity,sort,filterObj,searchParam,etcParam);
     } else if (se2 == 'file') {
       similarity = fileKeywordList;
-      data = await apiMethod('discovery',size,page,'',similarity,sort,filterObj,searchParam,etcParam);
+      if ((similarity?.length) ?? 0 > 0) data = await apiMethod('discovery',size,page,'',similarity,sort,filterObj,searchParam,etcParam);
     } else if (se2 == 'project') {
       similarity = fileKeywordList;
-      data = await apiMethod('discovery',size,page,'',similarity,sort,filterObj,searchParam,etcParam);
+      if ((similarity?.length) ?? 0 > 0) data = await apiMethod('discovery',size,page,'',similarity,sort,filterObj,searchParam,etcParam);
     }
   } else if (se1 === 'demandbanking') {
     // console.log('demandbanking selectKeyword:', selectKeyword);
     similarity = selectKeyword;
-    data = await apiMethod('discovery',size,page,'',similarity,sort,filterObj,searchParam,etcParam);
+    if ((similarity?.length) ?? 0 > 0) data = await apiMethod('discovery',size,page,'',similarity,sort,filterObj,searchParam,etcParam);
+  } else if (se1 === 'icttrend') {
+    if (keyword !== '') data = await apiMethod('search',size,page,keyword);
   }
 
   return data;

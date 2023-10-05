@@ -13,6 +13,7 @@ import PolicyChart from 'Domain/Home/Common/Componet/ChartList/Policy';
 import NewsChart from 'Domain/Home/Common/Componet/ChartList/News';
 import { setLoading } from 'Domain/Home/Common/Status/CommonSlice';
 import { getCategory, getEndYear, getIctKeyword, getSingleYear, getStartYear, setCategory, setIctKeyword } from 'Domain/Home/ICTTrend/Status/IctTrendSlice';
+import { setSearchKeyword } from 'Domain/Home/Common/Status/CommonSlice';
 import * as ictTrendAPI from 'Domain/Home/ICTTrend/API/Call';
 import common from 'Utill';
 
@@ -171,6 +172,11 @@ export default function IctResultLayout({children, filterKey}) {
       getChartDatas('category', category, ictKeyword, 10);
     }
   }, [category, ictKeyword]);
+
+  useEffect(() => {
+    // console.log('리스트 초기화');
+    dispatch(setSearchKeyword(ictKeyword));
+  }, [ictKeyword]);
 
   const getChartComponent = (filterKey) => {
     switch (filterKey) {
