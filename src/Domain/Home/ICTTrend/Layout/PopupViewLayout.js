@@ -8,7 +8,7 @@ export default function PopupViewLayout(props) {
     <>
       <div>
         {tags}
-        <h4 className='text-xl font-bold text-color-dark'>{title}</h4>
+        <h4 className='text-xl font-bold text-color-dark mt-2'>{title}</h4>
       </div>
       <div className='mt-8'>
         <TabButtons style={tabStyle ?? '4-2'} tabs={tabs} active={active} />

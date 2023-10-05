@@ -3,7 +3,7 @@ import Pagination from 'Domain/Home/Common/Componet/Pagination';
 import common from 'Utill';
 
 export default function PopupListLayout(props) {
-  const { title, totalCnt, listData, listClick, page, setPage } = props;
+  const { title, totalCnt, listData, listClick, page, setPage, setIdx } = props;
 
   return (
     <>
@@ -26,7 +26,10 @@ export default function PopupListLayout(props) {
               }
 
               return  <li key={i}>
-                <button type='button' className='justify-between gap-2 w-full text-sm font-medium text-color-dark' onClick={listClick}>
+                <button type='button' className='justify-between gap-2 w-full text-sm font-medium text-color-dark' onClick={() => {
+                  listClick();
+                  setIdx(e.id);
+                }}>
                   <span className='flex-1 text-left line1_text'>{e.title}</span>
                   <span>{author}</span>
                 </button>

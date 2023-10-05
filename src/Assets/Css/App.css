@@ -1581,7 +1581,9 @@ textarea::placeholder {
 
 .popup_wrap {
   max-width: 98%;
+  max-height: 86vh;
   background-color: #FFFFFF;
+  overflow-y: auto;
 }
 
 .popup_close_btn {

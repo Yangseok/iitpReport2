@@ -25,18 +25,18 @@ export default function Main() {
   //     'parents': ['', '', '물리학', '물리학', '관리용', '디지털 데이터처리', '', '생활필수품', '', '', '처리조작', '', '' ]
   //   }
   // ];
-  const tempIssueKeyword = [
-    {id: 0, text: '인공지능'},
-    {id: 1, text: '디지털안전'},
-    {id: 2, text: '네트워크'},
-    {id: 3, text: '메타버스'},
-    {id: 4, text: '반도체'},
-    {id: 5, text: '우주'},
-    {id: 6, text: '패권경쟁'},
-    {id: 7, text: '디지털안보'},
-    {id: 8, text: '모빌리티'},
-    {id: 9, text: '로봇'},
-  ];
+  // const tempIssueKeyword = [
+  //   {id: 0, text: '인공지능'},
+  //   {id: 1, text: '디지털안전'},
+  //   {id: 2, text: '네트워크'},
+  //   {id: 3, text: '메타버스'},
+  //   {id: 4, text: '반도체'},
+  //   {id: 5, text: '우주'},
+  //   {id: 6, text: '패권경쟁'},
+  //   {id: 7, text: '디지털안보'},
+  //   {id: 8, text: '모빌리티'},
+  //   {id: 9, text: '로봇'},
+  // ];
   // const tempChartData1 = [
   //   { x: 48, y: -90 },
   //   { x: 40, y: 510 },
@@ -77,8 +77,9 @@ export default function Main() {
   const [wordCloudData, setWordCloudData] = useState([]);
   const [techData, setTechData] = useState([]);
   const [techSearch, setTechSearch] = useState([]);
-  const [issueData, setIssueData] = useState([]);
-  const [issueLabel, setIssueLabel] = useState([]);
+  const [issueKeywordData, setIssueKeywordData] = useState([]);
+  const [issueTrendData, setIssueTrendData] = useState([]);
+  const [issueTrendLabel, setIssueTrendLabel] = useState([]);
 
   const se = common.getSegment();
   const paramSe2 = se[2] ?? '';
@@ -212,10 +213,26 @@ export default function Main() {
     navigate(`/icttrend/${paramSe2}/result/${ictCategory}`);
   };
 
+  // 10대 이슈 - 보고서 다운로드 API
+
   // 10대 이슈 - ICT 10대 이슈 키워드 API
+  const getIssueKeyword = useCallback(async (year) => {
+    let data = [];
+    try {
+      dispatch(setLoading(true));
+      data = await ictTrendAPI.ictIssueKeyword(year);
+    } catch (e) {
+      console.warn(e);
+    } finally {
+      dispatch(setLoading(false));
+    }
+    // console.log('getIssueKeyword', year, data?.data?.keyword);
+
+    setIssueKeywordData(data?.data?.keyword ?? []);
+  }, []);
 
   // 10대 이슈 - 이슈 키워드 추이 API
-  const getIssue = useCallback(async (year) => {
+  const getIssueTrend = useCallback(async (year) => {
     let data = [];
     try {
       dispatch(setLoading(true));
@@ -225,7 +242,7 @@ export default function Main() {
     } finally {
       dispatch(setLoading(false));
     }
-    // console.log('getIssue', category, year, data?.data?.result);
+    // console.log('getIssueTrend', category, year, data?.data?.result);
 
     const dataList = data?.data?.result;
     let datas = [], labels = [];
@@ -240,8 +257,8 @@ export default function Main() {
         datas.push(pushData);
         labels.push(pushLabel);
       }
-      setIssueData(datas);
-      setIssueLabel(labels);
+      setIssueTrendData(datas);
+      setIssueTrendLabel(labels);
     }
   } , []);
 
@@ -430,7 +447,8 @@ export default function Main() {
   
   useEffect(() => {
     if (page === 'issue') {
-      getIssue(issueRangeValue);
+      getIssueTrend(issueRangeValue);
+      getIssueKeyword(issueRangeValue);
     }
   }, [page, issueRangeValue]);
 
@@ -539,19 +557,22 @@ export default function Main() {
                 <h2 className='text-base font-bold text-color-dark text-center'>
                   <span className='text-color-main'>2023년</span> ICT 10대 이슈 키워드
                 </h2>
-                <div className='flex items-center justify-center gap-6 mt-6'>
-                  {tempIssueKeyword?.map((e) => {
-                    return <button 
-                      key={e.id}
-                      onClick={() => {
-                        dispatch(setIctKeyword(e.text));
-                        navigate('/icttrend/issue/result/projectout');
-                      }} 
-                      className='h-10 px-4 rounded text-base font-bold btn_style08'
-                    >
-                      {e.text}
-                    </button>;
-                  })}
+                <div className='flex items-center justify-center flex-wrap gap-x-6 gap-y-2 mt-6'>
+                  {(issueKeywordData?.length > 0)
+                    ? issueKeywordData?.map((e, i) => {
+                      return <button 
+                        key={i}
+                        onClick={() => {
+                          dispatch(setIctKeyword(e));
+                          navigate('/icttrend/issue/result/projectout');
+                        }} 
+                        className='h-10 px-4 rounded text-base font-bold btn_style08'
+                      >
+                        {e}
+                      </button>;
+                    })
+                    : <p className='text-base text-color-placeholder'>데이터가 없습니다.</p>
+                  }
                 </div>
               </div>
             </section>
@@ -559,7 +580,7 @@ export default function Main() {
               <div className='container'>
                 <h2 className='text-base font-bold text-color-dark'>이슈 키워드 추이</h2>
                 <div className='mt-4'>
-                  <IctChart1 labels={issueLabel} datas={issueData} height={360} />
+                  <IctChart1 labels={issueTrendLabel} datas={issueTrendData} height={360} />
                 </div>
                 <p className='text-sm text-color-regular text-center mt-2'>누적 출현 수(건)</p>
               </div>

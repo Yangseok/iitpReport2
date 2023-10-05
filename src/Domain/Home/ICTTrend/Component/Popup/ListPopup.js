@@ -33,7 +33,7 @@ export default function ListPopup(props) {
       // 포커스 트랩: 모달 내에서 포커스가 빠져나가지 못하도록 설정
       $(document).on('keydown', '.popup_bg .page_wrap button:last-child, #list_btn', function(e) {
         if(e.key === 'Tab' && !_shift) {
-          popupRef.current.focus();
+          popupRef.current?.focus();
           return false;
         }
       });

@@ -1133,7 +1133,9 @@ textarea {
 }
 .popup_wrap {
   max-width: 98%;
+  max-height: 86vh;
   background-color: $color_white;
+  overflow-y: auto;
 }
 .popup_close_btn {
   @include hiddenAltText;

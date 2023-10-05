@@ -63,10 +63,12 @@ export default function PopupPaperView(props) {
 
   const dispatch = useDispatch();
   const [showView, setShowView] = useState(false);
+  const [paperIdx, setPaperIdx] = useState(0);
   const [listData, setListData] = useState([]);
   const [totalCnt, setTotalCnt] = useState(0);
   const [page, setPage] = useState(1);
 
+  const [tabActive, setTabActive] = useState(0);
   const [viewData, setViewData] = useState({});
   const [viewTableData, setViewTableData] = useState([
     [
@@ -92,7 +94,6 @@ export default function PopupPaperView(props) {
       { content: '', colspan: 3 },
     ],
   ]);
-  const [tabActive, setTabActive] = useState(0);
 
   // 논문 목록
   const getPopupList = useCallback(async (appl, page) => {
@@ -118,8 +119,8 @@ export default function PopupPaperView(props) {
     await (async () => {
       try {
         dispatch(setLoading(true));
-        const data = await paperAPI.paperView('JAKO200740736978020');
-        // console.log('viewData:', data?.data?.result);
+        const data = await paperAPI.paperView(paperIdx);
+        console.log('viewData:', data?.data?.result, paperIdx);
 
         setViewData(data?.data?.result ?? {});
         setViewTableData([
@@ -152,7 +153,7 @@ export default function PopupPaperView(props) {
         dispatch(setLoading(false));  
       }
     })();
-  }, []);
+  }, [paperIdx]);
 
   useEffect(() => {
     getPopupList(applData, page);
@@ -163,8 +164,10 @@ export default function PopupPaperView(props) {
   }, [applData]);
 
   useEffect(() => {
-    getPopupView();
-  }, []);
+    if (showView) {
+      getPopupView();
+    }
+  }, [showView, paperIdx]);
   
   return (
     <>
@@ -174,9 +177,13 @@ export default function PopupPaperView(props) {
           recommendCnt={44}
           totalCnt={totalCnt}
           listData={listData}
-          listClick={() => setShowView(true)}
+          listClick={() => {
+            setShowView(true);
+            setTabActive(0);
+          }}
           page={page}
           setPage={setPage}
+          setIdx={setPaperIdx}
         />
         : <PopupViewLayout
           tabStyle='4-3'
@@ -196,7 +203,7 @@ export default function PopupPaperView(props) {
             />
             : // 초록
             <div className='p-6'>
-              <p className='text-sm font-medium text-color-dark leading-loose break-keep'>
+              <p className='text-sm font-medium text-color-dark leading-loose break-keep whitespace-pre-line'>
                 {(viewData.contents ?? '')}
               </p>
             </div>
