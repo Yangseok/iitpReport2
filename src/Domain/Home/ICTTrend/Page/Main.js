@@ -18,48 +18,12 @@ import common from 'Utill';
 import moment from 'moment';
 
 export default function Main() {
-  // const tempTreeMapData = [
-  //   {
-  //     'type': 'treemap',
-  //     'labels': ['', '물리학', '관리용', '금융용', '디지털 데이터처리', '디지털 데이터처리2', '생활필수품', '진단', '전기', '처리조작', '운전 제어 시스템', '기계공학', '섬유'],
-  //     'parents': ['', '', '물리학', '물리학', '관리용', '디지털 데이터처리', '', '생활필수품', '', '', '처리조작', '', '' ]
-  //   }
-  // ];
-  // const tempIssueKeyword = [
-  //   {id: 0, text: '인공지능'},
-  //   {id: 1, text: '디지털안전'},
-  //   {id: 2, text: '네트워크'},
-  //   {id: 3, text: '메타버스'},
-  //   {id: 4, text: '반도체'},
-  //   {id: 5, text: '우주'},
-  //   {id: 6, text: '패권경쟁'},
-  //   {id: 7, text: '디지털안보'},
-  //   {id: 8, text: '모빌리티'},
-  //   {id: 9, text: '로봇'},
-  // ];
-  // const tempChartData1 = [
-  //   { x: 48, y: -90 },
-  //   { x: 40, y: 510 },
-  //   { x: 65, y: 490 },
-  //   { x: 2, y: 210 },
-  //   { x: 64, y: 410 },
-  //   { x: 49, y: 390 },
-  //   { x: 4, y: 150 },
-  //   { x: 82, y: 380 },
-  //   { x: 54, y: 50 },
-  //   { x: 51, y: 120 },
-  // ];
-  // const labels1 = ['플랫폼','learning','빅데이터','딥러닝','모니터링','네트워크','솔루션','고도','모델링','소프트웨어'];
-
-  let rangeMarks1 = {}, rangeMarks2 = {};
+  let rangeMarks = {};
   const rangeMin = 2014;
   const rangeMax = Number(moment().format('YYYY'));
   const rangeDefault = [Number(moment().subtract(1, 'year').format('YYYY')), rangeMax];
   for(let i = rangeMin; i <= rangeMax; i++) {
-    rangeMarks1[i] = i;
-  }
-  for(let i = (rangeMin-1); i <= (rangeMax-1); i++) {
-    rangeMarks2[i] = i;
+    rangeMarks[i] = i;
   }
   
   const navigate = useNavigate();
@@ -73,7 +37,7 @@ export default function Main() {
   const [tabActive2, setTabActive2] = useState(0);
   const [page, setPage] = useState('');
   const [keywordRangeValue, setKeywordRangeValue] = useState(rangeDefault);
-  const [issueRangeValue, setIssueRangeValue] = useState(rangeMax - 1);
+  const [issueRangeValue, setIssueRangeValue] = useState(rangeMax);
   const [wordCloudData, setWordCloudData] = useState([]);
   const [techData, setTechData] = useState([]);
   const [techSearch, setTechSearch] = useState([]);
@@ -471,7 +435,7 @@ export default function Main() {
     }
     
     setKeywordRangeValue(rangeDefault);
-    setIssueRangeValue(rangeMax - 1);
+    setIssueRangeValue(rangeMax);
   }, [page]);
 
   return (
@@ -501,7 +465,7 @@ export default function Main() {
                 range
                 min={rangeMin}
                 max={rangeMax}
-                marks={rangeMarks1}
+                marks={rangeMarks}
                 value={keywordRangeValue}
                 onChange={(e) => setKeywordRangeValue(e)}
               />
@@ -548,9 +512,9 @@ export default function Main() {
                     <div className='rc_custom type02'>
                       <RcSlider
                         included={false}
-                        min={rangeMin - 1}
-                        max={rangeMax - 1}
-                        marks={rangeMarks2}
+                        min={rangeMin}
+                        max={rangeMax}
+                        marks={rangeMarks}
                         value={issueRangeValue}
                         onChange={(e) => setIssueRangeValue(e)}
                       />

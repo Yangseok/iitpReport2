@@ -13,14 +13,11 @@ import common from 'Utill';
 export default function Result (props) {
   const { wordCloudData, onWordClick, trendData, yearData, applData, classData } = props;
 
-  let rangeMarks1 = {}, rangeMarks2 = {};
+  let rangeMarks = {};
   const rangeMin = 2014;
   const rangeMax = Number(moment().format('YYYY'));
   for(let i = rangeMin; i <= rangeMax; i++) {
-    rangeMarks1[i] = i;
-  }
-  for(let i = (rangeMin-1); i <= (rangeMax-1); i++) {
-    rangeMarks2[i] = i;
+    rangeMarks[i] = i;
   }
 
   const dispatch = useDispatch();
@@ -28,7 +25,7 @@ export default function Result (props) {
   const endYear = useSelector(getEndYear);
   const singleYear = useSelector(getSingleYear);
   const [cloudsRangeValue, setCloudsRangeValue] = useState([Number(moment().subtract(1, 'year').format('YYYY')), rangeMax]);
-  const [chartRangeValue, setChartRangeValue] = useState(rangeMax - 1);
+  const [chartRangeValue, setChartRangeValue] = useState(rangeMax);
   const [newTrendData, setNewTrendData] = useState([]);
   const [trendLabels, setTrendLabels] = useState([]);
   const [newYearData, setNewYearData] = useState([]);
@@ -155,7 +152,7 @@ export default function Result (props) {
                   range
                   min={rangeMin}
                   max={rangeMax}
-                  marks={rangeMarks1}
+                  marks={rangeMax}
                   value={cloudsRangeValue}
                   onChange={(e) => setCloudsRangeValue(e)}
                 />
@@ -174,9 +171,9 @@ export default function Result (props) {
               <div className='rc_custom type02 max-w-lg mt-4 mx-auto'>
                 <RcSlider
                   included={false}
-                  min={rangeMin - 1}
-                  max={rangeMax - 1}
-                  marks={rangeMarks2}
+                  min={rangeMin}
+                  max={rangeMax}
+                  marks={rangeMax}
                   value={chartRangeValue}
                   onChange={(e) => setChartRangeValue(e)}
                 />
