@@ -371,9 +371,11 @@ export default function DemandResult() {
                 <dl>
                   <dt>접수기간</dt>
                   <dd>
-                    <input type='date' name='startDateTmp' value={startDateTmp} onChange={(e) => setStartDateTmp(e.target.value)} />
+                    <label htmlFor='startDateTmp' className='hidden_text'>접수기간 범위 - 시작 연도</label>
+                    <input type='date' name='startDateTmp' id='startDateTmp' value={startDateTmp} onChange={(e) => setStartDateTmp(e.target.value)} />
                     <span className='text-base font-medium text-color-dark mx-3'> - </span>
-                    <input type='date' name='endDateTmp' value={endDateTmp} onChange={(e) => setEndDateTmp(e.target.value)} />
+                    <label htmlFor='endDateTmp' className='hidden_text'>접수기간 범위 - 끝 연도</label>
+                    <input type='date' name='endDateTmp' id='endDateTmp' value={endDateTmp} onChange={(e) => setEndDateTmp(e.target.value)} />
                   </dd>
                 </dl>
                 <dl className='w-full'>
@@ -418,21 +420,21 @@ export default function DemandResult() {
                   </dd>
                 </dl>
                 <dl>
-                  <dt>접수기관명</dt>
+                  <dt><label htmlFor='orgnNameTmp'>접수기관명</label></dt>
                   <dd>
-                    <input type='text' name='orgnNameTmp' onChange={(e) => setOrgnNameTmp(e.target.value)} value={orgnNameTmp} />
+                    <input type='text' name='orgnNameTmp' id='orgnNameTmp' onChange={(e) => setOrgnNameTmp(e.target.value)} value={orgnNameTmp} />
                   </dd>
                 </dl>
                 <dl>
-                  <dt>신청인</dt>
+                  <dt><label htmlFor='applicantTmp'>신청인</label></dt>
                   <dd>
-                    <input type='text' name='applicantTmp' onChange={(e) => setApplicantTmp(e.target.value)} value={applicantTmp} />
+                    <input type='text' name='applicantTmp' id='applicantTmp' onChange={(e) => setApplicantTmp(e.target.value)} value={applicantTmp} />
                   </dd>
                 </dl>
                 <dl className='flex-1'>
-                  <dt>기술수요조사명</dt>
+                  <dt><label htmlFor='surveyTitleTmp'>기술수요조사명</label></dt>
                   <dd className='flex-1'>
-                    <input type='text' name='surveyTitleTmp' onChange={(e) => setSurveyTitleTmp(e.target.value)} value={surveyTitleTmp} className='w-full' />
+                    <input type='text' name='surveyTitleTmp' id='surveyTitleTmp' onChange={(e) => setSurveyTitleTmp(e.target.value)} value={surveyTitleTmp} className='w-full' />
                   </dd>
                 </dl>
               </div>

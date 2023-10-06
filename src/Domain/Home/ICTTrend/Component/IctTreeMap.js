@@ -23,7 +23,8 @@ export default function IctTreeMap(props) {
   };
   
   const treeConfig = {
-    responsive: true
+    responsive: true,
+    displayModeBar: false,
   };
 
   return (

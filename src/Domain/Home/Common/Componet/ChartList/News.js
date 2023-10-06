@@ -54,7 +54,7 @@ export default function Result (props) {
     let datas = [], labels = [];
 
     if(orgnData?.length > 0) {
-      for (let i in []) {
+      for (let i in orgnData ?? []) {
         const pushData = orgnData[i].doc_count ?? 0;
         const labelData = orgnData[i].key ?? '';
         datas.push(pushData);

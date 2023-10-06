@@ -152,7 +152,7 @@ export default function Result (props) {
                   range
                   min={rangeMin}
                   max={rangeMax}
-                  marks={rangeMax}
+                  marks={rangeMarks}
                   value={cloudsRangeValue}
                   onChange={(e) => setCloudsRangeValue(e)}
                 />
@@ -173,7 +173,7 @@ export default function Result (props) {
                   included={false}
                   min={rangeMin}
                   max={rangeMax}
-                  marks={rangeMax}
+                  marks={rangeMarks}
                   value={chartRangeValue}
                   onChange={(e) => setChartRangeValue(e)}
                 />
