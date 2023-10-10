@@ -337,8 +337,8 @@ export default function Main() {
         getNoticeList(true);
       }, 300);
     };
-    getDelaytNoticeList();
-    return () => clearTimeout(getDelaytNoticeList);
+    const timeoutObj = getDelaytNoticeList();
+    return () => clearTimeout(timeoutObj);
   }, []);
 
   return (
