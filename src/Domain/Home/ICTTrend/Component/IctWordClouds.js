@@ -1,5 +1,7 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import WordCloud from 'react-d3-cloud';
+import * as d3 from 'd3';
+
 // import { select } from 'd3-selection';
 // import data from 'Domain/Home/Sample/Data/WordCloud.json';
 
@@ -63,6 +65,18 @@ export default function IctWordClouds(props) {
 
   useEffect(() => {
     procWordCloudData();
+
+    const addTabIndex = () => {
+      return setTimeout(() => {
+        console.log('addTabIndex');
+        d3.selectAll('text').each(function(d, i){
+          console.log('text:' ,d, this);
+          this.setAttribute('tabindex', i+1000);
+        });
+      }, 300);
+    };
+    addTabIndex();
+    return () => clearTimeout(addTabIndex);
   }, [data]);
 
   // const onWordMouseOver =  useCallback((word) => {
