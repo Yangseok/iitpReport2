@@ -113,7 +113,7 @@ export default function Researcher(props) {
                         <p className='text-sm text-color-regular'>한글 키워드: <span className='font-medium text-color-main'>{e.keyword}</span></p>
                       </>}
                       desc={<>
-                        <NavLink to={`/view/projectout/${e.id}`} target='_blank' className='h-5 text-base font-bold text-color-footer'>더보기 ＋</NavLink>
+                        <NavLink to={`/view/projectout/${e.id}`} target='_blank' className='h-5 text-base font-bold text-color-footer' title={`새창이동, ${e.title} 상세 페이지`}>더보기 ＋</NavLink>
                       </>}
                     />;
                   })

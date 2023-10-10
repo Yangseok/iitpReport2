@@ -61,7 +61,7 @@ export default function ProjectOut(props) {
                     </div>
                   </>}
                   btns={<>
-                    <NavLink to={`/view/projectout/${e.id}`} target="_blank" className='h-5 px-1.5 rounded-sm text-xs font-medium text-color-white bg-color-light1'>자세히 보기↗</NavLink>
+                    <NavLink to={`/view/projectout/${e.id}`} target="_blank" className='h-5 px-1.5 rounded-sm text-xs font-medium text-color-white bg-color-light1' title={`새창이동, ${e.title} 상세 페이지`}>자세히 보기↗</NavLink>
                   </>}
                 />
               );

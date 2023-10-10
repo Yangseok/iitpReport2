@@ -26,12 +26,13 @@ export default function ListItem(props) {
           </div>
         </div>
         {(btns) 
-          && (percent)
-          ? <div className='flex flex-col items-end justify-between'>
-            <div className='flex flex-col gap-2.5'>{btns}</div>
-            <p className='text-base font-bold text-color-main'>{percent}%</p>
-          </div>
-          : <div className='flex flex-col gap-2.5'>{btns}</div>
+          ? (percent)
+            ? <div className='flex flex-col items-end justify-between'>
+              <div className='flex flex-col gap-2.5'>{btns}</div>
+              <p className='text-base font-bold text-color-main'>{percent}%</p>
+            </div>
+            : <div className='flex flex-col gap-2.5'>{btns}</div>
+          : null
         }
       </div>
     </li>

@@ -214,7 +214,7 @@ export default function Main() {
                   </NavLink>
                 </li>
                 <li>
-                  <NavLink to='/icttrend'>
+                  <NavLink to='/icttrend/keyword'>
                     <img src={imgService03} alt='ICT 트렌드로 이동' />
                     <h4>ICT 트렌드</h4>
                     <p>
