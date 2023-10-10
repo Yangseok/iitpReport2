@@ -507,8 +507,8 @@ export default function Main() {
           <>
             <div className='section mt-6'>
               <div className='container'>
-                <div className='flex items-center'>
-                  <div className='flex-1 px-11'>
+                <div className='flex items-center justify-between'>
+                  <div className='flex-1 px-11 max-w-5.25xl'>
                     <div className='rc_custom type02'>
                       <RcSlider
                         included={false}
@@ -520,7 +520,9 @@ export default function Main() {
                       />
                     </div>
                   </div>
-                  {(isIssueDownload) ? <Button className='gap-2 h-12 px-4 rounded text-sm font-bold btn_style04' name='보고서 다운로드' icon={icArrow} onClick={issueDownload} /> : null}
+                  {(isIssueDownload) 
+                    ? <Button className='gap-2 h-12 px-4 rounded text-sm font-bold btn_style04' name='보고서 다운로드' icon={icArrow} onClick={issueDownload} /> 
+                    : <div className='min-h-12'></div>}
                 </div>
               </div>
             </div>

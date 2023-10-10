@@ -26,8 +26,10 @@ module.exports = {
       },
       maxWidth: {
         '4.5xl': '60rem', 
+        '5.25xl': '70rem', 
       },
       minHeight: {
+        12: '3rem',
         177: '44.25rem',
       },
       margin: {
