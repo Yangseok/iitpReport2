@@ -73,20 +73,17 @@ export default function InputFile(props) {
           : ''
         }
       </div>
-      {(!fileName)
-        ? <div className='file_btn'>
-          <label htmlFor='uploadFile' className='hidden_text'>파일 등록</label>
-          <input 
-            type='file' 
-            name='uploadFile'
-            id='uploadFile' 
-            value={fileValue ?? ''}
-            onChange={onFileChange}
-            // accept={props.accept ?? ''}
-          />
-        </div>
-        : ''
-      }
+      <div className='file_btn'>
+        <label htmlFor='uploadFile' className='hidden_text'>파일 등록</label>
+        <input 
+          type='file' 
+          name='uploadFile'
+          id='uploadFile' 
+          value={(!fileName) ? fileValue ?? '' : ''}
+          onChange={onFileChange}
+          // accept={props.accept ?? ''}
+        />
+      </div>
     </div>
   );
 }
