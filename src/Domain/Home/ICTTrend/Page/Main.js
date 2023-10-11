@@ -432,6 +432,10 @@ export default function Main() {
       getIssueKeyword(issueRangeValue);
     }
   }, [page, issueRangeValue]);
+  
+  useEffect(() => {
+    setTechSearch([]);
+  }, [page, tabActive1, tabActive2]);
 
   useEffect(() => {
     if(paramSe2 === 'keyword') {

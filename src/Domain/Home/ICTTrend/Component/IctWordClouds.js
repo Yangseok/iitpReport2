@@ -26,17 +26,19 @@ export default function IctWordClouds(props) {
       // const maxLength = Math.max(...valueLengths);
       // const firstValue = Number((maxValue + '').slice(0,1));
       // const gap = Math.abs(maxLength - digitCount);
-      console.log('minValue, maxValue, averValue:', minValue, maxValue, averValue, smallValues.length);
+      console.log('minValue, maxValue, averValue:', minValue, maxValue, averValue, smallValues.length, size);
 
       setNewData(
         data.map((item) => {
-          let itemValue = ((item.doc_count - minValue) * 100 / (maxValue - minValue)  * Math.pow(10, digitCount - 2)).toFixed(2);
-          // console.log(itemValue);
+          let itemValue = Math.floor((item.doc_count - minValue) * 100 / (maxValue - minValue)  * Math.pow(10, digitCount - 2));
+          // console.log('itemValue', item.doc_count, Math.log10(item.doc_count));
 
-          if (smallValues.length > size * 0.85) {
+          if (smallValues.length >= size * 0.85) {
             itemValue = itemValue * 4;
-          } else if (smallValues.length > size * 0.7 && smallValues.length <= size * 0.8) {
+          } else if (smallValues.length >= size * 0.7 && smallValues.length < size * 0.85) {
             itemValue = itemValue * 2;
+          } else if (smallValues.length >= size * 0.5 && smallValues.length < size * 0.7) {
+            itemValue = itemValue * 1.2;
           }
 
           // let itemValue = 0;

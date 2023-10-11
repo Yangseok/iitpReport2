@@ -106,14 +106,14 @@ export default function Researcher(props) {
                           <p className='text-sm text-color-regular'>연구책임자: <span className='font-medium text-color-main'>{e.name}</span></p>
                         </div>
                         <div>
-                          <p className='text-sm text-color-regular'>부처명: <span className='font-medium text-color-main'>{e.department}</span></p>
-                          <p className='text-sm text-color-regular'>연구개발성과: <span className='font-medium text-color-main'>{e.performance}</span></p>
-                          <p className='text-sm text-color-regular'>국가과학기술표준분류: <span className='font-medium text-color-main'>{e.division}</span></p>
+                          {(e.department !== '') ? <p className='text-sm text-color-regular'>부처명: <span className='font-medium text-color-main'>{e.department}</span></p> : null}
+                          {(e.performance !== '') ? <p className='text-sm text-color-regular'>연구개발성과: <span className='font-medium text-color-main'>{e.performance}</span></p> : null}
+                          {(e.division !== '') ? <p className='text-sm text-color-regular'>국가과학기술표준분류: <span className='font-medium text-color-main'>{e.division}</span></p> : null}
                         </div>
-                        <p className='text-sm text-color-regular'>한글 키워드: <span className='font-medium text-color-main'>{e.keyword}</span></p>
+                        {(e.keyword !== '') ? <p className='text-sm text-color-regular'>한글 키워드: <span className='font-medium text-color-main'>{e.keyword}</span></p> : null}
                       </>}
                       desc={<>
-                        <NavLink to={`/view/projectout/${e.id}`} target='_blank' className='h-5 text-base font-bold text-color-footer' title={`새창이동, ${e.title} 상세 페이지`}>더보기 ＋</NavLink>
+                        <NavLink to={`/view/projectin/${e.id}`} target='_blank' className='h-5 text-base font-bold text-color-footer' title={`새창이동, ${e.title} 상세 페이지`}>더보기 ＋</NavLink>
                       </>}
                     />;
                   })

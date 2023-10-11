@@ -144,7 +144,6 @@ export default function DiscoveryResult() {
           name: parse(data?.data?.result?.dataInfo?.orgn?.[i]?.orgnName ?? ''),
           assign: data?.data?.result?.dataInfo?.orgn?.[i]?.projectCount ?? 0,
           patent: data?.data?.result?.dataInfo?.orgn?.[i]?.patentCount ?? 0,
-          link: '#',
           institue: data?.data?.result?.dataInfo?.orgn?.[i]?.researchInstitute ?? '',
           safety: [2,0,1][i%3],
           sales: data?.data?.result?.dataInfo?.orgn?.[i]?.topRankSales ?? '',
@@ -510,9 +509,16 @@ export default function DiscoveryResult() {
               <div className='list_style04'>
                 <ul>
                   {(project?.length > 0)
-                    ? project?.map((e) => {
+                    ? project?.map((e, i) => {
+                      let link = '#';
+                      if (i === 0 || i === 1) {
+                        link = `/view/projectout/${e.id}`;
+                      } else {
+                        link = `/view/projectin/${e.id}`;
+                      }
+
                       return <li key={e.id}>
-                        <a href={e.id} className='block'>
+                        <a href={link} className='block' target='_blank' rel="noreferrer" title={`새창이동, ${e.title} 상세 페이지`}>
                           <p className='text-base text-color-thick line1_text'>
                             <strong className='font-medium'>[{e.tab}] {e.title}</strong>
                           </p>
@@ -543,7 +549,7 @@ export default function DiscoveryResult() {
                   {(patent?.length > 0)
                     ? patent?.map((e) => {
                       return <li key={e.id}>
-                        <a href={e.id} className='block'>
+                        <a href={`/view/patent/${e.id}`} className='block' target='_blank' rel="noreferrer" title={`새창이동, ${e.title} 상세 페이지`}>
                           <p className='text-base text-color-thick line1_text'>
                             <strong className='font-medium'>{e.title}</strong>
                           </p>
@@ -575,7 +581,7 @@ export default function DiscoveryResult() {
                   {(paper?.length > 0)
                     ? paper?.map((e) => {
                       return <li key={e.id}>
-                        <a href={e.id} className='block'>
+                        <a href={`/view/paper/${e.id}`} className='block' target='_blank' rel="noreferrer" title={`새창이동, ${e.title} 상세 페이지`}>
                           <p className='text-base text-color-thick line1_text'>
                             <strong className='font-medium'>{e.title}</strong>
                           </p>
@@ -661,8 +667,11 @@ export default function DiscoveryResult() {
                 <ul>
                   {(researcher?.length > 0)
                     ? researcher?.map((e) => {
+                      let link = e.link ?? '#';
+                      if (link !== '#') link = 'https://' + link;
+
                       return <li key={e.id}>
-                        <a href={e.link} className='block' target='_blank' rel="noreferrer" title={`새창이동, ${e.name} 연구자 페이지`}>
+                        <a href={link} className='block' target='_blank' rel="noreferrer" title={`새창이동, ${e.name} 연구자 페이지`}>
                           <p className='text-base text-color-thick line1_text'>
                             <strong className='font-medium'>{e.name}</strong>
                           </p>
@@ -690,7 +699,7 @@ export default function DiscoveryResult() {
                   {(orgn?.length > 0)
                     ? orgn?.map((e) => {
                       return <li key={e.id}>
-                        <a href={e.link} className='block' target='_blank' rel="noreferrer" title={`새창이동, ${e.name} 기관 페이지`}>
+                        <a href={`/view/orgn/${e.id}`} className='block' target='_blank' rel="noreferrer" title={`새창이동, ${e.name} 기관 페이지`}>
                           <p className='text-base text-color-thick line1_text'>
                             <strong className='font-medium'>{e.name}</strong>
                           </p>

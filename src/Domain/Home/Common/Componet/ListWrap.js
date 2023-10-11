@@ -217,7 +217,8 @@ export default function ListWrap(props) {
         const subListPushData = {
           id: data?.data?.result?.indvResultInfo?.projectIn?.[i]?.projectNumber ?? i,
           progress: data?.data?.result?.indvResultInfo?.projectIn?.[i]?.progress ?? false,
-          title: data?.data?.result?.indvResultInfo?.projectIn?.[i]?.bigProjectName ?? '',
+          title: data?.data?.result?.indvResultInfo?.projectIn?.[i]?.projectTitle
+          ?? '',
           price: common.setPriceInput(data?.data?.result?.indvResultInfo?.projectIn?.[i]?.fund ?? '') + '원',
           period: period.replaceAll('-','.'), 
           agency: data?.data?.result?.indvResultInfo?.projectIn?.[i]?.researchAgencyName ?? '',
@@ -290,7 +291,7 @@ export default function ListWrap(props) {
         const subProjectListPushData = {
           id: data?.data?.result?.orgnResultInfo?.dataInfo?.projectOut?.[i]?.projectNumber ?? i,
           tag : ((periodArr?.[1]??'').replaceAll(' ','') === '9999-12-31') ? 1 : 2,
-          title: data?.data?.result?.orgnResultInfo?.dataInfo?.projectOut?.[i]?.bigProjectName ?? '',
+          title: data?.data?.result?.orgnResultInfo?.dataInfo?.projectOut?.[i]?.projectTitle ?? '',
           price: common.setPriceInput(data?.data?.result?.orgnResultInfo?.dataInfo?.projectOut?.[i]?.fund ?? '') + '원',
           period: period.replaceAll('-','.'), 
           agency: data?.data?.result?.orgnResultInfo?.dataInfo?.projectOut?.[i]?.researchAgencyName ?? '',

@@ -151,10 +151,10 @@ export default function Orgn(props) {
                             </div>
                             <div>
                               <p className='text-sm text-color-regular'>부처명: <span className='font-medium text-color-main'>{e.department}</span></p>
-                              <p className='text-sm text-color-regular'>연구개발성과: <span className='font-medium text-color-main'>{e.performance}</span></p>
+                              {(e.performance !== '') ? <p className='text-sm text-color-regular'>연구개발성과: <span className='font-medium text-color-main'>{e.performance}</span></p> : null}
                               <p className='text-sm text-color-regular'>국가과학기술표준분류: <span className='font-medium text-color-main'>{e.division}</span></p>
                             </div>
-                            <p className='text-sm text-color-regular'>한글 키워드: <span className='font-medium text-color-main'>{e.keyword}</span></p>
+                            {(e.keyword !== '') ? <p className='text-sm text-color-regular'>한글 키워드: <span className='font-medium text-color-main'>{e.keyword}</span></p> : null}
                           </>}
                           desc={<>
                             <NavLink to={`/view/projectout/${e.id}`} target='_blank' className='h-5 text-base font-bold text-color-footer'>더보기 ＋</NavLink>
@@ -184,8 +184,8 @@ export default function Orgn(props) {
                             </div>
                             <div>
                               <p className='text-sm text-color-regular'>출원(등록)일: <span className='font-medium text-color-main'>{e.date}</span></p>
-                              <p className='text-sm text-color-regular'>출원(등록)인: <span className='font-medium text-color-main'>{e.agency}</span></p>
-                              <p className='text-sm text-color-regular'>발명자: <span className='font-medium text-color-main'>{e.name}</span></p>
+                              {(e.agency !== '') ? <p className='text-sm text-color-regular'>출원(등록)인: <span className='font-medium text-color-main'>{e.agency}</span></p> : null}
+                              {(e.name !== '') ? <p className='text-sm text-color-regular'>발명자: <span className='font-medium text-color-main'>{e.name}</span></p> : null}
                             </div>
                           </>}
                           desc={<>
