@@ -126,7 +126,7 @@ export default function PageSearchArea(props) {
 
   useEffect(() => {
     if (paramSe3 === '') {
-      console.log('초기화됨', paramSe3);
+      // console.log('초기화됨', paramSe3);
       dispatch(setFileKeywordList([]));
       setSelectedFile(null);
       dispatch(setFileName(null));
