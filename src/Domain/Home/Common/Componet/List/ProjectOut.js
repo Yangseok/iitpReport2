@@ -55,9 +55,9 @@ export default function ProjectOut(props) {
                       <p className='text-sm text-color-regular'>부처명: <span className='font-medium text-color-main'>{e.department}</span></p>
                     </div>
                     <div>
-                      <p className='text-sm text-color-regular'>연구개발성과: <span className='font-medium text-color-main'>{e.performance}</span></p>
-                      <p className='text-sm text-color-regular'>국가과학기술표준분류: <span className='font-medium text-color-main'>{e.division}</span></p>
-                      <p className='text-sm text-color-regular'>한글 키워드: <span className='font-medium text-color-main'>{e.keyword}</span></p>
+                      {(e.performance !== '') ? <p className='text-sm text-color-regular'>연구개발성과: <span className='font-medium text-color-main'>{e.performance}</span></p> : null}
+                      {(e.division !== '') ? <p className='text-sm text-color-regular'>국가과학기술표준분류: <span className='font-medium text-color-main'>{e.division}</span></p> : null}
+                      {(e.keyword !== '') ? <p className='text-sm text-color-regular'>한글 키워드: <span className='font-medium text-color-main'>{e.keyword}</span></p> : null}
                     </div>
                   </>}
                   btns={<>

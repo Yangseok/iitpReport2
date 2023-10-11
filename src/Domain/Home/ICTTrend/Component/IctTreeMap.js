@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import Plot from 'react-plotly.js';
 import $ from 'jquery';
 
@@ -9,26 +9,42 @@ import $ from 'jquery';
 export default function IctTreeMap(props) {
   const { data, onClick } = props;
 
-  const [isClick, setIsClick] = useState(0);
-
   useEffect(() => {
     // console.log(data);
     const addTabIndex = () => {
       return setTimeout(() => {
-        console.log('addTabIndex');
-        $('.js-plotly-plot text').each(function(i){
+        // console.log('addTabIndex');
+        $('.js-plotly-plot svg .slice.cursor-pointer').each(function(){
           // console.log($(this).text(), $(this).data('unformatted'));
-          $(this).attr('tabindex', i + 2000);
+          $(this).attr('tabindex', 0);
+        });
+        
+        $(document).unbind('keydown').on('keydown', '.js-plotly-plot svg .slice.cursor-pointer', function (event) {
+          if(event.key === 'Enter') {
+            const label = $(this).text();
+            const idx = data?.[0].labels?.indexOf(label);
+            let currentPath = '/';
+            if (data?.[0].parents?.[idx] !== '') {
+              currentPath = `/${data?.[0].parents?.[idx]}/`;
+            }
+            // console.log('event:', this, text);
+            onClickHandle(undefined, { currentPath, label });
+          }
         });
       }, 300);
     };
-    addTabIndex();
-    return () => clearTimeout(addTabIndex);
-  }, [data, isClick]);
+    const addTabIndexSetTimeout = addTabIndex();
+    return () => clearTimeout(addTabIndexSetTimeout);
+  }, [data]);
   
-  const onClickHandle = (e) => {
-    onClick(e);
-    setIsClick(isClick + 1);
+  const onClickHandle = (e, pointsObj) => {
+    if (e !== undefined) {
+      onClick(e);
+    } else {
+      let pushData = {};
+      pushData.points = [pointsObj];
+      onClick(pushData);
+    }
   };
   
   const layout = {
