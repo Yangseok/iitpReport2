@@ -25,7 +25,7 @@ export default function ProjectWrap(props) {
   const { folded, setSelectedFile, setSelectedFileName, fileName, accept, handleFileUpload } = props;
 
   const [resetDisabled, setResetDisabled] = useState(true);
-  const [fold, setFold] = useState(folded ?? false);
+  const [fold, setFold] = useState(((folded !== '') ? folded : undefined) ?? false);
   const [popup, setPopup] = useState(false);
 
   const projectTitle = useSelector(getProjectTitle);
@@ -91,6 +91,13 @@ export default function ProjectWrap(props) {
   };
   
   useEffect(() => {
+    // console.log('projectTitleTmp:',JSON.stringify(projectTitleTmp));
+    // console.log('keywordKorTmp:',JSON.stringify(keywordKorTmp));
+    // console.log('keywordEngTmp:',JSON.stringify(keywordEngTmp));
+    // console.log('researchGoalTmp:',JSON.stringify(researchGoalTmp));
+    // console.log('researchDescriptionTmp:',JSON.stringify(researchDescriptionTmp));
+    // console.log('expectationEffectivenessTmp:',JSON.stringify(expectationEffectivenessTmp));
+    // console.log('fold:',JSON.stringify(fold));
     if (! (projectTitleTmp.trim() === '' && keywordKorTmp.trim() === '' && keywordEngTmp.trim() === ''
     && researchGoalTmp.trim() === '' && researchDescriptionTmp.trim() === '' && expectationEffectivenessTmp.trim() === '') && fold === false) {
       setResetDisabled(false);
