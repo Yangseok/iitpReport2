@@ -74,7 +74,7 @@ export default function ModalMsg(props) {
             </button>
           </TEModalHeader>
           {/* <!--Modal body--> */}
-          <TEModalBody>{msg ?? ''}</TEModalBody>
+          <TEModalBody className='whitespace-pre-line'>{msg ?? ''}</TEModalBody>
           <TEModalFooter>
             {btnTxt?.map((e,i) => {
               return <TERipple key={i} rippleColor="light">

@@ -11,6 +11,20 @@ export default function InputFile(props) {
   const onFileChange = (e) => {
     const size = e.target?.files?.[0]?.size ?? 0;
     const limitFileSize = 100 * 1024 * 1024;
+    const fileName = e.target?.files?.[0]?.name ?? '';
+    const fileNameArr = fileName.split('.');
+    var fileExt = fileNameArr[fileNameArr.length-1].toLowerCase();
+    if ((props.accept ?? '').toLowerCase().replaceAll('.', '').split(',').indexOf(fileExt) === -1 ) {
+      dispatch(setMsg({
+        title: '알림',
+        msg: '지원하지 않는 확장자입니다.\n지원하는 확장자: ['+(props.accept ?? '').replaceAll('.', '').replaceAll(',', ', ')+']',
+        btnCss: ['inline-block rounded bg-primary-100 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-primary-700 transition duration-150 ease-in-out hover:bg-primary-accent-100 focus:bg-primary-accent-100 focus:outline-none focus:ring-0 active:bg-primary-accent-200'],
+        btnTxt: ['확인'],
+        btnEvent: ['close']
+      }));
+      dispatch(setShow(true));
+      return false;
+    }
     if (size === 0 || limitFileSize < size) {
       dispatch(setMsg({
         title: '알림',
@@ -68,7 +82,7 @@ export default function InputFile(props) {
             id='uploadFile' 
             value={fileValue ?? ''}
             onChange={onFileChange}
-            accept={props.accept ?? ''}
+            // accept={props.accept ?? ''}
           />
         </div>
         : ''

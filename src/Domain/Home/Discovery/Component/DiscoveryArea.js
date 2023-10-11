@@ -168,7 +168,7 @@ export default function PageSearchArea(props) {
           ? <>
             <h2 className='hidden_text'>디스커버리 검색 - 파일 분석</h2>
             <div className='container-800 p-0'>
-              <InputFile setSelectedFile={setSelectedFile} setSelectedFileName={setSelectedFileName} fileName={fileName} accept='.xls,.xlsx,.ppt,.pptx,.doc,.docx,.hwp,.hwpx,.pdf,.txt' />
+              <InputFile setSelectedFile={setSelectedFile} setSelectedFileName={setSelectedFileName} fileName={fileName} accept='.hwp,.hwpx,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt,.pdf' />
               <Button name="파일 분석" icon={icSearch} onClick={handleFileUpload} className="gap-2 mt-6 mx-auto py-3 px-6.5 rounded-3xl text-base font-bold btn_style03" />
             </div>
           </>
