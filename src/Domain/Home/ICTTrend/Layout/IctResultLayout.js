@@ -66,13 +66,13 @@ export default function IctResultLayout({children, filterKey}) {
         // console.log('wordCloud', dataList);
       } else if (label === 'trend') {
         setTrendData(dataList);
-        console.log('trend', dataList);
+        // console.log('trend', dataList);
       } else if (label === 'year') {
         setYearData(dataList);
         // console.log('year', dataList);
       } else if (label === 'orgn') {
         setOrgnData(dataList);
-        console.log('orgn', dataList);
+        // console.log('orgn', dataList);
       } else if (label === 'class') {
         setClassData(dataList);
         // console.log('class', dataList);
@@ -81,7 +81,7 @@ export default function IctResultLayout({children, filterKey}) {
         // console.log('appl', dataList);
       } else if (label === 'category') {
         setCateData(dataList);
-        console.log('category', dataList);
+        // console.log('category', dataList);
       }
     }
   }, []);

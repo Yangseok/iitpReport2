@@ -78,6 +78,7 @@ export default function Main() {
     } else if (category === 'ict_report') {
       ictCategory = 'ict';
     }
+    // console.log(_, d, category, ictCategory);
 
     dispatch(setIctKeyword(d.text));
     dispatch(setStartYear(keywordRangeValue[0]));
@@ -98,7 +99,7 @@ export default function Main() {
     }
     
     const dataList = data?.data?.result;
-    console.log('getTechnology', category, dataList);
+    // console.log('getTechnology', category, dataList);
 
     if (dataList?.length > 0) {
       labels.push('');
@@ -133,7 +134,10 @@ export default function Main() {
     const paths = fullPath?.split('/');
     const [bigTech, middleTech, smallTech] = paths.slice(1);
     let newData = [];
+    // console.log(e);
     
+    // label : 최상위 부모 요소 클릭 시에는 노출되지 않음.
+    // currentPath : 현재 요소 클릭 시에는 노출되지 않음.
     if (data?.label) {
       if (data?.currentPath) {
         newData = [bigTech, middleTech, smallTech];
@@ -349,6 +353,7 @@ export default function Main() {
         },
       ];
       setTabActive1(1);
+      setTabActive2(0);
     }
     
     tab2 = [

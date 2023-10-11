@@ -17,14 +17,14 @@ export default function Patent(props) {
                 title={e.title}
                 contents={<>
                   <div>
-                    <p className='text-sm text-color-regular'>유발 과제: <span className='font-medium text-color-main'>{e.project}</span></p>
+                    {(e.project !== '') ? <p className='text-sm text-color-regular'>유발 과제: <span className='font-medium text-color-main'>{e.project}</span></p> : null}
                     <p className='text-sm text-color-regular'>출원등록구분: <span className='font-medium text-color-main'>{e.division}</span></p>
                     <p className='text-sm text-color-regular'>출원(등록)번호: <span className='font-medium text-color-main'>{e.num}</span></p>
                   </div>
                   <div>
                     <p className='text-sm text-color-regular'>출원(등록)일: <span className='font-medium text-color-main'>{e.date}</span></p>
-                    <p className='text-sm text-color-regular'>출원(등록)인: <span className='font-medium text-color-main'>{e.agency}</span></p>
-                    <p className='text-sm text-color-regular'>발명자: <span className='font-medium text-color-main'>{e.name}</span></p>
+                    {(e.agency !== '') ? <p className='text-sm text-color-regular'>출원(등록)인: <span className='font-medium text-color-main'>{e.agency}</span></p> : null}
+                    {(e.name !== '') ? <p className='text-sm text-color-regular'>발명자: <span className='font-medium text-color-main'>{e.name}</span></p> : null}
                   </div>
                 </>}
                 btns={<>
