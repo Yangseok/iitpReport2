@@ -18,6 +18,7 @@ import common from 'Utill';
 import moment from 'moment';
 
 export default function Main() {
+  const wordSize = 160;
   let rangeMarks = {};
   const rangeMin = 2014;
   const rangeMax = Number(moment().format('YYYY'));
@@ -54,7 +55,7 @@ export default function Main() {
     let data = [];
     try {
       dispatch(setLoading(true));
-      data = await ictTrendAPI.ictSearchWordCloud(category, 'wordCloud', undefined, 160, startYear, endYear);
+      data = await ictTrendAPI.ictSearchWordCloud(category, 'wordCloud', undefined, wordSize, startYear, endYear);
     } catch (e) {
       console.warn(e);
     } finally {
@@ -463,7 +464,7 @@ export default function Main() {
         <div className='section mt-4'>
           <div className='container'>
             <div className='wordcloud_cursor_wrap'>
-              <IctWordClouds data={wordCloudData} height={600} onWordClick={handleWordClick} />
+              <IctWordClouds data={wordCloudData} height={600} onWordClick={handleWordClick} size={wordSize} />
             </div>
             <div className='rc_custom max-w-4.5xl mt-4 mx-auto'>
               <RcSlider

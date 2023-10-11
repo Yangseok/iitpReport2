@@ -5,6 +5,9 @@ import common from 'Utill';
 export default function IctChart(props) {
   const { labels, datas } = props;
 
+  const dataMax = Math.max(...datas);
+  const yAxisMax = Math.ceil(dataMax * 1.1);
+
   const data = {
     labels,
     datasets: [
@@ -16,6 +19,7 @@ export default function IctChart(props) {
         borderColor: 'white',
         borderWidth: 2,
         yAxisID: 'y',
+        barThickness: 32,
       }
     ],
   };
@@ -60,6 +64,11 @@ export default function IctChart(props) {
         clamp: false
       },
     },
+    scales: {
+      y: {
+        max: yAxisMax,
+      }
+    }
   };
 
   return (

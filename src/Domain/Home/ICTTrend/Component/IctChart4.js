@@ -12,6 +12,7 @@ export default function IctChart4(props) {
         label: '건수',
         data: datas,
         backgroundColor: ['#3BB1D4','#498CD3','#5269D2','#735FD2','#9E5DD2','#CB5CD2','#E65AC4','#E7599F'],
+        barThickness: 24,
       },
     ],
   };

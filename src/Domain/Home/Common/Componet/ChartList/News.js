@@ -158,7 +158,7 @@ export default function Result (props) {
               <h3 className='text-base font-bold text-color-dark'>뉴스 언급 기업 건수</h3>
               {(orgnData?.length > 0)
                 ? <div className='mt-4'>
-                  <IctChart4 labels={orgnLabels} datas={newOrgnData} />
+                  <IctChart4 labels={orgnLabels} datas={newOrgnData} height={200} />
                 </div>
                 : <div className='pt-5 pb-64'>
                   <p className='text-base text-color-placeholder'>데이터가 없습니다.</p>
@@ -169,7 +169,7 @@ export default function Result (props) {
               <h3 className='text-base font-bold text-color-dark'>뉴스 카테고리별 건수</h3>
               {(cateData?.length > 0)
                 ? <div className='mt-4'>
-                  <IctChart4 labels={cateLabels} datas={newCateData} />
+                  <IctChart4 labels={cateLabels} datas={newCateData} height={200} />
                 </div>
                 : <div className='pt-5 pb-64'>
                   <p className='text-base text-color-placeholder'>데이터가 없습니다.</p>

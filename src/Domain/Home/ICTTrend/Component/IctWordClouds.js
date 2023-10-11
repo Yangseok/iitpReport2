@@ -7,7 +7,7 @@ import $ from 'jquery';
 // import data from 'Domain/Home/Sample/Data/WordCloud.json';
 
 export default function IctWordClouds(props) {
-  const { data, height, onWordClick, valueSize } = props;
+  const { data, height, onWordClick, size = 100 } = props;
 
   const [newData, setNewData] = useState([]);
 
@@ -17,39 +17,38 @@ export default function IctWordClouds(props) {
   const procWordCloudData = useCallback(() => {
     // console.log('data', data);
     if(data?.length > 0) {
-      const digitCount = valueSize ?? 4;
-      const valueLengths = data.map(o => o.doc_count.toString().length);
-      const maxLength = Math.max(...valueLengths);
+      const digitCount = 4;
       const maxValue = data.map(o => o.doc_count).reduce((max, curr) => max < curr ? curr : max);
-      // const minValue = data.map(o => o.doc_count).reduce((min, curr) => min > curr ? curr : min);
-      const firstValue = Number((maxValue + '').slice(0,1));
-      const gap = Math.abs(maxLength - digitCount);
-      // console.log('maxValue:', maxValue);
-      // console.log('firstValue:', firstValue);
-      // console.log('maxLength:', maxLength);
-      // console.log('digitCount:', digitCount);
-      // console.log('gap:', gap);
-
-      // if(maxLength > digitCount) {
-      //   console.log('크다.');
-      // } else if (maxLength < digitCount) {
-      //   console.log('작다.');
-      // } else {
-      //   console.log('작지도 크지도 않다.');
-      // }
+      const minValue = data.map(o => o.doc_count).reduce((min, curr) => min > curr ? curr : min);
+      const averValue = data.map(o => o.doc_count).reduce((sum, curr) => sum + curr) / data.length;
+      const smallValues = data.filter(o => o.doc_count < (maxValue / 10));
+      // const valueLengths = data.map(o => o.doc_count.toString().length);
+      // const maxLength = Math.max(...valueLengths);
+      // const firstValue = Number((maxValue + '').slice(0,1));
+      // const gap = Math.abs(maxLength - digitCount);
+      console.log('minValue, maxValue, averValue:', minValue, maxValue, averValue, smallValues.length);
 
       setNewData(
         data.map((item) => {
-          let itemValue = 0;
+          let itemValue = ((item.doc_count - minValue) * 100 / (maxValue - minValue)  * Math.pow(10, digitCount - 2)).toFixed(2);
+          // console.log(itemValue);
 
-          if(maxLength > digitCount) {
-            // itemValue = Math.floor(item.doc_count / Math.pow(10, gap));
-            itemValue = Math.floor(item.doc_count * Math.abs(digitCount - gap) / Math.pow(10, gap));
-          } else if (maxLength < digitCount) {
-            itemValue = Math.floor(Math.pow(Math.log10(item.doc_count) * 5, gap + 2) / firstValue) * gap * Math.abs(digitCount - gap + 2);
-          } else {
-            itemValue = Math.floor(Math.log10(item.doc_count * 3) * 300);
+          if (smallValues.length > size * 0.85) {
+            itemValue = itemValue * 4;
+          } else if (smallValues.length > size * 0.7 && smallValues.length <= size * 0.8) {
+            itemValue = itemValue * 2;
           }
+
+          // let itemValue = 0;
+
+          // if(maxLength > digitCount) {
+          //   // itemValue = Math.floor(item.doc_count / Math.pow(10, gap));
+          //   itemValue = Math.floor(item.doc_count * Math.abs(digitCount - gap) / Math.pow(10, gap));
+          // } else if (maxLength < digitCount) {
+          //   itemValue = Math.floor(Math.pow(Math.log10(item.doc_count) * 5, gap + 2) / firstValue) * gap * Math.abs(digitCount - gap + 2);
+          // } else {
+          //   itemValue = Math.floor(Math.log10(item.doc_count * 3) * 300);
+          // }
           // if (i < 10) console.log(item.doc_count, itemValue);
 
           return {
