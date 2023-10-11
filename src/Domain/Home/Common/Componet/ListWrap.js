@@ -196,8 +196,8 @@ export default function ListWrap(props) {
       let simiality = [];
       for (let i in data?.data?.result?.simialityIndvList ?? []) {
         // console.log(i, data?.data?.result?.simialityIndvList?.[i]);
-        let link = data?.data?.result?.simialityIndvList?.[i]?.link ?? '#';
-        if (link !== '#') link = 'https://' + link;
+        let link = data?.data?.result?.simialityIndvList?.[i]?.link ?? '';
+        if (link !== '' && link !== undefined) link = 'https://' + link;
         const simialityPushData = {
           id: i,
           name: data?.data?.result?.simialityIndvList?.[i]?.indvName ?? '',

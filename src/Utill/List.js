@@ -362,8 +362,8 @@ export const getProcData = (filterKey, dataList) => {
   case 'search/indv':
     for (let i in dataList ?? []) {
       // console.log(i, dataList?.[i]);
-      let link = dataList?.[i]?.link ?? '#';
-      if (link !== '#') link = 'https://' + link;
+      let link = dataList?.[i]?.link ?? '';
+      if (link !== '' && link !== undefined) link = 'https://' + link;
       const pushData = {
         id: dataList?.[i]?.id ?? i,
         name: common.maskingName(dataList?.[i]?.indvName ?? ''),
