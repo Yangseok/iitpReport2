@@ -25,7 +25,7 @@ export default function InputFile(props) {
       dispatch(setShow(true));
       return false;
     }
-    if (size === 0 || limitFileSize < size) {
+    if (size === 0 || limitFileSize <= size) {
       dispatch(setMsg({
         title: '알림',
         msg: '파일사이즈는 100MB를 넘을 수 없습니다.',
