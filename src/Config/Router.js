@@ -2,6 +2,9 @@ import React from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Main from 'Domain/Home/Main/Page/Main';
 import Login from 'Domain/Home/Login/Page/Main';
+import Policy from 'Domain/Home/Main/Page/Policy';
+import Agree from 'Domain/Home/Main/Page/Agree';
+import ServiceGuide from 'Domain/Home/Main/Page/ServiceGuide';
 import Discovery from 'Domain/Home/Discovery/Page/Main';
 import DiscoveryResultAll from 'Domain/Home/Discovery/Page/Result/All';
 import ListWrap from 'Domain/Home/Common/Componet/ListWrap';
@@ -86,6 +89,9 @@ export default function Router() {
       <Routes>
         <Route path='/' element={<Main />} />
         <Route path='/login' element={<Login />} />
+        <Route path='/policy' element={<Policy />} />
+        <Route path='/agree' element={<Agree />} />
+        <Route path='/service' element={<ServiceGuide />} />
         <Route path='/discovery' element={<Discovery />} />
         <Route path='/discovery/:se2' element={<Discovery />} />
         <Route path='/discovery/:se2/result' element={<Discovery />} />

@@ -396,33 +396,6 @@ hr {
   justify-content: flex-end;
   gap: 16px;
 }
-#footer .link_box ul {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  gap: 16px;
-}
-#footer .link_box ul li a {
-  font-size: 0;
-  line-height: 0;
-  text-indent: -9999px;
-  overflow: hidden;
-  display: block;
-  width: 40px;
-  height: 40px;
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: contain;
-}
-#footer .link_box ul li a img {
-  width: 100%;
-}
-#footer .link_box ul li a.icon01 {
-  background-image: url("Assets/Images/ic_twitter.png");
-}
-#footer .link_box ul li a.icon02 {
-  background-image: url("Assets/Images/ic_facebook.png");
-}
 
 /* SKIP MENU */
 #skip {
@@ -911,6 +884,65 @@ textarea::-moz-placeholder {
 }
 textarea::placeholder {
   color: #94A3B8;
+}
+
+.select_custom_wrap {
+  position: relative;
+  width: 180px;
+  height: 48px;
+}
+.select_custom_wrap .select_custom {
+  position: absolute;
+  width: 100%;
+  border: 1px solid #E2E8F0;
+  border-radius: 4px;
+  background: #FFFFFF;
+}
+.select_custom_wrap .select_custom > button {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0;
+  position: relative;
+  height: 48px;
+  padding: 0 48px 0 16px;
+  font-size: 14px;
+  color: #334155;
+}
+.select_custom_wrap .select_custom > button::before {
+  content: "";
+  position: absolute;
+  top: calc(50% - 12px);
+  right: 10px;
+  display: block;
+  width: 24px;
+  height: 24px;
+  background: url("Assets/Images/arr_select.png") no-repeat center/contain;
+  transition: all 0.3s;
+}
+.select_custom_wrap .select_custom ul {
+  display: none;
+}
+.select_custom_wrap .select_custom ul li a, .select_custom_wrap .select_custom ul li button {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0;
+  width: 100%;
+  height: 48px;
+  padding: 0 16px;
+  font-size: 14px;
+  color: #64748B;
+  font-weight: 500;
+}
+.select_custom_wrap .select_custom.on {
+  border-color: #0056B8;
+}
+.select_custom_wrap .select_custom.on > button::before {
+  transform: rotate(180deg);
+}
+.select_custom_wrap .select_custom.on ul {
+  display: block;
 }
 
 .file_custom {
@@ -1576,7 +1608,7 @@ textarea::placeholder {
   width: 100%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.5);
-  z-index: 5000;
+  z-index: 1000;
 }
 
 .popup_wrap {

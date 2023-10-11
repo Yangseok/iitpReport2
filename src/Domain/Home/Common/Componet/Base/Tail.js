@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import icArrow from 'Assets/Images/ic_arrow01.png';
-import Button from 'Domain/Home/Common/Componet/Button';
 
 export default function Tail() {
+  const [siteShow, setSiteShow] = useState(false);
+
   return (
     <footer id='footer'>
       <div className='container'>
@@ -20,13 +21,19 @@ export default function Tail() {
         </div>
         <div className='link_box'>
           <div className='top_link_box'>
-            <label htmlFor='linkto' className='hidden_text'>내부사이트 바로가기</label>
-            <select name='linkto' id='linkto' title='새창이동, 내부사이트 바로가기'>
-              <option value=''>내부사이트 바로가기</option>
-              <option value=''>정보통신기획평가원</option>
-              <option value=''>정보통신연차보고서</option>
-            </select>
-            <Button className="gap-2 h-12 px-4.5 rounded text-sm btn_style01" name="유관기관 바로가기" icon={icArrow} onClick={() => {}} />
+            <div className='select_custom_wrap'>
+              <div className={`select_custom${siteShow ? ' on' : ''}`}>
+                <button type='button' onClick={() => setSiteShow(state => !state)}>내부사이트 바로가기</button>
+                <ul>
+                  <li><a href='https://www.iitp.kr/main.it' target='_blank' rel='noreferrer' title='새창이동, 정보통신기획평가원 사이트'>정보통신기획평가원</a></li>
+                  <li><a href='https://annualreport.itfind.or.kr/ver2.rpt' target='_blank' rel='noreferrer' title='새창이동, 정보통신연차보고서 사이트'>정보통신연차보고서</a></li>
+                </ul>
+              </div>
+            </div>
+            <a href='https://www.itfind.or.kr/data/related/organ/list.do' className="gap-2 h-12 px-4.5 rounded text-sm btn_style01" target='_blank' rel='noreferrer' title='새창이동, 유관기관 바로가기 사이트'>
+              유관기관 바로가기
+              <img src={icArrow} alt='화살표' className='w-6' />
+            </a>
           </div>
         </div>
       </div>
