@@ -63,11 +63,11 @@ export default function CategoryWrap(props) {
         <ul>
           {(page === 'search')
             && <li className={`all${(tabActive1 === 0) ? ' on' : ''}`}>
-              <CategoryButton type={0} name={'전체'} num={common.setPriceInput(getNum(tabCount?.all ?? 0, (tabActive1 === 0)))} onClick={() => (isSearchDetail === true) ? void(0) : navigate('/search/result/all', {state: {prevPath: pathName}})} />
+              <CategoryButton type={0} name={'전체'} num={common.setPriceInput(getNum(tabCount?.all ?? 0, (tabActive1 === 0)))} onClick={() => (isSearchDetail === true) ? void(0) : navigate('/search/result/all', {state: {prevPath: pathName}})} isSearchDetail={isSearchDetail} />
             </li>}
           {tabButtons1?.map((e) => (
             <li key={e.id} className={(e.id === tabActive1) ? 'on' : ''}>
-              <CategoryButton type={e.id} name={e.name} num={common.setPriceInput(getNum(tabCount?.[e.id] ?? 0, (e.id === tabActive1)))} onClick={() => (isSearchDetail === true) ? void(0) : navigate(e.to, {state: {prevPath: pathName}})} />
+              <CategoryButton type={e.id} name={e.name} num={common.setPriceInput(getNum(tabCount?.[e.id] ?? 0, (e.id === tabActive1)))} onClick={() => (isSearchDetail === true) ? void(0) : navigate(e.to, {state: {prevPath: pathName}})} isSearchDetail={isSearchDetail} />
             </li>
           ))}
         </ul>

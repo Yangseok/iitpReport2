@@ -10,7 +10,7 @@ import imgCategory7 from 'Assets/Images/cate_img07.png';
 import imgCategory8 from 'Assets/Images/cate_img08.png';
 
 export default function CategoryButton(props) {
-  const { type, name, num, onClick } = props;
+  const { type, name, num, onClick, isSearchDetail } = props;
   const [img, setImg] = useState('');
 
   useEffect(() => {
@@ -36,7 +36,7 @@ export default function CategoryButton(props) {
   }, [props]);
   
   return (
-    <button type='button' onClick={onClick}>
+    <button type='button' disabled={isSearchDetail} onClick={onClick}>
       <img src={img} alt={name}/>
       <b>{name}</b>
       <span>{num}</span>
