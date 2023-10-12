@@ -57,12 +57,12 @@ export default function IctChart(props) {
     scales: {
       x: {
         beginAtZero: false,
-        ticks: {
-          // Include a dollar sign in the ticks
-          callback: function(value) {
-            return (value === 0) ? value : value + 'K';
-          }
-        }
+        // ticks: {
+        //   // Include a dollar sign in the ticks
+        //   callback: function(value) {
+        //     return (value === 0) ? value : value + 'K';
+        //   }
+        // }
       },
       y: {
         display: true,
