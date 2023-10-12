@@ -1,9 +1,8 @@
-import React, { useState } from 'react';
+import React from 'react';
 import $ from 'jquery';
 
 export default function ToggleListItem(props) {
-  const { id, title, contents, btn } = props;
-  const [newsActive, setNewsActive] = useState(null);
+  const { id, title, contents, btn, active, setActive } = props;
 
   // 클릭 이벤트
   const onItemSlide = (e, id) => {
@@ -12,7 +11,7 @@ export default function ToggleListItem(props) {
       const liEl = $(e.currentTarget).parents('li');
       const contsEl = liEl.find('.conts_box');
 
-      setNewsActive(id);
+      setActive(id);
       liEl.siblings().removeClass('on');
       liEl.siblings().find('.conts_box').css({ 'height': 0, 'paddingBottom': 0 });
 
@@ -25,13 +24,13 @@ export default function ToggleListItem(props) {
       } else {
         liEl.removeClass('on');
         contsEl.css({ 'height': 0, 'paddingBottom': 0 });
-        setNewsActive(null);
+        setActive(null);
       }
     }
   };
 
   return (
-    <li className={`${(id === newsActive) ? 'on' : ''} ${(btn) ? 'is_btn' : ''}`}>
+    <li className={`${(id === active) ? 'on' : ''} ${(btn) ? 'is_btn' : ''}`}>
       <div className='relative'>
         <div
           className='tit_box flex items-center justify-between gap-4'
