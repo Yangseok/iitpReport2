@@ -93,24 +93,24 @@ export default function DemandResult() {
 
   const initFilterClick = () => {
     initFilterData('BCLS');
-    setStartDate('');
-    setEndDate('');
-    setOrgnName('');
-    setApplicant('');
-    setSurveyTitle('');
+    setPage(1);
     setBigIct('');
     setMiddleIct('');
     setSmallIct('');
     setDetailIct('');
-    setPage(1);
+    setStartDateTmp('');
+    setEndDateTmp('');
+    setOrgnNameTmp('');
+    setApplicantTmp('');
+    setSurveyTitleTmp('');
   };
 
   const handleFilterApply = (e) => {
+    setPage(1);
     setBigIct(bigIctTmp);
     setMiddleIct(middleIctTmp);
     setSmallIct(smallIctTmp);
     setDetailIct(detailIctTmp);
-    setPage(1);
     setStartDate(startDateTmp);
     setEndDate(endDateTmp);
     setOrgnName(orgnNameTmp);
