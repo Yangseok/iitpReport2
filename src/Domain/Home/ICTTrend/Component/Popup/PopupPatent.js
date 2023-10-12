@@ -1,11 +1,12 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import PopupListLayout from 'Domain/Home/ICTTrend/Layout/PopupListLayout';
 import PopupViewLayout from 'Domain/Home/ICTTrend/Layout/PopupViewLayout';
 import Button from 'Domain/Home/Common/Componet/Button';
 import ListItem from 'Domain/Home/Common/Componet/ListItem';
 import ViewTable from 'Domain/Home/Common/Componet/ViewTable';
 import { setLoading } from 'Domain/Home/Common/Status/CommonSlice';
+import { getIctKeyword } from 'Domain/Home/ICTTrend/Status/IctTrendSlice';
 import * as ictTrendAPI from 'Domain/Home/ICTTrend/API/Call';
 import * as patentAPI from 'Domain/Home/Discovery/API/PatentCall';
 import * as discoveryAPI from 'Domain/Home/Discovery/API/Call';
@@ -91,6 +92,7 @@ export default function PopupPatentView(props) {
   ];
 
   const dispatch = useDispatch();
+  const ictKeyword = useSelector(getIctKeyword);
   const [showView, setShowView] = useState(false);
   const [patentIdx, setPatentIdx] = useState(0);
   const [listData, setListData] = useState([]);
@@ -148,11 +150,11 @@ export default function PopupPatentView(props) {
   const [viewProjectPage, setViewProjectPage] = useState(1);
 
   // 출원특허 목록
-  const getPopupList = useCallback(async (appl, page) => {
+  const getPopupList = useCallback(async (appl, keyword, page) => {
     let data = [];
     try {
       dispatch(setLoading(true));
-      data = await ictTrendAPI.ictPerformanceList('patent', appl, 10, page);
+      data = await ictTrendAPI.ictPerformanceList('patent', appl, keyword, 10, page);
 
       const dataList = data?.data?.result?.dataList ?? [];
       const total = data?.data?.result?.totalCount ?? 0;
@@ -263,7 +265,7 @@ export default function PopupPatentView(props) {
   }, []);
 
   useEffect(() => {
-    getPopupList(applData, page);
+    getPopupList(applData, ictKeyword, page);
   }, [applData, page]);
 
   useEffect(() => {

@@ -38,12 +38,14 @@ export default function IctTreeMap(props) {
   }, [data]);
   
   const onClickHandle = (e, pointsObj) => {
-    if (e !== undefined) {
-      onClick(e);
-    } else {
-      let pushData = {};
-      pushData.points = [pointsObj];
-      onClick(pushData);
+    if (typeof onClick === 'function') {
+      if (e !== undefined) {
+        onClick(e);
+      } else {
+        let pushData = {};
+        pushData.points = [pointsObj];
+        onClick(pushData);
+      }
     }
   };
   

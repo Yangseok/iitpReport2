@@ -420,7 +420,7 @@ export const getProcData = (filterKey, dataList) => {
     }
     break;
   }
-  console.log(filterKey, dataList, procData);
+  // console.log(filterKey, dataList, procData);
   return procData;
 };
 

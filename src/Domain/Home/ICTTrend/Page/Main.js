@@ -100,7 +100,7 @@ export default function Main() {
     }
     
     const dataList = data?.data?.result;
-    // console.log('getTechnology', category, dataList);
+    console.log('getTechnology', category, dataList);
 
     if (dataList?.length > 0) {
       labels.push('');
@@ -113,7 +113,9 @@ export default function Main() {
         if (dataList[i]?.middle?.length > 0) {
           for (let j = 0; j < dataList[i].middle.length; j++) {
             const middleData = dataList[i].middle[j].key ?? '';
-            labels.push(middleData);
+            const middleCnt = common.setPriceInput(dataList[i].middle[j].doc_count ?? '');
+            const middleRate = dataList[i].middle[j].rate ?? '';
+            labels.push(`${middleData}<br>${middleCnt}개<br>${middleRate}%`);
             parents.push(labelData);
           }
         }

@@ -8,6 +8,7 @@ import IctChart3 from 'Domain/Home/ICTTrend/Component/IctChart3';
 import { getEndYear, getSingleYear, getStartYear, setEndYear, setSingleYear, setStartYear } from 'Domain/Home/ICTTrend/Status/IctTrendSlice';
 import RcSlider from 'rc-slider';
 import moment from 'moment';
+import common from 'Utill';
 
 export default function Result (props) {
   const { wordCloudData, onWordClick, trendData, yearData, orgnData, classData } = props;
@@ -125,7 +126,9 @@ export default function Result (props) {
         if (classData[i]?.middle?.length > 0) {
           for (let j = 0; j < classData[i].middle.length; j++) {
             const middleData = classData[i].middle[j].key ?? '';
-            labels.push(middleData);
+            const middleCnt = common.setPriceInput(classData[i].middle[j].doc_count ?? '');
+            const middleRate = classData[i].middle[j].rate ?? '';
+            labels.push(`${middleData}<br>${middleCnt}개<br>${middleRate}%`);
             parents.push(labelData);
           }
         }

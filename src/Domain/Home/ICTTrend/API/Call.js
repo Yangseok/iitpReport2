@@ -74,19 +74,24 @@ export const ictList = async (category, keyword, size, page) => {
  * ICT 트렌드 특허, 논문 성과 리스트
  * @param {string} category patent, paper
  * @param {string} appl 선택한 출원인 명
+ * @param {string} keyword 키워드 명
  * @param {int} size default 10
  * @param {int} page default 1
  * @returns 
  */
 
-export const ictPerformanceList = async (category, appl, size, page) => {
+export const ictPerformanceList = async (category, appl, keyword, size, page) => {
   
   let params = {
     category: category,
-    appl:appl,
+    appl: appl,
     size: !size ? 10 : size,
     page: !page ? 1 : page
   };
+
+  if (keyword) {
+    params={...params, keyword};
+  }
   
   // console.log('params',params);
 

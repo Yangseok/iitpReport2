@@ -85,7 +85,9 @@ export default function Result (props) {
         if (classData[i]?.middle?.length > 0) {
           for (let j = 0; j < classData[i].middle.length; j++) {
             const middleData = classData[i].middle[j].key ?? '';
-            labels.push(middleData);
+            const middleCnt = common.setPriceInput(classData[i].middle[j].doc_count ?? '');
+            const middleRate = classData[i].middle[j].rate ?? '';
+            labels.push(`${middleData}<br>${middleCnt}개<br>${middleRate}%`);
             parents.push(labelData);
           }
         }

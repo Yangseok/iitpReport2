@@ -9,17 +9,19 @@ export default function NewsWordClouds(props) {
   const [newData, setNewData] = useState([]);
 
   useEffect(() => {
-    // const maxValue = wordCloudData.map(o => o.weight).reduce((max, curr) => max < curr ? curr : max);
-    const minValue = wordCloudData.map(o => o.weight).reduce((min, curr) => min > curr ? curr : min);
-    // console.log(wordCloudData);
-    setNewData(
-      wordCloudData.map((item) => {
-        return {
-          text: item.keyword,
-          value: Number(Math.floor(Math.floor((item.weight - minValue) * 500000) / 10))
-        };
-      })
-    );
+    if (wordCloudData?.length > 0) {
+      // const maxValue = wordCloudData.map(o => o.weight).reduce((max, curr) => max < curr ? curr : max);
+      const minValue = wordCloudData.map(o => o.weight).reduce((min, curr) => min > curr ? curr : min);
+      // console.log(wordCloudData);
+      setNewData(
+        wordCloudData.map((item) => {
+          return {
+            text: item.keyword,
+            value: Number(Math.floor(Math.floor((item.weight - minValue) * 500000) / 10))
+          };
+        })
+      );
+    }
   }, [wordCloudData]);
 
   const fontSizeMapper = useCallback((word) => Math.log2(word.value) * 5, []);

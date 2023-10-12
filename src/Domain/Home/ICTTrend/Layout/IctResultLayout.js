@@ -78,7 +78,7 @@ export default function IctResultLayout({children, filterKey}) {
         // console.log('class', dataList);
       } else if (label === 'appl') {
         setApplData(dataList);
-        // console.log('appl', dataList);
+        console.log('appl', dataList);
       } else if (label === 'category') {
         setCateData(dataList);
         // console.log('category', dataList);

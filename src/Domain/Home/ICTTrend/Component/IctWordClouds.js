@@ -20,6 +20,7 @@ export default function IctWordClouds(props) {
       const digitCount = 4;
       const maxValue = data.map(o => o.doc_count).reduce((max, curr) => max < curr ? curr : max);
       const minValue = data.map(o => o.doc_count).reduce((min, curr) => min > curr ? curr : min);
+      const minValuePercent = minValue / 3; // 0% 를 최소값보다 적게 잡음
       const averValue = data.map(o => o.doc_count).reduce((sum, curr) => sum + curr) / data.length;
       const smallValues = data.filter(o => o.doc_count < (maxValue / 10));
       // const valueLengths = data.map(o => o.doc_count.toString().length);
@@ -32,17 +33,23 @@ export default function IctWordClouds(props) {
         data.map((item) => {
           let itemValue = 0;
           if(minValue === maxValue) {
-            itemValue = 1500;
+            itemValue = 1200;
           } else {
-            itemValue = Math.floor((item.doc_count - minValue) * 100 / (maxValue - minValue)  * Math.pow(10, digitCount - 2));
-            console.log('itemValue', item.doc_count, Math.log10(item.doc_count));
+            itemValue = Math.floor((item.doc_count - minValuePercent) * 100 / (maxValue - minValuePercent)  * Math.pow(10, digitCount - 2));
+            // console.log('itemValue', itemValue, item.doc_count);
   
-            if (smallValues.length >= size * 0.85) {
-              itemValue = itemValue * 4;
-            } else if (smallValues.length >= size * 0.7 && smallValues.length < size * 0.85) {
-              itemValue = itemValue * 2;
-            } else if (smallValues.length >= size * 0.5 && smallValues.length < size * 0.7) {
-              itemValue = itemValue * 1.2;
+            if (size > 100) {
+              if (smallValues.length >= size * 0.85) {
+                itemValue = itemValue * 2;
+              }
+            } else {
+              if (smallValues.length >= size * 0.85) {
+                itemValue = itemValue * 4;
+              } else if (smallValues.length >= size * 0.7 && smallValues.length < size * 0.85) {
+                itemValue = itemValue * 2;
+              } else if (smallValues.length >= size * 0.6 && smallValues.length < size * 0.7) {
+                itemValue = itemValue * 1.2;
+              }
             }
           }
 
