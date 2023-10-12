@@ -38,6 +38,8 @@ export default function PageSearchArea(props) {
   const [selectedFile, setSelectedFile] = useState(null);
   const fileName = useSelector(getFileName);
 
+  const [tmpFileName, setTmpFileName] = useState(fileName);
+
   const handleSearch = (agency=false) => {
     if (tmpSearchKeyword.trim() === '') {
       dispatch(setMsg({
@@ -70,7 +72,8 @@ export default function PageSearchArea(props) {
 
   const setSelectedFileName = (name) => {
     // console.log('setSelectedFileName:', name);
-    dispatch(setFileName(name));
+    // dispatch(setFileName(name));
+    setTmpFileName(name);
   };
 
   const handleFileUpload = useCallback(async (e) => {
@@ -92,6 +95,8 @@ export default function PageSearchArea(props) {
     }
 
     if (selectedFile !== null) {
+      dispatch(setFileName(tmpFileName));
+
       if (menu === 2) {
         const data = await discoveryAPI.projectInfo('file','','','','','','', selectedFile);
         console.log(data?.data?.result);
@@ -106,7 +111,7 @@ export default function PageSearchArea(props) {
         navigate('/discovery/file/result/projectout');
       }
     }
-  }, [selectedFile, menu]);
+  }, [selectedFile, menu, tmpFileName]);
 
   useEffect(() => {
     setKeywordResult(false);
@@ -126,10 +131,11 @@ export default function PageSearchArea(props) {
 
   useEffect(() => {
     if (paramSe3 === '') {
-      // console.log('초기화됨', paramSe3);
+      console.log('초기화됨', paramSe3);
       dispatch(setFileKeywordList([]));
       setSelectedFile(null);
       dispatch(setFileName(null));
+      setTmpFileName(null);
 
       dispatch(setProjectTitle(''));
       dispatch(setKeywordKor(''));
@@ -168,7 +174,7 @@ export default function PageSearchArea(props) {
           ? <>
             <h2 className='hidden_text'>디스커버리 검색 - 파일 분석</h2>
             <div className='container-800 p-0'>
-              <InputFile setSelectedFile={setSelectedFile} setSelectedFileName={setSelectedFileName} fileName={fileName} accept='.hwp,.hwpx,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt,.pdf' />
+              <InputFile setSelectedFile={setSelectedFile} setSelectedFileName={setSelectedFileName} fileName={tmpFileName} accept='.hwp,.hwpx,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt,.pdf' />
               <Button name="파일 분석" icon={icSearch} onClick={handleFileUpload} className="gap-2 mt-6 mx-auto py-3 px-6.5 rounded-3xl text-base font-bold btn_style03" />
             </div>
           </>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import icFile from 'Assets/Images/ic_file.png';
 import { useDispatch } from 'react-redux';
 import { setMsg,setShow } from 'Domain/Home/Common/Status/MsgSlice';
@@ -57,6 +57,10 @@ export default function InputFile(props) {
     if (props.setSelectedFileName !== undefined) props.setSelectedFileName(null);
     if (props.setSelectedFile !== undefined) props.setSelectedFile(null);
   };
+
+  useEffect(() => {
+    setFileName(props.fileName);
+  }, [props.fileName]);
 
   return (
     <div className='file_custom'>
