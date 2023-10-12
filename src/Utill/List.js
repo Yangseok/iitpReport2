@@ -383,9 +383,9 @@ export const getProcData = (filterKey, dataList) => {
         assign: dataList?.[i]?.projectCount ?? 0,
         patent: dataList?.[i]?.patentCount ?? 0,
         institue: dataList?.[i]?.researchInstitute ?? '',
-        safety: [2,0,1][i%3],
+        safety: dataList?.[i]?.financialStability ?? 'NULL',
         sales: dataList?.[i]?.topRankSales ?? '',
-        followup: dataList?.[i]?.orgnVigilance ?? false,
+        followup: dataList?.[i]?.orgnVigilance ?? '미표시',
       };
       procData.push(pushData);
     }

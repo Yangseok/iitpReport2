@@ -45,24 +45,24 @@ export default function Orgn(props) {
                         </div>
                       </div>
                       <div className='orgn_img tooltip_wrap' tabIndex={0}>
-                        {(e.safety === 0) 
+                        {(e.safety === '정상') 
                           ? <>
-                            <img src={imgBuilding01} alt='기관 재무안전성: 위험 이미지' className='w-11' />
-                            <span className='tooltip_style01 min-w-23'>재무안전성: 위험</span>
+                            <img src={imgBuilding03} alt='기관 재무안전성: 안정 이미지' className='w-11' />
+                            <div className='tooltip_style03 min-w-23'>재무안전성: 정상</div>
                           </>
-                          : (e.safety === 1) 
+                          : (e.safety === '보통') 
                             ? <>
                               <img src={imgBuilding02} alt='기관 재무안전성: 보통 이미지' className='w-11' />
                               <div className='tooltip_style02 min-w-23'>재무안전성: 보통</div>
                             </>
-                            : (e.safety === 2) 
+                            : (e.safety === '위험') 
                               ? <>
-                                <img src={imgBuilding03} alt='기관 재무안전성: 안정 이미지' className='w-11' />
-                                <div className='tooltip_style03 min-w-23'>재무안전성: 안정</div>
+                                <img src={imgBuilding01} alt='기관 재무안전성: 위험 이미지' className='w-11' />
+                                <span className='tooltip_style01 min-w-23'>재무안전성: 위험</span>
                               </>
                               : <>
                                 <img src={imgBuilding00} alt='기관 재무안전성: 데이터 없음 이미지' className='w-11' />
-                                {/* <div className='tooltip_style00 min-w-31'>재무안전성: 데이터 없음</div> */}
+                                <div className='tooltip_style00 min-w-31'>재무안전성: 데이터 없음</div>
                               </>}
                       </div>
                       <div className='btns_box flex items-center gap-2'>
@@ -72,10 +72,10 @@ export default function Orgn(props) {
                             <div className='tooltip_style04 min-w-30'>해당 산업 매출상위(%)</div>
                           </div> 
                           : null}
-                        {(e.followup)
+                        {(e.followup !== '미표시')
                           ? <div className='tooltip_wrap' tabIndex={0}>
-                            <span className="tag_style04">사후</span>
-                            <div className='tooltip_style04 min-w-25'>사후관리 대상 기업</div>
+                            <span className="tag_style04">{e.followup}</span>
+                            <div className='tooltip_style04 min-w-25'>{(e.followup === '사후') ? '사후관리 대상 기업': 'NODATA'}</div>
                           </div>
                           : null}
                         <NavLink to={`/view/orgn/${e.id}`} target='_blank' className='h-5 px-1.5 rounded-sm text-xs font-medium text-color-white bg-color-light1 min-w-17' title={`새창이동, ${e.name} 기관 페이지`}>기관 보기↗</NavLink>
