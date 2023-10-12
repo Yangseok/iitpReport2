@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+// import { useNavigate } from 'react-router-dom';
 import 'Assets/Css/Login.css';
 import Layout from 'Domain/Home/Common/Layout/Main';
 import Tail from 'Domain/Home/Common/Componet/Base/Tail';
@@ -11,7 +11,7 @@ import { setMsg, setShow } from 'Domain/Home/Common/Status/MsgSlice';
 
 export default function Main() {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const [id, setId] = useState('');
   const [passwd, setPasswd] = useState('');
 
@@ -31,13 +31,15 @@ export default function Main() {
     const userName = data?.data?.username ?? '';
 
     if (accessToken !== '') {
-      dispatch(setAccount({
+      const account = {
         isLogin: true,
         id: id,
         accessToken: accessToken,
         userName: userName,
-      }));
-      navigate('/');
+      };
+      dispatch(setAccount(account));
+      localStorage.setItem('account', JSON.stringify(account));
+      document.location.href = '/';
     } else {
       dispatch(setMsg({
         title: '알림',
