@@ -160,7 +160,7 @@ export default function PopupPatentView(props) {
       const total = data?.data?.result?.totalCount ?? 0;
       setListData(dataList);
       setTotalCnt(total);
-      console.log(data?.data?.result);
+      // console.log(data?.data?.result);
     } catch (e) {
       console.warn(e);
     } finally {
