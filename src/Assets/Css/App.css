@@ -1356,6 +1356,39 @@ textarea::placeholder {
   opacity: 1;
 }
 
+.tooltip_style00 {
+  position: absolute;
+  padding: 0 6px;
+  border-width: 1px;
+  border-style: solid;
+  border-radius: 2px;
+  background-color: #FFFFFF;
+  font-size: 12px;
+  color: #0F172A;
+  font-weight: 500;
+  letter-spacing: -0.02rem;
+  text-align: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s;
+  bottom: calc(100% + 6px);
+  left: calc(100% - 20px);
+  border-color: #64748B;
+}
+.tooltip_style00::before {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 16px;
+  display: block;
+  width: 16px;
+  height: 12px;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  background-image: url("Assets/Images/tooltip_arr04.png");
+}
+
 .tooltip_style01 {
   position: absolute;
   padding: 0 6px;

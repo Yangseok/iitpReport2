@@ -1050,7 +1050,7 @@ textarea {
     opacity: 1;
   }
 }
-@for $i from 1 through 5 {
+@for $i from 0 through 5 {
   .tooltip_style0#{$i} {
     position: absolute;
     padding: 0 6px;
@@ -1067,11 +1067,13 @@ textarea {
     visibility: hidden;
     transition: all 0.3s;
 
-    @if ($i == 1 or $i == 2 or $i == 3) {
+    @if ($i == 0 or $i == 1 or $i == 2 or $i == 3) {
       bottom: calc(100% + 6px);
       left: calc(100% - 20px);
 
-      @if ($i == 1) {
+      @if ($i == 0) {
+        border-color: $color_footer;
+      } @else if ($i == 1) {
         border-color: $color_safety3;
       } @else if ($i == 2) {
         border-color: $color_safety2;

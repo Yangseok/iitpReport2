@@ -1,4 +1,5 @@
 import React from 'react';
+import imgBuilding00 from 'Assets/Images/building_img00.png';
 import imgBuilding01 from 'Assets/Images/building_img01.png';
 import imgBuilding02 from 'Assets/Images/building_img02.png';
 import imgBuilding03 from 'Assets/Images/building_img03.png';
@@ -54,10 +55,15 @@ export default function Orgn(props) {
                               <img src={imgBuilding02} alt='기관 재무안전성: 보통 이미지' className='w-11' />
                               <div className='tooltip_style02 min-w-23'>재무안전성: 보통</div>
                             </>
-                            : <>
-                              <img src={imgBuilding03} alt='기관 재무안전성: 안정 이미지' className='w-11' />
-                              <div className='tooltip_style03 min-w-23'>재무안전성: 안정</div>
-                            </>}
+                            : (e.safety === 2) 
+                              ? <>
+                                <img src={imgBuilding03} alt='기관 재무안전성: 안정 이미지' className='w-11' />
+                                <div className='tooltip_style03 min-w-23'>재무안전성: 안정</div>
+                              </>
+                              : <>
+                                <img src={imgBuilding00} alt='기관 재무안전성: 데이터 없음 이미지' className='w-11' />
+                                {/* <div className='tooltip_style00 min-w-31'>재무안전성: 데이터 없음</div> */}
+                              </>}
                       </div>
                       <div className='btns_box flex items-center gap-2'>
                         {(e.sales !== '') 
