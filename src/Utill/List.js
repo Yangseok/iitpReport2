@@ -6,6 +6,7 @@ import * as policyAPI from 'Domain/Home/Discovery/API/PolicyCall';
 import * as researcherAPI from 'Domain/Home/Discovery/API/ResearcherCall';
 import * as orgnAPI from 'Domain/Home/Discovery/API/OrgnCall';
 import * as newsAPI from 'Domain/Home/Discovery/API/NewsCall';
+import * as ictTrendAPI from 'Domain/Home/ICTTrend/API/Call';
 import parse from 'html-react-parser';
 import common from 'Utill';
 
@@ -188,24 +189,31 @@ export const callListAPI = async (filterKey, se1, se2, globalSearchDetailData, s
   let data = [];
   let similarity = [];
   let apiMethod;
+  let category = '';
   switch (filterKey) {
   case 'search/projectOut':
     apiMethod = projectAPI.projectOut;
+    category = 'rnd_project';
     break;
   case 'search/projectIn':
     apiMethod = projectAPI.projectIn;
+    category = 'iitp_project';
     break;
   case 'search/patent':
     apiMethod = patentAPI.patent;
+    category = 'patent';
     break;
   case 'search/paper':
     apiMethod = paperAPI.paper;
+    category = 'paper';
     break;
   case 'search/ict':
     apiMethod = ictAPI.ict;
+    category = 'ict_report';
     break;
   case 'search/policy':
     apiMethod = policyAPI.policy;
+    category = 'policy';
     break;
   case 'search/indv':
     apiMethod = researcherAPI.researcher;
@@ -215,6 +223,7 @@ export const callListAPI = async (filterKey, se1, se2, globalSearchDetailData, s
     break;
   case 'search/news':
     apiMethod = newsAPI.news;
+    category = 'news';
     break;
   }
 
@@ -238,7 +247,8 @@ export const callListAPI = async (filterKey, se1, se2, globalSearchDetailData, s
     similarity = selectKeyword;
     if ((similarity?.length) ?? 0 > 0) data = await apiMethod('discovery',size,page,'',similarity,sort,filterObj,searchParam,etcParam);
   } else if (se1 === 'icttrend') {
-    if (keyword !== '') data = await apiMethod('search',size,page,keyword);
+    console.log('icttrend');
+    if (keyword !== '') data = await ictTrendAPI.ictList(category,keyword,size,page);
   }
 
   return data;
