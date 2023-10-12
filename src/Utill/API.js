@@ -105,7 +105,7 @@ API.interceptors.response.use(
     const moveLoginMsgArr = ['토큰 정보가 유효하지 않습니다.', '사용자를 찾을 수 없습니다.', '잘못된 접근입니다. 로그인 후 이동하여 주십시오.'];
     const moveStatusCode = [401,404];
     if (moveStatusCode.indexOf(status) !== -1 && moveLoginMsgArr.indexOf(message) !== -1) {
-      // console.log('window.location:', window.location);
+      localStorage.removeItem('account');
       document.location.replace('/login?redirect=' + encodeURI(window.location.pathname + window.location.search));
     }
     return Promise.reject(error);

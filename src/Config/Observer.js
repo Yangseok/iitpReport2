@@ -6,7 +6,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { setFilterActive } from 'Domain/Home/Discovery/Status/DiscoverySlice';
 import { items } from 'Domain/Home/Discovery/Data/FilterItems';
 import { getAccount } from 'Domain/Home/Common/Status/CommonSlice';
-import { setMsg, setShow } from 'Domain/Home/Common/Status/MsgSlice';
+// import { setMsg, setShow } from 'Domain/Home/Common/Status/MsgSlice';
 
 export default function Observer() {
   const dispatch = useDispatch();
@@ -45,19 +45,19 @@ export default function Observer() {
         navigate('/error/404');
       }
     } else if (se1 === 'login') {
-      const isLogin = account?.isLogin;
-      if (isLogin === true) {
-        dispatch(setMsg({
-          title: '알림',
-          msg: '이미 로그인되어 있습니다.',
-          btnCss: ['inline-block rounded bg-primary-100 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-primary-700 transition duration-150 ease-in-out hover:bg-primary-accent-100 focus:bg-primary-accent-100 focus:outline-none focus:ring-0 active:bg-primary-accent-200'],
-          btnTxt: ['확인'],
-          btnEvent: ['close']
-        }));
-        dispatch(setShow(true));
-        navigate('/');
-        return null;
-      }
+      // const isLogin = account?.isLogin;
+      // if (isLogin === true) {
+      //   dispatch(setMsg({
+      //     title: '알림',
+      //     msg: '이미 로그인되어 있습니다.',
+      //     btnCss: ['inline-block rounded bg-primary-100 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-primary-700 transition duration-150 ease-in-out hover:bg-primary-accent-100 focus:bg-primary-accent-100 focus:outline-none focus:ring-0 active:bg-primary-accent-200'],
+      //     btnTxt: ['확인'],
+      //     btnEvent: ['close']
+      //   }));
+      //   dispatch(setShow(true));
+      //   navigate('/');
+      //   return null;
+      // }
     }
 
 
