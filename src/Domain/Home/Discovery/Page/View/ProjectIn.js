@@ -232,7 +232,9 @@ export default function View() {
       desc={viewData.projectNameEng ?? ''}
       tags={<>
         <div className="flex items-center gap-4">
-          <p className={((viewData.projectStatus ?? '') === '') ? '' : ((viewData.projectStatus ?? '') === '종료') ? 'tag_style02' : 'tag_style05'}>{viewData.projectStatus ?? ''}</p>
+          {((viewData.projectStatus ?? '') !== '')
+            ? <p className={((viewData.projectStatus ?? '') === '') ? '' : ((viewData.projectStatus ?? '') === '종료') ? 'tag_style02' : 'tag_style05'}>{viewData.projectStatus ?? ''}</p>
+            : null}
           <p className="text-sm text-color-regular">과제고유번호: <span className="font-medium text-color-main">{viewData.projectNumber ?? ''}</span></p>
         </div>
       </>}

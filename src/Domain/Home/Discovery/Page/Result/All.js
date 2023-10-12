@@ -79,7 +79,6 @@ export default function DiscoveryResult() {
           date: date.replace(/^(\d{4})(\d{2})(\d{2})$/, '$1.$2.$3'),
           agency: agency.join(', '),
           name: name.join(', '),
-          link: '#',
         });
       }
 
@@ -133,7 +132,7 @@ export default function DiscoveryResult() {
           name: common.maskingName(data?.data?.result?.dataInfo?.indv?.[i]?.indvName ?? ''),
           agency: data?.data?.result?.dataInfo?.indv?.[i]?.orgn ?? '',
           assign: data?.data?.result?.dataInfo?.indv?.[i]?.projectCount ?? 0,
-          link: data?.data?.result?.dataInfo?.indv?.[i]?.link ?? '#',
+          link: data?.data?.result?.dataInfo?.indv?.[i]?.link ?? '',
         });
       }
 
@@ -188,8 +187,6 @@ export default function DiscoveryResult() {
       setSearchButtonClick(false);
     })();
   }, [keyword, searchButtonClick]);
-
-  
 
   // const tempData1 = [
   //   {
@@ -510,7 +507,7 @@ export default function DiscoveryResult() {
                 <ul>
                   {(project?.length > 0)
                     ? project?.map((e, i) => {
-                      let link = '#';
+                      let link = '';
                       if (i === 0 || i === 1) {
                         link = `/view/projectout/${e.id}`;
                       } else {
@@ -612,15 +609,26 @@ export default function DiscoveryResult() {
                   {(ict?.length > 0)
                     ? ict?.map((e) => {
                       return <li key={e.id}>
-                        <a href={e.link} className='block' target='_blank' rel="noreferrer" title={`새창이동, ${e.title} 원문 페이지`}>
-                          <p className='text-base text-color-thick line1_text'>
-                            <strong className='font-medium'>{e.title}</strong>
-                          </p>
-                          <div className='text_style01 mt-0.5 line1_text'>
-                            <p className='text-sm text-color-regular line1_text'>발행기관: <span className='font-medium text-color-main'>{e.agency}</span></p>
-                            <p className='text-sm text-color-regular line1_text'>발행일: <span className='font-medium text-color-main'>{e.date}</span></p>
+                        {(e.link !== '')
+                          ? <a href={e.link} className='block' target='_blank' rel="noreferrer" title={`새창이동, ${e.title} 원문 페이지`}>
+                            <p className='text-base text-color-thick line1_text'>
+                              <strong className='font-medium'>{e.title}</strong>
+                            </p>
+                            <div className='text_style01 mt-0.5 line1_text'>
+                              <p className='text-sm text-color-regular line1_text'>발행기관: <span className='font-medium text-color-main'>{e.agency}</span></p>
+                              <p className='text-sm text-color-regular line1_text'>발행일: <span className='font-medium text-color-main'>{e.date}</span></p>
+                            </div>
+                          </a>
+                          : <div className='py-3.5 px-4'>
+                            <p className='text-base text-color-thick line1_text'>
+                              <strong className='font-medium'>{e.title}</strong>
+                            </p>
+                            <div className='text_style01 mt-0.5 line1_text'>
+                              <p className='text-sm text-color-regular line1_text'>발행기관: <span className='font-medium text-color-main'>{e.agency}</span></p>
+                              <p className='text-sm text-color-regular line1_text'>발행일: <span className='font-medium text-color-main'>{e.date}</span></p>
+                            </div>
                           </div>
-                        </a>
+                        }
                       </li>;
                     })
                     : <li className='nodata'>
@@ -640,15 +648,26 @@ export default function DiscoveryResult() {
                   {(policy?.length > 0)
                     ? policy?.map((e) => {
                       return <li key={e.id}>
-                        <a href={e.link} className='block' target='_blank' rel="noreferrer" title={`새창이동, ${e.title} 원문 페이지`}>
-                          <p className='text-base text-color-thick line1_text'>
-                            <strong className='font-medium'>{e.title}</strong>
-                          </p>
-                          <div className='text_style01 mt-0.5 line1_text'>
-                            <p className='text-sm text-color-regular line1_text'>출처: <span className='font-medium text-color-main'>{e.source}</span></p>
-                            <p className='text-sm text-color-regular line1_text'>작성일: <span className='font-medium text-color-main'>{e.date}</span></p>
+                        {(e.link !== '')
+                          ? <a href={e.link} className='block' target='_blank' rel="noreferrer" title={`새창이동, ${e.title} 원문 페이지`}>
+                            <p className='text-base text-color-thick line1_text'>
+                              <strong className='font-medium'>{e.title}</strong>
+                            </p>
+                            <div className='text_style01 mt-0.5 line1_text'>
+                              <p className='text-sm text-color-regular line1_text'>출처: <span className='font-medium text-color-main'>{e.source}</span></p>
+                              <p className='text-sm text-color-regular line1_text'>작성일: <span className='font-medium text-color-main'>{e.date}</span></p>
+                            </div>
+                          </a>
+                          : <div className='py-3.5 px-4'>
+                            <p className='text-base text-color-thick line1_text'>
+                              <strong className='font-medium'>{e.title}</strong>
+                            </p>
+                            <div className='text_style01 mt-0.5 line1_text'>
+                              <p className='text-sm text-color-regular line1_text'>출처: <span className='font-medium text-color-main'>{e.source}</span></p>
+                              <p className='text-sm text-color-regular line1_text'>작성일: <span className='font-medium text-color-main'>{e.date}</span></p>
+                            </div>
                           </div>
-                        </a>
+                        }
                       </li>;
                     })
                     : <li className='nodata'>
@@ -667,19 +686,30 @@ export default function DiscoveryResult() {
                 <ul>
                   {(researcher?.length > 0)
                     ? researcher?.map((e) => {
-                      let link = e.link ?? '#';
-                      if (link !== '#') link = 'https://' + link;
+                      let link = e.link ?? '';
+                      if (link !== '') link = 'https://' + link;
 
                       return <li key={e.id}>
-                        <a href={link} className='block' target='_blank' rel="noreferrer" title={`새창이동, ${e.name} 연구자 페이지`}>
-                          <p className='text-base text-color-thick line1_text'>
-                            <strong className='font-medium'>{e.name}</strong>
-                          </p>
-                          <div className='text_style01 mt-0.5 line1_text'>
-                            <p className='text-sm text-color-regular line1_text'>소속기관: <span className='font-medium text-color-main'>{e.agency}</span></p>
-                            <p className='text-sm text-color-regular line1_text'>과제: <span className='font-medium text-color-main'>{e.assign}건</span></p>
+                        {(link !== '')
+                          ? <a href={link} className='block' target='_blank' rel="noreferrer" title={`새창이동, ${e.name} 연구자 페이지`}>
+                            <p className='text-base text-color-thick line1_text'>
+                              <strong className='font-medium'>{e.name}</strong>
+                            </p>
+                            <div className='text_style01 mt-0.5 line1_text'>
+                              <p className='text-sm text-color-regular line1_text'>소속기관: <span className='font-medium text-color-main'>{e.agency}</span></p>
+                              <p className='text-sm text-color-regular line1_text'>과제: <span className='font-medium text-color-main'>{e.assign}건</span></p>
+                            </div>
+                          </a>
+                          : <div className='py-3.5 px-4'>
+                            <p className='text-base text-color-thick line1_text'>
+                              <strong className='font-medium'>{e.name}</strong>
+                            </p>
+                            <div className='text_style01 mt-0.5 line1_text'>
+                              <p className='text-sm text-color-regular line1_text'>소속기관: <span className='font-medium text-color-main'>{e.agency}</span></p>
+                              <p className='text-sm text-color-regular line1_text'>과제: <span className='font-medium text-color-main'>{e.assign}건</span></p>
+                            </div>
                           </div>
-                        </a>
+                        }
                       </li>;
                     })
                     : <li className='nodata'>
@@ -727,15 +757,26 @@ export default function DiscoveryResult() {
                   {(news?.length > 0)
                     ? news?.map((e) => {
                       return <li key={e.id}>
-                        <a href={e.link} className='block' target='_blank' rel="noreferrer" title={`새창이동, ${e.title} 원문 페이지`}>
-                          <p className='text-base text-color-thick line1_text'>
-                            <strong className='font-medium'>{e.title}</strong>
-                          </p>
-                          <div className='text_style01 mt-0.5 line1_text'>
-                            <p className='text-sm text-color-regular line1_text'>출처: <span className='font-medium text-color-main'>{e.source}</span></p>
-                            <p className='text-sm text-color-regular line1_text'>출처일: <span className='font-medium text-color-main'>{e.date}</span></p>
+                        {(e.link !== '')
+                          ? <a href={e.link} className='block' target='_blank' rel="noreferrer" title={`새창이동, ${e.title} 원문 페이지`}>
+                            <p className='text-base text-color-thick line1_text'>
+                              <strong className='font-medium'>{e.title}</strong>
+                            </p>
+                            <div className='text_style01 mt-0.5 line1_text'>
+                              <p className='text-sm text-color-regular line1_text'>출처: <span className='font-medium text-color-main'>{e.source}</span></p>
+                              <p className='text-sm text-color-regular line1_text'>출처일: <span className='font-medium text-color-main'>{e.date}</span></p>
+                            </div>
+                          </a>
+                          : <div className='py-3.5 px-4'>
+                            <p className='text-base text-color-thick line1_text'>
+                              <strong className='font-medium'>{e.title}</strong>
+                            </p>
+                            <div className='text_style01 mt-0.5 line1_text'>
+                              <p className='text-sm text-color-regular line1_text'>출처: <span className='font-medium text-color-main'>{e.source}</span></p>
+                              <p className='text-sm text-color-regular line1_text'>출처일: <span className='font-medium text-color-main'>{e.date}</span></p>
+                            </div>
                           </div>
-                        </a>
+                        }
                       </li>;
                     })
                     : <li className='nodata'>

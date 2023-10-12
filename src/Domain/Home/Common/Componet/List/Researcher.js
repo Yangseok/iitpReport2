@@ -76,12 +76,20 @@ export default function Researcher(props) {
                 }
 
                 return <li key={e.id} className='w-1/6 px-1'>
-                  <a href={(e.link !== '' && e.link !== undefined) ? e.link : 'javascript:void(0);' } className='flex-col' target={(e.link !== '' && e.link !== undefined) ? '_blank' : '_self'} rel="noreferrer" title={`새창이동, ${e.name} 연구자 페이지`}>
-                    <div className={`img_wrap rounded-full w-15 h-15 mx-auto ${(i === 0) ? 'bg-color-light2' : 'bg-color-white'}`}>
-                      <img src={imgSrc} alt='연구자 프로필 이미지' className='w-11' />
+                  {(e.link !== '' && e.link !== undefined)
+                    ? <a href={e.link} className='flex-col' target='_blank' rel="noreferrer" title={`새창이동, ${e.name} 연구자 페이지`}>
+                      <div className={`img_wrap rounded-full w-15 h-15 mx-auto ${(i === 0) ? 'bg-color-light2' : 'bg-color-white'}`}>
+                        <img src={imgSrc} alt='연구자 프로필 이미지' className='w-11' />
+                      </div>
+                      <p className={`mt-1 text-sm text-center ${(i === 0) ? 'text-color-main' : 'text-color-dark'}`}>{e.name}</p>
+                    </a>
+                    : <div className='flex-col'>
+                      <div className={`img_wrap rounded-full w-15 h-15 mx-auto ${(i === 0) ? 'bg-color-light2' : 'bg-color-white'}`}>
+                        <img src={imgSrc} alt='연구자 프로필 이미지' className='w-11' />
+                      </div>
+                      <p className={`mt-1 text-sm text-center ${(i === 0) ? 'text-color-main' : 'text-color-dark'}`}>{e.name}</p>
                     </div>
-                    <p className={`mt-1 text-sm text-center ${(i === 0) ? 'text-color-main' : 'text-color-dark'}`}>{e.name}</p>
-                  </a>
+                  }
                 </li>;
               })}
             </ul>

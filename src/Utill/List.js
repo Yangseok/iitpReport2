@@ -252,12 +252,13 @@ export const getProcData = (filterKey, dataList) => {
     for (let i in dataList ?? []) {
       // console.log(i, dataList?.[i]);
       const period = dataList?.[i]?.period ?? '';
-      const periodArr = period.split('~');
+      // const periodArr = period.split('~');
       const division = dataList?.[i]?.technicalClassification ?? [];
       const keywordt = dataList?.[i]?.keywords ?? [];
       const pushData = {
         id: dataList?.[i]?.projectNumber ?? i,
-        tag : ((periodArr?.[1]??'').replaceAll(' ','') === '9999-12-31') ? 1 : 2,
+        // tag : ((periodArr?.[1]??'').replaceAll(' ','') === '9999-12-31') ? 1 : 2,
+        tag : ((dataList?.[i]?.projectStatus ?? '') === '') ? '' : ((dataList?.[i]?.projectStatus ?? '') === '종료') ? 2 : 1,
         title: parse(dataList?.[i]?.title ?? ''),
         price: common.setPriceInput(dataList?.[i]?.fund ?? '') + '원',
         period: period.replaceAll('-','.'), 
@@ -275,11 +276,12 @@ export const getProcData = (filterKey, dataList) => {
     for (let i in dataList ?? []) {
       // console.log(i, dataList?.[i]);
       const period = dataList?.[i]?.period ?? '';
-      const periodArr = period.split('~');
+      // const periodArr = period.split('~');
       const keywordt = dataList?.[i]?.keywords ?? [];
       const pushData = {
         id: dataList?.[i]?.projectNumber ?? i,
-        tag : ((periodArr?.[1]??'').replaceAll(' ','') === '9999-12-31') ? 1 : 2,
+        // tag : ((periodArr?.[1]??'').replaceAll(' ','') === '9999-12-31') ? 1 : 2,
+        tag : ((dataList?.[i]?.projectStatus ?? '') === '') ? '' : ((dataList?.[i]?.projectStatus ?? '') === '종료') ? 2 : 1,
         title: parse(dataList?.[i]?.title ?? ''),
         price: common.setPriceInput(dataList?.[i]?.fund ?? '') + '원',
         period: period.replaceAll('-','.'), 
@@ -408,6 +410,7 @@ export const getProcData = (filterKey, dataList) => {
     }
     break;
   }
+  console.log(filterKey, dataList, procData);
   return procData;
 };
 

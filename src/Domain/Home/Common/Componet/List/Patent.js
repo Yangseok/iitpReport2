@@ -18,7 +18,7 @@ export default function Patent(props) {
                 contents={<>
                   <div>
                     {(e.project !== '') ? <p className='text-sm text-color-regular'>유발 과제: <span className='font-medium text-color-main'>{e.project}</span></p> : null}
-                    <p className='text-sm text-color-regular'>출원등록구분: <span className='font-medium text-color-main'>{e.division}</span></p>
+                    {(e.division !== '') ? <p className='text-sm text-color-regular'>출원등록구분: <span className='font-medium text-color-main'>{e.division}</span></p> : null}
                     <p className='text-sm text-color-regular'>출원(등록)번호: <span className='font-medium text-color-main'>{e.num}</span></p>
                   </div>
                   <div>
