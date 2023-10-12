@@ -69,13 +69,14 @@ const API = axios.create({
   },
 });
 
-const account = JSON.parse(localStorage.getItem('account'));
-// console.log('account:', account);
 API.interceptors.request.use(
   config => {
     console.log('API call url ::', config.baseURL + config.url);
     console.log('data', JSON.stringify(config.data));
     console.log('params', JSON.stringify(config.params));
+
+    const account = JSON.parse(localStorage.getItem('account'));
+    // console.log('account:', account);
 
     if ((account?.accessToken ?? '') !== '') {
       config.headers.authorization = account?.accessToken;

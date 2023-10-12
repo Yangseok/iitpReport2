@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-// import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import 'Assets/Css/Login.css';
 import Layout from 'Domain/Home/Common/Layout/Main';
 import Tail from 'Domain/Home/Common/Componet/Base/Tail';
@@ -8,10 +8,11 @@ import * as commonAPI from 'Domain/Home/Common/API/Call';
 import { useDispatch } from 'react-redux';
 import { setLoading, setAccount } from 'Domain/Home/Common/Status/CommonSlice';
 import { setMsg, setShow } from 'Domain/Home/Common/Status/MsgSlice';
+import common from 'Utill';
 
 export default function Main() {
   const dispatch = useDispatch();
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
   const [id, setId] = useState('');
   const [passwd, setPasswd] = useState('');
 
@@ -37,9 +38,14 @@ export default function Main() {
         accessToken: accessToken,
         userName: userName,
       };
+      const redirect = common.getUrlParams()?.redirect ?? '';
       dispatch(setAccount(account));
       localStorage.setItem('account', JSON.stringify(account));
-      document.location.href = '/';
+      if (['/',''].indexOf(redirect) === -1) {
+        document.location.replace(decodeURI(redirect));
+      } else {
+        navigate('/');
+      }
     } else {
       dispatch(setMsg({
         title: '알림',

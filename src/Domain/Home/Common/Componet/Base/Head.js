@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from 'react';
-// import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { NavLink } from 'react-router-dom';
 import SiteMap from './SiteMap';
 import common from 'Utill';
@@ -8,7 +8,7 @@ import { getAccount, setAccount } from 'Domain/Home/Common/Status/CommonSlice';
 
 export default function Head(props) {
   const dispatch = useDispatch();
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
   const account = useSelector(getAccount);
 
   const { className } = props;
@@ -56,8 +56,9 @@ export default function Head(props) {
       userName: '',
     };
     dispatch(setAccount(setAccountData));
-    localStorage.setItem('account', JSON.stringify(setAccountData));
-    document.location.href = '/login';
+    localStorage.removeItem('account');
+    // document.location.href = '/login';
+    navigate('/login');
     e.preventDefault();
   }, []);
 

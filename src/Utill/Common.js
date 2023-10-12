@@ -248,3 +248,11 @@ export const getLabels = (length, gap) => {
 
   return arr;
 };
+export const getParams = (text) => {
+  let params = {};
+  text.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(str, key, value) { params[key] = value; });
+  return params;
+};
+export const getUrlParams = () => {
+  return getParams(window.location.search);
+};
