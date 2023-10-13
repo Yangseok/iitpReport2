@@ -35,7 +35,7 @@ export default function Researcher(props) {
                       <div className='flex-1'>
                         <p className='text-base font-bold text-color-main'>{e.name}</p>
                         <div className='text_style01'>
-                          <p className='text-sm text-color-regular'>소속기관: <span className='font-medium text-color-main'>{e.agency}</span></p>
+                          {(e.agency !== '') ? <p className='text-sm text-color-regular'>소속기관: <span className='font-medium text-color-main'>{e.agency}</span></p> : null}
                           <p className='text-sm text-color-regular'>과제: <span className='font-medium text-color-main'>{e.assign}건</span></p>
                         </div>
                       </div>

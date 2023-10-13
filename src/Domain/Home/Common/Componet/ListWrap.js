@@ -188,6 +188,8 @@ export default function ListWrap(props) {
           } else if (se2 == 'project') {
             data = await researcherAPI.researcherDetail(researcherActive.id, subSize, subPage);
           }
+        } else if (se1 == 'demandbanking') {
+          data = await researcherAPI.researcherDetail(researcherActive.id, subSize, subPage);
         }
       } catch (e) {
         console.warn(e);
@@ -264,6 +266,8 @@ export default function ListWrap(props) {
           } else if (se2 == 'project') {
             data = await orgnAPI.orgnDetail(orgnActive.id, subSize, subPage);
           }
+        } else if (se1 == 'demandbanking') {
+          data = await orgnAPI.orgnDetail(orgnActive.id, subSize, subPage);
         }
       } catch (e) {
         console.warn(e);
