@@ -251,7 +251,7 @@ export const callListAPI = async (filterKey, se1, se2, globalSearchDetailData, s
     if (keyword !== '') data = await ictTrendAPI.ictList(category,keyword,size,page);
   }
 
-  console.log('!!!!!!!!!!!!!!!!!!!!!!!',filterKey, apiMethod, data);
+  // console.log('!!!!!!!!!!!!!!!!!!!!!!!',filterKey, apiMethod, data);
   return data;
 };
 
