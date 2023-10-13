@@ -136,6 +136,9 @@ export default function Main() {
     const fullPath = data?.currentPath + data?.label;
     const paths = fullPath?.split('/');
     const [bigTech, middleTech, smallTech] = paths.slice(1);
+    const newBigTech = (bigTech) ? bigTech.split('<br>')[0] : '';
+    const newMiddleTech = (middleTech) ? middleTech.split('<br>')[0] : '';
+    const newSmallTech = (smallTech) ? smallTech.split('<br>')[0] : '';
     let newData = [];
     // console.log(e);
     
@@ -143,7 +146,7 @@ export default function Main() {
     // currentPath : 현재 요소 클릭 시에는 노출되지 않음.
     if (data?.label) {
       if (data?.currentPath) {
-        newData = [bigTech, middleTech, smallTech];
+        newData = [newBigTech, newMiddleTech, newSmallTech];
       } else {
         newData = techSearch;
 

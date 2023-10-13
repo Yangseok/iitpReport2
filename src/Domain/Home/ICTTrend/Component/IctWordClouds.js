@@ -23,46 +23,46 @@ export default function IctWordClouds(props) {
       const minValuePercent = minValue / 3; // 0% 를 최소값보다 적게 잡음
       const averValue = data.map(o => o.doc_count).reduce((sum, curr) => sum + curr) / data.length;
       const smallValues = data.filter(o => o.doc_count < (maxValue / 10));
-      // const valueLengths = data.map(o => o.doc_count.toString().length);
-      // const maxLength = Math.max(...valueLengths);
-      // const firstValue = Number((maxValue + '').slice(0,1));
-      // const gap = Math.abs(maxLength - digitCount);
-      console.log('minValue, maxValue, averValue:', minValue, maxValue, averValue, smallValues.length, size);
+      const valueLengths = data.map(o => o.doc_count.toString().length);
+      const maxLength = Math.max(...valueLengths);
+      const firstValue = Number((maxValue + '').slice(0,1));
+      const gap = Math.abs(maxLength - digitCount);
+      console.log('minValue, maxValue, averValue:', minValuePercent, minValue, maxValue, averValue, smallValues.length, size);
 
       setNewData(
         data.map((item) => {
-          let itemValue = 0;
-          if(minValue === maxValue) {
-            itemValue = 1200;
-          } else {
-            itemValue = Math.floor((item.doc_count - minValuePercent) * 100 / (maxValue - minValuePercent)  * Math.pow(10, digitCount - 2));
-            // console.log('itemValue', itemValue, item.doc_count);
-  
-            if (size > 100) {
-              if (smallValues.length >= size * 0.85) {
-                itemValue = itemValue * 2;
-              }
-            } else {
-              if (smallValues.length >= size * 0.85) {
-                itemValue = itemValue * 4;
-              } else if (smallValues.length >= size * 0.7 && smallValues.length < size * 0.85) {
-                itemValue = itemValue * 2;
-              } else if (smallValues.length >= size * 0.6 && smallValues.length < size * 0.7) {
-                itemValue = itemValue * 1.2;
-              }
-            }
-          }
-
           // let itemValue = 0;
-
-          // if(maxLength > digitCount) {
-          //   // itemValue = Math.floor(item.doc_count / Math.pow(10, gap));
-          //   itemValue = Math.floor(item.doc_count * Math.abs(digitCount - gap) / Math.pow(10, gap));
-          // } else if (maxLength < digitCount) {
-          //   itemValue = Math.floor(Math.pow(Math.log10(item.doc_count) * 5, gap + 2) / firstValue) * gap * Math.abs(digitCount - gap + 2);
+          // if(minValue === maxValue) {
+          //   itemValue = 1200;
           // } else {
-          //   itemValue = Math.floor(Math.log10(item.doc_count * 3) * 300);
+          //   itemValue = Math.floor((item.doc_count - minValuePercent) * 100 / (maxValue - minValuePercent)  * Math.pow(10, digitCount - 2));
+          //   // console.log('itemValue', itemValue, item.doc_count);
+  
+          //   if (size > 100) {
+          //     if (smallValues.length >= size * 0.85) {
+          //       itemValue = itemValue * 2;
+          //     }
+          //   } else {
+          //     if (smallValues.length >= size * 0.85) {
+          //       itemValue = itemValue * 4;
+          //     } else if (smallValues.length >= size * 0.7 && smallValues.length < size * 0.85) {
+          //       itemValue = itemValue * 2;
+          //     } else if (smallValues.length >= size * 0.6 && smallValues.length < size * 0.7) {
+          //       itemValue = itemValue * 1.2;
+          //     }
+          //   }
           // }
+
+          let itemValue = 0;
+
+          if(maxLength > digitCount) {
+            // itemValue = Math.floor(item.doc_count / Math.pow(10, gap));
+            itemValue = Math.floor(item.doc_count * Math.abs(digitCount - gap) / Math.pow(10, gap));
+          } else if (maxLength < digitCount) {
+            itemValue = Math.floor(Math.pow(Math.log10(item.doc_count) * 5, gap + 2) / firstValue) * gap * Math.abs(digitCount - gap + 2);
+          } else {
+            itemValue = Math.floor(Math.log10(item.doc_count * 3) * 300);
+          }
           // if (i < 10) console.log(item.doc_count, itemValue);
 
           return {
