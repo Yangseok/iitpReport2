@@ -103,6 +103,9 @@ export default function DemandResult() {
     setOrgnNameTmp('');
     setApplicantTmp('');
     setSurveyTitleTmp('');
+    setTimeout(() => {
+      $('.filterApplyBtn').trigger('click');
+    }, 300);
   };
 
   const handleFilterApply = (e) => {
@@ -439,7 +442,7 @@ export default function DemandResult() {
                 </dl>
               </div>
               <button type='button' onClick={initFilterClick} className='sorting_reset_btn text-sm font-medium text-color-placeholder'>선택 초기화 <img src={icReset ?? icReset02} alt='선택 초기화' className='w-6' /></button>
-              <Button name="필터 적용" onClick={handleFilterApply} icon={icSearch} className="gap-2 mt-6 mx-auto py-3 px-6.5 rounded-3xl text-base font-bold btn_style03" />
+              <Button name="필터 적용" onClick={handleFilterApply} icon={icSearch} className="gap-2 mt-6 mx-auto py-3 px-6.5 rounded-3xl text-base font-bold btn_style03 filterApplyBtn" />
             </div>
             : ''
           }
