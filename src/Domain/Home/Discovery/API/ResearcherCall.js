@@ -45,6 +45,6 @@ export const researcher = async (
 };
 
 
-export const researcherDetail = async (id) => {
-  return await API.get('/search/indvDetail', {params: {id: id}});
+export const researcherDetail = async (id, size, page) => {
+  return await API.get('/search/indvDetail', {params: {id: id, size: size, page: page}});
 };

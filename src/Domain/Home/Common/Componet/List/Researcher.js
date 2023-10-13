@@ -10,7 +10,7 @@ import { NavLink } from 'react-router-dom';
 import Pagination from 'Domain/Home/Common/Componet/Pagination';
 
 export default function Researcher(props) {
-  const { projectData, totalCount, size, page, setPage, researcherActive, onResearcherSelect, simialityResearcher, subList } = props;
+  const { projectData, totalCount, size, page, setPage, researcherActive, onResearcherSelect, simialityResearcher, subList, subTotalCount, subSize, subPage, setSubPage } = props;
 
   return (
     <>
@@ -130,6 +130,9 @@ export default function Researcher(props) {
                   </li>
                 }
               </ul>
+            </div>
+            <div className='mt-10'>
+              <Pagination total={subTotalCount?.researcher ?? 0} size={subSize} page={subPage} onClick={(page) => setSubPage(page)} />
             </div>
           </div>
         </div>

@@ -175,14 +175,14 @@ export default function ListWrap(props) {
       try {
         dispatch(setLoading(true));
         if (se1 == 'search') {
-          data = await researcherAPI.researcherDetail(researcherActive.id);
+          data = await researcherAPI.researcherDetail(researcherActive.id, subSize, subPage);
         } else if (se1 == 'discovery') {
           if (se2 == 'keyword') {
-            data = await researcherAPI.researcherDetail(researcherActive.id);
+            data = await researcherAPI.researcherDetail(researcherActive.id, subSize, subPage);
           } else if (se2 == 'file') {
-            data = await researcherAPI.researcherDetail(researcherActive.id);
+            data = await researcherAPI.researcherDetail(researcherActive.id, subSize, subPage);
           } else if (se2 == 'project') {
-            data = await researcherAPI.researcherDetail(researcherActive.id);
+            data = await researcherAPI.researcherDetail(researcherActive.id, subSize, subPage);
           }
         }
       } catch (e) {
@@ -209,30 +209,32 @@ export default function ListWrap(props) {
       setSimialityResearcher(simiality);
 
       let subList = [];
-      for (let i in data?.data?.result?.indvResultInfo?.projectIn ?? []) {
-      // console.log(i, data?.data?.result?.indvResultInfo?.projectIn?.[i]);
-        const period = data?.data?.result?.indvResultInfo?.projectIn?.[i]?.period ?? '';
+      for (let i in data?.data?.result?.indvResultInfo?.dataInfo?.projectIn ?? []) {
+      // console.log(i, data?.data?.result?.indvResultInfo?.dataInfo?.projectIn?.[i]);
+        const period = data?.data?.result?.indvResultInfo?.dataInfo?.projectIn?.[i]?.period ?? '';
         const division = [];
-        const keywordt = data?.data?.result?.indvResultInfo?.projectIn?.[i]?.keywords ?? [];
+        const keywordt = data?.data?.result?.indvResultInfo?.dataInfo?.projectIn?.[i]?.keywords ?? [];
         const subListPushData = {
-          id: data?.data?.result?.indvResultInfo?.projectIn?.[i]?.projectNumber ?? i,
-          progress: data?.data?.result?.indvResultInfo?.projectIn?.[i]?.progress ?? false,
-          title: data?.data?.result?.indvResultInfo?.projectIn?.[i]?.projectTitle
+          id: data?.data?.result?.indvResultInfo?.dataInfo?.projectIn?.[i]?.projectNumber ?? i,
+          progress: data?.data?.result?.indvResultInfo?.dataInfo?.projectIn?.[i]?.progress ?? false,
+          title: data?.data?.result?.indvResultInfo?.dataInfo?.projectIn?.[i]?.projectTitle
           ?? '',
-          price: common.setPriceInput(data?.data?.result?.indvResultInfo?.projectIn?.[i]?.fund ?? '') + '원',
+          price: common.setPriceInput(data?.data?.result?.indvResultInfo?.dataInfo?.projectIn?.[i]?.fund ?? '') + '원',
           period: period.replaceAll('-','.'), 
-          agency: data?.data?.result?.indvResultInfo?.projectIn?.[i]?.researchAgencyName ?? '',
-          name: data?.data?.result?.indvResultInfo?.projectIn?.[i]?.researchManagerName ?? '',
-          department: data?.data?.result?.indvResultInfo?.projectIn?.[i]?.orderAgencyName ?? '',
-          performance: data?.data?.result?.indvResultInfo?.projectIn?.[i]?.performance ?? '',
+          agency: data?.data?.result?.indvResultInfo?.dataInfo?.projectIn?.[i]?.researchAgencyName ?? '',
+          name: data?.data?.result?.indvResultInfo?.dataInfo?.projectIn?.[i]?.researchManagerName ?? '',
+          department: data?.data?.result?.indvResultInfo?.dataInfo?.projectIn?.[i]?.orderAgencyName ?? '',
+          performance: data?.data?.result?.indvResultInfo?.dataInfo?.projectIn?.[i]?.performance ?? '',
           division: division.join(' / '),
           keyword: keywordt.join(', '),
         };
         subList.push(subListPushData);
       }
       setSubList(subList);
+
+      setSubTotalCount({researcher: data?.data?.result?.indvResultInfo?.countInfo?.projectIn ?? 0});
     })();
-  }, [researcherActive, se1, se2]);
+  }, [researcherActive, subSize, subPage, se1, se2]);
 
   // 연구자 선택 시
   const onResearcherSelect = (e, id, name) => {
@@ -377,7 +379,7 @@ export default function ListWrap(props) {
 
   useEffect(() => {
     getResearcherDetail();
-  }, [researcherActive]);
+  }, [researcherActive, subSize, subPage]);
 
   useEffect(() => {
     getOrgnDetail();
@@ -457,7 +459,7 @@ export default function ListWrap(props) {
     case 'search/policy':
       return <Policy projectData={projectData} totalCount={totalCount} size={size} page={page} setPage={setPage} />;
     case 'search/indv':
-      return <Researcher projectData={projectData} totalCount={totalCount} size={size} page={page} setPage={setPage} researcherActive={researcherActive} onResearcherSelect={onResearcherSelect} simialityResearcher={simialityResearcher} subList={subList} />;
+      return <Researcher projectData={projectData} totalCount={totalCount} size={size} page={page} setPage={setPage} researcherActive={researcherActive} onResearcherSelect={onResearcherSelect} simialityResearcher={simialityResearcher} subList={subList} subTotalCount={subTotalCount} subSize={subSize} subPage={subPage} setSubPage={setSubPage} />;
     case 'search/orgn':
       return <Orgn projectData={projectData} totalCount={totalCount} size={size} page={page} setPage={setPage} orgnActive={orgnActive} onOrgnSelect={onOrgnSelect} simialityOrgn={simialityOrgn} subListMode={subListMode} setSubListMode={setSubListMode} subProjectList={subProjectList} subPatentList={subPatentList} subTotalCount={subTotalCount} subSize={subSize} subPage={subPage} setSubPage={setSubPage} />;
     case 'search/news':
