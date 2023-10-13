@@ -37,7 +37,6 @@ export default function IctTreeMap(props) {
         });
       }, 800);
     };
-    console.log(isClick);
     const addTabIndexSetTimeout = addTabIndex();
     return () => clearTimeout(addTabIndexSetTimeout);
   }, [data, isClick]);

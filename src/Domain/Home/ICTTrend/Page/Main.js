@@ -180,7 +180,7 @@ export default function Main() {
     }
     
     for (let i = techSearch.length - 1; i >= 0; i--) {
-      if (typeof techSearch[i] !== 'undefined') {
+      if (typeof techSearch[i] !== 'undefined' && techSearch[i] !== '') {
         dispatch(setIctKeyword(techSearch[i]));
         break;
       }
