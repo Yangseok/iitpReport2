@@ -87,7 +87,10 @@ export default function IctResultLayout({children, filterKey}) {
   }, []);
   
   // 워드 클라우드 클릭시
-  const handleWordClick = useCallback((_, d) => {
+  const handleWordClick = useCallback((e, d) => {
+    document.querySelectorAll('.wordcloud_cursor_wrap svg text').forEach(function(_this) {
+      _this.blur();
+    });
     dispatch(setIctKeyword(d.text));
   }, [ictKeyword]);
 
