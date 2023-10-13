@@ -251,6 +251,7 @@ export const callListAPI = async (filterKey, se1, se2, globalSearchDetailData, s
     if (keyword !== '') data = await ictTrendAPI.ictList(category,keyword,size,page);
   }
 
+  console.log('!!!!!!!!!!!!!!!!!!!!!!!',filterKey, apiMethod, data);
   return data;
 };
 
@@ -527,14 +528,13 @@ export const getExcelProcData = (filterKey, dataList) => {
     }
     break;
   case 'search/indv':
-    title = ['ICT 자료명', '출처', '본문', '발행일'];
+    title = ['연구자', '소속기관명', '과제갯수'];
     for (let i in dataList ?? []) {
       // console.log(i, dataList?.[i]);
       data.push([
-        dataList?.[i]?.title ?? '',
-        dataList?.[i]?.source ?? '',
-        dataList?.[i]?.contents ?? '',
-        (dataList?.[i]?.publishedDate ?? '').replaceAll('-','.'),
+        dataList?.[i]?.indvName ?? '',
+        dataList?.[i]?.orgn ?? '',
+        dataList?.[i]?.projectCount ?? 0,
       ]);
     }
     break;
@@ -546,7 +546,7 @@ export const getExcelProcData = (filterKey, dataList) => {
         common.deHighlight(dataList?.[i]?.orgnName ?? ''),
         dataList?.[i]?.projectCount ?? 0,
         dataList?.[i]?.patentCount ?? 0,
-        (dataList?.[i]?.orgnVigilance ?? false) ? 'O': 'X',
+        ((dataList?.[i]?.orgnVigilance ?? '') === '사후') ? 'O' : ((dataList?.[i]?.orgnVigilance ?? '') === 'NODATA') ? 'NODATA': '',
         dataList?.[i]?.topRankSales ?? '',
       ]);
     }

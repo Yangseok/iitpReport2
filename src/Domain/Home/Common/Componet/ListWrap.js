@@ -151,10 +151,14 @@ export default function ListWrap(props) {
     await (async () => {
       let filterObj = List.getFilterObj(filterKey, filterActive);
       let data = [];
+      let setSelectKeyword = selectKeyword;
+      if (se1 === 'demandbanking') {
+        setSelectKeyword = wordCloudSurveyFile;
+      }
 
       try {
         dispatch(setLoading(true));
-        data = await List.callListAPI(filterKey, se1, se2, globalSearchDetailData, searchDetailKey, selectKeyword, excelSize, 1, keyword, fileKeywordList, sort, filterObj);
+        data = await List.callListAPI(filterKey, se1, se2, globalSearchDetailData, searchDetailKey, setSelectKeyword, excelSize, 1, keyword, fileKeywordList, sort, filterObj);
       } catch (e) {
         console.warn(e);
       } finally {
