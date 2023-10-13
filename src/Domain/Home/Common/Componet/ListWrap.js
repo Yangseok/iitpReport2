@@ -427,8 +427,14 @@ export default function ListWrap(props) {
   }, [keyword, se1, se2, selectKeyword, fileKeywordList, wordCloudSurveyFile]);
 
   useEffect(() => {
-    if (prevPath !== undefined) {
+    if (prevPath !== undefined && 
+      !(
+        (prevPath === '/search/result/projectout' && document.location.pathname === '/search/result/projectin') ||
+        (prevPath === '/search/result/projectin' && document.location.pathname === '/search/result/projectout')
+      )
+    ) {
       // console.log('prevPath:', prevPath);
+      // console.log('document.location.pathname:',document.location.pathname);
       dispatch(setSearchDetailData({}));
       dispatch(setFilterActive(items));
       dispatch(setInitalSearch(true));
