@@ -84,9 +84,9 @@ export default function ListWrap(props) {
   
   useEffect(() => {
     if (se1 === 'search' && !(globalSearchDetailData[searchDetailKey] === undefined || JSON.stringify(globalSearchDetailData[searchDetailKey]) === JSON.stringify({}))) {
-      console.log('상세검색', globalSearchDetailData[searchDetailKey]);
-      console.log('globalSearchDetailData:', globalSearchDetailData);
-      console.log('searchDetailKey:', searchDetailKey);
+      // console.log('상세검색', globalSearchDetailData[searchDetailKey]);
+      // console.log('globalSearchDetailData:', globalSearchDetailData);
+      // console.log('searchDetailKey:', searchDetailKey);
       setIsSearchDetail(true);
       return;
     }
@@ -143,7 +143,7 @@ export default function ListWrap(props) {
       }
       setActiveCount(data?.data?.result?.totalCount ?? 0);
     })();
-
+    
   }, [keyword, searchButtonClick, page, size, sort, se1, se2, filterActive, filterKey, searchDetailKey, globalSearchDetailData, fileKeywordList, wordCloudSurveyFile]);
 
   const downExcel = useCallback(async () => {
@@ -195,7 +195,7 @@ export default function ListWrap(props) {
       console.log(data?.data?.result);
       let simiality = [];
       for (let i in data?.data?.result?.simialityIndvList ?? []) {
-        // console.log(i, data?.data?.result?.simialityIndvList?.[i]);
+      // console.log(i, data?.data?.result?.simialityIndvList?.[i]);
         let link = data?.data?.result?.simialityIndvList?.[i]?.link ?? '';
         if (link !== '' && link !== undefined) link = 'https://' + link;
         const simialityPushData = {
@@ -210,7 +210,7 @@ export default function ListWrap(props) {
 
       let subList = [];
       for (let i in data?.data?.result?.indvResultInfo?.projectIn ?? []) {
-        // console.log(i, data?.data?.result?.indvResultInfo?.projectIn?.[i]);
+      // console.log(i, data?.data?.result?.indvResultInfo?.projectIn?.[i]);
         const period = data?.data?.result?.indvResultInfo?.projectIn?.[i]?.period ?? '';
         const division = [];
         const keywordt = data?.data?.result?.indvResultInfo?.projectIn?.[i]?.keywords ?? [];
@@ -269,7 +269,7 @@ export default function ListWrap(props) {
       console.log(data?.data?.result);
       let simialityOrgn = [];
       for (let i in data?.data?.result?.simialityOrgnList ?? []) {
-        // console.log(i, data?.data?.result?.dataList?.[i]);
+      // console.log(i, data?.data?.result?.dataList?.[i]);
         const simialityPushData = {
           id: i,
           name: data?.data?.result?.simialityOrgnList?.[i]?.orgnName ?? '',
@@ -281,7 +281,7 @@ export default function ListWrap(props) {
 
       let subProjectList = [];
       for (let i in data?.data?.result?.orgnResultInfo?.dataInfo?.projectOut ?? []) {
-        // console.log(i, data?.data?.result?.orgnResultInfo?.dataInfo?.projectOut?.[i]);
+      // console.log(i, data?.data?.result?.orgnResultInfo?.dataInfo?.projectOut?.[i]);
         const period = data?.data?.result?.orgnResultInfo?.dataInfo?.projectOut?.[i]?.period ?? '';
         const periodArr = period.split('~');
         let division = data?.data?.result?.orgnResultInfo?.dataInfo?.projectOut?.[i]?.technicalClassification ?? [];
@@ -337,8 +337,22 @@ export default function ListWrap(props) {
   };
 
   useEffect(() => {
+    // console.log('-------------------------------- getList 1 start --------------------------------');
+    // console.log('keyword:', keyword);
+    // console.log('page:', page);
+    // console.log('size:', size);
+    // console.log('sort:', sort);
+    // console.log('filterActive:', filterActive);
+    // console.log('filterKey:', filterKey);
+    // console.log('searchDetailKey:', searchDetailKey);
+    // console.log('globalSearchDetailData:', globalSearchDetailData);
+    // console.log('fileKeywordList:', fileKeywordList);
+    // console.log('wordCloudSurveyFile:', wordCloudSurveyFile);
+    // console.log('-------------------------------- getList 1 end --------------------------------');
+    
     getList();
-  }, [keyword, page, size, sort, filterActive, filterKey, searchDetailKey, globalSearchDetailData, fileKeywordList, wordCloudSurveyFile]);
+
+  }, [keyword, page, size, sort, filterActive, filterKey, searchDetailKey, fileKeywordList, wordCloudSurveyFile]);
 
   useEffect(() => {
     if (searchButtonClick) {

@@ -14,6 +14,7 @@ import { useNavigate } from 'react-router-dom';
 import { setMsg,setShow } from 'Domain/Home/Common/Status/MsgSlice';
 import common from 'Utill';
 import moment from 'moment';
+import $ from 'jquery';
 
 export default function Search(props) {
   const dispatch = useDispatch();
@@ -122,10 +123,13 @@ export default function Search(props) {
     // delete newState[tabActive];
     setSearchDetailData({});
     dispatch(setGlobalSearchDetailData({}));
+    setTimeout(() => {
+      $('.detailSearch').trigger('click');  
+    }, 300);
   };
 
-  const handleDtailSearch = () => {
-    console.log('handleDtailSearch:', searchDetailData[tabActive]);
+  const handleDetailSearch = () => {
+    console.log('handleDetailSearch:', searchDetailData[tabActive]);
     if (tmpSearchKeyword == '' && searchKeyword != '') {
       dispatch(setSearchKeyword(''));
     }
@@ -489,7 +493,7 @@ export default function Search(props) {
             <div className='flex items-center justify-center gap-6 mt-6'>
               {/* Input에 입력된 값이 하나라도 있을 경우, disabled false 값 */}
               <Button className='py-2.75 px-6.5 rounded-3xl text-base font-bold btn_style02' name='초기화' onClick={() => initSearch()} />
-              <Button className='gap-2 py-3 px-6.5 rounded-3xl text-base font-bold btn_style03' name='상세 검색' icon={icSearch} onClick={() => handleDtailSearch()} />
+              <Button className='gap-2 py-3 px-6.5 rounded-3xl text-base font-bold btn_style03 detailSearch' name='상세 검색' icon={icSearch} onClick={() => handleDetailSearch()} />
             </div>
           </>
         }
