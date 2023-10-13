@@ -191,7 +191,7 @@ export default function View() {
       tags={<>
         <div className="flex items-center gap-4">
           {/* 진행중 : tag_style05 | 종료 : tag_style02 */}
-          <p className="tag_style05">진행중</p>
+          {/* <p className="tag_style05">진행중</p> */}
           <p className="text-sm text-color-regular">출원번호: <span className="font-medium text-color-main">{viewData.applNumber ?? ''}</span></p>
         </div>
       </>}
