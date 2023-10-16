@@ -231,6 +231,8 @@ export default function DemandResult() {
         name: data?.data?.result?.dataList?.[i]?.applicant ?? '',
         registration: data?.data?.result?.dataList?.[i]?.registrationIctCode ?? '',
         recommend: data?.data?.result?.dataList?.[i]?.recommendIctCode ?? '',
+        mergeFlag: data?.data?.result?.dataList?.[i]?.mergeFlag ?? 'N',
+        mergeLeaderFlag: data?.data?.result?.dataList?.[i]?.mergeLeaderFlag ?? 'N',
       };
       tmpData.push(pushData);
     }
@@ -476,7 +478,7 @@ export default function DemandResult() {
                         <a href={`/demandbanking/file/${e.noticeId}/${e.id}/result/projectout`} className='h-5 px-1.5 rounded-sm text-xs font-medium btn_style05' target="_blank" rel='noreferrer' title={`새창이동, ${e.title} 파일분석 페이지`}>파일 분석</a>
                         <div className='flex flex-col gap-2.5'>
                           <a href={`/demandbanking/view/${e.noticeId}/${e.id}`} className='h-5 px-1.5 rounded-sm text-xs font-medium text-color-white bg-color-light1' target="_blank" rel='noreferrer' title={`새창이동, ${e.title} 상세 페이지`}>자세히 보기↗</a>
-                          <a href={`/demandbanking/merge/${e.id}`} className='h-5 px-1.5 rounded-sm text-xs font-medium btn_style05' target="_blank" rel='noreferrer' title={`새창이동, ${e.title} 병합수요 페이지`}>병합수요↗</a>
+                          {(e.mergeFlag === 'Y' || e.mergeLeaderFlag === 'Y') ? <a href={`/demandbanking/merge/${e.id}`} className='h-5 px-1.5 rounded-sm text-xs font-medium btn_style05' target="_blank" rel='noreferrer' title={`새창이동, ${e.title} 병합수요 페이지`}>병합수요{(e.mergeLeaderFlag === 'Y') ? '(대표)' : ''}↗</a> : null}
                           <button type='button' className={`h-5 px-1.5 rounded-sm text-xs font-medium btn_style05${(e.id === demandActive) ? ' on' : ''}`} onClick={(event) => onItemSlide(event, e.noticeId, e.id)}>유사기술조사서</button>
                         </div>
                       </div>
