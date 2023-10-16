@@ -200,7 +200,7 @@ export default function Main() {
     try {
       dispatch(setLoading(true));
       const data = await ictTrendAPI.ictIssueReportDownload(issueRangeValue);
-      console.log(data);
+      // console.log(data);
       common.blobDownload(data.data, issueRangeValue + ' ICT 10대 이슈.pdf');
     } catch (e) {
       console.warn(e);
