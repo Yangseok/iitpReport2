@@ -205,7 +205,7 @@ export default function Main() {
       const anchorElement = document.createElement('a');
 
       anchorElement.href = href;
-      anchorElement.download = issueRangeValue + '.pdf';
+      anchorElement.download = issueRangeValue + ' ICT 10대 이슈.pdf';
 
       document.body.appendChild(anchorElement);
       anchorElement.click();
