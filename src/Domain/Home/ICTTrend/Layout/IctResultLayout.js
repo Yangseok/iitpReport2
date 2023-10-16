@@ -12,7 +12,7 @@ import IctChart from 'Domain/Home/Common/Componet/ChartList/Ict';
 import PolicyChart from 'Domain/Home/Common/Componet/ChartList/Policy';
 import NewsChart from 'Domain/Home/Common/Componet/ChartList/News';
 import { setLoading } from 'Domain/Home/Common/Status/CommonSlice';
-import { getCategory, getEndYear, getIctKeyword, getSingleYear, getStartYear, setCategory, setIctKeyword } from 'Domain/Home/ICTTrend/Status/IctTrendSlice';
+import { getCategory, getEndYear, getIctKeyword, getSingleYear, getStartYear, setCategory } from 'Domain/Home/ICTTrend/Status/IctTrendSlice';
 import { setSearchKeyword } from 'Domain/Home/Common/Status/CommonSlice';
 import * as ictTrendAPI from 'Domain/Home/ICTTrend/API/Call';
 import common from 'Utill';
@@ -87,11 +87,11 @@ export default function IctResultLayout({children, filterKey}) {
   }, []);
   
   // 워드 클라우드 클릭시
-  const handleWordClick = useCallback((e, d) => {
+  const handleWordClick = useCallback(() => {
     document.querySelectorAll('.wordcloud_cursor_wrap svg text').forEach(function(_this) {
       _this.blur();
     });
-    dispatch(setIctKeyword(d.text));
+    // dispatch(setIctKeyword(d.text));
   }, [ictKeyword]);
 
   useEffect(() => {

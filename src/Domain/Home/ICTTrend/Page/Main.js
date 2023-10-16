@@ -20,7 +20,7 @@ import moment from 'moment';
 export default function Main() {
   const wordSize = 160;
   let rangeMarks = {};
-  const rangeMin = 2014;
+  const rangeMin = 1990;
   const rangeMax = Number(moment().format('YYYY'));
   const rangeDefault = [Number(moment().subtract(1, 'year').format('YYYY')), rangeMax];
   for(let i = rangeMin; i <= rangeMax; i++) {
@@ -486,15 +486,17 @@ export default function Main() {
             <div className='wordcloud_cursor_wrap'>
               <IctWordClouds data={wordCloudData} height={600} onWordClick={handleWordClick} size={wordSize} />
             </div>
-            <div className='rc_custom max-w-4.5xl mt-4 mx-auto'>
-              <RcSlider
-                range
-                min={rangeMin}
-                max={rangeMax}
-                marks={rangeMarks}
-                value={keywordRangeValue}
-                onChange={(e) => setKeywordRangeValue(e)}
-              />
+            <div className='rc_custom_wrap max-w-4.5xl mt-4 mx-auto'>
+              <div className='rc_custom'>
+                <RcSlider
+                  range
+                  min={rangeMin}
+                  max={rangeMax}
+                  marks={rangeMarks}
+                  value={keywordRangeValue}
+                  onChange={(e) => setKeywordRangeValue(e)}
+                />
+              </div>
             </div>
           </div>
         </div>
@@ -535,15 +537,17 @@ export default function Main() {
               <div className='container'>
                 <div className='flex items-center justify-between'>
                   <div className='flex-1 px-11 max-w-5.25xl'>
-                    <div className='rc_custom type02'>
-                      <RcSlider
-                        included={false}
-                        min={rangeMin}
-                        max={rangeMax}
-                        marks={rangeMarks}
-                        value={issueRangeValue}
-                        onChange={(e) => setIssueRangeValue(e)}
-                      />
+                    <div className='rc_custom_wrap mt-4 mx-auto'>
+                      <div className='rc_custom type02'>
+                        <RcSlider
+                          included={false}
+                          min={rangeMin}
+                          max={rangeMax}
+                          marks={rangeMarks}
+                          value={issueRangeValue}
+                          onChange={(e) => setIssueRangeValue(e)}
+                        />
+                      </div>
                     </div>
                   </div>
                   {(isIssueDownload) 

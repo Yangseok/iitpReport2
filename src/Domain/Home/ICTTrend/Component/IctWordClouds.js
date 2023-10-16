@@ -2,6 +2,8 @@ import React, { useState, useCallback, useEffect } from 'react';
 import WordCloud from 'react-d3-cloud';
 import * as d3 from 'd3';
 import $ from 'jquery';
+// import { scaleOrdinal } from 'd3-scale';
+// import { schemeCategory10 } from 'd3-scale-chromatic';
 
 // import { select } from 'd3-selection';
 // import data from 'Domain/Home/Sample/Data/WordCloud.json';
@@ -13,6 +15,9 @@ export default function IctWordClouds(props) {
 
   const fontSizeMapper = useCallback((word) => Math.log2(word.value) * 5, []);
   const rotate =  useCallback(() => 0, []);
+  // const fill = useCallback((word) => console.log(word), []);
+  // const fill = useCallback((d, i) => scaleOrdinal(schemeCategory10)(i), []);
+  const fill = d3.scaleOrdinal().range(['rgb(214, 39, 40)','rgb(255, 127, 14)','rgb(188, 189, 34)','rgb(44, 160, 44)','rgb(31, 119, 180)','rgb(23, 190, 207)','rgb(148, 103, 189)','rgb(227, 119, 194)','rgb(140, 86, 75)','rgb(127, 127, 127)']);
 
   const procWordCloudData = useCallback(() => {
     // console.log('data', data);
@@ -127,6 +132,8 @@ export default function IctWordClouds(props) {
       fontSizeMapper={fontSizeMapper}
       rotate={rotate}
       padding={2}
+      fill={fill}
+      // bgColor={'#f00'}
       onWordClick={onWordClick}
       // onWordMouseOver={onWordMouseOver}
       // onWordMouseOut={onWordMouseOut}
