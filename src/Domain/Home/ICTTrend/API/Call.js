@@ -115,6 +115,14 @@ export const ictIssueKeyword = async (year) => {
  */
 
 export const ictIssueReportDownload = async (year) => {
-
-  return await API.get('/ict/issueDownload', { params: { year: year } });
+  return await API.get('/ict/issueDownload', { 
+    params: {
+      year: year
+    },
+    headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/pdf'
+    },
+    responseType: 'blob'
+  });
 };

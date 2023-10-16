@@ -189,13 +189,34 @@ export default function Main() {
   };
 
   // 10대 이슈 - 보고서 다운로드 API
-  const issueDownload = (e) => {
-    const winOpen = (url, name, option) => {
-      var popup = window.open(url, name, option);
-      popup.focus();
-      return popup;
-    };
-    winOpen(process.env.REACT_APP_API_URL+'/ict/issueDownload?year='+issueRangeValue);
+  const issueDownload = async (e) => {
+    // const winOpen = (url, name, option) => {
+    //   var popup = window.open(url, name, option);
+    //   popup.focus();
+    //   return popup;
+    // };
+    // winOpen(process.env.REACT_APP_API_URL+'/ict/issueDownload?year='+issueRangeValue);
+
+    try {
+      dispatch(setLoading(true));
+      const data = await ictTrendAPI.ictIssueReportDownload(issueRangeValue);
+      // console.log(data);
+      const href = window.URL.createObjectURL(data.data);
+      const anchorElement = document.createElement('a');
+
+      anchorElement.href = href;
+      anchorElement.download = issueRangeValue + '.pdf';
+
+      document.body.appendChild(anchorElement);
+      anchorElement.click();
+
+      document.body.removeChild(anchorElement);
+      window.URL.revokeObjectURL(href);
+    } catch (e) {
+      console.warn(e);
+    } finally {
+      dispatch(setLoading(false));
+    }
     e?.preventDefault();
   };
 
