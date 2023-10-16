@@ -61,25 +61,25 @@ export default function DemandMerge() {
     console.log('getMergedSurveyList:', data?.data?.result);
 
     let tmpData = [];
-    for (let i in data?.data?.result?.childSurveyList ?? []) {
-      if (data?.data?.result?.childSurveyList?.[i]?.surveyId === undefined) continue;
+    for (let i in data?.data?.result?.childSurvey ?? []) {
+      if (data?.data?.result?.childSurvey?.[i]?.surveyId === undefined) continue;
       let pushData = {
         key: i,
         noticeId: data?.data?.result?.parentSurvey?.noticeId ?? '',
-        id: data?.data?.result?.childSurveyList?.[i]?.surveyId,
+        id: data?.data?.result?.childSurvey?.[i]?.surveyId,
         pblanc: (data?.data?.result?.parentSurvey?.noticeTitle ?? '') + ' (' + (data?.data?.result?.parentSurvey?.period ?? '') + ')',
-        title: data?.data?.result?.childSurveyList?.[i]?.surveyTitle ?? '',
-        agency: data?.data?.result?.childSurveyList?.[i]?.orgnName ?? '',
-        name: data?.data?.result?.childSurveyList?.[i]?.applicant ?? '',
-        registration: data?.data?.result?.childSurveyList?.[i]?.registrationIctCode ?? '',
-        recommend: data?.data?.result?.childSurveyList?.[i]?.recommendIctCode ?? '',
+        title: data?.data?.result?.childSurvey?.[i]?.surveyTitle ?? '',
+        agency: data?.data?.result?.childSurvey?.[i]?.orgnName ?? '',
+        name: data?.data?.result?.childSurvey?.[i]?.applicant ?? '',
+        registration: data?.data?.result?.childSurvey?.[i]?.registrationIctCode ?? '',
+        recommend: data?.data?.result?.childSurvey?.[i]?.recommendIctCode ?? '',
       };
       tmpData.push(pushData);
     }
     // console.log('tmpData:', tmpData);
 
     setData(tmpData);
-    setTotalCount(data?.data?.result?.totalCount ?? 0);
+    setTotalCount(data?.data?.result?.childCount ?? 0);
   }, [surveyId, size, page]);
 
   useEffect(() => {
