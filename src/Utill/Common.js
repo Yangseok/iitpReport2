@@ -207,7 +207,7 @@ export const joinArrNStr = (data, joinStr, defaultValue='') => {
   let returnData = defaultValue;
   if (typeof data === 'string') {
     returnData = data;
-  } else if (typeof data === 'object' && data.length !== undefined) {
+  } else if (typeof data === 'object' && data?.length !== undefined) {
     returnData = data.join(joinStr);
   }
   return returnData;
