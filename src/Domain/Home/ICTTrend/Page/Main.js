@@ -200,18 +200,8 @@ export default function Main() {
     try {
       dispatch(setLoading(true));
       const data = await ictTrendAPI.ictIssueReportDownload(issueRangeValue);
-      // console.log(data);
-      const href = window.URL.createObjectURL(data.data);
-      const anchorElement = document.createElement('a');
-
-      anchorElement.href = href;
-      anchorElement.download = issueRangeValue + ' ICT 10대 이슈.pdf';
-
-      document.body.appendChild(anchorElement);
-      anchorElement.click();
-
-      document.body.removeChild(anchorElement);
-      window.URL.revokeObjectURL(href);
+      console.log(data);
+      common.blobDownload(data.data, issueRangeValue + ' ICT 10대 이슈.pdf');
     } catch (e) {
       console.warn(e);
     } finally {

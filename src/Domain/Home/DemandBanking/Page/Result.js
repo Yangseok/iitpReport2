@@ -123,30 +123,12 @@ export default function DemandResult() {
   };
 
   const listDownload = async (e) => {
-    // const winOpen = (url, name, option) => {
-    //   var popup = window.open(url, name, option);
-    //   popup.focus();
-    //   return popup;
-    // };
-    // const noticeId = getNoticeId();
-    // winOpen(process.env.REACT_APP_API_URL+'/demand/surveyListDownload?noticeId='+noticeId);
-
     const noticeId = getNoticeId();
     try {
       dispatch(setLoading(true));
       const data = await demandCallAPI.surveyListDownload(noticeId);
       // console.log(data);
-      const href = window.URL.createObjectURL(data.data);
-      const anchorElement = document.createElement('a');
-
-      anchorElement.href = href;
-      anchorElement.download = 'download.xlsx';
-
-      document.body.appendChild(anchorElement);
-      anchorElement.click();
-
-      document.body.removeChild(anchorElement);
-      window.URL.revokeObjectURL(href);
+      common.blobDownload(data.data, 'download.xlsx');
     } catch (e) {
       console.warn(e);
     } finally {

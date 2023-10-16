@@ -256,3 +256,16 @@ export const getParams = (text) => {
 export const getUrlParams = () => {
   return getParams(window.location.search);
 };
+export const blobDownload = (blob, filename) => {
+  const href = window.URL.createObjectURL(blob);
+  const anchorElement = document.createElement('a');
+
+  anchorElement.href = href;
+  anchorElement.download = filename;
+
+  document.body.appendChild(anchorElement);
+  anchorElement.click();
+
+  document.body.removeChild(anchorElement);
+  window.URL.revokeObjectURL(href);
+};
