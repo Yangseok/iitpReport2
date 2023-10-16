@@ -246,6 +246,8 @@ export default function ListWrap(props) {
   const onResearcherSelect = (e, id, name) => {
     if(e.currentTarget.nodeName !== 'BUTTON') {
       setResearcherActive({ id, name });
+      setOrgnActive({id: -1, name: ''});
+      setSubPage(1);
     }
   };
 
@@ -343,6 +345,8 @@ export default function ListWrap(props) {
     if(e.currentTarget.nodeName !== 'BUTTON') {
       setSubListMode('project');
       setOrgnActive({ id, name });
+      setResearcherActive({id: -1, name: ''});
+      setSubPage(1);
     }
   };
 
