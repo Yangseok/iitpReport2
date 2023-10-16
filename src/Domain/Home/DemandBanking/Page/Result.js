@@ -135,7 +135,7 @@ export default function DemandResult() {
     try {
       dispatch(setLoading(true));
       const data = await demandCallAPI.surveyListDownload(noticeId);
-      console.log(data);
+      // console.log(data);
       const href = window.URL.createObjectURL(data.data);
       const anchorElement = document.createElement('a');
 
