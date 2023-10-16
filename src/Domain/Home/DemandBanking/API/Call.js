@@ -47,13 +47,17 @@ export const surveyList = async (noticeId,startDate='',endDate='',bigIct='',midd
   return await API.post('/demand/surveyList', params);
 };
 //수요뱅킹 조회 목록 다운로드
-export const surveyListDownload = async (noticeId,size=10000,page=1) => {
-  let params = {
-    size: size,
-    page: page,
-    noticeId: noticeId,
-  };
-  return await API.get('/demand/surveyListDownload', {params: params});
+export const surveyListDownload = async (noticeId) => {
+  return await API.get('/demand/surveyListDownload', { 
+    params: {
+      noticeId: noticeId,
+    },
+    headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/xlsx'
+    },
+    responseType: 'blob'
+  });
 };
 //수요뱅킹 유사기술수요조사서 조회
 export const similarSurvey = async (tap,noticeId,surveyId,size=10,page=1) => {

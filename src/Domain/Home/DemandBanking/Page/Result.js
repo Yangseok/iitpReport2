@@ -122,14 +122,36 @@ export default function DemandResult() {
     e?.preventDefault();
   };
 
-  const listDownload = (e) => {
-    const winOpen = (url, name, option) => {
-      var popup = window.open(url, name, option);
-      popup.focus();
-      return popup;
-    };
+  const listDownload = async (e) => {
+    // const winOpen = (url, name, option) => {
+    //   var popup = window.open(url, name, option);
+    //   popup.focus();
+    //   return popup;
+    // };
+    // const noticeId = getNoticeId();
+    // winOpen(process.env.REACT_APP_API_URL+'/demand/surveyListDownload?noticeId='+noticeId);
+
     const noticeId = getNoticeId();
-    winOpen(process.env.REACT_APP_API_URL+'/demand/surveyListDownload?noticeId='+noticeId);
+    try {
+      dispatch(setLoading(true));
+      const data = await demandCallAPI.surveyListDownload(noticeId);
+      console.log(data);
+      const href = window.URL.createObjectURL(data.data);
+      const anchorElement = document.createElement('a');
+
+      anchorElement.href = href;
+      anchorElement.download = 'download.xlsx';
+
+      document.body.appendChild(anchorElement);
+      anchorElement.click();
+
+      document.body.removeChild(anchorElement);
+      window.URL.revokeObjectURL(href);
+    } catch (e) {
+      console.warn(e);
+    } finally {
+      dispatch(setLoading(false));
+    }
     e?.preventDefault();
   };
 
