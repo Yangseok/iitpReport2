@@ -38,9 +38,11 @@ export default function Main() {
 
   const navigate = useNavigate();
 
-  const handleSearch = (agency=false, checkKeyword=true) => {
+  const handleSearch = (agency=false, checkKeyword=true, inputText=undefined) => {
+    let keyword = tmpSearchKeyword;
+    if (inputText !== undefined) keyword = inputText;
     // console.log('agency:', agency);
-    if (checkKeyword && tmpSearchKeyword.trim() === '') {
+    if (checkKeyword && keyword.trim() === '') {
       dispatch(setMsg({
         title: '알림',
         msg: '키워드를 입력해주세요.',

@@ -142,23 +142,26 @@ export default function Search(props) {
     handleSearch();
   };
 
-  const handleSearch = (agency=false) => {
+  const handleSearch = (agency=false, checkKeyword=false, inputText=undefined) => {
     // let searchDetailActiveTabData = searchDetailData?.[tabActive] ?? {};
     // console.log(searchDetailActiveTabData);
+    let keyword = tmpSearchKeyword;
+    if (inputText !== undefined) keyword = inputText;
     // if (tmpSearchKeyword.trim() === '' && JSON.stringify(searchDetailActiveTabData) === JSON.stringify({})) {
-    //   dispatch(setMsg({
-    //     title: '알림',
-    //     msg: '키워드를 입력해주세요.',
-    //     btnCss: ['inline-block rounded bg-primary-100 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-primary-700 transition duration-150 ease-in-out hover:bg-primary-accent-100 focus:bg-primary-accent-100 focus:outline-none focus:ring-0 active:bg-primary-accent-200'],
-    //     btnTxt: ['확인'],
-    //     btnEvent: ['close']
-    //   }));
-    //   dispatch(setShow(true));
-    //   return null;
-    // }
+    if (checkKeyword && keyword.trim() === '') {
+      dispatch(setMsg({
+        title: '알림',
+        msg: '키워드를 입력해주세요.',
+        btnCss: ['inline-block rounded bg-primary-100 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-primary-700 transition duration-150 ease-in-out hover:bg-primary-accent-100 focus:bg-primary-accent-100 focus:outline-none focus:ring-0 active:bg-primary-accent-200'],
+        btnTxt: ['확인'],
+        btnEvent: ['close']
+      }));
+      dispatch(setShow(true));
+      return null;
+    }
     dispatch(setSearchKeywordReset(true));
     // navigate('/search/result/all?keyword=' + tmpSearchKeyword);
-    console.log('agency:', agency);
+    // console.log('agency:', agency);
     const se = common.getSegment();
     if (agency) {
       navigate('/search/result/orgn');

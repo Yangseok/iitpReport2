@@ -50,7 +50,7 @@ export default function AutoCompleteSearch(props) {
     setSearchFocus(false);
 
     const handleSearch = props?.handleSearch;
-    if (handleSearch !== undefined) handleSearch(agency);
+    if (handleSearch !== undefined) handleSearch(agency, true, text);
   };
 
   const searchListButtonRef = useRef([]);

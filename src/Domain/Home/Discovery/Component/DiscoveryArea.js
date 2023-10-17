@@ -40,8 +40,10 @@ export default function PageSearchArea(props) {
 
   const [tmpFileName, setTmpFileName] = useState(fileName);
 
-  const handleSearch = (agency=false) => {
-    if (tmpSearchKeyword.trim() === '') {
+  const handleSearch = (agency=false, checkKeyword=true, inputText=undefined) => {
+    let keyword = tmpSearchKeyword;
+    if (inputText !== undefined) keyword = inputText;
+    if (checkKeyword && keyword.trim() === '') {
       dispatch(setMsg({
         title: '알림',
         msg: '키워드를 입력해주세요.',
@@ -53,7 +55,7 @@ export default function PageSearchArea(props) {
       return null;
     }
     dispatch(setSearchKeywordReset(true));
-    console.log('agency:', agency);
+    if (agency) console.log('agency:', agency);
     navigate('/discovery/' + paramSe2 + '/result');
   };
 
