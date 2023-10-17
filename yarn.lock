@@ -10489,6 +10489,11 @@ react-scripts@5.0.1:
   optionalDependencies:
     fsevents "^2.3.2"
 
+react-wordcloud2@^0.0.3:
+  version "0.0.3"
+  resolved "https://registry.yarnpkg.com/react-wordcloud2/-/react-wordcloud2-0.0.3.tgz#3a6213a44201aa103c489bbcb2d8748968970fd5"
+  integrity sha512-DcmL57gBeUwxbMMInumU6wTvC2y7SIjoVQWlOFW3T5vNk9SMwdZ0kfLCXQY7+y5G9yej6MZM48DVtaxD/oeWDQ==
+
 react@^18.2.0:
   version "18.2.0"
   resolved "https://registry.yarnpkg.com/react/-/react-18.2.0.tgz#555bd98592883255fa00de14f1151a917b5d77d5"
@@ -12734,6 +12739,11 @@ word@~0.3.0:
   version "0.3.0"
   resolved "https://registry.yarnpkg.com/word/-/word-0.3.0.tgz#8542157e4f8e849f4a363a288992d47612db9961"
   integrity sha512-OELeY0Q61OXpdUfTp+oweA/vtLVg5VDOXh+3he3PNzLGG/y0oylSOC1xRVj0+l4vQ3tj/bB1HVHv1ocXkQceFA==
+
+wordcloud@^1.2.2:
+  version "1.2.2"
+  resolved "https://registry.yarnpkg.com/wordcloud/-/wordcloud-1.2.2.tgz#2d32a99d8ac6a54d8b56915be1d41928f205854d"
+  integrity sha512-fUnDsGrHXou+49j1OeKaC7nOeZPx+sWjIet0L/j6eAcm0nXy+a+AuUs/iDAX4PLBg1Zc6wgXWXhoXdQsXRWAEw==
 
 workbox-background-sync@6.6.1:
   version "6.6.1"
