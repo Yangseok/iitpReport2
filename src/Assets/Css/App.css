@@ -1144,9 +1144,6 @@ textarea::placeholder {
   height: 60px;
   padding: 4px 20px 0;
 }
-.rc_custom_wrap .rc_custom {
-  min-width: 1400px;
-}
 
 .rc_custom {
   padding-bottom: 24px;

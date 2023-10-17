@@ -466,9 +466,11 @@ export default function Main() {
   }, [page]);
 
   useEffect(() => {
-    const scrollWidth = $('.rc_custom_wrap').get(0).scrollWidth;
-    // console.log('scrollWidth:', scrollWidth);
-    $('.rc_custom_wrap').get(0).scrollLeft = scrollWidth;
+    if(paramSe2 === 'keyword' || paramSe2 === 'issue') {
+      const scrollWidth = $('.rc_custom_wrap').get(0).scrollWidth;
+      // console.log('scrollWidth:', scrollWidth);
+      $('.rc_custom_wrap').get(0).scrollLeft = scrollWidth;
+    }
   }, [rangeMin, rangeMax, page]);
 
   return (
@@ -494,7 +496,7 @@ export default function Main() {
               <IctWordClouds data={wordCloudData} height={600} onWordClick={handleWordClick} size={wordSize} />
             </div>
             <div className='rc_custom_wrap max-w-4.5xl mt-4 mx-auto'>
-              <div className='rc_custom'>
+              <div className='rc_custom min-w-360'>
                 <RcSlider
                   range
                   min={rangeMin}
@@ -545,7 +547,7 @@ export default function Main() {
                 <div className='flex items-center justify-between'>
                   <div className='flex-1 px-11 max-w-5.25xl'>
                     <div className='rc_custom_wrap mt-4 mx-auto'>
-                      <div className='rc_custom type02'>
+                      <div className='rc_custom type02 min-w-370'>
                         <RcSlider
                           included={false}
                           min={rangeMin}
