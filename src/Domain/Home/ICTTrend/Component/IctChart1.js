@@ -32,8 +32,14 @@ export default function IctChart(props) {
             if (label !== '') {
               label += ': ';
             }
+            if (context.parsed.x !== null) {
+              label += common.setPriceInput(context.parsed.x) + '건';
+            }
+            if (context.parsed.x !== null && context.parsed.y !== null) {
+              label += ' / ';
+            }
             if (context.parsed.y !== null) {
-              label += common.setPriceInput(context.parsed.y) + '건';
+              label += common.setPriceInput(context.parsed.y) + '%';
             }
             return label;
           }
@@ -45,7 +51,7 @@ export default function IctChart(props) {
       },
       datalabels: {
         formatter: function (value) {
-          return common.setPriceInput(value) + '건';
+          return common.setPriceInput(value);
         },
         display: false,
         color: '#0F172A',
