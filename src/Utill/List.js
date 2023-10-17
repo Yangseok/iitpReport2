@@ -255,7 +255,7 @@ export const callListAPI = async (filterKey, se1, se2, globalSearchDetailData, s
   return data;
 };
 
-export const getProcData = (filterKey, dataList) => {
+export const getProcData = (filterKey, dataList, se1) => {
   let procData = [];
 
   switch (filterKey) {
@@ -415,8 +415,13 @@ export const getProcData = (filterKey, dataList) => {
         source: parse(dataList?.[i]?.source ?? ''),
         date: (dateArr[0] ?? '').replaceAll('-','.'),
         link: dataList?.[i]?.link ?? '',
-        wordCloud: dataList?.[i]?.similarity ?? [],
       };
+      if (se1 === 'icttrend') {
+        pushData.wordCloud = dataList?.[i]?.keyword_similarity
+        ?? [];
+      } else {
+        pushData.wordCloud = dataList?.[i]?.similarity ?? [];
+      }
       procData.push(pushData);
     }
     break;

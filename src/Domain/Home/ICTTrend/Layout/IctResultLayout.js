@@ -164,31 +164,37 @@ export default function IctResultLayout({children, filterKey}) {
   }, [tabButtons1, tabButtons2]);
 
   useEffect(() => {
-    getChartDatas('wordCloud', category, ictKeyword, 100, startYear, endYear);
+    if (ictKeyword.length > 0) {
+      getChartDatas('wordCloud', category, ictKeyword, 100, startYear, endYear);
+    }
   }, [category, ictKeyword, startYear, endYear]);
 
   useEffect(() => {
-    getChartDatas('trend', category, ictKeyword, 16, undefined, undefined, singleYear);
+    if (ictKeyword.length > 0) {
+      getChartDatas('trend', category, ictKeyword, 16, undefined, undefined, singleYear);
+    }
   }, [category, ictKeyword, singleYear]);
 
   useEffect(() => {
     const keywords = ictRelatedKeyword.join('|');
     
-    if (paramSe4 === 'projectout' || paramSe4 === 'projectin' || paramSe4 === 'patent' || paramSe4 === 'paper') {
-      getChartDatas('year', category, keywords, 10);
-      getChartDatas('class', category, keywords);
-    }
-
-    if (paramSe4 === 'projectout' || paramSe4 === 'projectin' || paramSe4 === 'ict' || paramSe4 === 'policy' || paramSe4 === 'news') {
-      getChartDatas('orgn', category, keywords, 10);
-    }
-
-    if (paramSe4 === 'patent' || paramSe4 === 'paper') {
-      getChartDatas('appl', category, keywords, 10);
-    }
-
-    if (paramSe4 === 'news') {
-      getChartDatas('category', category, keywords, 10);
+    if (keywords.length > 0) {
+      if (paramSe4 === 'projectout' || paramSe4 === 'projectin' || paramSe4 === 'patent' || paramSe4 === 'paper') {
+        getChartDatas('year', category, keywords, 10);
+        getChartDatas('class', category, keywords);
+      }
+  
+      if (paramSe4 === 'projectout' || paramSe4 === 'projectin' || paramSe4 === 'ict' || paramSe4 === 'policy' || paramSe4 === 'news') {
+        getChartDatas('orgn', category, keywords, 10);
+      }
+  
+      if (paramSe4 === 'patent' || paramSe4 === 'paper') {
+        getChartDatas('appl', category, keywords, 10);
+      }
+  
+      if (paramSe4 === 'news') {
+        getChartDatas('category', category, keywords, 10);
+      }
     }
   }, [category, ictRelatedKeyword]);
 

@@ -134,7 +134,7 @@ export default function ListWrap(props) {
       console.log('data?.data?.result:', data?.data?.result);
       setTotalCount(data?.data?.result?.totalCount ?? 0);
       setFileterItem(data?.data?.result?.aggsInfo ?? {});
-      setProjectData(List.getProcData(filterKey, data?.data?.result?.dataList ?? []));
+      setProjectData(List.getProcData(filterKey, data?.data?.result?.dataList ?? [], se1));
       setSearchButtonClick(false);
       if (filterKey === 'search/indv') {
         setResearcherActive({ id: data?.data?.result?.dataList?.[0]?.id ?? -1, name: data?.data?.result?.dataList?.[0]?.indvName ?? '' });
