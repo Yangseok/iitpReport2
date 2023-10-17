@@ -16,6 +16,7 @@ import { getCategory, getEndYear, getIctKeyword, getSingleYear, getStartYear, se
 import { setSearchKeyword } from 'Domain/Home/Common/Status/CommonSlice';
 import * as ictTrendAPI from 'Domain/Home/ICTTrend/API/Call';
 import common from 'Utill';
+// import $ from 'jquery';
 
 export default function IctResultLayout({children, filterKey}) {
   const dispatch = useDispatch();
@@ -33,6 +34,7 @@ export default function IctResultLayout({children, filterKey}) {
   const [tabActive2, setTabActive2] = useState(0);
   const [page, setPage] = useState('');
 
+  const [ictRelatedKeyword, setIctRelatedKeyword] = useState([]);
   const [wordCloudData, setWordCloudData] = useState([]);
   const [trendData, setTrendData] = useState([]);
   const [yearData, setYearData] = useState([]);
@@ -87,12 +89,24 @@ export default function IctResultLayout({children, filterKey}) {
   }, []);
   
   // 워드 클라우드 클릭시
-  const handleWordClick = useCallback(() => {
-    document.querySelectorAll('.wordcloud_cursor_wrap svg text').forEach(function(_this) {
+  const handleWordClick = useCallback((item, dimension, event) => {
+    let wordsArr = [];
+    if (event.target.classList[0] === 'on') {
+      event.target.classList.remove('on');
+    } else {
+      event.target.classList.add('on');
+    }
+
+    document.querySelectorAll('.wordcloud_cursor_wrap span').forEach(function(_this) {
       _this.blur();
+      if (_this.classList[0]  === 'active' || _this.classList[0]  === 'on') {
+        wordsArr.push(_this.textContent);
+      }
     });
+    setIctRelatedKeyword([...wordsArr]);
+    // console.log('wordsArr', wordsArr);
     // dispatch(setIctKeyword(d.text));
-  }, [ictKeyword]);
+  }, []);
 
   useEffect(() => {
     let tab1 = [], tab2 = [];
@@ -158,28 +172,35 @@ export default function IctResultLayout({children, filterKey}) {
   }, [category, ictKeyword, singleYear]);
 
   useEffect(() => {
+    const keywords = ictRelatedKeyword.join('|');
+    
     if (paramSe4 === 'projectout' || paramSe4 === 'projectin' || paramSe4 === 'patent' || paramSe4 === 'paper') {
-      getChartDatas('year', category, ictKeyword, 10);
-      getChartDatas('class', category, ictKeyword);
+      getChartDatas('year', category, keywords, 10);
+      getChartDatas('class', category, keywords);
     }
 
     if (paramSe4 === 'projectout' || paramSe4 === 'projectin' || paramSe4 === 'ict' || paramSe4 === 'policy' || paramSe4 === 'news') {
-      getChartDatas('orgn', category, ictKeyword, 10);
+      getChartDatas('orgn', category, keywords, 10);
     }
 
     if (paramSe4 === 'patent' || paramSe4 === 'paper') {
-      getChartDatas('appl', category, ictKeyword, 10);
+      getChartDatas('appl', category, keywords, 10);
     }
 
     if (paramSe4 === 'news') {
-      getChartDatas('category', category, ictKeyword, 10);
+      getChartDatas('category', category, keywords, 10);
     }
-  }, [category, ictKeyword]);
+  }, [category, ictRelatedKeyword]);
 
   useEffect(() => {
     // console.log('리스트 초기화');
-    dispatch(setSearchKeyword(ictKeyword));
-  }, [ictKeyword]);
+    const keywords = ictRelatedKeyword.join('|');
+    dispatch(setSearchKeyword(keywords));
+  }, [ictRelatedKeyword]);
+
+  useEffect(() => {
+    setIctRelatedKeyword([ictKeyword]);
+  }, [category, ictKeyword]);
 
   const getChartComponent = (filterKey) => {
     switch (filterKey) {

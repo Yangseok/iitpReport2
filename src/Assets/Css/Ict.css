@@ -4,3 +4,11 @@
 .wordcloud_cursor_wrap svg text {
   cursor: pointer;
 }
+.wordcloud_cursor_wrap span {
+  display: block;
+  cursor: pointer;
+}
+.wordcloud_cursor_wrap span:hover, .wordcloud_cursor_wrap span.active, .wordcloud_cursor_wrap span.on {
+  color: #FFFFFF !important;
+  background-color: #d62728;
+}

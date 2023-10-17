@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import IctWordClouds from 'Domain/Home/ICTTrend/Component/IctWordClouds';
+import IctSubWordClouds from 'Domain/Home/ICTTrend/Component/IctSubWordClouds';
 import IctChart1 from 'Domain/Home/ICTTrend/Component/IctChart1';
 import IctChart4 from 'Domain/Home/ICTTrend/Component/IctChart4';
 import { getEndYear, getSingleYear, getStartYear, setEndYear, setSingleYear, setStartYear } from 'Domain/Home/ICTTrend/Status/IctTrendSlice';
@@ -94,7 +94,7 @@ export default function Result (props) {
               <h3 className='text-base font-bold text-color-dark'>연관어 클라우드</h3>
               {(wordCloudData?.length > 0)
                 ? <div className='wordcloud_cursor_wrap mt-4'>
-                  <IctWordClouds data={wordCloudData} onWordClick={onWordClick} height={660} />
+                  <IctSubWordClouds data={wordCloudData} onWordClick={onWordClick} height={376} />
                 </div>
                 : <div className='pt-5 pb-86'>
                   <p className='text-base text-color-placeholder'>데이터가 없습니다.</p>

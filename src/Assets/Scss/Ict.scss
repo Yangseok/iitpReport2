@@ -3,8 +3,15 @@
 /* ==================================================
   ICT TREND
 ================================================== */
-.wordcloud_cursor_wrap svg {
-  text {
+.wordcloud_cursor_wrap {
+  svg text { cursor: pointer; }
+  span {
+    display: block;
     cursor: pointer;
+
+    &:hover, &.active, &.on {
+      color: $color_white !important;
+      background-color: #d62728;
+    }
   }
 }
