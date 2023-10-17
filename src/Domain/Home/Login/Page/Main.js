@@ -9,6 +9,7 @@ import { useDispatch } from 'react-redux';
 import { setLoading, setAccount } from 'Domain/Home/Common/Status/CommonSlice';
 import { setMsg, setShow } from 'Domain/Home/Common/Status/MsgSlice';
 import common from 'Utill';
+import { useEffect } from 'react';
 
 export default function Main() {
   const dispatch = useDispatch();
@@ -65,6 +66,10 @@ export default function Main() {
     e.preventDefault();
     return false;
   };
+
+  useEffect(() => {
+    dispatch(setLoading(false));
+  }, []);
 
   return (
     <Layout>
