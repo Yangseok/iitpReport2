@@ -16,6 +16,7 @@ import * as ictTrendAPI from 'Domain/Home/ICTTrend/API/Call';
 import RcSlider from 'rc-slider';
 import common from 'Utill';
 import moment from 'moment';
+import $ from 'jquery';
 
 export default function Main() {
   const wordSize = 160;
@@ -463,6 +464,12 @@ export default function Main() {
     setKeywordRangeValue(rangeDefault);
     setIssueRangeValue(rangeMax);
   }, [page]);
+
+  useEffect(() => {
+    const scrollWidth = $('.rc_custom_wrap').get(0).scrollWidth;
+    // console.log('scrollWidth:', scrollWidth);
+    $('.rc_custom_wrap').get(0).scrollLeft = scrollWidth;
+  }, [rangeMin, rangeMax, page]);
 
   return (
     <IctLayout>
