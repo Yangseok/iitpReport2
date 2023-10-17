@@ -20,10 +20,17 @@ export default function AutoCompleteSearch(props) {
   const [timeoutFn, setTimeoutFn] = useState(null);
 
   const searchEvent = async () => {
+    const handleValid = props?.handleValid;
+    if (handleValid !== undefined) {
+      const validBool = handleValid(tmpSearchKeyword);
+      if (!validBool) return null;
+    }
+
+    //todo: 검색어 입력..
     setSearchFocus(false);
     dispatch(setSearchKeyword(tmpSearchKeyword));
     const handleSearch = props?.handleSearch;
-    if (handleSearch !== undefined) handleSearch();
+    if (handleSearch !== undefined) handleSearch(false, true, tmpSearchKeyword);
 
     const setSearchButtonClick = props?.setSearchButtonClick;
     if (setSearchButtonClick !== undefined) setSearchButtonClick(true);

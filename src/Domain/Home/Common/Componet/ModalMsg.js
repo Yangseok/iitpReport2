@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useRef} from 'react';
 import {
   TERipple,
   TEModal,
@@ -16,6 +16,8 @@ export default function ModalMsg(props) {
   const params = useParams();
   const paramSe2 = params?.se2;
   const navigate = useNavigate();
+
+  const msgButtonRef = useRef([]);
 
   const btnClick = (f) => {
     // console.log(f);
@@ -41,6 +43,17 @@ export default function ModalMsg(props) {
       }
     }
   };
+
+  useEffect(() => {
+    const timeObj = setTimeout(() => {
+      msgButtonRef?.current?.[0]?.focus();  
+    }, 300);
+    
+    return () => {
+      clearTimeout(timeObj);
+    };
+  }, [btnTxt]);
+
   return (
     <TEModal show={show} setShow={setShow}>
       <TEModalDialog>
@@ -82,6 +95,7 @@ export default function ModalMsg(props) {
                   type="button"
                   className={btnCss?.[i]}
                   onClick={() => btnClick(btnEvent?.[i])}
+                  ref={(e) => msgButtonRef.current[i] = e}
                 >
                   {e}
                 </button>

@@ -129,7 +129,19 @@ export default function Search(props) {
   };
 
   const handleDetailSearch = () => {
-    console.log('handleDetailSearch:', searchDetailData[tabActive]);
+    // console.log('handleDetailSearch:', searchDetailData[tabActive]);
+    let searchDetailActiveTabData = searchDetailData?.[tabActive] ?? {};
+    if (JSON.stringify(searchDetailActiveTabData) === JSON.stringify({})) {
+      dispatch(setMsg({
+        title: '알림',
+        msg: '상세검색 데이터를 입력해주세요.',
+        btnCss: ['inline-block rounded bg-primary-100 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-primary-700 transition duration-150 ease-in-out hover:bg-primary-accent-100 focus:bg-primary-accent-100 focus:outline-none focus:ring-0 active:bg-primary-accent-200'],
+        btnTxt: ['확인'],
+        btnEvent: ['close']
+      }));
+      dispatch(setShow(true));
+      return null;
+    }
     if (tmpSearchKeyword == '' && searchKeyword != '') {
       dispatch(setSearchKeyword(''));
     }
@@ -142,22 +154,21 @@ export default function Search(props) {
     handleSearch();
   };
 
-  const handleSearch = (agency=false, checkKeyword=false, inputText=undefined) => {
-    // let searchDetailActiveTabData = searchDetailData?.[tabActive] ?? {};
-    // console.log(searchDetailActiveTabData);
+  const handleSearch = (agency=false, checkKeyword=true, inputText=undefined) => {
     let keyword = tmpSearchKeyword;
     if (inputText !== undefined) keyword = inputText;
-    // if (tmpSearchKeyword.trim() === '' && JSON.stringify(searchDetailActiveTabData) === JSON.stringify({})) {
-    if (checkKeyword && keyword.trim() === '') {
+    let searchDetailActiveTabData = searchDetailData?.[tabActive] ?? {};
+    // console.log('JSON.stringify(searchDetailActiveTabData) === JSON.stringify({}):', JSON.stringify(searchDetailActiveTabData) === JSON.stringify({}));
+    if (checkKeyword && keyword.trim() === '' && JSON.stringify(searchDetailActiveTabData) === JSON.stringify({})) {
       dispatch(setMsg({
         title: '알림',
-        msg: '키워드를 입력해주세요.',
+        msg: '검색어나 상세검색 데이터를 입력해주세요.',
         btnCss: ['inline-block rounded bg-primary-100 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-primary-700 transition duration-150 ease-in-out hover:bg-primary-accent-100 focus:bg-primary-accent-100 focus:outline-none focus:ring-0 active:bg-primary-accent-200'],
         btnTxt: ['확인'],
         btnEvent: ['close']
       }));
       dispatch(setShow(true));
-      return null;
+      return ;
     }
     dispatch(setSearchKeywordReset(true));
     // navigate('/search/result/all?keyword=' + tmpSearchKeyword);
@@ -172,6 +183,23 @@ export default function Search(props) {
     } else {
       navigate('/search/result/'+(mappingTabActiveToPage[tabActive]??'all'));
     }
+    // console.log(se);
+  };
+
+  const handleValid = (keyword) => {
+    let searchDetailActiveTabData = searchDetailData?.[tabActive] ?? {};
+    if (keyword.trim() === '' && JSON.stringify(searchDetailActiveTabData) === JSON.stringify({})) {
+      dispatch(setMsg({
+        title: '알림',
+        msg: '검색어나 상세검색 데이터를 입력해주세요.',
+        btnCss: ['inline-block rounded bg-primary-100 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-primary-700 transition duration-150 ease-in-out hover:bg-primary-accent-100 focus:bg-primary-accent-100 focus:outline-none focus:ring-0 active:bg-primary-accent-200'],
+        btnTxt: ['확인'],
+        btnEvent: ['close']
+      }));
+      dispatch(setShow(true));
+      return false;
+    }
+    return true;
   };
 
   // useEffect(() => {
@@ -219,6 +247,7 @@ export default function Search(props) {
           <h2 className='hidden_text'>통합 검색</h2>
           <AutoCompleteSearch 
             handleSearch={handleSearch}
+            handleValid={handleValid}
             setSearchButtonClick={props?.setSearchButtonClick}
             style={{ type: 3, name: '통합 검색', icon: icSearch }}
           />
