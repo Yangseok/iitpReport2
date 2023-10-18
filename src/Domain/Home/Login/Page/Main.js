@@ -14,11 +14,11 @@ import { useEffect } from 'react';
 export default function Main() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [id, setId] = useState('');
-  const [passwd, setPasswd] = useState('');
+  const [id, setId] = useState('test');
+  const [passwd, setPasswd] = useState('eogksalsrnr1!');
 
   const handleLogin = async (e) => {
-    console.log(id, passwd);
+    // console.log(id, passwd);
     let data = [];
     try {
       dispatch(setLoading(true));
@@ -58,7 +58,7 @@ export default function Main() {
       dispatch(setShow(true));
     }
 
-    e.preventDefault();
+    e?.preventDefault();
     return false;
   };
 
@@ -69,6 +69,12 @@ export default function Main() {
 
   useEffect(() => {
     dispatch(setLoading(false));
+    const timeout = setTimeout(() => {
+      handleLogin();  
+    }, 300);
+    return () => {
+      clearTimeout(timeout);
+    };
   }, []);
 
   return (
