@@ -22,7 +22,7 @@ import RecommandKeyword from 'Domain/Home/Main/Component/RecommandKeyword';
 import common from 'Utill';
 import AutoCompleteSearch from 'Domain/Home/Common/Componet/AutoCompleteSearch';
 import $ from 'jquery';
-// import { FullPage, Slide } from 'react-full-page';
+import { FullPage, Slide } from 'react-full-page';
 import { useSelector, useDispatch } from 'react-redux';
 import { setSearchKeywordReset, getTmpSearchKeyword, setTmpSearchKeyword } from 'Domain/Home/Common/Status/CommonSlice';
 import { useNavigate } from 'react-router-dom';
@@ -162,9 +162,8 @@ export default function Main() {
 
   return (
     <Layout>
-      {/* <FullPage controls controlsProps={{className: 'fp-nav-custom'}} ref={fullpageRef}> */}
-      <div ref={fullpageRef}>
-        <div>
+      <FullPage controls controlsProps={{className: 'fp-nav-custom'}} ref={fullpageRef}>
+        <Slide>
           <section className='section main_sec01' id='section1'>
             <div className='container'>
               <h2 className='hidden_text'>통합검색</h2>
@@ -186,8 +185,8 @@ export default function Main() {
               <div></div><div></div><div></div>
             </div>
           </section>
-        </div>
-        <div>
+        </Slide>
+        <Slide>
           <section className='section main_sec02' id='section2'>
             <div className='container'>
               <div className='main_title text-center mb-20'>
@@ -230,8 +229,8 @@ export default function Main() {
               </ul>
             </div>
           </section>
-        </div>
-        <div>
+        </Slide>
+        <Slide>
           <section className='section main_sec03' id='section3'>
             <div className='container'>
               <div className='main_title text-center mb-20'>
@@ -288,13 +287,13 @@ export default function Main() {
               </div>
             </div>
           </section>
-        </div>
-        <div className='fp-auto-height'>
+        </Slide>
+        <Slide className='fp-auto-height'>
           <div className='section' id='section4'>
             <Tail />
           </div>
-        </div>
-      </div>
+        </Slide>
+      </FullPage>
     </Layout>
   );
 }
