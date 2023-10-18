@@ -65,7 +65,7 @@ const API = axios.create({
   data: {},
   headers: {
     'Content-Type': 'application/json',
-    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Origin': 'http://222.122.110.106:19600/',
   },
 });
 
@@ -111,5 +111,5 @@ API.interceptors.response.use(
     return Promise.reject(error);
   },
 );
-export const multipartHeader = {headers: {'Content-Type': 'multipart/form-data', 'Access-Control-Allow-Origin': '*'}};
+export const multipartHeader = {headers: {'Content-Type': 'multipart/form-data', 'Access-Control-Allow-Origin': 'http://222.122.110.106:19600/'}};
 export default API;

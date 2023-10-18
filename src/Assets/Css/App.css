@@ -170,7 +170,7 @@
 ================================================== */
 body {
   font-size: 16px;
-  font-family: "Pretendard";
+  font-family: "Pretendard", sans-serif;
   min-width: 1320px;
   overflow-x: auto;
 }

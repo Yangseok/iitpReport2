@@ -18,11 +18,9 @@ import API from 'Utill/API';
  */
 
 export const ictSearchWordCloud = async (category, label, keyword, size, startYear, endYear, year, firstYear) => {
-  
-  !category ? 'all': category;
 
   let params = {
-    category: category,
+    category: !category ? 'all': category,
     label: label,
     keyword: !keyword ? '인공지능' : keyword,
     size:!size ? 10: size
@@ -54,11 +52,9 @@ export const ictSearchWordCloud = async (category, label, keyword, size, startYe
  */
 
 export const ictList = async (category, keyword, size, page) => {
-  
-  !category ? 'all': category;
 
   let params = {
-    category: category,
+    category: !category ? 'all': category,
     keyword: !keyword ? '인공지능' : keyword,
     size: !size ? 10 : size,
     page: !page ? 1 : page

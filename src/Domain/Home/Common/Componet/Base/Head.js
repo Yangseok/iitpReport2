@@ -71,7 +71,7 @@ export default function Head(props) {
             <ul>
               {nav.map((e, i) => {
                 let classOn = false;
-                e.depth2.map((e2) => 
+                e.depth2.forEach((e2) => 
                   (e2.to.split('/')[1] === se1) ? classOn = true : false);
                 
                 if(i !== (nav.length - 1)) {

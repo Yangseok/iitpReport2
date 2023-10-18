@@ -79,7 +79,8 @@ export default function IctWordClouds(props) {
       return setTimeout(() => {
         // console.log('addTabIndex');
         d3.selectAll('.wordcloud_cursor_wrap text').each(function(){
-          this.setAttribute('tabindex', 0);
+          // this.setAttribute('tabindex', 0);
+          $(this).attr('tabindex', 0);
           if ($(this).text() === ictKeyword) {
             $(this).addClass('active');
           }
@@ -87,7 +88,8 @@ export default function IctWordClouds(props) {
         
         $(document).unbind('keydown').on('keydown', '.wordcloud_cursor_wrap svg text', function (event) {
           if(event.key === 'Enter') {
-            const text = this.textContent;
+            // const text = this.textContent;
+            const text = $(this).text();
             onWordClick(event, { text });
           }
         });

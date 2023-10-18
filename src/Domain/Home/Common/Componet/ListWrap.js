@@ -218,7 +218,7 @@ export default function ListWrap(props) {
       for (let i in data?.data?.result?.indvResultInfo?.dataInfo?.projectIn ?? []) {
       // console.log(i, data?.data?.result?.indvResultInfo?.dataInfo?.projectIn?.[i]);
         const period = data?.data?.result?.indvResultInfo?.dataInfo?.projectIn?.[i]?.period ?? '';
-        const division = [];
+        const division = data?.data?.result?.indvResultInfo?.dataInfo?.projectIn?.[i]?.technicalClassification ?? '';
         const keywordt = data?.data?.result?.indvResultInfo?.dataInfo?.projectIn?.[i]?.keywords ?? [];
         const subListPushData = {
           id: data?.data?.result?.indvResultInfo?.dataInfo?.projectIn?.[i]?.projectNumber ?? i,
@@ -231,7 +231,7 @@ export default function ListWrap(props) {
           name: data?.data?.result?.indvResultInfo?.dataInfo?.projectIn?.[i]?.researchManagerName ?? '',
           department: data?.data?.result?.indvResultInfo?.dataInfo?.projectIn?.[i]?.orderAgencyName ?? '',
           performance: data?.data?.result?.indvResultInfo?.dataInfo?.projectIn?.[i]?.performance ?? '',
-          division: division.join(' / '),
+          division: division,
           keyword: keywordt.join(', '),
         };
         subList.push(subListPushData);
@@ -410,12 +410,12 @@ export default function ListWrap(props) {
             // console.log('procKeyword:', procKeyword);
             data = await discoveryAPI.searchCount('discovery',procKeyword.join('|'));
           } else if (se2 == 'file') {
-            if ((fileKeywordList?.length) ?? 0 > 0) data = await discoveryAPI.searchCount('discovery',fileKeywordList.map(o => o.keyword).join('|'));
+            if ((fileKeywordList ?? []).length > 0) data = await discoveryAPI.searchCount('discovery',fileKeywordList.map(o => o.keyword).join('|'));
           } else if (se2 == 'project') {
-            if ((fileKeywordList?.length) ?? 0 > 0) data = await discoveryAPI.searchCount('discovery',fileKeywordList.map(o => o.keyword).join('|'));
+            if ((fileKeywordList ?? []).length > 0) data = await discoveryAPI.searchCount('discovery',fileKeywordList.map(o => o.keyword).join('|'));
           }
         } else if (se1 === 'demandbanking') {
-          if ((wordCloudSurveyFile?.length) ?? 0 > 0) data = await discoveryAPI.searchCount('discovery',wordCloudSurveyFile?.map(o => o.keyword)?.join('|'));
+          if ((wordCloudSurveyFile ?? []).length > 0) data = await discoveryAPI.searchCount('discovery',wordCloudSurveyFile?.map(o => o.keyword)?.join('|'));
         } else if (se1 === 'icttrend') {
           // if (keyword !== '')data = await discoveryAPI.searchCount('discovery',keyword);
         }

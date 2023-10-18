@@ -250,7 +250,10 @@ export const getLabels = (length, gap) => {
 };
 export const getParams = (text) => {
   let params = {};
-  text.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(str, key, value) { params[key] = value; });
+  const regex = /[?&]+([^=&]+)=([^&]*)/gi;
+  if (regex.test(text)) {
+    text.replace(regex, function(str, key, value) { params[key] = value; });
+  }
   return params;
 };
 export const getUrlParams = () => {

@@ -37,7 +37,7 @@ export default function News(props) {
                   btn={(e.link) ? <>
                     <a href={e.link} className='h-5 px-1.5 rounded-sm text-xs font-medium text-color-white bg-color-footer' target='_blank' rel='noreferrer' title={`새창이동, ${e.title} 원문 페이지`}>원문 보기↗</a>
                   </> : null}
-                  contents={(e.wordCloud ?? 0 > 0) ? <NewsWordClouds wordCloudData={e.wordCloud ?? []} /> : null}
+                  contents={((e.wordCloud ?? []).length > 0) ? <NewsWordClouds wordCloudData={e.wordCloud ?? []} /> : null}
                   active={newsActive}
                   setActive={setNewsActive}
                 />

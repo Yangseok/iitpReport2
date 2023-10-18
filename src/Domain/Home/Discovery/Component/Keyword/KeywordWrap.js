@@ -96,7 +96,7 @@ export default function KeywordWrap(props) {
   useEffect(() => {
     let newObj = {};
 
-    Object.keys(tmpSearchKeywordResult).map((key) => {
+    Object.keys(tmpSearchKeywordResult).forEach((key) => {
       const arr = tmpSearchKeywordResult[key]?.list.filter((e) => (e.active));
       newObj[key] = { ...tmpSearchKeywordResult[key], list: arr };
       setSelectedData(newObj);

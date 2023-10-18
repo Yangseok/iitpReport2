@@ -14,7 +14,7 @@ export default function Observer() {
   const account = useSelector(getAccount);
 
   const se = common.getSegment();
-  const pageMove = (se[1] ?? '') + '/' + se[2] ?? '';
+  const pageMove = (se[1] ?? '') + '/' + (se[2] ?? '');
 
   const navigate = useNavigate();
   // const location = useLocation();

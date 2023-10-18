@@ -68,7 +68,7 @@ export default function ViewChart(props) {
             // labels
             if (fullLabels !== undefined)
               return fullLabels[context[0].dataIndex] ?? '';
-            else context[0].label ?? '';
+            else return context[0].label ?? '';
           },
           label: function(context) {
             let label = '';
