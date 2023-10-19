@@ -44,19 +44,19 @@ export const getSegment = (idx) => {
 
 export const colorSet = (weight) => {
   const percent = Math.floor(weight * 100);
-  let w = 5;
+  let newWeight = 5;
   if (0 <= percent && percent <= 29) {
-    w = 5;
+    newWeight = 5;
   } else if (30 <= percent && percent <= 49) {
-    w = 4;
+    newWeight = 4;
   } else if (50 <= percent && percent <= 69) {
-    w = 3;
+    newWeight = 3;
   } else if (70 <= percent && percent <= 89) {
-    w = 2;
+    newWeight = 2;
   } else if (90 <= percent && percent <= 100) {
-    w = 1;
+    newWeight = 1;
   }
-  return w;
+  return newWeight;
 };
 export const procKeywordData = (data) => {
   let keywordData = [];
@@ -151,7 +151,6 @@ export const excelExport = async (excelFileName, titleArr, data) => {
   };
   const excelButter = write(wb, { bookType: 'xlsx', type: 'array' });
   const excelFile = new Blob([excelButter], { type: excelFileType });
-  // await new Promise((resolve) => setTimeout(resolve, 1000));
   saveAs(excelFile, excelFileName + excelFileExtension);
 };
 export const maskingName = (name) => {

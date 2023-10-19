@@ -76,7 +76,6 @@ API.interceptors.request.use(
     console.log('params', JSON.stringify(config.params));
 
     const account = JSON.parse(localStorage.getItem('account'));
-    // console.log('account:', account);
 
     if ((account?.accessToken ?? '') !== '') {
       config.headers.authorization = account?.accessToken;
@@ -93,15 +92,11 @@ API.interceptors.request.use(
 );
 API.interceptors.response.use(
   response => {
-    // console.log('response:', response);
     return response;
   },
   error => {
-    // console.log('response error:', error);
     const status = error?.response?.status ?? '';
     const message = error?.response?.data?.message ?? '';
-    // console.log('response error status:', status);
-    // console.log('response error message:', message);
     const moveLoginMsgArr = ['토큰 정보가 유효하지 않습니다.', '사용자를 찾을 수 없습니다.', '잘못된 접근입니다. 로그인 후 이동하여 주십시오.'];
     const moveStatusCode = [401,404];
     if (moveStatusCode.indexOf(status) !== -1 && moveLoginMsgArr.indexOf(message) !== -1) {

@@ -243,7 +243,6 @@ export const callListAPI = async (filterKey, se1, se2, globalSearchDetailData, s
       if ((similarity ?? []).length > 0) data = await apiMethod('discovery',size,page,'',similarity,sort,filterObj,searchParam,etcParam);
     }
   } else if (se1 === 'demandbanking') {
-    // console.log('demandbanking selectKeyword:', selectKeyword);
     similarity = selectKeyword;
     if ((similarity ?? []).length > 0) data = await apiMethod('discovery',size,page,'',similarity,sort,filterObj,searchParam,etcParam);
   } else if (se1 === 'icttrend') {
@@ -251,7 +250,6 @@ export const callListAPI = async (filterKey, se1, se2, globalSearchDetailData, s
     if (keyword !== '') data = await ictTrendAPI.ictList(category,keyword,size,page);
   }
 
-  // console.log('!!!!!!!!!!!!!!!!!!!!!!!',filterKey, apiMethod, data);
   return data;
 };
 

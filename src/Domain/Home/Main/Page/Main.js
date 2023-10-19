@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import 'Assets/Css/Main.css';
 import icScroll from 'Assets/Images/main_scroll01.png';
 import imgService01 from 'Assets/Images/service_img01.png';
@@ -25,7 +25,6 @@ import $ from 'jquery';
 import { FullPage, Slide } from 'react-full-page';
 import { useSelector, useDispatch } from 'react-redux';
 import { setSearchKeywordReset, getTmpSearchKeyword, setTmpSearchKeyword } from 'Domain/Home/Common/Status/CommonSlice';
-import { useNavigate } from 'react-router-dom';
 import { setMsg,setShow } from 'Domain/Home/Common/Status/MsgSlice';
 
 export default function Main() {
@@ -33,7 +32,6 @@ export default function Main() {
   const tmpSearchKeyword = useSelector(getTmpSearchKeyword);
   const [dataCount, setDataCount] = useState({});
   
-  // const [dataSearch, setDataSearch] = useState([]);
   const fullpageRef = useRef(null);
 
   const navigate = useNavigate();
@@ -41,7 +39,6 @@ export default function Main() {
   const handleSearch = (agency=false, checkKeyword=true, inputText=undefined) => {
     let keyword = tmpSearchKeyword;
     if (inputText !== undefined) keyword = inputText;
-    // console.log('agency:', agency);
     if (checkKeyword && keyword.trim() === '') {
       dispatch(setMsg({
         title: '알림',
@@ -103,7 +100,6 @@ export default function Main() {
       });
       $('#section2 a').first().on('keydown', (e) => {
         if(e.key == 'Tab' && _shift) {
-          // $('#section2').focus();
           fullpageRef.current.scrollToSlide(0);
           $('#section1').focus();
           return false;
@@ -122,7 +118,6 @@ export default function Main() {
       });
       $('#section4 a').first().on('keydown', (e) => {
         if(e.key == 'Tab' && _shift) {
-          // $('#section4').focus();
           fullpageRef.current.scrollToSlide(2);
           $('#section3').focus();
           return false;
@@ -150,15 +145,6 @@ export default function Main() {
     //검색어 초기화
     dispatch(setTmpSearchKeyword(''));
   }, []);
-
-  // useEffect(() => {
-  //   (async () => {
-  //     if(tmpSearchKeyword.trim() !== '') {
-  //       const data = await mainAPI.autocomplete(tmpSearchKeyword);
-  //       setDataSearch(data?.data?.result);
-  //     }
-  //   })();
-  // }, [tmpSearchKeyword]);
 
   return (
     <Layout>

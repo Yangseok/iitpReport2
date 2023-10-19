@@ -7,19 +7,18 @@ export default function RecommandKeyword(props) {
 
   const dispatch = useDispatch();
 
-  const [isFetching, setFetching] = useState(true);
+  const [isFetching, setIsFetching] = useState(true);
   const [keyword, setKeyword] = useState([]);
 
   useEffect(() => {
     (async () => {
       const data = await mainAPI.recommend();
       setKeyword(data?.data?.result);
-      setFetching(false);
+      setIsFetching(false);
     })();
   }, []);
 
   const handleClick = keyword => {
-    // console.log(keyword);
     dispatch(setTmpSearchKeyword(keyword));
     dispatch(setSearchKeyword(keyword));
     const handleSearch = props?.handleSearch;
@@ -32,8 +31,8 @@ export default function RecommandKeyword(props) {
 
   return (
     <>
-      {keyword.map((keyword, i) => (
-        <button key={i} onClick={() => handleClick(keyword)} type='button'>#{keyword}</button>
+      {keyword.map((keyword) => (
+        <button key={keyword} onClick={() => handleClick(keyword)} type='button'>#{keyword}</button>
       ))}
     </>
   );

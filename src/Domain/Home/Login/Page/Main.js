@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import 'Assets/Css/Login.css';
 import Layout from 'Domain/Home/Common/Layout/Main';
@@ -9,7 +9,6 @@ import { useDispatch } from 'react-redux';
 import { setLoading, setAccount } from 'Domain/Home/Common/Status/CommonSlice';
 import { setMsg, setShow } from 'Domain/Home/Common/Status/MsgSlice';
 import common from 'Utill';
-import { useEffect } from 'react';
 
 export default function Main() {
   const dispatch = useDispatch();
@@ -18,7 +17,6 @@ export default function Main() {
   const [passwd, setPasswd] = useState('eogksalsrnr1!');
 
   const handleLogin = async (e) => {
-    // console.log(id, passwd);
     let data = [];
     try {
       dispatch(setLoading(true));
