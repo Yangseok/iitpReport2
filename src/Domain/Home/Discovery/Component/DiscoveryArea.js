@@ -3,7 +3,6 @@ import icAnalysis from 'Assets/Images/ic_analysis.png';
 import icSearch from 'Assets/Images/ic_search.png';
 import AutoCompleteSearch from 'Domain/Home/Common/Componet/AutoCompleteSearch';
 import KeywordWrap from 'Domain/Home/Discovery/Component/Keyword/KeywordWrap';
-// import * as mainAPI from 'Domain/Home/Main/API/Call';
 import { useSelector, useDispatch } from 'react-redux';
 import { getSearchKeyword, getTmpSearchKeyword, setSearchKeywordReset } from 'Domain/Home/Common/Status/CommonSlice';
 import { 
@@ -28,7 +27,7 @@ export default function PageSearchArea(props) {
   const paramSe3 = se[3] ?? '';
   const [menu, setMenu] = useState(0);
   const [keywordResult, setKeywordResult] = useState(false);
-  const [chfold, setChFold] = useState(false);
+  const [chFold, setChFold] = useState(false);
   
   const keyword = useSelector(getSearchKeyword);
   const tmpSearchKeyword = useSelector(getTmpSearchKeyword);
@@ -73,16 +72,11 @@ export default function PageSearchArea(props) {
   };
 
   const setSelectedFileName = (name) => {
-    // console.log('setSelectedFileName:', name);
-    // dispatch(setFileName(name));
     setTmpFileName(name);
   };
 
   const handleFileUpload = useCallback(async (e) => {
     e.preventDefault();
-
-    // console.log('selectedFile:', selectedFile);
-    // console.log('fileName:', fileName);
 
     if (selectedFile === null && fileName === null) {
       dispatch(setMsg({
@@ -148,15 +142,6 @@ export default function PageSearchArea(props) {
     }
   }, [paramSe3, menu]);
 
-  // useEffect(() => {
-  //   (async () => {
-  //     if(tmpSearchKeyword.trim() !== '') {
-  //       const data = await mainAPI.autocomplete(tmpSearchKeyword);
-  //       setDataSearch(data?.data?.result);
-  //     }
-  //   })();
-  // }, [tmpSearchKeyword]);
-
   return (
     <>
       {(menu === 0) 
@@ -170,7 +155,7 @@ export default function PageSearchArea(props) {
             labelText={'키워드 검색'}
           />
           {(keywordResult) 
-            && <KeywordWrap discoverySearchBttonClick={discoverySearchBttonClick} keyword={keyword} chfold={chfold} setChFold={setChFold} folded={(page === 'resultPage') ? true : ''} />}
+            && <KeywordWrap discoverySearchBttonClick={discoverySearchBttonClick} keyword={keyword} chFold={chFold} setChFold={setChFold} folded={(page === 'resultPage') ? true : ''} />}
         </>
         : (menu === 1)
           ? <>

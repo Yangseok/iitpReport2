@@ -107,7 +107,6 @@ export default function Result (props) {
       setNewOrgnData(datas);
       setOrgnLabels1(labels1);
       setOrgnLabels2(labels2);
-      // console.log('Data & LABEL', datas, labels1, labels2);
     }
   };
   
@@ -124,7 +123,7 @@ export default function Result (props) {
         parents.push('');
 
         if (classData[i]?.middle?.length > 0) {
-          for (let j = 0; j < classData[i].middle.length; j++) {
+          for (let j in classData[i].middle) {
             const middleData = classData[i].middle[j].key ?? '';
             const middleCnt = common.setPriceInput(classData[i].middle[j].doc_count ?? '');
             const middleRate = classData[i].middle[j].rate ?? '';
@@ -140,8 +139,6 @@ export default function Result (props) {
         'parents': parents,
       });
       setNewClassData(datas);
-
-      // console.log(datas, labels, parents);
     }
   };
 
@@ -176,88 +173,86 @@ export default function Result (props) {
   }, [classData]);
   
   return (
-    <>
-      <section className='mt-10 mb-10'>
-        <div className='container'>
-          <div className='list_wrap_style02 grid02'>
-            <div>
-              <h3 className='text-base font-bold text-color-dark'>연관어 클라우드</h3>
-              {(wordCloudData?.length > 0)
-                ? <div className='wordcloud_cursor_wrap mt-4'>
-                  <IctSubWordClouds data={wordCloudData} onWordClick={onWordClick} height={376} />
-                </div>
-                : <div className='pt-5 pb-86'>
-                  <p className='text-base text-color-placeholder'>데이터가 없습니다.</p>
-                </div>
-              }
-              <div className='rc_custom max-w-lg mt-4 mx-auto'>
-                <RcSlider
-                  range
-                  min={rangeMin}
-                  max={rangeMax}
-                  marks={rangeMarks}
-                  value={cloudsRangeValue}
-                  onChange={(e) => setCloudsRangeValue(e)}
-                />
+    <section className='mt-10 mb-10'>
+      <div className='container'>
+        <div className='list_wrap_style02 grid02'>
+          <div>
+            <h3 className='text-base font-bold text-color-dark'>연관어 클라우드</h3>
+            {(wordCloudData?.length > 0)
+              ? <div className='wordcloud_cursor_wrap mt-4'>
+                <IctSubWordClouds data={wordCloudData} onWordClick={onWordClick} height={376} />
               </div>
-            </div>
-            <div>
-              <h3 className='text-base font-bold text-color-dark'>관련 키워드 추이</h3>
-              {(trendData?.length > 0)
-                ? <div className='mt-4'>
-                  <IctChart1 labels={trendLabels} datas={newTrendData} height={660} />
-                </div>
-                : <div className='pt-5 pb-86'>
-                  <p className='text-base text-color-placeholder'>데이터가 없습니다.</p>
-                </div>
-              }
-              <div className='rc_custom type02 max-w-lg mt-4 mx-auto'>
-                <RcSlider
-                  included={false}
-                  min={rangeMin}
-                  max={rangeMax}
-                  marks={rangeMarks}
-                  value={chartRangeValue}
-                  onChange={(e) => setChartRangeValue(e)}
-                />
+              : <div className='pt-5 pb-86'>
+                <p className='text-base text-color-placeholder'>데이터가 없습니다.</p>
               </div>
-            </div>
-            <div>
-              <h3 className='text-base font-bold text-color-dark'>연도별 과제 건수</h3>
-              {(yearData?.length > 0)
-                ? <div className='chart_wrap mt-10'>
-                  <IctChart2 labels={yearLabels} datas={newYearData} />
-                </div>
-                : <div className='pt-5 pb-86'>
-                  <p className='text-base text-color-placeholder'>데이터가 없습니다.</p>
-                </div>
-              }
-            </div>
-            <div>
-              <h3 className='text-base font-bold text-color-dark'>과제 수행기관별 비교</h3>
-              {(orgnData?.length > 0)
-                ? <div className='chart_wrap mt-10'>
-                  <IctChart3 xLabels={orgnLabels1} dataLabels={orgnLabels2} datas={newOrgnData} />
-                </div>
-                : <div className='pt-5 pb-86'>
-                  <p className='text-base text-color-placeholder'>데이터가 없습니다.</p>
-                </div>
-              }
+            }
+            <div className='rc_custom max-w-lg mt-4 mx-auto'>
+              <RcSlider
+                range
+                min={rangeMin}
+                max={rangeMax}
+                marks={rangeMarks}
+                value={cloudsRangeValue}
+                onChange={(e) => setCloudsRangeValue(e)}
+              />
             </div>
           </div>
-          <div className='mt-14'>
-            <h3 className='text-base font-bold text-color-dark'>국제과학기술표준분류</h3>
-            {(classData?.length > 0)
-              ? <div className='mt-5'>
-                <IctTreeMap data={newClassData} />
+          <div>
+            <h3 className='text-base font-bold text-color-dark'>관련 키워드 추이</h3>
+            {(trendData?.length > 0)
+              ? <div className='mt-4'>
+                <IctChart1 labels={trendLabels} datas={newTrendData} height={660} />
               </div>
-              : <div className='pt-5 pb-12'>
+              : <div className='pt-5 pb-86'>
+                <p className='text-base text-color-placeholder'>데이터가 없습니다.</p>
+              </div>
+            }
+            <div className='rc_custom type02 max-w-lg mt-4 mx-auto'>
+              <RcSlider
+                included={false}
+                min={rangeMin}
+                max={rangeMax}
+                marks={rangeMarks}
+                value={chartRangeValue}
+                onChange={(e) => setChartRangeValue(e)}
+              />
+            </div>
+          </div>
+          <div>
+            <h3 className='text-base font-bold text-color-dark'>연도별 과제 건수</h3>
+            {(yearData?.length > 0)
+              ? <div className='chart_wrap mt-10'>
+                <IctChart2 labels={yearLabels} datas={newYearData} />
+              </div>
+              : <div className='pt-5 pb-86'>
+                <p className='text-base text-color-placeholder'>데이터가 없습니다.</p>
+              </div>
+            }
+          </div>
+          <div>
+            <h3 className='text-base font-bold text-color-dark'>과제 수행기관별 비교</h3>
+            {(orgnData?.length > 0)
+              ? <div className='chart_wrap mt-10'>
+                <IctChart3 xLabels={orgnLabels1} dataLabels={orgnLabels2} datas={newOrgnData} />
+              </div>
+              : <div className='pt-5 pb-86'>
                 <p className='text-base text-color-placeholder'>데이터가 없습니다.</p>
               </div>
             }
           </div>
         </div>
-      </section>
-    </>
+        <div className='mt-14'>
+          <h3 className='text-base font-bold text-color-dark'>국제과학기술표준분류</h3>
+          {(classData?.length > 0)
+            ? <div className='mt-5'>
+              <IctTreeMap data={newClassData} />
+            </div>
+            : <div className='pt-5 pb-12'>
+              <p className='text-base text-color-placeholder'>데이터가 없습니다.</p>
+            </div>
+          }
+        </div>
+      </div>
+    </section>
   );
 }

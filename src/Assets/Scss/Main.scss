@@ -21,12 +21,16 @@
     .fp-overflow {
       padding: 40px 0;
     }
+
+    @if ($i == 1) {
+      position: relative;
+    } @else if ($i == 3) {
+      background-color: $color_m_bg;
+    }
   }
 }
 
 .main_sec01 {
-  position: relative;
-  
   .keywords_box {
     @include flexLayout(center, center, 24px);
 
@@ -139,67 +143,63 @@
   }
 }
 
-.main_sec03 {
-  background-color: $color_m_bg;
+.main_sec03 .conts_box {
+  @include flexLayout(center, center);
+  padding: 65px 0;
+  border-radius: 8px;
+  background-color: $color_white;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.256);
+  text-align: center;
 
-  .conts_box {
+  .all_conts {
+    position: relative;
+    width: 40%;
+
+    &::before {
+      content: '';
+      position: absolute;
+      top: calc(50% - 106px);
+      right: 0;
+      width: 1px;
+      height: 212px;
+      background-color: $color_line;
+    }
+    img { margin: 0 auto; }
+    p {
+      font-size: 24px;
+      color: $color_dark;
+      font-weight: 700;
+    }
+    span {
+      font-size: 40px;
+      color: $color_main;
+      font-weight: 700;
+    }
+  }
+  ul {
     @include flexLayout(center, center);
-    padding: 65px 0;
-    border-radius: 8px;
-    background-color: $color_white;
-    box-shadow: 0 4px 24px rgba(0,0,0,0.256);
-    text-align: center;
+    flex-wrap: wrap;
+    width: 60%;
+    padding: 0 30px;
 
-    .all_conts {
-      position: relative;
-      width: 40%;
+    li {
+      width: 25%;
 
-      &::before {
-        content: '';
-        position: absolute;
-        top: calc(50% - 106px);
-        right: 0;
-        width: 1px;
-        height: 212px;
-        background-color: $color_line;
+      &:nth-of-type(n+5) { margin-top: 48px; }
+      
+      img {
+        width: 56px;
+        margin: 0 auto;
       }
-      img { margin: 0 auto; }
       p {
-        font-size: 24px;
-        color: $color_dark;
-        font-weight: 700;
+        font-size: 16px;
+        color: $color_regular;
+        font-weight: 500;
       }
       span {
-        font-size: 40px;
+        font-size: 18px;
         color: $color_main;
         font-weight: 700;
-      }
-    }
-    ul {
-      @include flexLayout(center, center);
-      flex-wrap: wrap;
-      width: 60%;
-      padding: 0 30px;
-
-      li {
-        width: 25%;
-
-        &:nth-of-type(n+5) { margin-top: 48px; }
-        
-        img {
-          width: 56px;
-          margin: 0 auto;
-        }
-        p {
-          font-size: 16px;
-          color: $color_regular;
-          font-weight: 500;
-        }
-        span {
-          font-size: 18px;
-          color: $color_main;
-          font-weight: 700;
-        }
       }
     }
   }

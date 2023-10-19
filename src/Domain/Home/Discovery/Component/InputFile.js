@@ -13,7 +13,7 @@ export default function InputFile(props) {
     const limitFileSize = 100 * 1024 * 1024;
     const fileName = e.target?.files?.[0]?.name ?? '';
     const fileNameArr = fileName.split('.');
-    var fileExt = fileNameArr[fileNameArr.length-1].toLowerCase();
+    const fileExt = fileNameArr[fileNameArr.length-1].toLowerCase();
     if ((props.accept ?? '').toLowerCase().replaceAll('.', '').split(',').indexOf(fileExt) === -1 ) {
       dispatch(setMsg({
         title: '알림',
@@ -41,11 +41,6 @@ export default function InputFile(props) {
 
     setFileName(name);
     setFileValue(e.target.files);
-
-    // console.log('onFileChange name:', name);
-    // console.log('onFileChange e.target.files[0]:', e.target.files[0]);
-    // console.log('props.setSelectedFileName:', props.setSelectedFileName);
-    // console.log('props.setSelectedFile:', props.setSelectedFile);
 
     if (props.setSelectedFileName !== undefined) props.setSelectedFileName(name);
     if (props.setSelectedFile !== undefined) props.setSelectedFile(e.target.files[0]);

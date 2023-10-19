@@ -23,7 +23,7 @@ export default function ViewChart(props) {
     responsive: true,
     plugins: {
       legend: {
-        display: (title?.label) ? true : false,
+        display: (title?.label !== undefined) ? true : false,
         position: 'top',
       },
       tooltip: {
@@ -73,7 +73,7 @@ export default function ViewChart(props) {
       y: {
         display: true,
         title: {
-          display: (title?.y) ? true : false,
+          display: (title?.y !== undefined) ? true : false,
           text: (title?.y) ?? 'y축',
           color: '#334155',
           font: {

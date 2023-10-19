@@ -15,76 +15,6 @@ import common from 'Utill';
 export default function PopupPatentView(props) {
   const { applData } = props;
 
-  // const tempData1 = [
-  //   { id: 0, title: '인공지능 학습 및 디지털 트윈을 위한 3차원 데이터 수집·전처리 및 가공 플랫폼 개발' },
-  //   { id: 1, title: '인공지능 학습 및 디지털 트윈을 위한 3차원 데이터 수집·전처리 및 가공 플랫폼 개발' },
-  //   { id: 2, title: '인공지능 학습 및 디지털 트윈을 위한 3차원 데이터 수집·전처리 및 가공 플랫폼 개발' },
-  //   { id: 3, title: '인공지능 학습 및 디지털 트윈을 위한 3차원 데이터 수집·전처리 및 가공 플랫폼 개발' },
-  //   { id: 4, title: '인공지능 학습 및 디지털 트윈을 위한 3차원 데이터 수집·전처리 및 가공 플랫폼 개발' },
-  //   { id: 5, title: '인공지능 학습 및 디지털 트윈을 위한 3차원 데이터 수집·전처리 및 가공 플랫폼 개발' },
-  //   { id: 6, title: '인공지능 학습 및 디지털 트윈을 위한 3차원 데이터 수집·전처리 및 가공 플랫폼 개발' },
-  //   { id: 7, title: '인공지능 학습 및 디지털 트윈을 위한 3차원 데이터 수집·전처리 및 가공 플랫폼 개발' },
-  //   { id: 8, title: '인공지능 학습 및 디지털 트윈을 위한 3차원 데이터 수집·전처리 및 가공 플랫폼 개발' },
-  //   { id: 9, title: '인공지능 학습 및 디지털 트윈을 위한 3차원 데이터 수집·전처리 및 가공 플랫폼 개발' },
-  // ];
-  // const tempData2 = [
-  //   [
-  //     { content: '출원일', scope: 'row' },
-  //     { content: '2020.06.24' },
-  //     { content: '출원인', scope: 'row' },
-  //     { content: '행정안전부국립재난안전연구원' },
-  //   ],
-  //   [
-  //     { content: '소속기관 사업자등록번호', scope: 'row' },
-  //     { content: '*** - ** - **01*' },
-  //     { content: '해외출원여부', scope: 'row' },
-  //     { content: '국내출원' },
-  //   ],
-  //   [
-  //     { content: '우선권 주장번호', scope: 'row' },
-  //     { content: '-' },
-  //     { content: '발명자', scope: 'row' },
-  //     { content: '홍길동, 김영수, 김영희' },
-  //   ],
-  //   [
-  //     { content: '등록번호', scope: 'row' },
-  //     { content: '10-2203135-0000' },
-  //     { content: '등록일', scope: 'row' },
-  //     { content: '2021.01.08' },
-  //   ],
-  //   [
-  //     { content: 'IPC 코드', scope: 'row' },
-  //     { content: '-' },
-  //     { content: '법적 상태', scope: 'row' },
-  //     { content: '등록' },
-  //   ],
-  //   [
-  //     { content: '기술이전 희망', scope: 'row' },
-  //     { content: '-' },
-  //     { content: '심사청구 여부/일자', scope: 'row' },
-  //     { content: '-' },
-  //   ],
-  //   [
-  //     { content: '심사청구 항수', scope: 'row' },
-  //     { content: '-', colspan: 3 },
-  //   ],
-  // ];
-  // 데이터 5개씩 뿌려줌
-  // const tempData3 = [
-  //   {
-  //     id: 0,
-  //     progress: '진행중',
-  //     title: '인공지능 학습 및 디지털 트윈을 위한 3차원 데이터 수집·전처리 및 가공 플랫폼 개발',
-  //     price: '10억',
-  //     period: '2023.04.01 ~ 2024.04.30',
-  //     agency: '주식회사 오름',
-  //     name: '홍길동',
-  //     department: '중소벤처기업부',
-  //     division: '정보 / 통신 / 소프트웨어 / S/W솔루션 ',
-  //     keyword: '3D 데이터, 디지털 트윈, 지능형 데이터 가공 플랫폼, 깊이 추정',
-  //   },
-  // ];
-
   const tabButtons = [
     { id: 0, name: '기본 정보', onClick: () => setTabActive(0) },
     { id: 1, name: '특허 요약', onClick: () => setTabActive(1) },
@@ -160,7 +90,6 @@ export default function PopupPatentView(props) {
       const total = data?.data?.result?.totalCount ?? 0;
       setListData(dataList);
       setTotalCnt(total);
-      // console.log(data?.data?.result);
     } catch (e) {
       console.warn(e);
     } finally {
@@ -304,13 +233,11 @@ export default function PopupPatentView(props) {
           tabs={tabButtons}
           active={tabActive}
           title={viewData.applName ?? ''}
-          tags={<>
-            <div className="flex items-center gap-4">
-              {/* 진행중 : tag_style05 | 종료 : tag_style02 */}
-              {/* <p className="tag_style05">진행중</p> */}
-              <p className="text-sm text-color-regular">출원번호: <span className="font-medium text-color-main">{viewData.applNumber ?? ''}</span></p>
-            </div>
-          </>}
+          tags={<div className="flex items-center gap-4">
+            {/* 진행중 : tag_style05 | 종료 : tag_style02 */}
+            {/* <p className="tag_style05">진행중</p> */}
+            <p className="text-sm text-color-regular">출원번호: <span className="font-medium text-color-main">{viewData.applNumber ?? ''}</span></p>
+          </div>}
           btnClick={() => setShowView(false)}
         >
           {(tabActive === 0)
@@ -335,7 +262,7 @@ export default function PopupPatentView(props) {
                   <ul>
                     {(viewProjectList?.length > 0) 
                       ? viewProjectList?.map((e) => {
-                        {/* tag - 진행중 : 1 | 종료 : 2 */}
+                        /* tag - 진행중 : 1 | 종료 : 2 */
                         return (<ListItem 
                           key={e.id}
                           tag={e.tag}
@@ -353,9 +280,7 @@ export default function PopupPatentView(props) {
                               <p className='text-sm text-color-regular'>한글 키워드: <span className='font-medium text-color-main'>{e.keyword}</span></p>
                             </div>
                           </>}
-                          btns={<>
-                            <a href={`/view/projectout/${e.id}`} className='h-5 px-1.5 rounded-sm text-xs font-medium text-color-white bg-color-light1' target="_blank" rel="noreferrer">자세히 보기↗</a>
-                          </>}
+                          btns={<a href={`/view/projectout/${e.id}`} className='h-5 px-1.5 rounded-sm text-xs font-medium text-color-white bg-color-light1' target="_blank" rel="noreferrer">자세히 보기↗</a>}
                         />);
                       })
                       : <li>

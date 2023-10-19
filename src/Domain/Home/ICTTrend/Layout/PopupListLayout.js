@@ -25,7 +25,7 @@ export default function PopupListLayout(props) {
                 author = `${e.author[0]} 외 ${e.author.length}명`;
               }
 
-              return  <li key={i}>
+              return  <li key={'liItem'+i}>
                 <button type='button' className='justify-between gap-2 w-full text-sm font-medium text-color-dark' onClick={() => {
                   listClick();
                   setIdx(e.id);

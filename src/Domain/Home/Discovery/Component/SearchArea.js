@@ -3,7 +3,6 @@ import icSearch from 'Assets/Images/ic_search.png';
 import icQuestion from 'Assets/Images/ic_question.png';
 import arrDrop from 'Assets/Images/arr_drop.png';
 import AutoCompleteSearch from 'Domain/Home/Common/Componet/AutoCompleteSearch';
-// import * as mainAPI from 'Domain/Home/Main/API/Call';
 import { useSelector, useDispatch } from 'react-redux';
 import { setSearchKeywordReset, getTmpSearchKeyword, getSearchKeyword, setSearchKeyword } from 'Domain/Home/Common/Status/CommonSlice';
 import { getSearchDetailData, setSearchDetailData as setGlobalSearchDetailData, getInitalSearch, setInitalSearch } from 'Domain/Home/Discovery/Status/DiscoverySlice';
@@ -40,7 +39,6 @@ export default function Search(props) {
 
   const tmpSearchKeyword = useSelector(getTmpSearchKeyword);
   const searchKeyword = useSelector(getSearchKeyword);
-  // const [dataSearch, setDataSearch] = useState([]);
 
   const initalSearch = useSelector(getInitalSearch);
 
@@ -53,7 +51,6 @@ export default function Search(props) {
 
   const handChangeData = (key, value) => {
     value = value.trim();
-    // console.log('key:',key,'value:',value);
     let newState = JSON.parse(JSON.stringify(searchDetailData));
     if (newState[tabActive] === undefined) newState[tabActive] = {};
     newState[tabActive][key] = value;
@@ -119,8 +116,6 @@ export default function Search(props) {
   };
 
   const initSearch = () => {
-    // let newState = JSON.parse(JSON.stringify(searchDetailData));
-    // delete newState[tabActive];
     setSearchDetailData({});
     dispatch(setGlobalSearchDetailData({}));
     setTimeout(() => {
@@ -129,7 +124,6 @@ export default function Search(props) {
   };
 
   const handleDetailSearch = () => {
-    // console.log('handleDetailSearch:', searchDetailData[tabActive]);
     let searchDetailActiveTabData = searchDetailData?.[tabActive] ?? {};
     if (JSON.stringify(searchDetailActiveTabData) === JSON.stringify({})) {
       dispatch(setMsg({
@@ -158,7 +152,6 @@ export default function Search(props) {
     let keyword = tmpSearchKeyword;
     if (inputText !== undefined) keyword = inputText;
     let searchDetailActiveTabData = searchDetailData?.[tabActive] ?? {};
-    // console.log('JSON.stringify(searchDetailActiveTabData) === JSON.stringify({}):', JSON.stringify(searchDetailActiveTabData) === JSON.stringify({}));
     if (checkKeyword && keyword.trim() === '' && JSON.stringify(searchDetailActiveTabData) === JSON.stringify({})) {
       dispatch(setMsg({
         title: '알림',
@@ -171,8 +164,6 @@ export default function Search(props) {
       return ;
     }
     dispatch(setSearchKeywordReset(true));
-    // navigate('/search/result/all?keyword=' + tmpSearchKeyword);
-    // console.log('agency:', agency);
     const se = common.getSegment();
     if (agency) {
       navigate('/search/result/orgn');
@@ -183,7 +174,6 @@ export default function Search(props) {
     } else {
       navigate('/search/result/'+(mappingTabActiveToPage[tabActive]??'all'));
     }
-    // console.log(se);
   };
 
   const handleValid = (keyword) => {
@@ -201,15 +191,6 @@ export default function Search(props) {
     }
     return true;
   };
-
-  // useEffect(() => {
-  //   (async () => {
-  //     if(tmpSearchKeyword.trim() !== '') {
-  //       const data = await mainAPI.autocomplete(tmpSearchKeyword);
-  //       setDataSearch(data?.data?.result);
-  //     }
-  //   })();
-  // }, [tmpSearchKeyword]);
   
   useEffect(() => {
     let yearArr = [];
@@ -276,16 +257,16 @@ export default function Search(props) {
                         <label htmlFor='startYear' className='hidden_text'>기준연도 범위 - 시작 연도</label>
                         <select name='startYear' id='startYear' value={searchDetailData?.[tabActive]?.yearStart ?? ''} onChange={(e) => handChangeData('yearStart', e.target.value)}>
                           <option value=''>선택</option>
-                          {selectYear.map((e,i) => {
-                            return <option key={i} value={e}>{e}</option>;
+                          {selectYear.map((e) => {
+                            return <option key={e} value={e}>{e}</option>;
                           })}
                         </select>
                         <span className='text-base font-medium text-color-dark mx-3'> - </span>
                         <label htmlFor='endYear' className='hidden_text'>기준연도 범위 - 끝 연도</label>
                         <select name='endYear' id='endYear' value={searchDetailData?.[tabActive]?.yearEnd ?? ''} onChange={(e) => handChangeData('yearEnd', e.target.value)}>
                           <option value=''>선택</option>
-                          {selectYear.map((e,i) => {
-                            return <option key={i} value={e}>{e}</option>;
+                          {selectYear.map((e) => {
+                            return <option key={e} value={e}>{e}</option>;
                           })}
                         </select>
                       </dd>
@@ -353,16 +334,16 @@ export default function Search(props) {
                         <label htmlFor='startYear' className='hidden_text'>성과연도 범위 - 시작 연도</label>
                         <select name='startYear' id='startYear' value={searchDetailData?.[tabActive]?.yearStart ?? ''} onChange={(e) => handChangeData('yearStart', e.target.value)}>
                           <option value=''>선택</option>
-                          {selectYear.map((e,i) => {
-                            return <option key={i} value={e}>{e}</option>;
+                          {selectYear.map((e) => {
+                            return <option key={e} value={e}>{e}</option>;
                           })}
                         </select>
                         <span className='text-base font-medium text-color-dark mx-3'> - </span>
                         <label htmlFor='endYear' className='hidden_text'>성과연도 범위 - 끝 연도</label>
                         <select name='endYear' id='endYear' value={searchDetailData?.[tabActive]?.yearEnd ?? ''} onChange={(e) => handChangeData('yearEnd', e.target.value)}>
                           <option value=''>선택</option>
-                          {selectYear.map((e,i) => {
-                            return <option key={i} value={e}>{e}</option>;
+                          {selectYear.map((e) => {
+                            return <option key={e} value={e}>{e}</option>;
                           })}
                         </select>
                       </dd>
@@ -390,16 +371,16 @@ export default function Search(props) {
                         <label htmlFor='startYear' className='hidden_text'>성과연도 범위 - 시작 연도</label>
                         <select name='startYear' id='startYear' value={searchDetailData?.[tabActive]?.yearStart ?? ''} onChange={(e) => handChangeData('yearStart', e.target.value)}>
                           <option value=''>선택</option>
-                          {selectYear.map((e,i) => {
-                            return <option key={i} value={e}>{e}</option>;
+                          {selectYear.map((e) => {
+                            return <option key={e} value={e}>{e}</option>;
                           })}
                         </select>
                         <span className='text-base font-medium text-color-dark mx-3'> - </span>
                         <label htmlFor='endYear' className='hidden_text'>성과연도 범위 - 끝 연도</label>
                         <select name='endYear' id='endYear' value={searchDetailData?.[tabActive]?.yearEnd ?? ''} onChange={(e) => handChangeData('yearEnd', e.target.value)}>
                           <option value=''>선택</option>
-                          {selectYear.map((e,i) => {
-                            return <option key={i} value={e}>{e}</option>;
+                          {selectYear.map((e) => {
+                            return <option key={e} value={e}>{e}</option>;
                           })}
                         </select>
                       </dd>
@@ -431,16 +412,16 @@ export default function Search(props) {
                         <label htmlFor='startYear' className='hidden_text'>발행연도 범위 - 시작 연도</label>
                         <select name='startYear' id='startYear' value={searchDetailData?.[tabActive]?.yearStart ?? ''} onChange={(e) => handChangeData('yearStart', e.target.value)}>
                           <option value=''>선택</option>
-                          {selectYear.map((e,i) => {
-                            return <option key={i} value={e}>{e}</option>;
+                          {selectYear.map((e) => {
+                            return <option key={e} value={e}>{e}</option>;
                           })}
                         </select>
                         <span className='text-base font-medium text-color-dark mx-3'> - </span>
                         <label htmlFor='endYear' className='hidden_text'>발행연도 범위 - 끝 연도</label>
                         <select name='endYear' id='endYear' value={searchDetailData?.[tabActive]?.yearEnd ?? ''} onChange={(e) => handChangeData('yearEnd', e.target.value)}>
                           <option value=''>선택</option>
-                          {selectYear.map((e,i) => {
-                            return <option key={i} value={e}>{e}</option>;
+                          {selectYear.map((e) => {
+                            return <option key={e} value={e}>{e}</option>;
                           })}
                         </select>
                       </dd>
@@ -460,16 +441,16 @@ export default function Search(props) {
                         <label htmlFor='startYear' className='hidden_text'>발행연도 범위 - 시작 연도</label>
                         <select name='startYear' id='startYear' value={searchDetailData?.[tabActive]?.yearStart ?? ''} onChange={(e) => handChangeData('yearStart', e.target.value)}>
                           <option value=''>선택</option>
-                          {selectYear.map((e,i) => {
-                            return <option key={i} value={e}>{e}</option>;
+                          {selectYear.map((e) => {
+                            return <option key={e} value={e}>{e}</option>;
                           })}
                         </select>
                         <span className='text-base font-medium text-color-dark mx-3'> - </span>
                         <label htmlFor='endYear' className='hidden_text'>발행연도 범위 - 끝 연도</label>
                         <select name='endYear' id='endYear' value={searchDetailData?.[tabActive]?.yearEnd ?? ''} onChange={(e) => handChangeData('yearEnd', e.target.value)}>
                           <option value=''>선택</option>
-                          {selectYear.map((e,i) => {
-                            return <option key={i} value={e}>{e}</option>;
+                          {selectYear.map((e) => {
+                            return <option key={e} value={e}>{e}</option>;
                           })}
                         </select>
                       </dd>

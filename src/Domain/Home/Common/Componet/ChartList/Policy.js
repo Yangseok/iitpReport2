@@ -86,67 +86,65 @@ export default function Result (props) {
   }, [orgnData]);
 
   return (
-    <>
-      <section className='mt-10 mb-10'>
-        <div className='container'>
-          <div className='list_wrap_style02 grid02'>
-            <div>
-              <h3 className='text-base font-bold text-color-dark'>연관어 클라우드</h3>
-              {(wordCloudData?.length > 0)
-                ? <div className='wordcloud_cursor_wrap mt-4'>
-                  <IctSubWordClouds data={wordCloudData} onWordClick={onWordClick} height={376} />
-                </div>
-                : <div className='pt-5 pb-86'>
-                  <p className='text-base text-color-placeholder'>데이터가 없습니다.</p>
-                </div>
-              }
-              <div className='rc_custom max-w-lg mt-4 mx-auto'>
-                <RcSlider
-                  range
-                  min={rangeMin}
-                  max={rangeMax}
-                  marks={rangeMarks}
-                  value={cloudsRangeValue}
-                  onChange={(e) => setCloudsRangeValue(e)}
-                />
+    <section className='mt-10 mb-10'>
+      <div className='container'>
+        <div className='list_wrap_style02 grid02'>
+          <div>
+            <h3 className='text-base font-bold text-color-dark'>연관어 클라우드</h3>
+            {(wordCloudData?.length > 0)
+              ? <div className='wordcloud_cursor_wrap mt-4'>
+                <IctSubWordClouds data={wordCloudData} onWordClick={onWordClick} height={376} />
               </div>
-            </div>
-            <div>
-              <h3 className='text-base font-bold text-color-dark'>관련 키워드 추이</h3>
-              {(trendData?.length > 0)
-                ? <div className='mt-4'>
-                  <IctChart1 labels={trendLabels} datas={newTrendData} height={660} />
-                </div>
-                : <div className='pt-5 pb-86'>
-                  <p className='text-base text-color-placeholder'>데이터가 없습니다.</p>
-                </div>
-              }
-              <div className='rc_custom type02 max-w-lg mt-4 mx-auto'>
-                <RcSlider
-                  included={false}
-                  min={rangeMin}
-                  max={rangeMax}
-                  marks={rangeMarks}
-                  value={chartRangeValue}
-                  onChange={(e) => setChartRangeValue(e)}
-                />
+              : <div className='pt-5 pb-86'>
+                <p className='text-base text-color-placeholder'>데이터가 없습니다.</p>
               </div>
+            }
+            <div className='rc_custom max-w-lg mt-4 mx-auto'>
+              <RcSlider
+                range
+                min={rangeMin}
+                max={rangeMax}
+                marks={rangeMarks}
+                value={cloudsRangeValue}
+                onChange={(e) => setCloudsRangeValue(e)}
+              />
             </div>
           </div>
-          <div className='list_wrap_style02 mt-14'>
-            <div>
-              <h3 className='text-base font-bold text-color-dark'>발행기관별 건수</h3>
-              {(orgnData?.length > 0)
-                ? <div className='mt-4'>
-                  <IctChart4 labels={orgnLabels} datas={newOrgnData} height={120} />
-                </div>
-                : <div className='pt-5 pb-64'>
-                  <p className='text-base text-color-placeholder'>데이터가 없습니다.</p>
-                </div>}
+          <div>
+            <h3 className='text-base font-bold text-color-dark'>관련 키워드 추이</h3>
+            {(trendData?.length > 0)
+              ? <div className='mt-4'>
+                <IctChart1 labels={trendLabels} datas={newTrendData} height={660} />
+              </div>
+              : <div className='pt-5 pb-86'>
+                <p className='text-base text-color-placeholder'>데이터가 없습니다.</p>
+              </div>
+            }
+            <div className='rc_custom type02 max-w-lg mt-4 mx-auto'>
+              <RcSlider
+                included={false}
+                min={rangeMin}
+                max={rangeMax}
+                marks={rangeMarks}
+                value={chartRangeValue}
+                onChange={(e) => setChartRangeValue(e)}
+              />
             </div>
           </div>
         </div>
-      </section>
-    </>
+        <div className='list_wrap_style02 mt-14'>
+          <div>
+            <h3 className='text-base font-bold text-color-dark'>발행기관별 건수</h3>
+            {(orgnData?.length > 0)
+              ? <div className='mt-4'>
+                <IctChart4 labels={orgnLabels} datas={newOrgnData} height={120} />
+              </div>
+              : <div className='pt-5 pb-64'>
+                <p className='text-base text-color-placeholder'>데이터가 없습니다.</p>
+              </div>}
+          </div>
+        </div>
+      </div>
+    </section>
   );
 }

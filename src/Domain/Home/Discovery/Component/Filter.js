@@ -18,8 +18,6 @@ export default function Filter(props) {
 
   const initalFilter = useSelector(getInitalFilter);
 
-  // console.log('selectItemActive[filterKey].selected:', selectItemActive[filterKey].selected);
-
   const handleSelectItem = useCallback((e) => {
     if (selectItemActive[filterKey]?.selected[tabActive] === undefined) return null;
     let selectArr = selectItemActive[filterKey]?.selected[tabActive] ?? [];
@@ -30,14 +28,11 @@ export default function Filter(props) {
       setArr = [...selectArr, e.key];
     }
     let selectObj = JSON.parse(JSON.stringify(selectItemActive));
-    // console.log('selectObj[filterKey].selected[tabActive]:', selectObj[filterKey].selected[tabActive]);
-    // console.log('setArr:', setArr);
     selectObj[filterKey].selected[tabActive] = setArr;
     setSelectItemActive(selectObj);
   }, [selectItemActive, filterKey, tabActive]);
 
   const applyFilter = useCallback(() => {
-    // console.log(selectItemActive);
     dispatch(setFilterActive(selectItemActive));
   }, [selectItemActive]);
 
@@ -93,7 +88,6 @@ export default function Filter(props) {
         <ul>
           {(selectItem.length > 0) ?
             selectItem?.map((e) => {
-              // console.log(e.key, selectItemActive.indexOf(e.key) !== -1);
               return (
                 <li key={e.key} onClick={() => handleSelectItem(e)}>
                   <button type='button' className={((selectItemActive[filterKey]?.selected[tabActive]??[]).indexOf(e.key) !== -1) ? 'on' : ''}>

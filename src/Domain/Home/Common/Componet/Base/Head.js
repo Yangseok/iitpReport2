@@ -1,6 +1,5 @@
 import React, { useCallback, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { NavLink } from 'react-router-dom';
+import { useNavigate, NavLink } from 'react-router-dom';
 import SiteMap from './SiteMap';
 import common from 'Utill';
 import { useDispatch, useSelector } from 'react-redux';
@@ -14,30 +13,34 @@ export default function Head(props) {
   const { className } = props;
   const nav = [
     {
+      id: 0,
       to: '/discovery/keyword', name: '통합검색&디스커버리',
       depth2: [
-        {to: '/discovery/keyword', name: '디스커버리'},
-        {to: '/search', name: '통합검색'},
+        {id: 0, to: '/discovery/keyword', name: '디스커버리'},
+        {id: 1, to: '/search', name: '통합검색'},
       ],
     },
     {
+      id: 1,
       to: '/demandbanking', name: '수요 뱅킹 서비스',
       depth2: [
-        {to: '/demandbanking', name: '공고별 보기'},
+        {id: 0, to: '/demandbanking', name: '공고별 보기'},
       ],
     },
     {
+      id: 2,
       to: '/icttrend/keyword', name: 'ICT 트렌드',
       depth2: [
-        {to: '/icttrend/keyword', name: 'ICT 뉴스 트렌드'},
-        {to: '/icttrend/technology', name: 'ICT 기술분류 트렌드'},
-        {to: '/icttrend/issue', name: 'ICT 10대 이슈'},
+        {id: 0, to: '/icttrend/keyword', name: 'ICT 뉴스 트렌드'},
+        {id: 1, to: '/icttrend/technology', name: 'ICT 기술분류 트렌드'},
+        {id: 2, to: '/icttrend/issue', name: 'ICT 10대 이슈'},
       ],
     },
     {
+      id: 3,
       to: '/service', name: '서비스 소개',
       depth2: [
-        {to: '/service', name: '서비스 가이드'},
+        {id: 0, to: '/service', name: '서비스 가이드'},
       ],
     },
   ];
@@ -57,7 +60,6 @@ export default function Head(props) {
     };
     dispatch(setAccount(setAccountData));
     localStorage.removeItem('account');
-    // document.location.href = '/login';
     navigate('/login');
     e.preventDefault();
   }, []);
@@ -70,13 +72,16 @@ export default function Head(props) {
           <nav>
             <ul>
               {nav.map((e, i) => {
-                let classOn = false;
-                e.depth2.forEach((e2) => 
-                  (e2.to.split('/')[1] === se1) ? classOn = true : false);
+                let classOn = (e.to.split('/')[1] === se1) ? true : false;
+                if (se1 === 'search' && e.to.split('/')[1] === 'discovery') {
+                  classOn = true;
+                }
+                // e.depth2.forEach((e2) => 
+                //   classOn = (e2.to.split('/')[1] === se1) ? true : false);
                 
                 if(i !== (nav.length - 1)) {
                   return <li 
-                    key={i} 
+                    key={e.id} 
                     className={classOn ? 'on' : ''}
                   >
                     <NavLink to={e.to}>

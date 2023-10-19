@@ -40,8 +40,7 @@ export default function IctLayout({children}) {
           <div className='flex items-center justify-between'>
             <TabButtons style='1' tabs={tabButtons} active={tabActive} />
             <button type='button' className='guide_btn gap-1' onClick={() => setPopup(true)}>
-              <img src={icGuide} alt='검색 가이드' className='w-6' />
-              서비스 가이드
+              <img src={icGuide} alt='검색 가이드' className='w-6' /> 서비스 가이드
             </button>
           </div>
         </div>

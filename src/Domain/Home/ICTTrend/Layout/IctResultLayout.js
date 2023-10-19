@@ -11,12 +11,10 @@ import PaperChart from 'Domain/Home/Common/Componet/ChartList/Paper';
 import IctChart from 'Domain/Home/Common/Componet/ChartList/Ict';
 import PolicyChart from 'Domain/Home/Common/Componet/ChartList/Policy';
 import NewsChart from 'Domain/Home/Common/Componet/ChartList/News';
-import { setLoading } from 'Domain/Home/Common/Status/CommonSlice';
+import { setLoading, setSearchKeyword } from 'Domain/Home/Common/Status/CommonSlice';
 import { getCategory, getEndYear, getIctKeyword, getSingleYear, getStartYear, setCategory } from 'Domain/Home/ICTTrend/Status/IctTrendSlice';
-import { setSearchKeyword } from 'Domain/Home/Common/Status/CommonSlice';
 import * as ictTrendAPI from 'Domain/Home/ICTTrend/API/Call';
 import common from 'Utill';
-// import $ from 'jquery';
 
 export default function IctResultLayout({children, filterKey}) {
   const dispatch = useDispatch();
@@ -65,25 +63,18 @@ export default function IctResultLayout({children, filterKey}) {
   
       if(label === 'wordCloud') {
         setWordCloudData(dataList);
-        // console.log('wordCloud', dataList);
       } else if (label === 'trend') {
         setTrendData(dataList);
-        // console.log('trend', dataList);
       } else if (label === 'year') {
         setYearData(dataList);
-        // console.log('year', dataList);
       } else if (label === 'orgn') {
         setOrgnData(dataList);
-        // console.log('orgn', dataList);
       } else if (label === 'class') {
         setClassData(dataList);
-        // console.log('class', dataList);
       } else if (label === 'appl') {
         setApplData(dataList);
-        // console.log('appl', dataList);
       } else if (label === 'category') {
         setCateData(dataList);
-        // console.log('category', dataList);
       }
     }
   }, []);
@@ -104,8 +95,6 @@ export default function IctResultLayout({children, filterKey}) {
       }
     });
     setIctRelatedKeyword([...wordsArr]);
-    // console.log('wordsArr', wordsArr);
-    // dispatch(setIctKeyword(d.text));
   }, []);
 
   useEffect(() => {
@@ -199,7 +188,6 @@ export default function IctResultLayout({children, filterKey}) {
   }, [category, ictRelatedKeyword]);
 
   useEffect(() => {
-    // console.log('리스트 초기화');
     const keywords = ictRelatedKeyword.join('|');
     dispatch(setSearchKeyword(keywords));
   }, [ictRelatedKeyword]);

@@ -177,12 +177,15 @@
   animation-duration: 0.3s;
   animation-fill-mode: both;
   animation-play-state: paused;
+  transform: scale(0, 0);
+  animation-timing-function: cubic-bezier(0.23, 1, 0.32, 1);
 }
 .rc-slider-tooltip-zoom-down-leave {
   display: block !important;
   animation-duration: 0.3s;
   animation-fill-mode: both;
   animation-play-state: paused;
+  animation-timing-function: cubic-bezier(0.755, 0.05, 0.855, 0.06);
 }
 .rc-slider-tooltip-zoom-down-enter.rc-slider-tooltip-zoom-down-enter-active,
 .rc-slider-tooltip-zoom-down-appear.rc-slider-tooltip-zoom-down-appear-active {
@@ -192,14 +195,6 @@
 .rc-slider-tooltip-zoom-down-leave.rc-slider-tooltip-zoom-down-leave-active {
   animation-name: rcSliderTooltipZoomDownOut;
   animation-play-state: running;
-}
-.rc-slider-tooltip-zoom-down-enter,
-.rc-slider-tooltip-zoom-down-appear {
-  transform: scale(0, 0);
-  animation-timing-function: cubic-bezier(0.23, 1, 0.32, 1);
-}
-.rc-slider-tooltip-zoom-down-leave {
-  animation-timing-function: cubic-bezier(0.755, 0.05, 0.855, 0.06);
 }
 @keyframes rcSliderTooltipZoomDownIn {
   0% {

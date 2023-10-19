@@ -19,7 +19,7 @@ export default function KeywordWrap(props) {
   
   const searchKeywordReset = useSelector(getSearchKeywordReset);
 
-  const { folded, chfold, setChFold } = props;
+  const { folded, chFold, setChFold } = props;
   const [selectedData, setSelectedData] = useState({});
   const [resetDisabled, setResetDisabled] = useState(true);
   const [fullFold, setFullFold] = useState(folded ?? false);
@@ -55,7 +55,6 @@ export default function KeywordWrap(props) {
       delete newState[i];
     }
     setTmpSearchKeywordResult(newState);
-    // dispatch(setSearchKeywordResult(newState));
   };
 
   // 키워드 확장 버튼 클릭 이벤트
@@ -71,22 +70,18 @@ export default function KeywordWrap(props) {
     newState = { ...newState, [dep]: { fold: false, list: keywordData } };
     
     setTmpSearchKeywordResult(newState);
-    // dispatch(setSearchKeywordResult(newState));
   };
 
   // 키워드 선택 초기화
   const onKeywordReset = async () => {
     const data = await discoveryAPI.discoveryKeyword(props.keyword);
     const keywordData = common.procKeywordData(data?.data?.result ?? []);
-    // console.log(keywordData);
     // 1depth 키워드 데이터 노출
     setTmpSearchKeywordResult({ 1: { fold: false, list: keywordData } });
-    // dispatch(setSearchKeywordResult({ 1: { fold: false, list: keywordData } }));
     setSelectedData({});
   };
 
   useEffect(() => {
-    // console.log('onKeywordReset : searchKeywordReset', searchKeywordReset);
     if (searchKeywordReset === true) {
       dispatch(setSearchKeywordReset(false));
       onKeywordReset();
@@ -101,7 +96,6 @@ export default function KeywordWrap(props) {
       newObj[key] = { ...tmpSearchKeywordResult[key], list: arr };
       setSelectedData(newObj);
     });
-    // console.log('TOTAL DATA : ', searchKeywordResult);
   }, [tmpSearchKeywordResult]);
 
   useEffect(() => {
@@ -110,17 +104,15 @@ export default function KeywordWrap(props) {
     } else {
       setResetDisabled(true);
     }
-    // console.log('SELECT DATA : ', selectedData);
     setTmpSelectKeyword(selectedData);
-    // dispatch(setSelectKeyword(selectedData));
   }, [selectedData]);
 
   useEffect(() => {
-    if (chfold) {
+    if (chFold) {
       setFullFold(true);
       setChFold(false);
     }
-  }, [chfold]);
+  }, [chFold]);
 
   return (
     <>
@@ -128,8 +120,7 @@ export default function KeywordWrap(props) {
         <h3 className='text-xl font-bold text-color-dark'>키워드 결과</h3>
         <div className='flex items-center gap-6'>
           <button type='button' className='discovery_reset_btn' disabled={resetDisabled} onClick={onKeywordReset}>
-            선택 초기화
-            <img src={(resetDisabled) ? icReset : icReset02} alt='선택 초기화' className='w-6' />
+            선택 초기화 <img src={(resetDisabled) ? icReset : icReset02} alt='선택 초기화' className='w-6' />
           </button>
           <button type='button' className={`discovery_fold_btn${(fullFold) ? ' fold' : ''}`} onClick={() => setFullFold(state => !state)}>
             {(fullFold) ? '펼치기' : '접기'} 
@@ -141,7 +132,7 @@ export default function KeywordWrap(props) {
         ? <>
           {Object.keys(tmpSearchKeywordResult).map((key, idx) => (
             <KeywordDepth 
-              key={idx}
+              key={'keyword'+idx}
               idx={idx + 1}
               isFold={tmpSearchKeywordResult[key]?.fold}
               data={tmpSearchKeywordResult[key]?.list}

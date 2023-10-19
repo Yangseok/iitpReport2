@@ -59,8 +59,6 @@ export const ictList = async (category, keyword, size, page) => {
     size: !size ? 10 : size,
     page: !page ? 1 : page
   };
-  
-  // console.log('params',params);
 
   return await API.post('/ict/list', params);
 };
@@ -88,8 +86,6 @@ export const ictPerformanceList = async (category, appl, keyword, size, page) =>
   if (keyword) {
     params={...params, keyword};
   }
-  
-  // console.log('params',params);
 
   return await API.post('/ict/applList', params);
 };

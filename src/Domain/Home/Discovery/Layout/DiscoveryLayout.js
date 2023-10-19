@@ -62,8 +62,7 @@ export default function DiscoveryLayout({children}) {
               }
             </div>
             <button type='button' className='guide_btn gap-1' onClick={() => setPopup(true)}>
-              <img src={icGuide} alt='검색 가이드' className='w-6' />
-              검색 가이드
+              <img src={icGuide} alt='검색 가이드' className='w-6' /> 검색 가이드
             </button>
           </div>
         </div>

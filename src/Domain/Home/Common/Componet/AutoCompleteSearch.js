@@ -1,9 +1,7 @@
 import React, { useEffect, useState, useRef, useCallback } from 'react';
-// import * as Hangul from 'hangul-js';
 import Button from 'Domain/Home/Common/Componet/Button';
 import { useSelector, useDispatch } from 'react-redux';
 import { setSearchKeyword, setTmpSearchKeyword, getTmpSearchKeyword } from 'Domain/Home/Common/Status/CommonSlice';
-// import $ from 'jquery';
 // import { useSearchParams } from 'react-router-dom';
 import parse from 'html-react-parser';
 import * as mainAPI from 'Domain/Home/Main/API/Call';
@@ -34,8 +32,6 @@ export default function AutoCompleteSearch(props) {
 
     const setSearchButtonClick = props?.setSearchButtonClick;
     if (setSearchButtonClick !== undefined) setSearchButtonClick(true);
-
-    return null;
   };
 
   const onSearchKeyUp = async (e) => {
@@ -103,11 +99,11 @@ export default function AutoCompleteSearch(props) {
   const getAutocompleteList = useCallback(async (keyword) => {
     if ((keyword?.trim() ?? '') !== '') {
       const data = await mainAPI.autocomplete(keyword);
-      // console.log('api get keyword:', keyword, data);
 
       const tempArr = [];
-      data?.data?.result?.map((item) => {
+      data?.data?.result?.map((item, idx) => {
         const obj = {};
+        obj.id = idx;
         obj.text = parse(item.data);
         obj.agency = (item.type !== 'keyword');
         obj.onClick = () => onListClick(item.originData, obj.agency);
@@ -118,7 +114,6 @@ export default function AutoCompleteSearch(props) {
   }, []);
 
   const onChangeInput = useCallback(async (e) => {
-    // console.log('onChangeInput e.target.value:', e.target.value);
     dispatch(setTmpSearchKeyword(e.target.value));
     if (timeoutFn !== null) {
       clearTimeout(timeoutFn);
@@ -168,7 +163,7 @@ export default function AutoCompleteSearch(props) {
         <ul>
           {(listData?.length)
             ? listData?.map((e,i) => (
-              <li key={i} onKeyDown={(e) => handleListKeyDown(e, i)}>
+              <li key={e.id} onKeyDown={(e) => handleListKeyDown(e, i)}>
                 <button type='button' onClick={e.onClick} ref={(e) => searchListButtonRef.current[i] = e}>
                   {(e.agency) ? <span className="tag_style01 mt-0.5">기업</span> : ''}
                   <span className='text'>{e.text}</span>

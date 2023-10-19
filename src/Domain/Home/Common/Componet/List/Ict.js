@@ -14,19 +14,15 @@ export default function Ict(props) {
               return (<ListItem 
                 key={e.id}
                 title={e.title}
-                contents={<>
-                  <p className='text-sm text-color-regular line2_text'>{e.content}</p>
-                </>}
-                desc={<>
-                  <div className='text_style01 flex items-center gap-4'>
-                    {(e?.view) ? <a href={e.view} className='h-5 px-1.5 rounded-sm text-xs font-medium text-color-white bg-color-light1' target='_blank' rel='noreferrer' title={`새창이동, ${e.title} 뷰어 페이지`}>view 보기↗</a> : ''}
-                    <div>
-                      <p className='text-sm text-color-regular'>발행기관: <span className='font-medium text-color-main'>{e.agency}</span></p>
-                      <p className='text-sm text-color-regular'>발행일: <span className='font-medium text-color-main'>{e.date}</span></p>
-                    </div>
-                    {(e.link && e.link !== '') ? <a href={e.link} className='h-5 px-1.5 rounded-sm text-xs font-medium text-color-white bg-color-footer' target='_blank' rel='noreferrer' title={`새창이동, ${e.title} 원문 페이지`}>원문 보기↗</a> : null}
+                contents={<p className='text-sm text-color-regular line2_text'>{e.content}</p>}
+                desc={<div className='text_style01 flex items-center gap-4'>
+                  {(e?.view) ? <a href={e.view} className='h-5 px-1.5 rounded-sm text-xs font-medium text-color-white bg-color-light1' target='_blank' rel='noreferrer' title={`새창이동, ${e.title} 뷰어 페이지`}>view 보기↗</a> : ''}
+                  <div>
+                    <p className='text-sm text-color-regular'>발행기관: <span className='font-medium text-color-main'>{e.agency}</span></p>
+                    <p className='text-sm text-color-regular'>발행일: <span className='font-medium text-color-main'>{e.date}</span></p>
                   </div>
-                </>}
+                  {(e.link && e.link !== '') ? <a href={e.link} className='h-5 px-1.5 rounded-sm text-xs font-medium text-color-white bg-color-footer' target='_blank' rel='noreferrer' title={`새창이동, ${e.title} 원문 페이지`}>원문 보기↗</a> : null}
+                </div>}
               />);
             })
             : <li>

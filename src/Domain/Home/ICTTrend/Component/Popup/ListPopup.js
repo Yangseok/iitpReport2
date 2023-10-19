@@ -51,25 +51,23 @@ export default function ListPopup(props) {
   }, []);
 
   return (
-    <>
-      <div 
-        id='listPopup'
-        className='popup_bg' 
-        ref={popupRef} 
-        tabIndex={-1}
-        onClick={(e) => (e.target.id === 'listPopup') && handlePopupClose()}
-        onKeyDown={(e) => (e.key === 'Escape') && handlePopupClose()}
-      >
-        <div className='popup_wrap w-340 p-10 min-h-177'>
-          <div className='flex justify-end'>
-            <button type='button' className='popup_close_btn' onClick={handlePopupClose}>팝업 닫기</button>
-          </div>
-          {(category === 'patent')
-            ? <PopupPatent applData={applData} />
-            : (category === 'paper') 
-              ? <PopupPaper applData={applData} /> : null}
+    <div 
+      id='listPopup'
+      className='popup_bg' 
+      ref={popupRef} 
+      tabIndex={-1}
+      onClick={(e) => (e.target.id === 'listPopup') && handlePopupClose()}
+      onKeyDown={(e) => (e.key === 'Escape') && handlePopupClose()}
+    >
+      <div className='popup_wrap w-340 p-10 min-h-177'>
+        <div className='flex justify-end'>
+          <button type='button' className='popup_close_btn' onClick={handlePopupClose}>팝업 닫기</button>
         </div>
+        {(category === 'patent')
+          ? <PopupPatent applData={applData} />
+          : (category === 'paper') 
+            ? <PopupPaper applData={applData} /> : null}
       </div>
-    </>
+    </div>
   );
 }

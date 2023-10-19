@@ -31,8 +31,7 @@ export default function Tail() {
               </div>
             </div>
             <a href='https://www.itfind.or.kr/data/related/organ/list.do' className="gap-2 h-12 px-4.5 rounded text-sm btn_style01" target='_blank' rel='noreferrer' title='새창이동, 유관기관 바로가기 사이트'>
-              유관기관 바로가기
-              <img src={icArrow} alt='화살표' className='w-6' />
+              유관기관 바로가기 <img src={icArrow} alt='화살표' className='w-6' />
             </a>
           </div>
         </div>

@@ -16,7 +16,6 @@ import GuidePopup from 'Domain/Home/Common/Componet/GuidePopup';
 import { useSelector, useDispatch } from 'react-redux';
 import { setLoading } from 'Domain/Home/Common/Status/CommonSlice';
 import common from 'Utill';
-// import * as viewCallAPI from 'Domain/Home/Discovery/API/ViewCall';
 import * as demandCallAPI from 'Domain/Home/DemandBanking/API/Call';
 import moment from 'moment';
 import { getBigIctTmp, getMiddleIctTmp, getSmallIctTmp, getDetailIctTmp, getBigIctList, getMiddleIctList, getSmallIctList, getDetailIctList, setBigIctTmp, setMiddleIctTmp, setSmallIctTmp, setDetailIctTmp, setBigIctList, setMiddleIctList, setSmallIctList, setDetailIctList, setStartYear, setEndYear, getSelectedList, setSelectedList } from 'Domain/Home/DemandBanking/Status/DemandSlice';
@@ -52,43 +51,34 @@ export default function Main() {
   const smallIctList = useSelector(getSmallIctList);
   const detailIctList = useSelector(getDetailIctList);
 
+  const size = 20;
   const [checkAll, setCheckAll] = useState(false);
   const [btnDisabled, setBtnDisabled] = useState(true);
   const [data, setData] = useState([]);
   const [popup, setPopup] = useState(false);
   const [countData, setCountData] = useState([]);
   const [page, setPage] = useState(1);
-  const [size] = useState(20);
   const [totalCount, setTotalCount] = useState(0);
 
   const selectedList = useSelector(getSelectedList);
 
-  // useEffect(() => {
-  //   console.log('selectedList:', selectedList);
-  // }, [selectedList]);
-
   //필터 선택 초기화
   const initFilterClick = () => {
     getFilterList('BCLS','', true);
-    // handleFilterApply();
   };
 
   // 전체 선택 클릭
   const onAllItemClick = () => {
-    // console.log('onAllItemClick');
     const newData = data?.map(e => {
       return {...e, active: !checkAll};
     });
     setData(newData);
     setCheckAll(state => !state);
-    // console.log('newData:', newData);
 
     let dataIds = [];
     if ((data?.length ?? 0) > 0) dataIds = data.map(e => e.id);
-    // console.log('dataIds:', dataIds);
 
     if (checkAll) {
-      // console.log('setSelectedList:', selectedList.filter(e => dataIds.indexOf(e.id) === -1));
       dispatch(setSelectedList(selectedList.filter(e => dataIds.indexOf(e.id) === -1)));
     } else {
       let newSelecedList = JSON.parse(JSON.stringify(selectedList));
@@ -104,18 +94,13 @@ export default function Main() {
 
   //개별 선택 클릭
   const handleItemClick = (id) => {
-    // console.log('handleItemClick');
     const newData = data?.map(e => {
       if (e.id === id) {
         return {...e, active: !e.active};
       }
       return e;
     });
-    // console.log('newData:', newData);
     setData(newData);
-    
-    // console.log('newData?.length:', newData?.length);
-    // console.log('selectedList?.map(e => e.id === id)?.length:', selectedList?.map(e => e.id === id)?.length);
 
     if ((newData?.length ?? 0) > 0) {
       if ((selectedList?.filter(e => e.id === id)?.length ?? 0) > 0) {
@@ -128,8 +113,6 @@ export default function Main() {
             newSelecedList.push(addData[i]);
           }
         }
-        // console.log('selectedList:', selectedList);
-        // console.log('newSelecedList:', newSelecedList);
         dispatch(setSelectedList(newSelecedList));
       }
     }
@@ -227,7 +210,6 @@ export default function Main() {
       };
       tmpData.push(pushData);
     }
-    // console.log('tmpData:', tmpData);
     setData(tmpData);
     setTotalCount(data?.data?.result?.totalCount ?? 0);
     if (activeMode) setCheckAll(false);
@@ -382,8 +364,7 @@ export default function Main() {
               />
             </div>
             <button type='button' className='guide_btn gap-1' onClick={() => setPopup(true)}>
-              <img src={icGuide} alt='서비스 가이드' className='w-6' />
-              서비스 가이드
+              <img src={icGuide} alt='서비스 가이드' className='w-6' /> 서비스 가이드
             </button>
           </div>
           <div className='flex items-center justify-between mt-6'>
@@ -437,7 +418,7 @@ export default function Main() {
                       <select name='sortBig' id='sortBig' value={bigIctTmp} onChange={(e) => dispatch(setBigIctTmp(e.target.value))}>
                         <option value=''>대분류</option>
                         {bigIctList.map((e,i) => {
-                          return <option key={i} value={e.code ?? ''}>{e.name ?? ''}</option>;
+                          return <option key={e.code ?? i} value={e.code ?? ''}>{e.name ?? ''}</option>;
                         })}
                       </select>
                     </div>
@@ -446,7 +427,7 @@ export default function Main() {
                       <select name='sortMiddle' id='sortMiddle' value={middleIctTmp} onChange={(e) => dispatch(setMiddleIctTmp(e.target.value))}>
                         <option value=''>중분류</option>
                         {middleIctList.map((e,i) => {
-                          return <option key={i} value={e.code ?? ''}>{e.name ?? ''}</option>;
+                          return <option key={e.code ?? i} value={e.code ?? ''}>{e.name ?? ''}</option>;
                         })}
                       </select>
                     </div>
@@ -455,7 +436,7 @@ export default function Main() {
                       <select name='sortSmall' id='sortSmall' value={smallIctTmp} onChange={(e) => dispatch(setSmallIctTmp(e.target.value))}>
                         <option value=''>소분류</option>
                         {smallIctList.map((e,i) => {
-                          return <option key={i} value={e.code ?? ''}>{e.name ?? ''}</option>;
+                          return <option key={e.code ?? i} value={e.code ?? ''}>{e.name ?? ''}</option>;
                         })}
                       </select>
                     </div>
@@ -464,7 +445,7 @@ export default function Main() {
                       <select name='sortDetail' id='sortDetail' value={detailIctTmp} onChange={(e) => dispatch(setDetailIctTmp(e.target.value))}>
                         <option value=''>세분류</option>
                         {detailIctList.map((e,i) => {
-                          return <option key={i} value={e.code ?? ''}>{e.name ?? ''}</option>;
+                          return <option key={e.code ?? i} value={e.code ?? ''}>{e.name ?? ''}</option>;
                         })}
                       </select>
                     </div>
@@ -485,7 +466,7 @@ export default function Main() {
               전체 선택
             </button>
             <div className='flex items-center gap-4'>
-              <button type='button' className='discovery_reset_btn02' onClick={handleInitSelectedClick} disabled={btnDisabled ? true : false}>
+              <button type='button' className='discovery_reset_btn02' onClick={handleInitSelectedClick} disabled={btnDisabled}>
                 선택 초기화 <img src={btnDisabled ? icReset : icReset02} alt='선택 초기화' className='w-6' />
               </button>
               <Button name='선택보기' className={`h-12 px-4 rounded text-sm font-bold btn_style07${!btnDisabled ? ' on' : ''}`} onClick={() => (!btnDisabled) && navigate('/demandbanking/result')}></Button>

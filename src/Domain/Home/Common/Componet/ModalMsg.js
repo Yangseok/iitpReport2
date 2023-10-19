@@ -20,8 +20,6 @@ export default function ModalMsg(props) {
   const msgButtonRef = useRef([]);
 
   const btnClick = (f) => {
-    // console.log(f);
-    // console.log(typeof f)
     if (f === undefined) {
       setShow(false);
     } else if (typeof f === 'function') {
@@ -90,7 +88,7 @@ export default function ModalMsg(props) {
           <TEModalBody className='whitespace-pre-line'>{msg ?? ''}</TEModalBody>
           <TEModalFooter>
             {btnTxt?.map((e,i) => {
-              return <TERipple key={i} rippleColor="light">
+              return <TERipple key={e} rippleColor="light">
                 <button
                   type="button"
                   className={btnCss?.[i]}

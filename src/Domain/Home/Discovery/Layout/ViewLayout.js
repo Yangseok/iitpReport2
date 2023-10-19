@@ -24,7 +24,7 @@ export default function View(props) {
                     <p className='text-sm font-medium text-color-regular'>한글 키워드</p>
                     <div className='flex items-center justify-start gap-2 flex-wrap flex-1'>
                       {keywords?.ko.map((e, i) => (
-                        <p key={i} className='py-0.5 px-1.5 bg-color-placeholder rounded-sm text-xs font-medium text-color-white'>{e}</p>
+                        <p key={'ko'+i} className='py-0.5 px-1.5 bg-color-placeholder rounded-sm text-xs font-medium text-color-white'>{e}</p>
                       ))}
                     </div>
                   </div>
@@ -34,7 +34,7 @@ export default function View(props) {
                     <p className='text-sm font-medium text-color-regular'>영문 키워드</p>
                     <div className='flex items-center justify-start gap-2 flex-wrap flex-1'>
                       {keywords?.en.map((e, i) => (
-                        <p key={i} className='py-0.5 px-1.5 bg-color-placeholder rounded-sm text-xs font-medium text-color-white'>{e}</p>
+                        <p key={'en'+i} className='py-0.5 px-1.5 bg-color-placeholder rounded-sm text-xs font-medium text-color-white'>{e}</p>
                       ))}
                     </div>
                   </div>

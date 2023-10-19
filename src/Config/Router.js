@@ -24,38 +24,47 @@ import PageNotFound from 'Domain/Home/Common/ErrorPage/404';
 export default function Router() {
 
   let list = [{
+    id: 0,
     path: 'projectout',
     filterKey: 'search/projectOut',
     searchDetailKey: 0
   },{
+    id: 1,
     path: 'projectin',
     filterKey: 'search/projectIn',
     searchDetailKey: 0
   },{
+    id: 2,
     path: 'patent',
     filterKey: 'search/patent',
     searchDetailKey: 1
   },{
+    id: 3,
     path: 'paper',
     filterKey: 'search/paper',
     searchDetailKey: 2
   },{
+    id: 4,
     path: 'ict',
     filterKey: 'search/ict',
     searchDetailKey: 3
   },{
+    id: 5,
     path: 'policy',
     filterKey: 'search/policy',
     searchDetailKey: 4
   },{
+    id: 6,
     path: 'researcher',
     filterKey: 'search/indv',
     searchDetailKey: 5
   },{
+    id: 7,
     path: 'orgn',
     filterKey: 'search/orgn',
     searchDetailKey: 6
   },{
+    id: 8,
     path: 'news',
     filterKey: 'search/news',
     searchDetailKey: 7
@@ -72,13 +81,13 @@ export default function Router() {
         <Route path='/discovery' element={<Discovery />} />
         <Route path='/discovery/:se2' element={<Discovery />} />
         <Route path='/discovery/:se2/result' element={<Discovery />} />
-        {list.map((e,i) => {
-          return <Route key={i} path={'/discovery/:se2/result/' + e.path} element={<ListWrap filterKey={e.filterKey} searchDetailKey={e.searchDetailKey} />} />;
+        {list.map((e) => {
+          return <Route key={e.id} path={'/discovery/:se2/result/' + e.path} element={<ListWrap filterKey={e.filterKey} searchDetailKey={e.searchDetailKey} />} />;
         })}
         <Route path='/search' element={<Search searchInit={true} />} />
         <Route path='/search/result/all' element={<DiscoveryResultAll />} />
-        {list.map((e,i) => {
-          return <Route key={i} path={'/search/result/' + e.path} element={<ListWrap filterKey={e.filterKey} searchDetailKey={e.searchDetailKey} />} />;
+        {list.map((e) => {
+          return <Route key={e.id} path={'/search/result/' + e.path} element={<ListWrap filterKey={e.filterKey} searchDetailKey={e.searchDetailKey} />} />;
         })}
         <Route path='/view/projectout/:id' element={<ViewProjectOut />} />
         <Route path='/view/projectin/:id' element={<ViewProjectIn />} />
@@ -89,14 +98,14 @@ export default function Router() {
         <Route path='/demandbanking/result' element={<DemandBankingResult />} />
         <Route path='/demandbanking/view/:noticeId/:surveyId' element={<DemandBankingView />} />
         <Route path='/demandbanking/merge/:surveyId' element={<DemandBankingMerge />} />
-        {list.map((e,i) => {
-          return <Route key={i} path={'/demandbanking/file/:noticeId/:surveyId/result/' + e.path} element={<ListWrap filterKey={e.filterKey} searchDetailKey={e.searchDetailKey} />} />;
+        {list.map((e) => {
+          return <Route key={e.id} path={'/demandbanking/file/:noticeId/:surveyId/result/' + e.path} element={<ListWrap filterKey={e.filterKey} searchDetailKey={e.searchDetailKey} />} />;
         })}
         <Route path='/icttrend' element={<ICTTrend />} />
         <Route path='/icttrend/:se2' element={<ICTTrend />} />
         <Route path='/icttrend/:se2/result' element={<ICTTrend />} />
-        {list.map((e,i) => {
-          return <Route key={i} path={'/icttrend/:se2/result/' + e.path} element={<ListWrap filterKey={e.filterKey} searchDetailKey={e.searchDetailKey} />} />;
+        {list.map((e) => {
+          return <Route key={e.id} path={'/icttrend/:se2/result/' + e.path} element={<ListWrap filterKey={e.filterKey} searchDetailKey={e.searchDetailKey} />} />;
         })}
         <Route path='*' element={<PageNotFound />} />
       </Routes>

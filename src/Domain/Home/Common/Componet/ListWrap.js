@@ -2,13 +2,11 @@ import React, { useEffect, useState, useCallback } from 'react';
 import icArrow from 'Assets/Images/ic_arrow02.png';
 import icFilter from 'Assets/Images/ic_filter.png';
 import icFilter02 from 'Assets/Images/ic_filter02.png';
-// import DiscoveryResultLayout from 'Domain/Home/Discovery/Layout/DiscoveryResultLayout';
 import ResultListLayout from 'Domain/Home/Common/Layout/ResultListLayout';
 import Button from 'Domain/Home/Common/Componet/Button';
 import common from 'Utill';
 import { useSelector, useDispatch } from 'react-redux';
-import { setLoading } from 'Domain/Home/Common/Status/CommonSlice';
-import { getSearchKeyword, getSelectKeyword } from 'Domain/Home/Common/Status/CommonSlice';
+import { setLoading, getSearchKeyword, getSelectKeyword } from 'Domain/Home/Common/Status/CommonSlice';
 import { getFilterActive, getSearchDetailData, setInitalFilter, setInitalSearch, setSearchDetailData, setFilterActive } from 'Domain/Home/Discovery/Status/DiscoverySlice';
 import { getFileKeywordList } from 'Domain/Home/Discovery/Status/DiscoverySaveSlice';
 import { items } from 'Domain/Home/Discovery/Data/FilterItems';
@@ -26,8 +24,7 @@ import Policy from 'Domain/Home/Common/Componet/List/Policy';
 import Researcher from 'Domain/Home/Common/Componet/List/Researcher';
 import Orgn from 'Domain/Home/Common/Componet/List/Orgn';
 import News from 'Domain/Home/Common/Componet/List/News';
-import { useLocation } from 'react-router-dom';
-import { useParams } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 import * as demandCallAPI from 'Domain/Home/DemandBanking/API/Call';
 
 export default function ListWrap(props) {
@@ -55,7 +52,7 @@ export default function ListWrap(props) {
   const [size, setSize] = useState(10);
   const [sort, setSort] = useState(List.getSortList(filterKey)?.default ?? 'score');
   const [filterShow, setFilterShow] = useState(false);
-  const [filterItem, setFileterItem] = useState({});
+  const [filterItem, setFilterItem] = useState({});
   const filterActive = useSelector(getFilterActive);
   const globalSearchDetailData = useSelector(getSearchDetailData);
   const fileKeywordList = useSelector(getFileKeywordList);
@@ -66,6 +63,7 @@ export default function ListWrap(props) {
   const [subList, setSubList] = useState([]);
 
   //기관 관련
+  const subSize = 5;
   const [orgnActive, setOrgnActive] = useState({id: -1, name: ''});
   const [simialityOrgn, setSimialityOrgn] = useState([]);
   const [subProjectList, setSubProjectList] = useState([]);
@@ -74,7 +72,6 @@ export default function ListWrap(props) {
 
   const [subTotalCount, setSubTotalCount] = useState({project: 0, patent: 0});
   const [subPage, setSubPage] = useState(1);
-  const [subSize] = useState(5);
 
   const [isSearchDetail, setIsSearchDetail] = useState(false);
   const [activeCount, setActiveCount] = useState(0);
@@ -84,9 +81,6 @@ export default function ListWrap(props) {
   
   useEffect(() => {
     if (se1 === 'search' && !(globalSearchDetailData[searchDetailKey] === undefined || JSON.stringify(globalSearchDetailData[searchDetailKey]) === JSON.stringify({}))) {
-      // console.log('상세검색', globalSearchDetailData[searchDetailKey]);
-      // console.log('globalSearchDetailData:', globalSearchDetailData);
-      // console.log('searchDetailKey:', searchDetailKey);
       setIsSearchDetail(true);
       return;
     }
@@ -115,7 +109,6 @@ export default function ListWrap(props) {
   const getList = useCallback(async () => {
     await (async () => {
       let filterObj = List.getFilterObj(filterKey, filterActive);
-      // console.log('filterObj:', filterObj);
       let etcParam = { aggs: true };
       let data = [];
       try {
@@ -133,7 +126,7 @@ export default function ListWrap(props) {
       
       console.log('data?.data?.result:', data?.data?.result);
       setTotalCount(data?.data?.result?.totalCount ?? 0);
-      setFileterItem(data?.data?.result?.aggsInfo ?? {});
+      setFilterItem(data?.data?.result?.aggsInfo ?? {});
       setProjectData(List.getProcData(filterKey, data?.data?.result?.dataList ?? [], se1));
       setSearchButtonClick(false);
       if (filterKey === 'search/indv') {
@@ -181,11 +174,7 @@ export default function ListWrap(props) {
         if (se1 == 'search') {
           data = await researcherAPI.researcherDetail(researcherActive.id, subSize, subPage);
         } else if (se1 == 'discovery') {
-          if (se2 == 'keyword') {
-            data = await researcherAPI.researcherDetail(researcherActive.id, subSize, subPage);
-          } else if (se2 == 'file') {
-            data = await researcherAPI.researcherDetail(researcherActive.id, subSize, subPage);
-          } else if (se2 == 'project') {
+          if (se2 == 'keyword' || se2 == 'file'  || se2 == 'project') {
             data = await researcherAPI.researcherDetail(researcherActive.id, subSize, subPage);
           }
         } else if (se1 == 'demandbanking') {
@@ -197,11 +186,9 @@ export default function ListWrap(props) {
         dispatch(setLoading(false));  
       }
 
-      // const data = await orgnAPI.orgnDetail('0008634982');
       console.log(data?.data?.result);
       let simiality = [];
       for (let i in data?.data?.result?.simialityIndvList ?? []) {
-      // console.log(i, data?.data?.result?.simialityIndvList?.[i]);
         let link = data?.data?.result?.simialityIndvList?.[i]?.link ?? '';
         if (link !== '' && link !== undefined) link = 'https://' + link;
         const simialityPushData = {
@@ -216,7 +203,6 @@ export default function ListWrap(props) {
 
       let subList = [];
       for (let i in data?.data?.result?.indvResultInfo?.dataInfo?.projectIn ?? []) {
-      // console.log(i, data?.data?.result?.indvResultInfo?.dataInfo?.projectIn?.[i]);
         const period = data?.data?.result?.indvResultInfo?.dataInfo?.projectIn?.[i]?.period ?? '';
         const division = data?.data?.result?.indvResultInfo?.dataInfo?.projectIn?.[i]?.technicalClassification ?? '';
         const keywordt = data?.data?.result?.indvResultInfo?.dataInfo?.projectIn?.[i]?.keywords ?? [];
@@ -261,11 +247,7 @@ export default function ListWrap(props) {
         if (se1 == 'search') {
           data = await orgnAPI.orgnDetail(orgnActive.id, subSize, subPage);
         } else if (se1 == 'discovery') {
-          if (se2 == 'keyword') {
-            data = await orgnAPI.orgnDetail(orgnActive.id, subSize, subPage);
-          } else if (se2 == 'file') {
-            data = await orgnAPI.orgnDetail(orgnActive.id, subSize, subPage);
-          } else if (se2 == 'project') {
+          if (se2 == 'keyword' || se2 == 'file' || se2 == 'project') {
             data = await orgnAPI.orgnDetail(orgnActive.id, subSize, subPage);
           }
         } else if (se1 == 'demandbanking') {
@@ -277,11 +259,9 @@ export default function ListWrap(props) {
         dispatch(setLoading(false));  
       }
     
-      // const data = await orgnAPI.orgnDetail('0008634982');
       console.log(data?.data?.result);
       let simialityOrgn = [];
       for (let i in data?.data?.result?.simialityOrgnList ?? []) {
-      // console.log(i, data?.data?.result?.dataList?.[i]);
         const simialityPushData = {
           id: i,
           name: data?.data?.result?.simialityOrgnList?.[i]?.orgnName ?? '',
@@ -293,7 +273,6 @@ export default function ListWrap(props) {
 
       let subProjectList = [];
       for (let i in data?.data?.result?.orgnResultInfo?.dataInfo?.projectOut ?? []) {
-      // console.log(i, data?.data?.result?.orgnResultInfo?.dataInfo?.projectOut?.[i]);
         const period = data?.data?.result?.orgnResultInfo?.dataInfo?.projectOut?.[i]?.period ?? '';
         const periodArr = period.split('~');
         let division = data?.data?.result?.orgnResultInfo?.dataInfo?.projectOut?.[i]?.technicalClassification ?? [];
@@ -351,21 +330,7 @@ export default function ListWrap(props) {
   };
 
   useEffect(() => {
-    // console.log('-------------------------------- getList 1 start --------------------------------');
-    // console.log('keyword:', keyword);
-    // console.log('page:', page);
-    // console.log('size:', size);
-    // console.log('sort:', sort);
-    // console.log('filterActive:', filterActive);
-    // console.log('filterKey:', filterKey);
-    // console.log('searchDetailKey:', searchDetailKey);
-    // console.log('globalSearchDetailData:', globalSearchDetailData);
-    // console.log('fileKeywordList:', fileKeywordList);
-    // console.log('wordCloudSurveyFile:', wordCloudSurveyFile);
-    // console.log('-------------------------------- getList 1 end --------------------------------');
-    
     getList();
-
   }, [keyword, page, size, sort, filterActive, filterKey, searchDetailKey, fileKeywordList, wordCloudSurveyFile]);
 
   useEffect(() => {
@@ -407,7 +372,6 @@ export default function ListWrap(props) {
         } else if (se1 == 'discovery') {
           if (se2 == 'keyword') {
             const procKeyword = common.procCountKeyword(keyword, selectKeyword);
-            // console.log('procKeyword:', procKeyword);
             data = await discoveryAPI.searchCount('discovery',procKeyword.join('|'));
           } else if (se2 == 'file') {
             if ((fileKeywordList ?? []).length > 0) data = await discoveryAPI.searchCount('discovery',fileKeywordList.map(o => o.keyword).join('|'));
@@ -416,8 +380,6 @@ export default function ListWrap(props) {
           }
         } else if (se1 === 'demandbanking') {
           if ((wordCloudSurveyFile ?? []).length > 0) data = await discoveryAPI.searchCount('discovery',wordCloudSurveyFile?.map(o => o.keyword)?.join('|'));
-        } else if (se1 === 'icttrend') {
-          // if (keyword !== '')data = await discoveryAPI.searchCount('discovery',keyword);
         }
       } catch (e) {
         console.warn(e);
@@ -447,8 +409,6 @@ export default function ListWrap(props) {
         (prevPath === '/search/result/projectin' && document.location.pathname === '/search/result/projectout')
       )
     ) {
-      // console.log('prevPath:', prevPath);
-      // console.log('document.location.pathname:',document.location.pathname);
       dispatch(setSearchDetailData({}));
       dispatch(setFilterActive(items));
       dispatch(setInitalSearch(true));
@@ -496,15 +456,15 @@ export default function ListWrap(props) {
                   <label htmlFor='sort_order' className='hidden_text'>정렬 순서</label>
                   <select name='sort_order' id='sort_order' value={sort} onChange={(e) => {setPage(1); setSort(e.target.value);}}>
                     {(List.getSortList(filterKey, se1)?.list ?? []).map((e,i) => {
-                      return <option key={i} value={e.value ?? ''}>{e.text ?? ''}</option>;
+                      return <option key={e.value ?? i} value={e.value ?? ''}>{e.text ?? ''}</option>;
                     })}
                   </select>
                 </div>
                 <div>
                   <label htmlFor='list_num' className='hidden_text'>노출되는 목록수</label>
                   <select name='list_num' id='list_num' value={size} onChange={(e) => {setPage(1); setSize(e.target.value);}}>
-                    {[10,20,30,50,100].map((e,i) => {
-                      return <option key={i} value={e}>{e}</option>;
+                    {[10,20,30,50,100].map((e) => {
+                      return <option key={e} value={e}>{e}</option>;
                     })}
                   </select>
                 </div>

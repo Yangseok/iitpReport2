@@ -80,7 +80,6 @@ export default function Main() {
     } else if (category === 'ict_report') {
       ictCategory = 'ict';
     }
-    // console.log(_, d, category, ictCategory);
 
     dispatch(setIctKeyword(d.text));
     dispatch(setStartYear(keywordRangeValue[0]));
@@ -112,7 +111,7 @@ export default function Main() {
         parents.push('');
 
         if (dataList[i]?.middle?.length > 0) {
-          for (let j = 0; j < dataList[i].middle.length; j++) {
+          for (let j in dataList[i].middle) {
             const middleData = dataList[i].middle[j].key ?? '';
             const middleCnt = common.setPriceInput(dataList[i].middle[j].doc_count ?? '');
             const middleRate = dataList[i].middle[j].rate ?? '';
@@ -141,7 +140,6 @@ export default function Main() {
     const newMiddleTech = (middleTech) ? middleTech.split('<br>')[0] : '';
     const newSmallTech = (smallTech) ? smallTech.split('<br>')[0] : '';
     let newData = [];
-    // console.log(e);
     
     // label : 최상위 부모 요소 클릭 시에는 노출되지 않음.
     // currentPath : 현재 요소 클릭 시에는 노출되지 않음.
@@ -191,17 +189,9 @@ export default function Main() {
 
   // 10대 이슈 - 보고서 다운로드 API
   const issueDownload = async (e) => {
-    // const winOpen = (url, name, option) => {
-    //   var popup = window.open(url, name, option);
-    //   popup.focus();
-    //   return popup;
-    // };
-    // winOpen(process.env.REACT_APP_API_URL+'/ict/issueDownload?year='+issueRangeValue);
-
     try {
       dispatch(setLoading(true));
       const data = await ictTrendAPI.ictIssueReportDownload(issueRangeValue);
-      // console.log(data);
       common.blobDownload(data.data, issueRangeValue + ' ICT 10대 이슈.pdf');
     } catch (e) {
       console.warn(e);
@@ -222,7 +212,6 @@ export default function Main() {
     } finally {
       dispatch(setLoading(false));
     }
-    // console.log('getIssueKeyword', year, data?.data?.keyword);
 
     setIsIssueDownload(((data?.data?.result?.fileYN ?? 'N') === 'Y'));
     setIssueKeywordData(data?.data?.result?.keyword ?? []);
@@ -239,7 +228,6 @@ export default function Main() {
     } finally {
       dispatch(setLoading(false));
     }
-    // console.log('getIssueTrend', category, year, data?.data?.result);
 
     const dataList = data?.data?.result;
     let datas = [], labels = [];
@@ -468,7 +456,6 @@ export default function Main() {
   useEffect(() => {
     if(paramSe2 === 'keyword' || paramSe2 === 'issue') {
       const scrollWidth = $('.rc_custom_wrap').get(0).scrollWidth;
-      // console.log('scrollWidth:', scrollWidth);
       $('.rc_custom_wrap').get(0).scrollLeft = scrollWidth;
     }
   }, [rangeMin, rangeMax, page]);
@@ -574,7 +561,7 @@ export default function Main() {
                   {(issueKeywordData?.length > 0)
                     ? issueKeywordData?.map((e, i) => {
                       return <button 
-                        key={i}
+                        key={'issue'+i}
                         onClick={() => {
                           dispatch(setIctKeyword(e));
                           navigate('/icttrend/issue/result/projectout');

@@ -14,7 +14,7 @@ export default function View() {
 
   const [viewData, setViewData] = useState({});
 
-  const [tabContents, setTAbContents] = useState([
+  const [tabContents, setTabContents] = useState([
     [
       { content: '발행년도', scope: 'row' },
       { content: '' },
@@ -39,39 +39,6 @@ export default function View() {
     ],
   ]);
 
-  // const tempData = [
-  //   [
-  //     { content: '발행년도', scope: 'row' },
-  //     { content: '2020.06.24' },
-  //     { content: '논문 구분', scope: 'row' },
-  //     { content: '국외전문학술지' },
-  //   ],
-  //   [
-  //     { content: '학술지/학술대회명', scope: 'row' },
-  //     { content: '*** - ** - **01*' },
-  //     { content: '저자', scope: 'row' },
-  //     { content: '이승섭, 엄기현, 조경은' },
-  //   ],
-  //   [
-  //     { content: '소속기관', scope: 'row' },
-  //     { content: '-' },
-  //     { content: '언어', scope: 'row' },
-  //     { content: '-' },
-  //   ],
-  //   [
-  //     { content: '등록번호', scope: 'row' },
-  //     { content: '10-2203135-0000' },
-  //     { content: '등록일', scope: 'row' },
-  //     { content: '2021.01.08' },
-  //   ],
-  //   [
-  //     { content: '페이지', scope: 'row' },
-  //     { content: '-' },
-  //     { content: 'SCI 구분', scope: 'row' },
-  //     { content: '비SCI' },
-  //   ],
-  // ];
-
   const tabButtons = [
     { id: 0, name: '기본 정보', onClick: () => setTabActive(0) },
     { id: 1, name: '초록', onClick: () => setTabActive(1) },
@@ -87,7 +54,7 @@ export default function View() {
         console.log('viewData:', data?.data?.result);
 
         setViewData(data?.data?.result ?? {});
-        setTAbContents([
+        setTabContents([
           [
             { content: '발행년도', scope: 'row' },
             { content: data?.data?.result?.year ?? '' },
@@ -129,9 +96,7 @@ export default function View() {
       tabs={tabButtons}
       active={tabActive}
       title={viewData.title ?? ''}
-      tags={<>
-        <p className='text-sm font-medium text-color-regular'>논문(학술지)</p>
-      </>}
+      tags={<p className='text-sm font-medium text-color-regular'>논문(학술지)</p>}
     >
       {(tabActive === 0)
         ? // 기본 정보

@@ -17,7 +17,7 @@ export default function View() {
 
   const [viewData, setViewData] = useState({});
 
-  const [tabContents, setTAbContents] = useState([
+  const [tabContents, setTabContents] = useState([
     [
       { content: '출원일', scope: 'row' },
       { content: '' },
@@ -82,7 +82,7 @@ export default function View() {
         console.log('viewData:', data?.data?.result);
 
         setViewData(data?.data?.result ?? {});
-        setTAbContents([
+        setTabContents([
           [
             { content: '출원일', scope: 'row' },
             { content: (data?.data?.result?.applDate ?? '').replace(/^(\d{4})(\d{2})(\d{2})$/, '$1.$2.$3') },
@@ -188,13 +188,11 @@ export default function View() {
       tabs={tabButtons}
       active={tabActive}
       title={viewData.applName ?? ''}
-      tags={<>
-        <div className="flex items-center gap-4">
-          {/* 진행중 : tag_style05 | 종료 : tag_style02 */}
-          {/* <p className="tag_style05">진행중</p> */}
-          <p className="text-sm text-color-regular">출원번호: <span className="font-medium text-color-main">{viewData.applNumber ?? ''}</span></p>
-        </div>
-      </>}
+      tags={<div className="flex items-center gap-4">
+        {/* 진행중 : tag_style05 | 종료 : tag_style02 */}
+        {/* <p className="tag_style05">진행중</p> */}
+        <p className="text-sm text-color-regular">출원번호: <span className="font-medium text-color-main">{viewData.applNumber ?? ''}</span></p>
+      </div>}
     >
       {(tabActive === 0)
         ? // 기본 정보
@@ -218,7 +216,7 @@ export default function View() {
               <ul>
                 {(tabList1?.length > 0) 
                   ? tabList1?.map((e) => {
-                    {/* tag - 진행중 : 1 | 종료 : 2 */}
+                    /* tag - 진행중 : 1 | 종료 : 2 */
                     return (<ListItem 
                       key={e.id}
                       tag={e.tag}
@@ -236,9 +234,7 @@ export default function View() {
                           <p className='text-sm text-color-regular'>한글 키워드: <span className='font-medium text-color-main'>{e.keyword}</span></p>
                         </div>
                       </>}
-                      btns={<>
-                        <a href={`/view/projectout/${e.id}`} target='_blank' className='h-5 px-1.5 rounded-sm text-xs font-medium text-color-white bg-color-light1' rel="noreferrer" title={`새창이동, ${e.title} 상세 페이지`}>자세히 보기↗</a>
-                      </>}
+                      btns={<a href={`/view/projectout/${e.id}`} target='_blank' className='h-5 px-1.5 rounded-sm text-xs font-medium text-color-white bg-color-light1' rel="noreferrer" title={`새창이동, ${e.title} 상세 페이지`}>자세히 보기↗</a>}
                     />);
                   })
                   : <li>

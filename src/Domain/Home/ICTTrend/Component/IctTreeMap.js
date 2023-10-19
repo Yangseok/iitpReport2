@@ -12,12 +12,9 @@ export default function IctTreeMap(props) {
   const [isClick, setIsClick] = useState(0);
 
   useEffect(() => {
-    // console.log(data);
     const addTabIndex = () => {
       return setTimeout(() => {
-        // console.log('addTabIndex');
         $('.js-plotly-plot svg .slice.cursor-pointer').each(function(){
-          // console.log($(this).text(), $(this).data('unformatted'));
           $(this).attr('tabindex', 0);
         });
         
@@ -30,7 +27,6 @@ export default function IctTreeMap(props) {
               if (data?.[0].parents?.[idx] !== '') {
                 currentPath = `/${data?.[0].parents?.[idx]}/`;
               }
-              // console.log('event:', this, text);
               onClickHandle(undefined, { currentPath, label });
             }
           }
@@ -74,14 +70,12 @@ export default function IctTreeMap(props) {
   };
 
   return (
-    <>
-      <Plot
-        data={data}
-        layout={layout}
-        config={treeConfig}
-        style={{position: 'relative', display: 'block', minHeight: '450px'}}
-        onClick={onClickHandle}
-      />
-    </>
+    <Plot
+      data={data}
+      layout={layout}
+      config={treeConfig}
+      style={{position: 'relative', display: 'block', minHeight: '450px'}}
+      onClick={onClickHandle}
+    />
   );
 }

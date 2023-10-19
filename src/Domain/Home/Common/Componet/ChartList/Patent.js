@@ -83,7 +83,7 @@ export default function Result (props) {
         parents.push('');
 
         if (classData[i]?.middle?.length > 0) {
-          for (let j = 0; j < classData[i].middle.length; j++) {
+          for (let j in classData[i].middle) {
             const middleData = classData[i].middle[j].key ?? '';
             const middleCnt = common.setPriceInput(classData[i].middle[j].doc_count ?? '');
             const middleRate = classData[i].middle[j].rate ?? '';
@@ -99,8 +99,6 @@ export default function Result (props) {
         'parents': parents,
       });
       setNewClassData(datas);
-
-      // console.log(datas, labels, parents);
     }
   };
 
@@ -198,7 +196,7 @@ export default function Result (props) {
                 <ul>
                   {(newApplData?.length > 0)
                     ? newApplData?.map((e, i) => {
-                      return  <li key={i} className='flex items-center justify-between gap-2'>
+                      return  <li key={e.key} className='flex items-center justify-between gap-2'>
                         <div className='flex items-center gap-4'>
                           <span className='flex items-center justify-center w-5 h-5 text-sm font-medium text-color-regular rounded-sm bg-color-line'>{i + 1}</span>
                           <p className='text-sm font-medium text-color-regular'>{e.key}</p>

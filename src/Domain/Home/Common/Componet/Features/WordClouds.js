@@ -1,8 +1,6 @@
-import React, { useState, useCallback } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import WordCloud from 'react-d3-cloud';
 import { select } from 'd3-selection';
-
-// import data from 'Domain/Home/Sample/Data/WordCloud.json';
 
 export default function WordClouds() {
   const tempData = [
@@ -207,19 +205,11 @@ export default function WordClouds() {
       'value': 1000
     },
   ];
-  const [newData] = useState(tempData);
+  const [newData, setNewData] = useState([]);
 
-  // useEffect(() => {
-  //   const timer = setInterval(() => {
-  //     setNewData(
-  //       data.map((item) => ({
-  //         text: item.text,
-  //         value: Math.random() * 1000
-  //       }))
-  //     );
-  //   }, 3000);
-  //   return () => clearInterval(timer);
-  // }, []);
+  useEffect(() => {
+    setNewData(tempData);
+  }, []);
 
   const fontSizeMapper = useCallback((word) => word.value / 20, []);
   const rotate =  useCallback(() => 0, []);

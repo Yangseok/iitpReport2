@@ -83,6 +83,18 @@ export default function Chart(props) {
     printElementsAtEvent(getElementsAtEvent(chart, event));
   };
 
-  const barType = (type === undefined) ? 'bar' : (type === 'bar') ? 'bar' : type;
-  return ((barType === 'line') ? <Line ref={chartRef} onClick={onClickEvent} options={options} data={data} width={width} height={height} /> : (barType === 'scatter') ? <Scatter ref={chartRef} onClick={onClickEvent} options={options} data={data} width={width} height={height} /> : (barType === 'treemap') ? <Chart2  ref={chartRef} onClick={onClickEvent} options={options} data={data} type="treemap" width={width} height={height} /> : (barType === 'multitype1') ? <Chart2 ref={chartRef} onClick={onClickEvent} data={data} options={options} type="bar" width={width} height={height} /> : (barType === 'reg') ? <></> : <Bar ref={chartRef} onClick={onClickEvent} options={options} data={data} width={width} height={height}/>);
+  const barType = (type === undefined) ? 'bar' : type;
+  return (
+    (barType === 'line') 
+      ? <Line ref={chartRef} onClick={onClickEvent} options={options} data={data} width={width} height={height} /> 
+      : (barType === 'scatter') 
+        ? <Scatter ref={chartRef} onClick={onClickEvent} options={options} data={data} width={width} height={height} /> 
+        : (barType === 'treemap') 
+          ? <Chart2  ref={chartRef} onClick={onClickEvent} options={options} data={data} width={width} height={height} type="treemap" /> 
+          : (barType === 'multitype1') 
+            ? <Chart2 ref={chartRef} onClick={onClickEvent} options={options} data={data} width={width} height={height} type="bar" /> 
+            : (barType === 'reg') 
+              ? <></> 
+              : <Bar ref={chartRef} onClick={onClickEvent} options={options} data={data} width={width} height={height}/>
+  );
 }

@@ -2,7 +2,7 @@ import React from 'react';
 
 export default function ListItem(props) {
   const { tag, title, contents, desc, desc02, btns, percent } = props;
-  {/* TAG 진행중: tag_style01 | 종료: tag_style02 */}
+  /* TAG 진행중: tag_style01 | 종료: tag_style02 */
 
   return (
     <li>

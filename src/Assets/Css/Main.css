@@ -17,6 +17,7 @@
   width: 100%;
   min-width: 1320px;
   height: 100vh;
+  position: relative;
 }
 .main_sec01 .fp-overflow {
   padding: 40px 0;
@@ -43,14 +44,12 @@
   width: 100%;
   min-width: 1320px;
   height: 100vh;
+  background-color: #F9FBFF;
 }
 .main_sec03 .fp-overflow {
   padding: 40px 0;
 }
 
-.main_sec01 {
-  position: relative;
-}
 .main_sec01 .keywords_box {
   display: flex;
   align-items: center;
@@ -163,9 +162,6 @@
   color: #FFFFFF;
 }
 
-.main_sec03 {
-  background-color: #F9FBFF;
-}
 .main_sec03 .conts_box {
   display: flex;
   align-items: center;

@@ -68,7 +68,6 @@ export default function ProjectWrap(props) {
     console.log(data?.data?.result);
     dispatch(setFileKeywordList(data?.data?.result?.textAnalyticsKeywordList ?? []));
 
-    // console.log(navigate);
     navigate('/discovery/project/result/projectout');
   };
 
@@ -91,13 +90,6 @@ export default function ProjectWrap(props) {
   };
   
   useEffect(() => {
-    // console.log('projectTitleTmp:',JSON.stringify(projectTitleTmp));
-    // console.log('keywordKorTmp:',JSON.stringify(keywordKorTmp));
-    // console.log('keywordEngTmp:',JSON.stringify(keywordEngTmp));
-    // console.log('researchGoalTmp:',JSON.stringify(researchGoalTmp));
-    // console.log('researchDescriptionTmp:',JSON.stringify(researchDescriptionTmp));
-    // console.log('expectationEffectivenessTmp:',JSON.stringify(expectationEffectivenessTmp));
-    // console.log('fold:',JSON.stringify(fold));
     if (! (projectTitleTmp.trim() === '' && keywordKorTmp.trim() === '' && keywordEngTmp.trim() === ''
     && researchGoalTmp.trim() === '' && researchDescriptionTmp.trim() === '' && expectationEffectivenessTmp.trim() === '') && fold === false) {
       setResetDisabled(false);
@@ -112,12 +104,10 @@ export default function ProjectWrap(props) {
         <h2 className='text-xl font-bold text-color-dark'>과제 정보</h2>
         <div className='flex items-center gap-6'>
           <button type='button' className='text-sm font-medium text-color-placeholder project_excel_btn' onClick={() => setPopup(state => !state)}>
-            엑셀로 입력
-            <img src={icFile} alt='엑셀 등록' className='w-6' />
+            엑셀로 입력 <img src={icFile} alt='엑셀 등록' className='w-6' />
           </button>
           <button type='button' className='discovery_reset_btn' disabled={resetDisabled} onClick={onReset}>
-            초기화
-            <img src={(resetDisabled) ? icReset : icReset02} alt='초기화' className='w-6' />
+            초기화 <img src={(resetDisabled) ? icReset : icReset02} alt='초기화' className='w-6' />
           </button>
           <button type='button' className={`discovery_fold_btn${(fold) ? ' fold' : ''}`} onClick={() => setFold(state => !state)}>
             {(fold) ? '펼치기' : '접기'} 

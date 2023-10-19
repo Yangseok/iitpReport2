@@ -6,35 +6,6 @@ import Pagination from 'Domain/Home/Common/Componet/Pagination';
 export default function ProjectOut(props) {
   const { projectData, totalCount, size, page, setPage } = props;
 
-  // const tempData = [
-  //   {
-  //     id: 0,
-  //     progress: '진행중',
-  //     title: '인공지능 학습 및 디지털 트윈을 위한 3차원 데이터 수집·전처리 및 가공 플랫폼 개발',
-  //     price: '10억',
-  //     period: '2023.04.01 ~ 2024.04.30',
-  //     agency: '주식회사 오름',
-  //     name: '홍길동',
-  //     department: '중소벤처기업부',
-  //     performance: '논문(1), 특허(3)',
-  //     division: '정보 / 통신 / 소프트웨어 / S/W솔루션 ',
-  //     keyword: '3D 데이터, 디지털 트윈, 지능형 데이터 가공 플랫폼, 깊이 추정',
-  //   },
-  //   {
-  //     id: 1,
-  //     progress: '진행중',
-  //     title: '인공지능 학습 및 디지털 트윈을 위한 3차원 데이터 수집·전처리 및 가공 플랫폼 개발',
-  //     price: '10억',
-  //     period: '2023.04.01 ~ 2024.04.30',
-  //     agency: '주식회사 오름',
-  //     name: '홍길동',
-  //     department: '중소벤처기업부',
-  //     performance: '논문(1), 특허(3)',
-  //     division: '정보 / 통신 / 소프트웨어 / S/W솔루션 ',
-  //     keyword: '3D 데이터, 디지털 트윈, 지능형 데이터 가공 플랫폼, 깊이 추정',
-  //   },
-  // ];
-
   return (
     <>
       <div className='list_style01 mt-2'>
@@ -60,9 +31,7 @@ export default function ProjectOut(props) {
                       {(e.keyword !== '') ? <p className='text-sm text-color-regular'>한글 키워드: <span className='font-medium text-color-main'>{e.keyword}</span></p> : null}
                     </div>
                   </>}
-                  btns={<>
-                    <NavLink to={`/view/projectout/${e.id}`} target="_blank" className='h-5 px-1.5 rounded-sm text-xs font-medium text-color-white bg-color-light1' title={`새창이동, ${e.title} 상세 페이지`}>자세히 보기↗</NavLink>
-                  </>}
+                  btns={<NavLink to={`/view/projectout/${e.id}`} target="_blank" className='h-5 px-1.5 rounded-sm text-xs font-medium text-color-white bg-color-light1' title={`새창이동, ${e.title} 상세 페이지`}>자세히 보기↗</NavLink>}
                 />
               );
             })

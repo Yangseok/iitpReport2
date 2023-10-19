@@ -15,9 +15,9 @@ export default function ViewTable(props) {
         </colgroup>
         <tbody>
           {bodyData?.map((e, i) => (
-            <tr key={i}>
+            <tr key={'tr'+i}>
               {e.map((e2, i2) => (
-                <React.Fragment key={i2}>
+                <React.Fragment key={'thtd'+i2}>
                   {(e2.scope)
                     ? <th scope={e2.scope} colSpan={e2.colspan} className='text-left'>
                       {e2.content}

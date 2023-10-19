@@ -14,8 +14,6 @@ export default function DiscoveryResultLayout({children, totalCount, tabCount, k
   const [path, setPath] = useState('');
 
   const fileKeywordList = useSelector(getFileKeywordList);
-  // const searchKeyword = useSelector(getTmpSearchKeyword);
-
   const fileName = useSelector(getFileName);
 
   useEffect(() => {

@@ -73,10 +73,10 @@ export default function Pagination(props) {
       >
         이전 페이지
       </button> : null}
-      {pageNumers?.map((e, i) => (
+      {pageNumers?.map((e) => (
         <button
           type='button'
-          key={i}
+          key={e}
           className={page === e ? 'on' : ''}
           onClick={() => onClick(e)}
         >

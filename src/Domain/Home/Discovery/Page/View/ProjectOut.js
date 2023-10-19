@@ -21,7 +21,7 @@ export default function View() {
     en: [],
   });
 
-  const [tabContents, setTAbContents] = useState([
+  const [tabContents, setTabContents] = useState([
     [
       { content: '내역사업명', scope: 'row' },
       { content: '', colspan: 3 },
@@ -92,7 +92,7 @@ export default function View() {
           ko: data?.data?.result?.keywordKor ?? [],
           en: data?.data?.result?.keywordEng ?? [],
         });
-        setTAbContents([
+        setTabContents([
           [
             { content: '내역사업명', scope: 'row' },
             { content: data?.data?.result?.bigProjectName ?? '', colspan: 3 },
@@ -232,15 +232,13 @@ export default function View() {
       keywords={keywords}
       title={viewData.projectTitle ?? ''}
       desc={viewData.projectNameEng ?? ''}
-      tags={<>
-        <div className="flex items-center gap-4">
-          {((viewData.projectStatus ?? '') !== '')
-            ? <p className={((viewData.projectStatus ?? '') === '') ? '' : ((viewData.projectStatus ?? '') === '종료') ? 'tag_style02' : 'tag_style05'}>{viewData.projectStatus ?? ''}</p> 
-            : null}
-          <p className="text-sm text-color-regular">과제고유번호: <span className="font-medium text-color-main">{viewData.projectNumber ?? ''}</span></p>
-          <p className="text-sm text-color-regular">기관별 과제번호: <span className="font-medium text-color-main">{viewData.orgnDetailProejctNumber ?? ''}</span></p>
-        </div>
-      </>}
+      tags={<div className="flex items-center gap-4">
+        {((viewData.projectStatus ?? '') !== '')
+          ? <p className={((viewData.projectStatus ?? '') === '') ? '' : ((viewData.projectStatus ?? '') === '종료') ? 'tag_style02' : 'tag_style05'}>{viewData.projectStatus ?? ''}</p> 
+          : null}
+        <p className="text-sm text-color-regular">과제고유번호: <span className="font-medium text-color-main">{viewData.projectNumber ?? ''}</span></p>
+        <p className="text-sm text-color-regular">기관별 과제번호: <span className="font-medium text-color-main">{viewData.orgnDetailProejctNumber ?? ''}</span></p>
+      </div>}
     >
       {(tabActive1 === 0)
         ? // 기본 정보
@@ -295,9 +293,7 @@ export default function View() {
                               <p className='text-sm text-color-regular'>주 저자: <span className='font-medium text-color-main'>{e.name}</span></p>
                               <p className='text-sm text-color-regular'>학술지/학술대회명: <span className='font-medium text-color-main'>{e.journal}</span></p>
                             </>}
-                            btns={<>
-                              <a href={`/view/paper/${e.id}`} target='_blank' className='h-5 px-1.5 rounded-sm text-xs font-medium text-color-white bg-color-light1' rel="noreferrer">자세히 보기↗</a>
-                            </>}
+                            btns={<a href={`/view/paper/${e.id}`} target='_blank' className='h-5 px-1.5 rounded-sm text-xs font-medium text-color-white bg-color-light1' rel="noreferrer">자세히 보기↗</a>}
                           />);
                         })
                         : <li>

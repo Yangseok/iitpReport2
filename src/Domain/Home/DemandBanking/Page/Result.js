@@ -30,8 +30,8 @@ export default function DemandResult() {
   const [filterShow, setFilterShow] = useState(false);
   const [demandActive, setDemandActive] = useState(null);
 
+  const size = 10;
   const [page, setPage] = useState(1);
-  const [size] = useState(10);
   const [totalCount, setTotalCount] = useState(0);
 
   const [startDate, setStartDate] = useState('');
@@ -63,8 +63,8 @@ export default function DemandResult() {
 
   const [surveyList, setSurveyList] = useState([]);
 
+  const subSize = 10;
   const [subPage, setSubPage] = useState(1);
-  const [subSize] = useState(10);
   const [subTab, setSubTab] = useState('ALL');
   const [subTotalCount, setSubTotalCount] = useState(0);
   const [similarNoticeId, setSimilarNoticeId] = useState('');
@@ -127,7 +127,6 @@ export default function DemandResult() {
     try {
       dispatch(setLoading(true));
       const data = await demandCallAPI.surveyListDownload(noticeId);
-      // console.log(data);
       common.blobDownload(data.data, 'download.xlsx');
     } catch (e) {
       console.warn(e);
@@ -136,18 +135,6 @@ export default function DemandResult() {
     }
     e?.preventDefault();
   };
-
-  const handleItemClick = () => {};
-  
-  // const handleItemClick = (id) => {
-  //   const newData = data?.map(e => {
-  //     if(e.id === id) {
-  //       return {...e, active: !e.active};
-  //     }
-  //     return e;
-  //   });
-  //   setData(newData);
-  // };
   
   // 유사 기술 조사서 버튼 클릭
   const onItemSlide = (e, noticeId, surveyId) => {
@@ -237,7 +224,6 @@ export default function DemandResult() {
       };
       tmpData.push(pushData);
     }
-    // console.log('tmpData:', tmpData);
     setSurveyList(tmpData);
     setTotalCount(data?.data?.result?.totalCount ?? 0);
   }, [selectedList, startDate, endDate, bigIct, middleIct, smallIct, detailIct, orgnName, applicant, surveyTitle, size, page]);
@@ -358,7 +344,7 @@ export default function DemandResult() {
           </div>
           {(!fold)
             && <div className='mt-4'>
-              <CheckListWrap data={data} onClick={handleItemClick} />
+              <CheckListWrap data={data} />
             </div>
           }
         </div>
@@ -396,7 +382,7 @@ export default function DemandResult() {
                       <select name='sortBig' id='sortBig' value={bigIctTmp} onChange={(e) => dispatch(setBigIctTmp(e.target.value))}>
                         <option value=''>대분류</option>
                         {bigIctList.map((e,i) => {
-                          return <option key={i} value={e.code ?? ''}>{e.name ?? ''}</option>;
+                          return <option key={e.code ?? i} value={e.code ?? ''}>{e.name ?? ''}</option>;
                         })}
                       </select>
                     </div>
@@ -405,7 +391,7 @@ export default function DemandResult() {
                       <select name='sortMiddle' id='sortMiddle' value={middleIctTmp} onChange={(e) => dispatch(setMiddleIctTmp(e.target.value))}>
                         <option value=''>중분류</option>
                         {middleIctList.map((e,i) => {
-                          return <option key={i} value={e.code ?? ''}>{e.name ?? ''}</option>;
+                          return <option key={e.code ?? i} value={e.code ?? ''}>{e.name ?? ''}</option>;
                         })}
                       </select>
                     </div>
@@ -414,7 +400,7 @@ export default function DemandResult() {
                       <select name='sortSmall' id='sortSmall' value={smallIctTmp} onChange={(e) => dispatch(setSmallIctTmp(e.target.value))}>
                         <option value=''>소분류</option>
                         {smallIctList.map((e,i) => {
-                          return <option key={i} value={e.code ?? ''}>{e.name ?? ''}</option>;
+                          return <option key={e.code ?? i} value={e.code ?? ''}>{e.name ?? ''}</option>;
                         })}
                       </select>
                     </div>
@@ -423,7 +409,7 @@ export default function DemandResult() {
                       <select name='sortDetail' id='sortDetail' value={detailIctTmp} onChange={(e) => dispatch(setDetailIctTmp(e.target.value))}>
                         <option value=''>세분류</option>
                         {detailIctList.map((e,i) => {
-                          return <option key={i} value={e.code ?? ''}>{e.name ?? ''}</option>;
+                          return <option key={e.code ?? i} value={e.code ?? ''}>{e.name ?? ''}</option>;
                         })}
                       </select>
                     </div>
@@ -462,28 +448,22 @@ export default function DemandResult() {
                     key={e.id}
                     className={(e.id === demandActive) ? 'on demand_' + e.id : 'demand_' + e.id}
                     title={e.title}
-                    contents={<>
-                      <div className='text_style01'>
-                        <p className='text-sm text-color-regular'>기관명: <span className='font-medium text-color-main'>{e.agency}</span></p>
-                        <p className='text-sm text-color-regular'>신청인: <span className='font-medium text-color-main'>{e.name}</span></p>
-                        <p className='text-sm text-color-regular'>등록 ICT 분류: <span className='font-medium text-color-main'>{e.registration}</span></p>
-                        <p className='text-sm text-color-regular'>추천 ICT 분류: <span className='font-medium text-color-main'>{e.recommend}</span></p>
+                    contents={<div className='text_style01'>
+                      <p className='text-sm text-color-regular'>기관명: <span className='font-medium text-color-main'>{e.agency}</span></p>
+                      <p className='text-sm text-color-regular'>신청인: <span className='font-medium text-color-main'>{e.name}</span></p>
+                      <p className='text-sm text-color-regular'>등록 ICT 분류: <span className='font-medium text-color-main'>{e.registration}</span></p>
+                      <p className='text-sm text-color-regular'>추천 ICT 분류: <span className='font-medium text-color-main'>{e.recommend}</span></p>
+                    </div>}
+                    desc={<p className='text-sm font-medium text-color-regular mb-2'>{e.pblanc}</p>}
+                    btns={<div className='flex items-start gap-4'>
+                      {/* 파일이 존재하면 파일 분석 버튼 생성 */}
+                      <a href={`/demandbanking/file/${e.noticeId}/${e.id}/result/projectout`} className='h-5 px-1.5 rounded-sm text-xs font-medium btn_style05' target="_blank" rel='noreferrer' title={`새창이동, ${e.title} 파일분석 페이지`}>파일 분석</a>
+                      <div className='flex flex-col gap-2.5'>
+                        <a href={`/demandbanking/view/${e.noticeId}/${e.id}`} className='h-5 px-1.5 rounded-sm text-xs font-medium text-color-white bg-color-light1' target="_blank" rel='noreferrer' title={`새창이동, ${e.title} 상세 페이지`}>자세히 보기↗</a>
+                        {(e.mergeFlag === 'Y' || e.mergeLeaderFlag === 'Y') ? <a href={`/demandbanking/merge/${e.mergeId}`} className='h-5 px-1.5 rounded-sm text-xs font-medium btn_style05' target="_blank" rel='noreferrer' title={`새창이동, ${e.title} 병합수요 페이지`}>병합수요{(e.mergeLeaderFlag === 'Y') ? '(대표)' : ''}↗</a> : null}
+                        <button type='button' className={`h-5 px-1.5 rounded-sm text-xs font-medium btn_style05${(e.id === demandActive) ? ' on' : ''}`} onClick={(event) => onItemSlide(event, e.noticeId, e.id)}>유사기술조사서</button>
                       </div>
-                    </>}
-                    desc={<>
-                      <p className='text-sm font-medium text-color-regular mb-2'>{e.pblanc}</p>
-                    </>}
-                    btns={<>
-                      <div className='flex items-start gap-4'>
-                        {/* 파일이 존재하면 파일 분석 버튼 생성 */}
-                        <a href={`/demandbanking/file/${e.noticeId}/${e.id}/result/projectout`} className='h-5 px-1.5 rounded-sm text-xs font-medium btn_style05' target="_blank" rel='noreferrer' title={`새창이동, ${e.title} 파일분석 페이지`}>파일 분석</a>
-                        <div className='flex flex-col gap-2.5'>
-                          <a href={`/demandbanking/view/${e.noticeId}/${e.id}`} className='h-5 px-1.5 rounded-sm text-xs font-medium text-color-white bg-color-light1' target="_blank" rel='noreferrer' title={`새창이동, ${e.title} 상세 페이지`}>자세히 보기↗</a>
-                          {(e.mergeFlag === 'Y' || e.mergeLeaderFlag === 'Y') ? <a href={`/demandbanking/merge/${e.mergeId}`} className='h-5 px-1.5 rounded-sm text-xs font-medium btn_style05' target="_blank" rel='noreferrer' title={`새창이동, ${e.title} 병합수요 페이지`}>병합수요{(e.mergeLeaderFlag === 'Y') ? '(대표)' : ''}↗</a> : null}
-                          <button type='button' className={`h-5 px-1.5 rounded-sm text-xs font-medium btn_style05${(e.id === demandActive) ? ' on' : ''}`} onClick={(event) => onItemSlide(event, e.noticeId, e.id)}>유사기술조사서</button>
-                        </div>
-                      </div>
-                    </>}
+                    </div>}
                   >
                     <DemandListItemDetail data={subData} setSubPage={setSubPage} subPage={subPage} subTotalCount={subTotalCount} subTab={subTab} setSubTab={setSubTab} subSize={subSize} />
                   </DemandListItem>;

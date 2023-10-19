@@ -59,7 +59,7 @@ export default function CategoryWrap(props) {
 
   return (
     <>
-      <div className={`category_wrap mb-10 ${(page === 'search') ? `grid0${tabButtons1.length + 1}` : `grid0${tabButtons1.length}`}`}>
+      <div className={`category_wrap mb-10 grid0${(page === 'search') ? tabButtons1.length + 1 : tabButtons1.length}`}>
         <ul>
           {(page === 'search')
             && <li className={`all${(tabActive1 === 0) ? ' on' : ''}`}>

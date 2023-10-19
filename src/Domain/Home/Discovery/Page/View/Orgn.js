@@ -25,7 +25,7 @@ export default function View() {
   const se3 = se[3] ?? '';
 
   const [viewData, setViewData] = useState({});
-  const [tabContents, setTAbContents] = useState([
+  const [tabContents, setTabContents] = useState([
     [
       { content: '설립일', scope: 'row' },
       { content: '' },
@@ -128,7 +128,7 @@ export default function View() {
         console.log('viewData:', data?.data?.result);
 
         setViewData(data?.data?.result ?? {});
-        setTAbContents([
+        setTabContents([
           [
             { content: '설립일', scope: 'row' },
             { content: (data?.data?.result?.establishmentDate ?? '').replace(/^(\d{4})(\d{2})(\d{2})$/, '$1.$2.$3') },
@@ -258,11 +258,6 @@ export default function View() {
           }
         }
 
-        // console.log('tmpEmployeeYearData:', tmpEmployeeYearData);
-        // console.log('tmpEmployeeMonthData:', tmpEmployeeMonthData);
-        // console.log('rastYear:', rastYear);
-        // console.log('yearLabels', tmpEmployeeYearData.map(e => e.year));
-
         setLabels1(tmpLable1);
         setTempChartData1(tmpChartData1);
         setTempChartData2(tmpChartData2);
@@ -311,6 +306,14 @@ export default function View() {
         data = await discoveryAPI.resultInfoView(viewData?.bizno ?? '', common.getViewResultInfoType(se2), 'rnd_project', listSize, tabSubPage);
         let procData = [];
         for (let i in data?.data?.result?.dataInfo?.projectOut ?? []) {
+          let tag = '';
+          if ((data?.data?.result?.dataInfo?.projectOut?.[i]?.projectStatus ?? '') === '') {
+            tag = 3;
+          } else if ((data?.data?.result?.dataInfo?.projectOut?.[i]?.projectStatus ?? '') === '종료') {
+            tag = 2;
+          } else {
+            tag = 1;
+          }
           procData.push({
             id: data?.data?.result?.dataInfo?.projectOut?.[i]?.projectNumber ?? i,
             title: data?.data?.result?.dataInfo?.projectOut?.[i]?.projectTitle ?? '',
@@ -321,7 +324,7 @@ export default function View() {
             department: data?.data?.result?.dataInfo?.projectOut?.[i]?.orderAgencyName,
             division: common.joinArrNStr(data?.data?.result?.dataInfo?.projectOut?.[i]?.technicalClassification, ' / ', ''),
             keyword: common.joinArrNStr(data?.data?.result?.dataInfo?.projectOut?.[i]?.keywordKor, ', ', ''),
-            tag: ((data?.data?.result?.dataInfo?.projectOut?.[i]?.projectStatus ?? '') === '') ? 3 : ((data?.data?.result?.dataInfo?.projectOut?.[i]?.projectStatus ?? '') === '종료') ? 2 : 1
+            tag: tag
           });
         }
         if (tabSubPage === 1) {
@@ -423,12 +426,20 @@ export default function View() {
         for (let i in data?.data?.result?.dataInfo?.projectOut ?? []) {
           const period = data?.data?.result?.dataInfo?.projectOut?.[i]?.period ?? '';
           const periodArr = period.split('~');
+          let tag = '';
           tmpPeriodProjectLabel.push((data?.data?.result?.dataInfo?.projectOut?.[i]?.projectTitle ?? '').substr(0,7).trim());
           tmpPeriodProjectFullLabel.push((data?.data?.result?.dataInfo?.projectOut?.[i]?.projectTitle ?? ''));
           tmpPeriodProjectData.push({
             min: (periodArr[0]??'').trim(),
             max: (periodArr[1]??'').trim(),
           });
+          if ((data?.data?.result?.dataInfo?.projectOut?.[i]?.projectStatus ?? '') === '') {
+            tag = 3;
+          } else if ((data?.data?.result?.dataInfo?.projectOut?.[i]?.projectStatus ?? '') === '종료') {
+            tag = 2;
+          } else {
+            tag = 1;
+          }
 
           procData.push({
             id: data?.data?.result?.dataInfo?.projectOut?.[i]?.projectNumber ?? i,
@@ -440,7 +451,7 @@ export default function View() {
             department: data?.data?.result?.dataInfo?.projectOut?.[i]?.orderAgencyName,
             division: common.joinArrNStr(data?.data?.result?.dataInfo?.projectOut?.[i]?.technicalClassification, ' / ', ''),
             keyword: common.joinArrNStr(data?.data?.result?.dataInfo?.projectOut?.[i]?.keywordKor, ', ', ''),
-            tag: ((data?.data?.result?.dataInfo?.projectOut?.[i]?.projectStatus ?? '') === '') ? 3 : ((data?.data?.result?.dataInfo?.projectOut?.[i]?.projectStatus ?? '') === '종료') ? 2 : 1
+            tag: tag
           });
         }
         if (tabSubPage === 1) {
@@ -457,49 +468,6 @@ export default function View() {
         setPeriodProjectLabel(tmpPeriodProjectLabel);
         setPeriodProjectFullLabel(tmpPeriodProjectFullLabel);
         setPeriodProjectData(tmpPeriodProjectData);
-
-        // setPeriodProjectLabel(['','Project A','Project B','Project C','Project D','Project E','Project F','Project G','Project H','']);
-        // setPeriodProjectData([
-        //   {
-        //     // min: '2021-02-10',
-        //   },
-        //   {
-        //     min: '2021-02-10',
-        //     max: '2022-03-10'
-        //   },
-        //   {
-        //     min: '2021-06-10',
-        //     max: '2022-07-10'
-        //   },
-        //   {
-        //     min: '2021-09-10',
-        //     max: '2022-02-10'
-        //   },
-        //   {
-        //     min: '2021-12-20',
-        //     max: '2023-03-10'
-        //   },
-        //   {
-        //     min: '2021-12-10',
-        //     max: '2023-05-10'
-        //   },
-        //   {
-        //     min: '2022-11-10',
-        //     max: '2023-07-10'
-        //   },
-        //   {
-        //     min: '2022-11-08',
-        //     max: '2023-09-20'
-        //   },
-        //   {
-        //     min: '2022-11-08',
-        //     max: '2023-05-20'
-        //   },
-        //   {
-        //     // min: '2021-02-10',
-        //   },
-        // ]);
-        
       } catch (e) {
         console.warn(e);
       } finally {
@@ -545,13 +513,11 @@ export default function View() {
             <p className='text-xl font-medium text-color-regular'>{viewData.researchInstitute ?? ''}</p>
           </> : null}
       desc={viewData.address ?? ''}
-      tags={<>
-        <div className="text_style01">
-          <p className='text-sm text-color-regular'>{viewData.establishmentYear ?? ''}년 설립({Number(moment().format('YYYY')) - Number(viewData.establishmentYear ?? moment().format('YYYY')) + 1}년차)</p>
-          <p className='text-sm text-color-regular'>{viewData.scale ?? ''}</p>
-          <p className='text-sm text-color-regular'>{viewData.area ?? ''}</p>
-        </div>
-      </>}
+      tags={<div className="text_style01">
+        <p className='text-sm text-color-regular'>{viewData.establishmentYear ?? ''}년 설립({Number(moment().format('YYYY')) - Number(viewData.establishmentYear ?? moment().format('YYYY')) + 1}년차)</p>
+        <p className='text-sm text-color-regular'>{viewData.scale ?? ''}</p>
+        <p className='text-sm text-color-regular'>{viewData.area ?? ''}</p>
+      </div>}
     >
       {(tabActive1 === 0)
         ? // 기본 정보
@@ -646,7 +612,7 @@ export default function View() {
                         {labels1.map((e, i) => {
                           if (e == '') return null;
                           return (
-                            <tr key={i}>
+                            <tr key={'label'+i}>
                               <td className='text-center'>{e}</td>
                               <td className='text-center'>{common.setPriceInput(tempTableData1?.[i]?.[0] ?? 0)}</td>
                               <td className='text-center'>{common.setPriceInput(tempTableData1?.[i]?.[1] ?? 0)}</td>
@@ -661,100 +627,98 @@ export default function View() {
                   </div>
                 </div>
               </> 
-              : <>
-                <div className='list_wrap_style02 grid02 mt-4'>
-                  <div>
-                    <h4 className='text-base font-bold text-color-dark px-2'>매출액</h4>
-                    <div className='chart_wrap mt-4'>
-                      <ViewChart2
-                        title={{
-                          y: '매출액(천억원)',
-                          label: '매출액',
-                        }} 
-                        unit=''
-                        type={1}
-                        labels={labels2} 
-                        datas={tempChartData5} 
-                      />
-                    </div>
-                  </div>
-                  <div>
-                    <h4 className='text-base font-bold text-color-dark px-2'>영업이익률, 당기순이익률</h4>
-                    <div className='chart_wrap mt-4'>
-                      <ViewChart3 labels={labels2} data1={tempChartData6_1} data2={tempChartData6_2} unit='%' type={1} />
-                    </div>
-                  </div>
-                  <div>
-                    <h4 className='text-base font-bold text-color-dark px-2'>부채비율</h4>
-                    <div className='chart_wrap mt-4'>
-                      <ViewChart4 
-                        title={{
-                          y: '부채비율(%)',
-                          label: { 1: '부채비율', 2: '자본총계', 3: '부채총계' }
-                        }}
-                        unit=''
-                        type={1}
-                        labels={labels2} 
-                        data1={tempChartData7_1} 
-                        data2={tempChartData7_2} 
-                        data3={tempChartData7_3}
-                      />
-                    </div>
-                  </div>
-                  <div>
-                    <h4 className='text-base font-bold text-color-dark px-2'>유동비율</h4>
-                    <div className='chart_wrap mt-4'>
-                      <ViewChart4 
-                        title={{
-                          y: '유동비율(%)',
-                          label: { 1: '유동비율', 2: '유동자산', 3: '유동부채' }
-                        }}
-                        unit=''
-                        type={1}
-                        labels={labels2} 
-                        data1={tempChartData8_1} 
-                        data2={tempChartData8_2} 
-                        data3={tempChartData8_3}
-                      />
-                    </div>
-                  </div>
-                  <div>
-                    <h4 className='text-base font-bold text-color-dark'>이자보상비율</h4>
-                    <div className='chart_wrap mt-4'>
-                      <ViewChart4 
-                        title={{
-                          y: '이자보상비율(%)',
-                          label: { 1: '이자보상비율', 2: '영업이익', 3: '지급이자' }
-                        }}
-                        unit=''
-                        type={1}
-                        scaleYUnit='금액(억원) '
-                        labels={labels2} 
-                        data1={tempChartData9_1} 
-                        data2={tempChartData9_2} 
-                        data3={tempChartData9_3}
-                      />
-                    </div>
-                  </div>
-                  <div>
-                    <h4 className='text-base font-bold text-color-dark'>자기자본비율</h4>
-                    <div className='chart_wrap mt-4'>
-                      <ViewChart4 
-                        title={{
-                          y: '자기자본비율(%)',
-                          label: { 1: '자기자본비율', 2: '자산총계', 3: '자기자본' }
-                        }}
-                        unit=''
-                        type={1}
-                        labels={labels2} 
-                        data1={tempChartData10_1} 
-                        data2={tempChartData10_2} 
-                        data3={tempChartData10_3}
-                      />
-                    </div>
+              : <div className='list_wrap_style02 grid02 mt-4'>
+                <div>
+                  <h4 className='text-base font-bold text-color-dark px-2'>매출액</h4>
+                  <div className='chart_wrap mt-4'>
+                    <ViewChart2
+                      title={{
+                        y: '매출액(천억원)',
+                        label: '매출액',
+                      }} 
+                      unit=''
+                      type={1}
+                      labels={labels2} 
+                      datas={tempChartData5} 
+                    />
                   </div>
                 </div>
-              </>}
+                <div>
+                  <h4 className='text-base font-bold text-color-dark px-2'>영업이익률, 당기순이익률</h4>
+                  <div className='chart_wrap mt-4'>
+                    <ViewChart3 labels={labels2} data1={tempChartData6_1} data2={tempChartData6_2} unit='%' type={1} />
+                  </div>
+                </div>
+                <div>
+                  <h4 className='text-base font-bold text-color-dark px-2'>부채비율</h4>
+                  <div className='chart_wrap mt-4'>
+                    <ViewChart4 
+                      title={{
+                        y: '부채비율(%)',
+                        label: { 1: '부채비율', 2: '자본총계', 3: '부채총계' }
+                      }}
+                      unit=''
+                      type={1}
+                      labels={labels2} 
+                      data1={tempChartData7_1} 
+                      data2={tempChartData7_2} 
+                      data3={tempChartData7_3}
+                    />
+                  </div>
+                </div>
+                <div>
+                  <h4 className='text-base font-bold text-color-dark px-2'>유동비율</h4>
+                  <div className='chart_wrap mt-4'>
+                    <ViewChart4 
+                      title={{
+                        y: '유동비율(%)',
+                        label: { 1: '유동비율', 2: '유동자산', 3: '유동부채' }
+                      }}
+                      unit=''
+                      type={1}
+                      labels={labels2} 
+                      data1={tempChartData8_1} 
+                      data2={tempChartData8_2} 
+                      data3={tempChartData8_3}
+                    />
+                  </div>
+                </div>
+                <div>
+                  <h4 className='text-base font-bold text-color-dark'>이자보상비율</h4>
+                  <div className='chart_wrap mt-4'>
+                    <ViewChart4 
+                      title={{
+                        y: '이자보상비율(%)',
+                        label: { 1: '이자보상비율', 2: '영업이익', 3: '지급이자' }
+                      }}
+                      unit=''
+                      type={1}
+                      scaleYUnit='금액(억원) '
+                      labels={labels2} 
+                      data1={tempChartData9_1} 
+                      data2={tempChartData9_2} 
+                      data3={tempChartData9_3}
+                    />
+                  </div>
+                </div>
+                <div>
+                  <h4 className='text-base font-bold text-color-dark'>자기자본비율</h4>
+                  <div className='chart_wrap mt-4'>
+                    <ViewChart4 
+                      title={{
+                        y: '자기자본비율(%)',
+                        label: { 1: '자기자본비율', 2: '자산총계', 3: '자기자본' }
+                      }}
+                      unit=''
+                      type={1}
+                      labels={labels2} 
+                      data1={tempChartData10_1} 
+                      data2={tempChartData10_2} 
+                      data3={tempChartData10_3}
+                    />
+                  </div>
+                </div>
+              </div>}
           </>
           : (tabActive1 === 2)
             ? // 과제 정보
@@ -766,9 +730,9 @@ export default function View() {
                 <ul>
                   {(tabProjectList?.length > 0) 
                     ? tabProjectList?.map((e, i) => {
-                      {/* tag - 진행중 : 1 | 종료 : 2 */}
+                      /* tag - 진행중 : 1 | 종료 : 2 */
                       return (<ListItem 
-                        key={i}
+                        key={'pjItem'+i}
                         tag={1}
                         title={e.title}
                         contents={<>
@@ -784,9 +748,7 @@ export default function View() {
                             <p className='text-sm text-color-regular'>한글 키워드: <span className='font-medium text-color-main'>{e.keyword}</span></p>
                           </div>
                         </>}
-                        btns={<>
-                          <a href={`/view/projectout/${e.id}`} target='_blank' className='h-5 px-1.5 rounded-sm text-xs font-medium text-color-white bg-color-light1' rel="noreferrer" title={`새창이동, ${e.title} 상세 페이지`}>자세히 보기↗</a>
-                        </>}
+                        btns={<a href={`/view/projectout/${e.id}`} target='_blank' className='h-5 px-1.5 rounded-sm text-xs font-medium text-color-white bg-color-light1' rel="noreferrer" title={`새창이동, ${e.title} 상세 페이지`}>자세히 보기↗</a>}
                       />);
                     })
                     : <li>
@@ -809,7 +771,7 @@ export default function View() {
                     {(tabPatentList?.length > 0) 
                       ? tabPatentList?.map((e, i) => {
                         return (<ListItem 
-                          key={i}
+                          key={'rsitem'+i}
                           title={e.title}
                           contents={<>
                             <p className='text-sm text-color-regular'>출원등록구분: <span className='font-medium text-color-main'>{e.division}</span></p>
@@ -864,7 +826,7 @@ export default function View() {
                         <label htmlFor='year' className='hidden_text'>연도별 보기</label>
                         <select name='year' id='year' value={employeeYear} onChange={(e) => setEmployeeYear(e.target.value)}>
                           {(employeeYearData ?? []).map((e,i) => {
-                            return <option key={i} value={e.year ?? ''}>{e.year ?? ''}</option>;
+                            return <option key={e.year ?? i} value={e.year ?? ''}>{e.year ?? ''}</option>;
                           })}
                         </select>
                       </div> : null}
@@ -893,9 +855,9 @@ export default function View() {
                     <ul>
                       {(employeeProjectList?.length > 0) 
                         ? employeeProjectList?.map((e, i) => {
-                          {/* tag - 진행중 : 1 | 종료 : 2 */}
+                          /* tag - 진행중 : 1 | 종료 : 2 */
                           return (<ListItem 
-                            key={i}
+                            key={'pjItem'+i}
                             tag={1}
                             title={e.title}
                             contents={<>
@@ -911,9 +873,7 @@ export default function View() {
                                 <p className='text-sm text-color-regular'>한글 키워드: <span className='font-medium text-color-main'>{e.keyword}</span></p>
                               </div>
                             </>}
-                            btns={<>
-                              <a href={`${e.id}`} className='h-5 px-1.5 rounded-sm text-xs font-medium text-color-white bg-color-light1'>자세히 보기↗</a>
-                            </>}
+                            btns={<a href={`${e.id}`} className='h-5 px-1.5 rounded-sm text-xs font-medium text-color-white bg-color-light1'>자세히 보기↗</a>}
                           />);
                         })
                         : <li>
@@ -933,7 +893,7 @@ export default function View() {
                         ? tabNewsList?.map((e, i) => {
                           return (
                             <ToggleListItem 
-                              key={i}
+                              key={'newsItem'+i}
                               id={e.id}
                               title={<>
                                 <p className='flex-1 text-base font-bold text-color-dark'>{e.title}</p>
@@ -942,12 +902,8 @@ export default function View() {
                                   <p className='text-sm text-color-regular'>출처일: <span className='font-medium text-color-main'>{e.date}</span></p>
                                 </div>
                               </>}
-                              btn={(e.link && e.link !== '') ? <>
-                                <a href={e.link} className='h-5 px-1.5 rounded-sm text-xs font-medium text-color-white bg-color-footer' target='_blank' rel='noreferrer' title={`새창이동, ${e.title} 원문 페이지`}>원문 보기↗</a>
-                              </> : null}
-                              contents={<>
-                                <WordClouds />
-                              </>}
+                              btn={(e.link && e.link !== '') ? <a href={e.link} className='h-5 px-1.5 rounded-sm text-xs font-medium text-color-white bg-color-footer' target='_blank' rel='noreferrer' title={`새창이동, ${e.title} 원문 페이지`}>원문 보기↗</a> : null}
+                              contents={<WordClouds />}
                             />
                           );
                         })

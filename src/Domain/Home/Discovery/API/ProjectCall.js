@@ -21,27 +21,20 @@ export const projectOut = async (
     sort: sort,
   };
   if (filterParam != {}) {
-    // console.log('filterParam', filterParam);
     for (const key in filterParam) {
-      // console.log(key, filterParam[key]);
       params[key] = filterParam[key];
     }
   }
   if (searchParam != {}) {
-    // console.log('searchParam', searchParam);
     for (const key in searchParam) {
-      // console.log(key, searchParam[key]);
       params[key] = searchParam[key];
     }
   }
   if (etcParam != {}) {
-    // console.log('etcParam', etcParam);
     for (const key in etcParam) {
-      // console.log(key, etcParam[key]);
       params[key] = etcParam[key];
     }
   }
-  // console.log('params', JSON.stringify(params));
   return await API.post('/search/projectOut', params);
 };
 //과제 검색(내부)
@@ -65,27 +58,20 @@ export const projectIn = async (
     sort: sort,
   };
   if (filterParam != {}) {
-    // console.log('filterParam', filterParam);
     for (const key in filterParam) {
-      // console.log(key, filterParam[key]);
       params[key] = filterParam[key];
     }
   }
   if (searchParam != {}) {
-    // console.log('searchParam', searchParam);
     for (const key in searchParam) {
-      // console.log(key, searchParam[key]);
       params[key] = searchParam[key];
     }
   }
   if (etcParam != {}) {
-    // console.log('etcParam', etcParam);
     for (const key in etcParam) {
-      // console.log(key, etcParam[key]);
       params[key] = etcParam[key];
     }
   }
-  // console.log('params', JSON.stringify(params));
   return await API.post('/search/projectIn', params);
 };
 //과제 외부 상세페이지
