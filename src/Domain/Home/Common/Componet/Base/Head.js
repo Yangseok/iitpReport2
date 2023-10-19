@@ -72,12 +72,10 @@ export default function Head(props) {
           <nav>
             <ul>
               {nav.map((e, i) => {
-                let classOn = (e.to.split('/')[1] === se1) ? true : false;
+                let classOn = (e.to.split('/')[1] === se1);
                 if (se1 === 'search' && e.to.split('/')[1] === 'discovery') {
                   classOn = true;
                 }
-                // e.depth2.forEach((e2) => 
-                //   classOn = (e2.to.split('/')[1] === se1) ? true : false);
                 
                 if(i !== (nav.length - 1)) {
                   return <li 

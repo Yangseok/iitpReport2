@@ -2,7 +2,6 @@ import React, { useEffect, useState, useRef, useCallback } from 'react';
 import Button from 'Domain/Home/Common/Componet/Button';
 import { useSelector, useDispatch } from 'react-redux';
 import { setSearchKeyword, setTmpSearchKeyword, getTmpSearchKeyword } from 'Domain/Home/Common/Status/CommonSlice';
-// import { useSearchParams } from 'react-router-dom';
 import parse from 'html-react-parser';
 import * as mainAPI from 'Domain/Home/Main/API/Call';
 
