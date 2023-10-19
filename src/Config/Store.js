@@ -4,7 +4,6 @@
  */
 import {configureStore, combineReducers} from '@reduxjs/toolkit';
 // import logger from 'redux-logger';
-import counterReducer from 'Domain/Home/Sample/Status/CounterSlice';
 import msgReducer from 'Domain/Home/Common/Status/MsgSlice';
 import commonReducer from 'Domain/Home/Common/Status/CommonSlice';
 import discoveryReducer from 'Domain/Home/Discovery/Status/DiscoverySlice';
@@ -33,7 +32,6 @@ const persistConfig = {
 };
 
 const rootReducer = combineReducers({
-  counter: counterReducer,
   msg: msgReducer,
   common: commonReducer,
   discovery: discoveryReducer,
