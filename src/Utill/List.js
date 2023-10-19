@@ -259,14 +259,11 @@ export const getProcData = (filterKey, dataList, se1) => {
   switch (filterKey) {
   case 'search/projectOut':
     for (let i in dataList ?? []) {
-      // console.log(i, dataList?.[i]);
       const period = dataList?.[i]?.period ?? '';
-      // const periodArr = period.split('~');
       const division = dataList?.[i]?.technicalClassification ?? [];
       const keywordt = dataList?.[i]?.keywords ?? [];
       const pushData = {
         id: dataList?.[i]?.projectNumber ?? i,
-        // tag : ((periodArr?.[1]??'').replaceAll(' ','') === '9999-12-31') ? 1 : 2,
         tag : ((dataList?.[i]?.projectStatus ?? '') === '') ? '' : ((dataList?.[i]?.projectStatus ?? '') === '종료') ? 2 : 1,
         title: parse(dataList?.[i]?.title ?? ''),
         price: common.setPriceInput(dataList?.[i]?.fund ?? '') + '원',
@@ -283,13 +280,10 @@ export const getProcData = (filterKey, dataList, se1) => {
     break;
   case 'search/projectIn':
     for (let i in dataList ?? []) {
-      // console.log(i, dataList?.[i]);
       const period = dataList?.[i]?.period ?? '';
-      // const periodArr = period.split('~');
       const keywordt = dataList?.[i]?.keywords ?? [];
       const pushData = {
         id: dataList?.[i]?.projectNumber ?? i,
-        // tag : ((periodArr?.[1]??'').replaceAll(' ','') === '9999-12-31') ? 1 : 2,
         tag : ((dataList?.[i]?.projectStatus ?? '') === '') ? '' : ((dataList?.[i]?.projectStatus ?? '') === '종료') ? 2 : 1,
         title: parse(dataList?.[i]?.title ?? ''),
         price: common.setPriceInput(dataList?.[i]?.fund ?? '') + '원',
@@ -304,7 +298,6 @@ export const getProcData = (filterKey, dataList, se1) => {
     break;
   case 'search/patent':
     for (let i in dataList ?? []) {
-      // console.log(i, dataList?.[i]);
       const agency = dataList?.[i]?.applicantName ?? [];
       const name = dataList?.[i]?.inventorName ?? [];
       const date = dataList?.[i]?.applDate ?? '';
@@ -323,7 +316,6 @@ export const getProcData = (filterKey, dataList, se1) => {
     break;
   case 'search/paper':
     for (let i in dataList ?? []) {
-      // console.log(i, dataList?.[i]);
       const agency = dataList?.[i]?.affiliation ?? [];
       const name = dataList?.[i]?.author ?? [];
       const pushData = {
@@ -341,7 +333,6 @@ export const getProcData = (filterKey, dataList, se1) => {
     break;
   case 'search/ict':
     for (let i in dataList ?? []) {
-      // console.log(i, dataList?.[i]);
       const pushData = {
         id: dataList?.[i]?.applNumber ?? i,
         title: parse(dataList?.[i]?.title ?? ''),
@@ -356,7 +347,6 @@ export const getProcData = (filterKey, dataList, se1) => {
     break;
   case 'search/policy':
     for (let i in dataList ?? []) {
-      // console.log(i, dataList?.[i]);
       const date = dataList?.[i]?.publishedDate ?? '';
       const dateArr = date.split(' ');
       const pushData = {
@@ -372,7 +362,6 @@ export const getProcData = (filterKey, dataList, se1) => {
     break;
   case 'search/indv':
     for (let i in dataList ?? []) {
-      // console.log(i, dataList?.[i]);
       let link = dataList?.[i]?.link ?? '';
       if (link !== '' && link !== undefined) link = 'https://' + link;
       const pushData = {
@@ -387,7 +376,6 @@ export const getProcData = (filterKey, dataList, se1) => {
     break;
   case 'search/orgn':
     for (let i in dataList ?? []) {
-      // console.log(i, dataList?.[i]);
       const pushData = {
         id: dataList?.[i]?.id ?? i,
         name: parse(dataList?.[i]?.orgnName ?? ''),
@@ -403,7 +391,6 @@ export const getProcData = (filterKey, dataList, se1) => {
     break;
   case 'search/news':
     for (let i in dataList ?? []) {
-      // console.log(i, dataList?.[i]);
       const date = dataList?.[i]?.publishedDate ?? '';
       const dateArr = date.split(' ');
       const pushData = {
@@ -424,7 +411,6 @@ export const getProcData = (filterKey, dataList, se1) => {
     }
     break;
   }
-  // console.log(filterKey, dataList, procData);
   return procData;
 };
 
@@ -436,7 +422,6 @@ export const getExcelProcData = (filterKey, dataList) => {
   case 'search/projectOut':
     title = ['과제명', '총연구개발비', '총연구개발기간', '주관연구개발기관', '연구책임자', '부처명', '연구개발성과', '국가과학기술표준분류', '한글 키워드'];
     for (let i in dataList ?? []) {
-      // console.log(i, dataList?.[i]);
       const period = dataList?.[i]?.period ?? '';
       const division = dataList?.[i]?.technicalClassification ?? [];
       const keywordt = dataList?.[i]?.keywords ?? [];
@@ -456,7 +441,6 @@ export const getExcelProcData = (filterKey, dataList) => {
   case 'search/projectIn':
     title = ['과제명', '총연구개발비', '총연구개발기간', '주관연구개발기관', '연구책임자', 'ICT 기술분류', '한글 키워드'];
     for (let i in dataList ?? []) {
-      // console.log(i, dataList?.[i]);
       const period = dataList?.[i]?.period ?? '';
       const keywordt = dataList?.[i]?.keywords ?? [];
       data.push([
@@ -473,7 +457,6 @@ export const getExcelProcData = (filterKey, dataList) => {
   case 'search/patent':
     title = ['과제명', '유발 과제', '출원등록구분', '출원(등록)번호', '출원(등록)일', '출원(등록)인', '발명자'];
     for (let i in dataList ?? []) {
-      // console.log(i, dataList?.[i]);
       const agency = dataList?.[i]?.applicantName ?? [];
       const name = dataList?.[i]?.inventorName ?? [];
       const date = dataList?.[i]?.applDate ?? '';
@@ -491,7 +474,6 @@ export const getExcelProcData = (filterKey, dataList) => {
   case 'search/paper':
     title = ['논문명', '발행년도', '논문 구분', '소속기관', '주 저자', '학술지/학술대회명'];
     for (let i in dataList ?? []) {
-      // console.log(i, dataList?.[i]);
       const agency = dataList?.[i]?.affiliation ?? [];
       const name = dataList?.[i]?.author ?? [];
       data.push([
@@ -507,7 +489,6 @@ export const getExcelProcData = (filterKey, dataList) => {
   case 'search/ict':
     title = ['ICT 자료명', '출처', '본문', '발행일'];
     for (let i in dataList ?? []) {
-      // console.log(i, dataList?.[i]);
       data.push([
         common.deHighlight(dataList?.[i]?.title ?? ''),
         common.deHighlight(dataList?.[i]?.source ?? ''),
@@ -519,7 +500,6 @@ export const getExcelProcData = (filterKey, dataList) => {
   case 'search/policy':
     title = ['정부 정책 자료명', '출처', '작성일', '본문'];
     for (let i in dataList ?? []) {
-      // console.log(i, dataList?.[i]);
       const date = dataList?.[i]?.publishedDate ?? '';
       const dateArr = date.split(' ');
       data.push([
@@ -533,7 +513,6 @@ export const getExcelProcData = (filterKey, dataList) => {
   case 'search/indv':
     title = ['연구자', '소속기관명', '과제갯수'];
     for (let i in dataList ?? []) {
-      // console.log(i, dataList?.[i]);
       data.push([
         dataList?.[i]?.indvName ?? '',
         dataList?.[i]?.orgn ?? '',
@@ -544,7 +523,6 @@ export const getExcelProcData = (filterKey, dataList) => {
   case 'search/orgn':
     title = ['기관명', '과제갯수', '특허갯수', '사후관리대상기업', '매출상위(%)'];
     for (let i in dataList ?? []) {
-      // console.log(i, dataList?.[i]);
       data.push([
         common.deHighlight(dataList?.[i]?.orgnName ?? ''),
         dataList?.[i]?.projectCount ?? 0,
@@ -557,7 +535,6 @@ export const getExcelProcData = (filterKey, dataList) => {
   case 'search/news':
     title = ['뉴스 제목', '내용', '출처', '출처일'];
     for (let i in dataList ?? []) {
-      // console.log(i, dataList?.[i]);
       const date = dataList?.[i]?.publishedDate ?? '';
       const dateArr = date.split(' ');
       data.push([
